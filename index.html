@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0b1020" />
-  <title>PF Workout Tracker</title>
+  <title>PF Workout Coach v4</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <style>
     :root {
@@ -321,6 +321,144 @@
       .mini-calendar { gap: 5px; }
       .day-dot { min-height: 44px; font-size: 13px; }
     }
+
+    .version-badge {
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 3px 8px; margin-left: 6px;
+      border-radius: 999px;
+      font-size: 10px; font-weight: 900; letter-spacing: .04em;
+      color: color-mix(in srgb, var(--accent-2) 82%, white);
+      background: color-mix(in srgb, var(--accent-2) 14%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent-2) 28%, var(--line));
+      vertical-align: middle;
+    }
+    .coach-strip {
+      margin-top: 16px;
+      padding: 13px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      border-radius: 18px;
+      border: 1px solid color-mix(in srgb, var(--accent-2) 30%, var(--line));
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent-2) 13%, transparent), rgba(255,255,255,.045));
+    }
+    .coach-strip strong { display:block; margin-bottom:3px; }
+    .coach-strip span { display:block; color: var(--muted); font-size: 12px; line-height: 1.35; }
+    .coach-card textarea, .coach-preview {
+      min-height: 220px;
+      margin-top: 12px;
+      white-space: pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.42;
+    }
+    details.coach-details {
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      background: rgba(255,255,255,.045);
+    }
+    details.coach-details summary {
+      cursor: pointer;
+      font-weight: 850;
+      color: var(--soft);
+    }
+    .install-note {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.045);
+      border: 1px dashed var(--line);
+    }
+    .finish-row {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .finish-pill {
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--line);
+      font-weight: 750;
+    }
+    .finish-pill.done {
+      color: color-mix(in srgb, var(--accent-2) 82%, white);
+      border-color: color-mix(in srgb, var(--accent-2) 35%, var(--line));
+      background: color-mix(in srgb, var(--accent-2) 12%, transparent);
+    }
+    .quick-weight-panel {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.045);
+      border: 1px solid var(--line);
+    }
+    .quick-weight-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 780;
+    }
+    .quick-weight-current {
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .quick-weight-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .quick-weight-grid .btn {
+      min-height: 38px;
+      padding: 8px 6px;
+      border-radius: 13px;
+      font-size: 12px;
+      width: 100%;
+    }
+    .quick-weight-hint {
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    @media (max-width: 700px) {
+      .coach-strip { grid-template-columns: 1fr; }
+      .coach-strip .btn { width: 100%; }
+      .quick-weight-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+      .quick-weight-grid .btn { font-size: 12px; }
+    }
+
+    .theme-btn { width: 42px; min-width: 42px; padding: 0; border-radius: 14px; font-size: 18px; flex: 0 0 42px; }
+    .coach-card {
+      background:
+        radial-gradient(circle at top right, color-mix(in srgb, var(--accent-2) 18%, transparent), transparent 22rem),
+        var(--panel);
+      border-color: color-mix(in srgb, var(--accent-2) 28%, var(--line));
+    }
+    @media (max-width: 860px) {
+      .topbar-inner { grid-template-columns: 1fr auto; gap: 10px; }
+      .top-actions { justify-content: flex-end; }
+      .top-actions .pill { display: none; }
+    }
+    @media (max-width: 540px) {
+      .brand-title { max-width: 230px; }
+      .top-actions .theme-btn { width: 40px; min-width: 40px; flex: 0 0 40px; }
+      .top-actions .btn { width: 40px; }
+      .stat-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
     @media print {
       .topbar, .tabs, .rest-timer, .toast, .toolbar, .btn { display: none !important; }
       body { background: white; color: black; padding: 0; }
@@ -334,14 +472,13 @@
       <div class="brand">
         <div class="logo">PF</div>
         <div>
-          <div class="brand-title">Planet Fitness Workout Tracker</div>
+          <div class="brand-title">PF Workout Coach <span class="version-badge">v4</span></div>
           <div class="brand-sub" id="headerSub">5 lift days • 2 rest days • no lunges</div>
         </div>
       </div>
       <div class="top-actions">
         <div class="pill" id="nextChip">Next: Day 1</div>
-        <button class="btn small" data-action="install-app" id="installBtn" title="Install if your browser supports it">Install</button>
-        <button class="btn small" data-action="toggle-theme" title="Toggle light/dark">Theme</button>
+        <button class="btn small theme-btn" data-action="toggle-theme" title="Toggle light/dark" aria-label="Toggle light/dark">◐</button>
       </div>
     </div>
   </header>
@@ -508,7 +645,6 @@
     let active = loadActiveSession();
     let rest = { end: 0, start: 0, duration: 0, interval: null };
     let renderClock = null;
-    let deferredInstallPrompt = null;
 
     const state = loadState();
 
@@ -604,6 +740,92 @@
       return '';
     }
 
+    function cleanNumber(value) {
+      const n = Number(value);
+      if (!Number.isFinite(n)) return '';
+      const rounded = Math.round(n * 100) / 100;
+      return Number.isInteger(rounded) ? String(rounded) : String(rounded).replace(/\.0+$/, '');
+    }
+
+    function getLastLoggedWeight(entry) {
+      const logs = [...(entry?.logs || [])].reverse();
+      const found = logs.find(log => Number.isFinite(Number(log.weight)) && Number(log.weight) > 0);
+      return found ? Number(found.weight) : null;
+    }
+
+    function getSessionWeightValue(entry, ex, fallback = '') {
+      if (ex.type !== 'weighted' && ex.type !== 'bodyweight') return fallback;
+      if (Number.isFinite(Number(entry?.draftWeight)) && Number(entry.draftWeight) > 0) return cleanNumber(entry.draftWeight);
+      const lastWeight = getLastLoggedWeight(entry);
+      if (lastWeight !== null) return cleanNumber(lastWeight);
+      if (Number.isFinite(Number(fallback)) && Number(fallback) > 0) return cleanNumber(fallback);
+      return '';
+    }
+
+    function currentWeightFromInput(index) {
+      const input = $(`[data-input="weight-${index}"]`);
+      const fromInput = input ? Number(input.value) : NaN;
+      if (Number.isFinite(fromInput) && fromInput > 0) return fromInput;
+      const entry = active?.exercises?.[index];
+      if (!entry) return NaN;
+      const ex = getExercise(entry.id);
+      if (!ex) return NaN;
+      const fromSession = Number(getSessionWeightValue(entry, ex, recommendedInputValue(ex)));
+      return Number.isFinite(fromSession) && fromSession > 0 ? fromSession : NaN;
+    }
+
+    function setDraftWeight(index, weight, message = '') {
+      if (!active?.exercises?.[index]) return;
+      const clean = Math.max(0, Math.round(Number(weight) * 100) / 100);
+      if (!Number.isFinite(clean) || clean <= 0) {
+        showToast('Enter a starting weight first.');
+        return;
+      }
+      active.exercises[index].draftWeight = clean;
+      saveActive();
+      const display = cleanNumber(clean);
+      const input = $(`[data-input="weight-${index}"]`);
+      if (input) input.value = display;
+      const label = $(`[data-current-weight="${index}"]`);
+      if (label) label.textContent = `${display} ${state.settings.units}`;
+      if (message) showToast(message.replace('{weight}', `${display} ${state.settings.units}`));
+    }
+
+    function adjustWeight(index, delta) {
+      if (!active?.exercises?.[index]) return;
+      const entry = active.exercises[index];
+      const ex = getExercise(entry.id);
+      if (!ex || (ex.type !== 'weighted' && ex.type !== 'bodyweight')) return;
+      const current = currentWeightFromInput(index);
+      if (!Number.isFinite(current) || current <= 0) {
+        showToast('Enter a starting weight first, then use +5 / -5.');
+        return;
+      }
+      const next = Math.max(0, current + Number(delta || 0));
+      setDraftWeight(index, next, `Next sets default to {weight}.`);
+    }
+
+    function useLastSetWeight(index) {
+      if (!active?.exercises?.[index]) return;
+      const lastWeight = getLastLoggedWeight(active.exercises[index]);
+      if (lastWeight === null) {
+        showToast('No previous set weight for this exercise yet.');
+        return;
+      }
+      setDraftWeight(index, lastWeight, `Next sets reset to {weight}.`);
+    }
+
+    function clearDraftWeight(index) {
+      if (!active?.exercises?.[index]) return;
+      active.exercises[index].draftWeight = null;
+      saveActive();
+      const input = $(`[data-input="weight-${index}"]`);
+      if (input) input.value = '';
+      const label = $(`[data-current-weight="${index}"]`);
+      if (label) label.textContent = 'Set weight';
+      showToast('Weight cleared for this exercise.');
+    }
+
     function updateHeader() {
       const day = getDay();
       document.documentElement.dataset.theme = state.settings.theme || 'dark';
@@ -672,6 +894,10 @@
               </div>
               <div class="section-title"><h3 style="margin:0">Recent 7 days</h3></div>
               ${renderMiniCalendar()}
+              <div class="coach-strip">
+                <div><strong>Coach check-in</strong><span>Share your recent workouts, body metrics, and next-weight recommendations with ChatGPT.</span></div>
+                <button class="btn small green" data-action="share-coach-report">Share report</button>
+              </div>
             </div>
           </div>
         </section>
@@ -729,7 +955,7 @@
         type: day.type,
         focus: day.focus,
         startedAt: new Date().toISOString(),
-        exercises: day.exercises.map(ex => ({ id: ex.id, logs: [], notes: '' }))
+        exercises: day.exercises.map(ex => ({ id: ex.id, logs: [], notes: '', draftWeight: null }))
       };
       saveActive();
       currentTab = 'today';
@@ -772,7 +998,7 @@
       if (!ex) return '';
       const logs = entry.logs || [];
       const rec = recommendationFor(ex);
-      const recValue = recommendedInputValue(ex);
+      const recValue = getSessionWeightValue(entry, ex, recommendedInputValue(ex));
       const last = state.exerciseProgress[ex.id]?.lastSummary || 'No previous log yet';
       return `
         <article class="card" data-card-index="${index}">
@@ -788,6 +1014,7 @@
               <span class="badge">Last: ${esc(last)}</span>
               <span class="badge">Next: ${esc(rec)}</span>
             </div>
+            ${renderExerciseCompletion(ex, logs)}
             ${logs.length ? renderLogTable(ex, logs, index) : `<div class="empty" style="margin-top:12px">No sets logged yet for this exercise.</div>`}
             ${renderLogInputs(ex, index, recValue)}
             <div class="small-text" style="margin-top:10px">${esc(ex.cues || '')}</div>
@@ -814,9 +1041,11 @@
 
     function renderLogInputs(ex, index, recValue) {
       if (ex.type === 'weighted') {
+        const weightValue = recValue ? cleanNumber(recValue) : '';
         return `
+          ${renderQuickWeightControls(index, weightValue, 'Easy weight')}
           <div class="form-grid" style="margin-top:12px">
-            <div class="field"><label>Weight (${esc(state.settings.units)})</label><input inputmode="decimal" data-input="weight-${index}" placeholder="${recValue ? esc(recValue) : 'ex: 80'}" value="${recValue ? esc(recValue) : ''}"></div>
+            <div class="field"><label>Weight (${esc(state.settings.units)})</label><input inputmode="decimal" data-input="weight-${index}" placeholder="${weightValue ? esc(weightValue) : 'ex: 80'}" value="${weightValue ? esc(weightValue) : ''}"></div>
             <div class="field"><label>Reps</label><input inputmode="numeric" data-input="reps-${index}" placeholder="${ex.min}-${ex.max}"></div>
             <div class="field"><label>Note</label><input data-input="note-${index}" placeholder="optional"></div>
             <button class="btn primary" data-action="add-set" data-exercise-index="${index}">Log set</button>
@@ -824,10 +1053,12 @@
         `;
       }
       if (ex.type === 'bodyweight') {
+        const weightValue = recValue ? cleanNumber(recValue) : '';
         return `
+          ${renderQuickWeightControls(index, weightValue, 'Added weight')}
           <div class="form-grid" style="margin-top:12px">
             <div class="field"><label>Reps</label><input inputmode="numeric" data-input="reps-${index}" placeholder="${ex.min}-${ex.max}"></div>
-            <div class="field"><label>Added weight (${esc(state.settings.units)})</label><input inputmode="decimal" data-input="weight-${index}" placeholder="optional"></div>
+            <div class="field"><label>Added weight (${esc(state.settings.units)})</label><input inputmode="decimal" data-input="weight-${index}" placeholder="optional" value="${weightValue ? esc(weightValue) : ''}"></div>
             <div class="field"><label>Note</label><input data-input="note-${index}" placeholder="optional"></div>
             <button class="btn primary" data-action="add-set" data-exercise-index="${index}">Log set</button>
           </div>
@@ -841,6 +1072,35 @@
           <button class="btn primary" data-action="add-set" data-exercise-index="${index}">Log</button>
         </div>
       `;
+    }
+
+
+    function renderQuickWeightControls(index, weightValue = '', label = 'Easy weight') {
+      return `
+        <div class="quick-weight-panel">
+          <div class="quick-weight-head">
+            <span>${esc(label)}</span>
+            <strong class="quick-weight-current" data-current-weight="${index}">${weightValue ? esc(weightValue) + ' ' + esc(state.settings.units) : 'Set weight'}</strong>
+          </div>
+          <div class="quick-weight-grid">
+            <button class="btn small ghost" data-action="adjust-weight" data-exercise-index="${index}" data-delta="-10">−10</button>
+            <button class="btn small ghost" data-action="adjust-weight" data-exercise-index="${index}" data-delta="-5">−5</button>
+            <button class="btn small primary" data-action="adjust-weight" data-exercise-index="${index}" data-delta="5">+5</button>
+            <button class="btn small primary" data-action="adjust-weight" data-exercise-index="${index}" data-delta="10">+10</button>
+            <button class="btn small ghost" data-action="use-last-weight" data-exercise-index="${index}">Last</button>
+            <button class="btn small ghost" data-action="clear-weight" data-exercise-index="${index}">Clear</button>
+          </div>
+          <div class="quick-weight-hint">Tap +5 before logging a set. After you log it, that new weight stays filled in for the next sets on this exercise.</div>
+        </div>
+      `;
+    }
+
+    function renderExerciseCompletion(ex, logs) {
+      const count = logs.length;
+      const target = ex.sets || 1;
+      const complete = count >= target;
+      const label = ex.type === 'cardio' || ex.type === 'timed' ? 'logs' : 'sets';
+      return `<div class="finish-row"><span class="finish-pill ${complete ? 'done' : ''}">${count}/${target} ${label} logged</span>${complete ? '<span class="finish-pill done">target hit</span>' : '<span class="finish-pill">keep going</span>'}</div>`;
     }
 
     function addSet(index) {
@@ -857,6 +1117,7 @@
           return;
         }
         entry.logs.push({ weight, reps, note, at: new Date().toISOString() });
+        entry.draftWeight = weight;
       } else if (ex.type === 'bodyweight') {
         const reps = parseInt($(`[data-input="reps-${index}"]`)?.value, 10);
         const weightRaw = $(`[data-input="weight-${index}"]`)?.value;
@@ -866,6 +1127,7 @@
           return;
         }
         entry.logs.push({ reps, weight: Number.isFinite(weight) ? weight : null, note, at: new Date().toISOString() });
+        entry.draftWeight = Number.isFinite(weight) && weight > 0 ? weight : null;
       } else {
         const duration = parseFloat($(`[data-input="duration-${index}"]`)?.value);
         const extra = $(`[data-input="extra-${index}"]`)?.value?.trim() || '';
@@ -883,7 +1145,9 @@
 
     function deleteSet(exIndex, setIndex) {
       if (!active?.exercises?.[exIndex]) return;
-      active.exercises[exIndex].logs.splice(setIndex, 1);
+      const entry = active.exercises[exIndex];
+      entry.logs.splice(setIndex, 1);
+      entry.draftWeight = getLastLoggedWeight(entry);
       saveActive();
       renderActiveSession();
     }
@@ -1073,6 +1337,7 @@
                 <p class="muted">Every saved workout and rest day lives here.</p>
               </div>
               <div class="inline-controls">
+                <button class="btn green" data-action="share-coach-report">Coach check-in</button>
                 <button class="btn" data-action="export-data">Export backup</button>
                 <label class="btn" for="importFile">Import backup</label>
                 <input id="importFile" type="file" accept="application/json" hidden>
@@ -1316,19 +1581,45 @@
             <div class="toolbar">
               <label class="badge" style="cursor:pointer"><input type="checkbox" data-setting="autoRest" ${state.settings.autoRest ? 'checked' : ''} style="width:auto;margin:0 7px 0 0"> Auto-start rest timer after sets</label>
               <button class="btn primary" data-action="save-settings">Save settings</button>
-              <button class="btn" data-action="install-app">Install app</button>
+              <button class="btn green" data-action="share-coach-report">Coach check-in</button>
             </div>
-            <p class="small-text install-hint">Install works best after hosting the folder over HTTPS, like GitHub Pages. The app still works from this file and saves in your browser.</p>
+            <p class="small-text install-note">To install on your phone, use Safari/Chrome’s menu: <strong>Share or three dots → Add to Home Screen</strong>. I removed the confusing in-app Install button.</p>
           </div>
         </section>
+        ${renderCoachPanel()}
         <section class="card danger-zone" style="margin-top:16px">
           <div class="card-inner">
             <h2>Backup and reset</h2>
             <p class="muted">Export a backup before resetting. Your workout history is saved locally in this browser.</p>
             <div class="toolbar">
               <button class="btn" data-action="export-data">Export backup</button>
+              <button class="btn" data-action="refresh-app-cache">Refresh app cache</button>
+              <label class="btn" for="settingsImportFile">Import backup</label>
+              <input id="settingsImportFile" type="file" accept="application/json" hidden>
               <button class="btn danger" data-action="reset-all">Reset everything</button>
             </div>
+          </div>
+        </section>
+      `;
+      $('#settingsImportFile')?.addEventListener('change', importData);
+    }
+
+    function renderCoachPanel() {
+      const report = buildCoachReport();
+      return `
+        <section class="card coach-card" style="margin-top:16px">
+          <div class="card-inner">
+            <div class="kicker">Coach access</div>
+            <h2>Share progress with ChatGPT</h2>
+            <p class="muted">Your data stays on your phone. Tap this to share or copy a clean check-in report, then paste it into ChatGPT so I can review your progress and adjust the plan.</p>
+            <div class="toolbar">
+              <button class="btn green" data-action="share-coach-report">Share / copy coach report</button>
+              <button class="btn" data-action="export-data">Download full backup</button>
+            </div>
+            <details class="coach-details">
+              <summary>Preview the coach report</summary>
+              <textarea class="coach-preview" readonly>${esc(report)}</textarea>
+            </details>
           </div>
         </section>
       `;
@@ -1348,6 +1639,107 @@
       saveState();
       render();
       showToast('Settings saved.');
+    }
+
+
+
+    function buildCoachReport() {
+      const stats = getStats();
+      const next = getDay();
+      const metrics = [...state.bodyMetrics].sort((a,b) => new Date(a.date) - new Date(b.date));
+      const lastMetric = metrics[metrics.length - 1];
+      const firstMetric = metrics[0];
+      const recent = [...state.history].sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt)).slice(0, 6);
+      const lines = [];
+      lines.push('PF WORKOUT TRACKER — COACH CHECK-IN');
+      lines.push(`Generated: ${new Date().toLocaleString()}`);
+      lines.push(`Next workout: Day ${next.day} — ${next.title} (${typeLabel(next)}: ${next.focus})`);
+      lines.push(`Stats: ${stats.liftSessions} lift sessions, ${stats.restSessions} rest days, ${stats.thisWeek} completed in the last 7 days, ${stats.totalSets} logged sets, ${Math.round(stats.totalVolume).toLocaleString()} total volume.`);
+      if (lastMetric) {
+        const delta = firstMetric ? Number(lastMetric.weight) - Number(firstMetric.weight) : 0;
+        const waist = lastMetric.waist ? `, waist ${lastMetric.waist}` : '';
+        lines.push(`Body metrics: latest ${lastMetric.weight} ${state.settings.units}${waist} on ${fmtDate(lastMetric.date)}${firstMetric && metrics.length > 1 ? `; change ${delta >= 0 ? '+' : ''}${delta.toFixed(1)} ${state.settings.units} since ${fmtDate(firstMetric.date)}` : ''}.`);
+      } else {
+        lines.push('Body metrics: none logged yet.');
+      }
+      lines.push('');
+      lines.push('Recent sessions:');
+      if (!recent.length) {
+        lines.push('- No saved sessions yet.');
+      } else {
+        recent.forEach(session => {
+          const setCount = (session.exercises || []).reduce((sum, entry) => sum + ((entry.logs || []).length), 0);
+          lines.push(`- ${fmtDate(session.startedAt)} — Day ${session.day} ${session.title} (${session.type === 'rest' ? 'rest' : formatDuration(session.durationMs || 0)}), ${setCount} logs`);
+          (session.exercises || []).filter(entry => entry.logs?.length).slice(0, 5).forEach(entry => {
+            const ex = getExercise(entry.id) || { name: entry.id, type: 'weighted' };
+            lines.push(`  • ${ex.name}: ${summarizeLogs(ex, entry.logs)}`);
+          });
+        });
+      }
+      lines.push('');
+      lines.push('Next-time recommendations:');
+      const recs = Object.entries(state.exerciseProgress)
+        .map(([id, progress]) => ({ ex: getExercise(id), progress }))
+        .filter(item => item.ex && item.progress?.note)
+        .slice(0, 18);
+      if (!recs.length) {
+        lines.push('- None yet. Log a workout first.');
+      } else {
+        recs.forEach(({ ex, progress }) => {
+          lines.push(`- ${ex.name}: ${progress.note}${progress.lastSummary ? ` Last: ${progress.lastSummary}.` : ''}`);
+        });
+      }
+      lines.push('');
+      lines.push('Ask: Review this and tell me what to adjust for fat loss and muscle definition.');
+      return lines.join('\n');
+    }
+
+    function downloadTextFile(filename, text, type = 'text/plain') {
+      const blob = new Blob([text], { type });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    async function shareCoachReport() {
+      const report = buildCoachReport();
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: 'PF Workout Coach Check-In', text: report });
+          showToast('Coach report shared.');
+          return;
+        } catch (err) {
+          if (err && err.name === 'AbortError') return;
+        }
+      }
+      try {
+        await navigator.clipboard.writeText(report);
+        showToast('Coach report copied. Paste it into ChatGPT.');
+      } catch (err) {
+        downloadTextFile(`pf-coach-checkin-${new Date().toISOString().slice(0,10)}.txt`, report);
+        showToast('Coach report downloaded as a text file.');
+      }
+    }
+
+    async function refreshAppCache() {
+      try {
+        if ('caches' in window) {
+          const keys = await caches.keys();
+          await Promise.all(keys.filter(key => key.includes('pf-workout')).map(key => caches.delete(key)));
+        }
+        if ('serviceWorker' in navigator) {
+          const regs = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(regs.map(reg => reg.update().catch(() => {})));
+        }
+        showToast('App cache refreshed. Close and reopen the app.');
+      } catch (err) {
+        showToast('Could not refresh cache. Close and reopen the browser.');
+      }
     }
 
     function exportData() {
@@ -1468,17 +1860,21 @@
       if (action === 'change-current-day') return;
       if (action === 'set-current-day') { state.settings.currentDayIndex = Number(btn.dataset.dayIndex) || 0; saveState(); currentTab = 'today'; render(); showToast(`Set next workout to Day ${getDay().day}.`); }
       if (action === 'add-set') addSet(Number(btn.dataset.exerciseIndex));
+      if (action === 'adjust-weight') adjustWeight(Number(btn.dataset.exerciseIndex), Number(btn.dataset.delta));
+      if (action === 'use-last-weight') useLastSetWeight(Number(btn.dataset.exerciseIndex));
+      if (action === 'clear-weight') clearDraftWeight(Number(btn.dataset.exerciseIndex));
       if (action === 'delete-set') deleteSet(Number(btn.dataset.exerciseIndex), Number(btn.dataset.setIndex));
       if (action === 'delete-session') deleteSession(btn.dataset.sessionId);
       if (action === 'save-metric') saveMetric();
       if (action === 'save-settings') saveSettingsFromUI();
       if (action === 'export-data') exportData();
+      if (action === 'share-coach-report') shareCoachReport();
+      if (action === 'refresh-app-cache') refreshAppCache();
       if (action === 'reset-all') resetAll();
       if (action === 'toggle-theme') { state.settings.theme = state.settings.theme === 'dark' ? 'light' : 'dark'; saveState(); render(); }
       if (action === 'start-rest-manual') startRestTimer(state.settings.restSeconds);
       if (action === 'add-rest-30') { if (!rest.end) startRestTimer(30); else rest.end += 30000; rest.duration += 30000; updateRestTimer(); }
       if (action === 'skip-rest') stopRestTimer(true);
-      if (action === 'install-app') installApp();
     }
 
     function handleChange(event) {
@@ -1490,24 +1886,23 @@
       }
     }
 
-    async function installApp() {
-      if (deferredInstallPrompt) {
-        deferredInstallPrompt.prompt();
-        await deferredInstallPrompt.userChoice;
-        deferredInstallPrompt = null;
-      } else {
-        showToast('Install works after hosting over HTTPS. You can still use this file normally.');
-      }
+    function handleInput(event) {
+      const input = event.target.closest('[data-input^="weight-"]');
+      if (!input || !active) return;
+      const index = Number(String(input.dataset.input || '').split('-')[1]);
+      if (!Number.isInteger(index) || !active.exercises[index]) return;
+      const weight = Number(input.value);
+      if (!Number.isFinite(weight) || weight <= 0) return;
+      active.exercises[index].draftWeight = Math.round(weight * 100) / 100;
+      saveActive();
+      const label = $(`[data-current-weight="${index}"]`);
+      if (label) label.textContent = `${cleanNumber(weight)} ${state.settings.units}`;
     }
 
-    window.addEventListener('beforeinstallprompt', (event) => {
-      event.preventDefault();
-      deferredInstallPrompt = event;
-      showToast('App is ready to install.');
-    });
 
     document.addEventListener('click', handleClick);
     document.addEventListener('change', handleChange);
+    document.addEventListener('input', handleInput);
 
     if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
       window.addEventListener('load', () => {
