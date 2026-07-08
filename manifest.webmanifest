@@ -1,8 +1,8 @@
 {
-  "name": "PF Workout Coach v5",
+  "name": "PF Workout Coach v6",
   "short_name": "PF Coach",
-  "description": "Planet Fitness workout coach with set feel tracking, warm-up sets, easy weight controls, body metrics, nutrition check-ins, local history, and ChatGPT coach reports.",
-  "start_url": "./index.html?v=5",
+  "description": "Planet Fitness workout coach with set feel tracking, warm-up sets, easy weight controls, body metrics, nutrition check-ins, quick-launch buttons, local history, and ChatGPT coach reports.",
+  "start_url": "./index.html?v=6",
   "display": "standalone",
   "background_color": "#080b14",
   "theme_color": "#0b1020",
