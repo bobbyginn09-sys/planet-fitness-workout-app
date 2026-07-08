@@ -1,8 +1,8 @@
-# PF Workout Coach v5
+# PF Workout Coach v6
 
 Updated Planet Fitness workout coach.
 
-## New in v5
+## New in v6
 
 - Added **How did this set feel?** buttons: Easy, Just right, Hard.
 - Added **Warm-up set** checkbox so warm-up/ramp-up sets do not drive next-weight recommendations.
@@ -17,7 +17,7 @@ Updated Planet Fitness workout coach.
 1. Unzip this package.
 2. Upload/replace these files in your GitHub repository root: `index.html`, `manifest.webmanifest`, `manifest.json`, `service-worker.js`, `.nojekyll`, and the `icons` folder.
 3. Commit the changes.
-4. Open your GitHub Pages URL with `?v=5` at the end once.
+4. Open your GitHub Pages URL with `?v=6` at the end once.
 5. If the old app still shows, open Settings → Refresh app cache, then close and reopen the app.
 
 Your existing workout history should stay in the browser because this version keeps the same local storage key. Export a backup first anyway.
@@ -31,3 +31,6 @@ For every working set, tap one:
 - Hard: barely got it or form started to break
 
 Mark ramp-up sets as Warm-up. The app will show them in history, but ignore them for next-weight recommendations.
+
+
+Version 6 adds quick launch buttons for the Planet Fitness app and Apple Music. On iPhone, create a Shortcut named "Open Planet Fitness" with an Open App action for best results.

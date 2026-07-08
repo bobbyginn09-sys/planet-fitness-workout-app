@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0b1020" />
-  <title>PF Workout Coach v5</title>
+  <title>PF Workout Coach v6</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <style>
     :root {
@@ -322,6 +322,29 @@
       .day-dot { min-height: 44px; font-size: 13px; }
     }
 
+    .app-launch-btn {
+      min-width: 42px;
+      font-weight: 950;
+      letter-spacing: -.02em;
+      background: color-mix(in srgb, var(--accent) 13%, var(--panel));
+    }
+    .app-launch-btn.music {
+      background: color-mix(in srgb, #0ea5e9 13%, var(--panel));
+    }
+    .quick-app-panel {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line));
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 10%, transparent), rgba(255,255,255,.045));
+    }
+    .quick-app-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+    .quick-app-head strong { display:block; font-size: 15px; }
+    .quick-app-head span { display:block; color: var(--muted); font-size: 12px; line-height: 1.35; }
+    .quick-app-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+    .quick-app-help { margin-top: 10px; color: var(--muted); font-size: 12px; line-height: 1.42; }
+    @media (max-width: 540px) { .quick-app-grid { grid-template-columns: 1fr; } .quick-app-head { display:block; } }
+
     .version-badge {
       display:inline-flex; align-items:center; justify-content:center;
       padding: 3px 8px; margin-left: 6px;
@@ -597,12 +620,14 @@
       <div class="brand">
         <div class="logo">PF</div>
         <div>
-          <div class="brand-title">PF Workout Coach <span class="version-badge">v5</span></div>
+          <div class="brand-title">PF Workout Coach <span class="version-badge">v6</span></div>
           <div class="brand-sub" id="headerSub">5 lift days • 2 rest days • no lunges</div>
         </div>
       </div>
       <div class="top-actions">
         <div class="pill" id="nextChip">Next: Day 1</div>
+        <button class="btn small app-launch-btn" data-action="open-external-app" data-app="pf" title="Open Planet Fitness app" aria-label="Open Planet Fitness app">PF</button>
+        <button class="btn small app-launch-btn music" data-action="open-external-app" data-app="music" title="Open Apple Music" aria-label="Open Apple Music">♫</button>
         <button class="btn small theme-btn" data-action="toggle-theme" title="Toggle light/dark" aria-label="Toggle light/dark">◐</button>
       </div>
     </div>
@@ -782,7 +807,11 @@
           restSeconds: 90,
           autoRest: true,
           units: 'lb',
-          theme: 'dark'
+          theme: 'dark',
+          pfAppUrl: 'shortcuts://run-shortcut?name=Open%20Planet%20Fitness',
+          musicAppUrl: 'music://',
+          pfFallbackUrl: 'https://apps.apple.com/us/app/planet-fitness/id399857015',
+          musicFallbackUrl: 'https://music.apple.com/us/browse'
         },
         goals: {
           dailyCalories: 2300,
@@ -1044,6 +1073,106 @@
       toastTimer = setTimeout(() => box.classList.remove('show'), 3200);
     }
 
+    function quickAppDefaults() {
+      return {
+        pfAppUrl: 'shortcuts://run-shortcut?name=Open%20Planet%20Fitness',
+        musicAppUrl: 'music://',
+        pfFallbackUrl: 'https://apps.apple.com/us/app/planet-fitness/id399857015',
+        musicFallbackUrl: 'https://music.apple.com/us/browse'
+      };
+    }
+
+    function safeLaunchUrl(value) {
+      const raw = String(value || '').trim();
+      if (!raw) return '';
+      try {
+        const url = new URL(raw);
+        const protocol = url.protocol.replace(':', '').toLowerCase();
+        if (['javascript', 'data', 'file', 'vbscript', 'blob'].includes(protocol)) return '';
+        return raw;
+      } catch (err) {
+        return '';
+      }
+    }
+
+    function readLaunchSetting(key) {
+      const input = $(`[data-setting="${key}"]`);
+      return String(input?.value || state.settings[key] || quickAppDefaults()[key] || '').trim();
+    }
+
+    function getExternalAppConfig(kind) {
+      const defaults = quickAppDefaults();
+      if (kind === 'music') {
+        return {
+          name: 'Apple Music',
+          url: readLaunchSetting('musicAppUrl') || defaults.musicAppUrl,
+          fallback: state.settings.musicFallbackUrl || defaults.musicFallbackUrl
+        };
+      }
+      return {
+        name: 'Planet Fitness',
+        url: readLaunchSetting('pfAppUrl') || defaults.pfAppUrl,
+        fallback: state.settings.pfFallbackUrl || defaults.pfFallbackUrl
+      };
+    }
+
+    function openExternalApp(kind) {
+      const cfg = getExternalAppConfig(kind);
+      const launchUrl = safeLaunchUrl(cfg.url);
+      const fallbackUrl = safeLaunchUrl(cfg.fallback);
+      if (!launchUrl) {
+        showToast(`Add a ${cfg.name} quick link in Settings.`);
+        return;
+      }
+      let fallbackTimer = null;
+      const lower = launchUrl.toLowerCase();
+      const canUseWebFallback = /^https?:\/\//i.test(fallbackUrl || '') && !lower.startsWith('shortcuts://') && !/^https?:\/\//i.test(launchUrl);
+      if (canUseWebFallback) {
+        const clearFallback = () => {
+          if (fallbackTimer) clearTimeout(fallbackTimer);
+          fallbackTimer = null;
+        };
+        document.addEventListener('visibilitychange', () => { if (document.hidden) clearFallback(); }, { once: true });
+        window.addEventListener('pagehide', clearFallback, { once: true });
+        fallbackTimer = setTimeout(() => {
+          if (!document.hidden) window.open(fallbackUrl, '_blank', 'noopener');
+        }, 1200);
+      }
+      showToast(`Opening ${cfg.name}…`);
+      try {
+        window.location.href = launchUrl;
+      } catch (err) {
+        if (fallbackUrl) window.open(fallbackUrl, '_blank', 'noopener');
+        else showToast(`Could not open ${cfg.name}.`);
+      }
+    }
+
+    function resetQuickAppLinks() {
+      const defaults = quickAppDefaults();
+      state.settings.pfAppUrl = defaults.pfAppUrl;
+      state.settings.musicAppUrl = defaults.musicAppUrl;
+      state.settings.pfFallbackUrl = defaults.pfFallbackUrl;
+      state.settings.musicFallbackUrl = defaults.musicFallbackUrl;
+      saveState();
+      showToast('Quick app links reset.');
+    }
+
+    function renderQuickAppsPanel() {
+      return `
+        <div class="quick-app-panel">
+          <div class="quick-app-head">
+            <strong>Quick apps</strong>
+            <span>Jump to the PF app for check-in/crowd meter or start music without digging through your phone.</span>
+          </div>
+          <div class="quick-app-grid">
+            <button class="btn green" data-action="open-external-app" data-app="pf">🏋️ Open Planet Fitness</button>
+            <button class="btn" data-action="open-external-app" data-app="music">🎵 Open Apple Music</button>
+          </div>
+          <div class="quick-app-help">iPhone PF shortcut: create a Shortcut named <strong>Open Planet Fitness</strong> with one action, <strong>Open App → Planet Fitness</strong>. You can edit these links in Settings.</div>
+        </div>
+      `;
+    }
+
     function render() {
       updateHeader();
       $$('.tab-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === currentTab));
@@ -1084,6 +1213,7 @@
                   ${PLAN.map((d, i) => `<option value="${i}" ${i === state.settings.currentDayIndex ? 'selected' : ''}>Day ${d.day}: ${esc(d.title)}</option>`).join('')}
                 </select>
               </div>
+              ${renderQuickAppsPanel()}
             </div>
           </div>
           <div class="card">
@@ -1225,6 +1355,8 @@
             <div class="toolbar">
               <button class="btn green" data-action="finish-workout">Finish workout + save</button>
               <button class="btn warn" data-action="start-rest-manual">Start rest timer</button>
+              <button class="btn" data-action="open-external-app" data-app="pf">PF app</button>
+              <button class="btn" data-action="open-external-app" data-app="music">Music</button>
               <button class="btn danger" data-action="cancel-workout">Cancel</button>
             </div>
           </div>
@@ -2023,6 +2155,22 @@
               <div class="field"><label>Sleep (hours)</label><input inputmode="decimal" data-goal="dailySleep" value="${esc(state.goals.dailySleep)}"></div>
               <div class="field"><label>Target body fat %</label><input inputmode="decimal" data-goal="targetBodyFat" value="${esc(state.goals.targetBodyFat)}"></div>
             </div>
+            <div class="quick-app-panel">
+              <div class="quick-app-head">
+                <strong>Quick app buttons</strong>
+                <span>These power the PF and music buttons at the top of the app and on Today.</span>
+              </div>
+              <div class="grid two" style="margin-top:12px">
+                <div class="field"><label>Planet Fitness button URL</label><input data-setting="pfAppUrl" value="${esc(state.settings.pfAppUrl || quickAppDefaults().pfAppUrl)}"></div>
+                <div class="field"><label>Apple Music button URL</label><input data-setting="musicAppUrl" value="${esc(state.settings.musicAppUrl || quickAppDefaults().musicAppUrl)}"></div>
+              </div>
+              <p class="small-text" style="margin-top:10px">Default iPhone setup: the PF button runs a Shortcut named <strong>Open Planet Fitness</strong>; the Music button uses <strong>music://</strong>. Change these only if you want custom links.</p>
+              <div class="toolbar">
+                <button class="btn" data-action="open-external-app" data-app="pf">Test PF button</button>
+                <button class="btn" data-action="open-external-app" data-app="music">Test Music button</button>
+                <button class="btn ghost" data-action="reset-quick-app-links">Reset quick links</button>
+              </div>
+            </div>
             <div class="toolbar">
               <label class="badge" style="cursor:pointer"><input type="checkbox" data-setting="autoRest" ${state.settings.autoRest ? 'checked' : ''} style="width:auto;margin:0 7px 0 0"> Auto-start rest timer after sets</label>
               <button class="btn primary" data-action="save-settings">Save settings</button>
@@ -2076,11 +2224,17 @@
       const units = $('[data-setting="units"]')?.value || 'lb';
       const theme = $('[data-setting="theme"]')?.value || 'dark';
       const autoRest = $('[data-setting="autoRest"]')?.checked ?? true;
+      const pfAppUrl = $('[data-setting="pfAppUrl"]')?.value?.trim();
+      const musicAppUrl = $('[data-setting="musicAppUrl"]')?.value?.trim();
       state.settings.currentDayIndex = Number.isFinite(day) ? day : state.settings.currentDayIndex;
       state.settings.restSeconds = clamp(Number.isFinite(restSeconds) ? restSeconds : 90, 30, 300);
       state.settings.units = units;
       state.settings.theme = theme;
       state.settings.autoRest = autoRest;
+      state.settings.pfAppUrl = safeLaunchUrl(pfAppUrl) || quickAppDefaults().pfAppUrl;
+      state.settings.musicAppUrl = safeLaunchUrl(musicAppUrl) || quickAppDefaults().musicAppUrl;
+      state.settings.pfFallbackUrl = state.settings.pfFallbackUrl || quickAppDefaults().pfFallbackUrl;
+      state.settings.musicFallbackUrl = state.settings.musicFallbackUrl || quickAppDefaults().musicFallbackUrl;
       $$('[data-goal]').forEach(input => {
         const key = input.dataset.goal;
         const value = parseFloat(input.value);
@@ -2102,7 +2256,7 @@
       const checks = recentCheckins(7);
       const recent = [...state.history].sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt)).slice(0, 6);
       const lines = [];
-      lines.push('PF WORKOUT COACH v5 — COACH CHECK-IN');
+      lines.push('PF WORKOUT COACH v6 — COACH CHECK-IN');
       lines.push(`Generated: ${new Date().toLocaleString()}`);
       lines.push(`Next workout: Day ${next.day} — ${next.title} (${typeLabel(next)}: ${next.focus})`);
       lines.push(`Stats: ${stats.liftSessions} lift sessions, ${stats.restSessions} rest days, ${stats.thisWeek} completed in the last 7 days, ${stats.totalSets} logged sets, ${Math.round(stats.totalVolume).toLocaleString()} total volume.`);
@@ -2310,6 +2464,21 @@
       return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
     }
 
+    function openQuickShortcut(shortcutKey) {
+      const links = Object.assign({}, defaultState().settings.quickLinks, state.settings.quickLinks || {});
+      $$('[data-setting-quick]').forEach(input => {
+        const key = input.dataset.settingQuick;
+        if (key && input.value.trim()) links[key] = input.value.trim();
+      });
+      const name = links[shortcutKey];
+      if (!name) {
+        showToast('Shortcut name is blank. Check Settings.');
+        return;
+      }
+      window.location.href = `shortcuts://run-shortcut?name=${encodeURIComponent(name)}`;
+      showToast(`Running shortcut: ${name}`);
+    }
+
     function handleClick(event) {
       const tabBtn = event.target.closest('[data-tab]');
       if (tabBtn) {
@@ -2320,6 +2489,8 @@
       const btn = event.target.closest('[data-action]');
       if (!btn) return;
       const action = btn.dataset.action;
+      if (action === 'open-external-app') openExternalApp(btn.dataset.app || 'pf');
+      if (action === 'reset-quick-app-links') { resetQuickAppLinks(); renderSettings(); }
       if (action === 'start-workout') startWorkout();
       if (action === 'finish-workout') finishWorkout();
       if (action === 'cancel-workout') cancelWorkout();
