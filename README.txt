@@ -1,43 +1,33 @@
-# PF Workout Coach v3
+# PF Workout Coach v5
 
-Updated Planet Fitness workout tracker.
+Updated Planet Fitness workout coach.
 
-## What changed
+## New in v5
 
-- Removed the confusing in-app Install button from the top.
-- Cleaned up the mobile header so it does not create huge top buttons.
-- Added **Coach check-in** so you can share/copy your workouts, body metrics, and next-weight recommendations into ChatGPT.
-- Added import backup in Settings.
-- Added **Refresh app cache** for GitHub Pages updates that appear stuck.
-- Updated the service worker to fetch fresh files first.
+- Added **How did this set feel?** buttons: Easy, Just right, Hard.
+- Added **Warm-up set** checkbox so warm-up/ramp-up sets do not drive next-weight recommendations.
+- Updated next-weight recommendations to use reps, weight, set feel, and warm-up status.
+- Added a body-metrics dashboard for weight, body fat, waist, skeletal muscle, muscle mass, visceral fat, and BMR.
+- Added daily nutrition/recovery check-ins for calories, protein, steps, water, sleep, and notes.
+- Added editable coach goals in Settings.
+- Coach check-in reports now include body metrics, nutrition/recovery averages, set feel, and warm-up labels.
 
 ## How to update GitHub Pages
 
 1. Unzip this package.
-2. Upload/replace these files in your GitHub repository root: `index.html`, `manifest.webmanifest`, `manifest.json`, `service-worker.js`, and the `icons` folder.
+2. Upload/replace these files in your GitHub repository root: `index.html`, `manifest.webmanifest`, `manifest.json`, `service-worker.js`, `.nojekyll`, and the `icons` folder.
 3. Commit the changes.
-4. Open your GitHub Pages URL with `?v=3` at the end once, then refresh.
+4. Open your GitHub Pages URL with `?v=5` at the end once.
 5. If the old app still shows, open Settings → Refresh app cache, then close and reopen the app.
 
-Your workout history should stay on the same phone/browser because the app keeps the same local storage key.
+Your existing workout history should stay in the browser because this version keeps the same local storage key. Export a backup first anyway.
 
-## How to install on phone
+## How to use the new set feel buttons
 
-Use your browser menu, not an in-app Install button:
+For every working set, tap one:
 
-- iPhone Safari: Share → Add to Home Screen
-- Android/Chrome: three dots → Add to Home screen / Install app
+- Easy: you had several reps left
+- Just right: challenging but clean
+- Hard: barely got it or form started to break
 
-## How to let ChatGPT review your progress
-
-Open Today, History, or Settings and tap **Coach check-in**. Share/copy the report, then paste it into ChatGPT. The app does not send data automatically; your data stays local unless you share it.
-
-## Backup note
-
-Use **Export backup** before switching phones, clearing browser data, or reinstalling the web app.
-
-
-Version 4 update:
-- Added Easy weight controls on weighted exercises: -10, -5, +5, +10, Last, and Clear.
-- Tap +5/+10 before logging a set. After you log the set, the new weight stays filled in for the next sets on that exercise.
-- Existing workout history stays local in the browser and is not reset by this update.
+Mark ramp-up sets as Warm-up. The app will show them in history, but ignore them for next-weight recommendations.

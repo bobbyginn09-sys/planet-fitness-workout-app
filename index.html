@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0b1020" />
-  <title>PF Workout Coach v4</title>
+  <title>PF Workout Coach v5</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <style>
     :root {
@@ -459,6 +459,131 @@
       .stat-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
+
+    .snapshot-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .snapshot-tile {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.045);
+      border-radius: 16px;
+      padding: 12px;
+      min-height: 78px;
+    }
+    .snapshot-tile .label { color: var(--muted); font-size: 12px; font-weight: 760; }
+    .snapshot-tile .value { font-size: 23px; line-height: 1.05; font-weight: 950; letter-spacing: -.045em; margin-top: 5px; }
+    .snapshot-tile .sub { color: var(--muted); font-size: 12px; margin-top: 4px; }
+    .snapshot-tile.good { border-color: color-mix(in srgb, var(--accent-2) 34%, var(--line)); background: color-mix(in srgb, var(--accent-2) 10%, transparent); }
+    .goal-meter { height: 8px; border-radius: 999px; background: rgba(255,255,255,.09); overflow: hidden; margin-top: 8px; }
+    .goal-meter > span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: inherit; }
+    .metric-table-wrap { overflow-x: auto; margin-top: 12px; }
+    .metric-form-grid, .checkin-form-grid, .goals-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      align-items: end;
+    }
+    .wide-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .body-snapshot-row { margin-top: 14px; }
+    .checkin-summary { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; margin: 12px 0; }
+    .checkin-card {
+      padding: 13px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+    }
+    .checkin-card strong { display: block; font-size: 24px; letter-spacing: -.045em; }
+    .checkin-card span { color: var(--muted); font-size: 12px; font-weight: 760; }
+    .feel-panel {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
+    }
+    .feel-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 790;
+    }
+    .feel-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .feel-btn {
+      min-height: 40px;
+      padding: 9px 10px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      border: 1px solid var(--line);
+      font-size: 12px;
+      font-weight: 860;
+    }
+    .feel-btn.active {
+      color: var(--text);
+      border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
+      background: color-mix(in srgb, var(--accent) 17%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent);
+    }
+    .warmup-toggle {
+      margin-top: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 760;
+      cursor: pointer;
+      user-select: none;
+    }
+    .warmup-toggle input { width: auto; margin: 0; }
+    .feel-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.045);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+    .feel-badge.easy { color: color-mix(in srgb, var(--accent-2) 82%, white); border-color: color-mix(in srgb, var(--accent-2) 28%, var(--line)); }
+    .feel-badge.hard { color: color-mix(in srgb, var(--danger) 78%, white); border-color: color-mix(in srgb, var(--danger) 34%, var(--line)); }
+    .warmup-chip { color: color-mix(in srgb, var(--warn) 78%, white); border-color: color-mix(in srgb, var(--warn) 34%, var(--line)); }
+    .coach-tip {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 16px;
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line));
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    @media (max-width: 860px) {
+      .metric-form-grid, .checkin-form-grid, .goals-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .checkin-summary { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 540px) {
+      .snapshot-grid, .checkin-summary { grid-template-columns: 1fr; }
+      .metric-form-grid, .checkin-form-grid, .goals-grid { grid-template-columns: 1fr; }
+      .feel-buttons { grid-template-columns: 1fr; }
+      .wide-actions .btn { width: 100%; }
+    }
+
     @media print {
       .topbar, .tabs, .rest-timer, .toast, .toolbar, .btn { display: none !important; }
       body { background: white; color: black; padding: 0; }
@@ -472,7 +597,7 @@
       <div class="brand">
         <div class="logo">PF</div>
         <div>
-          <div class="brand-title">PF Workout Coach <span class="version-badge">v4</span></div>
+          <div class="brand-title">PF Workout Coach <span class="version-badge">v5</span></div>
           <div class="brand-sub" id="headerSub">5 lift days • 2 rest days • no lunges</div>
         </div>
       </div>
@@ -659,9 +784,19 @@
           units: 'lb',
           theme: 'dark'
         },
+        goals: {
+          dailyCalories: 2300,
+          dailyProtein: 190,
+          dailyWater: 100,
+          dailySteps: 8000,
+          dailySleep: 7,
+          targetWeight: 200,
+          targetBodyFat: 18
+        },
         exerciseProgress: {},
         history: [],
-        bodyMetrics: []
+        bodyMetrics: [],
+        dailyCheckins: []
       };
     }
 
@@ -671,9 +806,11 @@
         const parsed = raw ? JSON.parse(raw) : defaultState();
         const merged = Object.assign(defaultState(), parsed);
         merged.settings = Object.assign(defaultState().settings, parsed.settings || {});
+        merged.goals = Object.assign(defaultState().goals, parsed.goals || {});
         merged.exerciseProgress = parsed.exerciseProgress || {};
         merged.history = Array.isArray(parsed.history) ? parsed.history : [];
         merged.bodyMetrics = Array.isArray(parsed.bodyMetrics) ? parsed.bodyMetrics : [];
+        merged.dailyCheckins = Array.isArray(parsed.dailyCheckins) ? parsed.dailyCheckins : [];
         return merged;
       } catch (err) {
         console.warn('Could not load state', err);
@@ -745,6 +882,72 @@
       if (!Number.isFinite(n)) return '';
       const rounded = Math.round(n * 100) / 100;
       return Number.isInteger(rounded) ? String(rounded) : String(rounded).replace(/\.0+$/, '');
+    }
+
+    function dateKey(date = new Date()) {
+      const d = date instanceof Date ? date : new Date(date);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${day}`;
+    }
+
+    function latestBodyMetric() {
+      const metrics = [...state.bodyMetrics].sort((a,b) => new Date(a.date) - new Date(b.date));
+      return metrics[metrics.length - 1] || null;
+    }
+
+    function getTodayCheckin() {
+      const key = dateKey();
+      return state.dailyCheckins.find(c => c.key === key) || null;
+    }
+
+    function recentCheckins(days = 7) {
+      const cutoff = new Date();
+      cutoff.setDate(cutoff.getDate() - (days - 1));
+      cutoff.setHours(0,0,0,0);
+      return [...state.dailyCheckins]
+        .filter(c => new Date(c.date || c.key) >= cutoff)
+        .sort((a,b) => new Date(a.date || a.key) - new Date(b.date || b.key));
+    }
+
+    function avg(nums) {
+      const clean = nums.map(Number).filter(Number.isFinite);
+      return clean.length ? clean.reduce((a,b) => a + b, 0) / clean.length : null;
+    }
+
+    function pct(value, goal) {
+      const v = Number(value), g = Number(goal);
+      if (!Number.isFinite(v) || !Number.isFinite(g) || g <= 0) return 0;
+      return clamp((v / g) * 100, 0, 140);
+    }
+
+    function feelEmoji(feel) {
+      if (feel === 'easy') return '🟢';
+      if (feel === 'hard') return '🔴';
+      return '🟡';
+    }
+
+    function feelLabel(feel) {
+      if (feel === 'easy') return 'Easy';
+      if (feel === 'hard') return 'Hard';
+      return 'Just right';
+    }
+
+    function renderFeelBadge(feel, warmup = false) {
+      const f = feel || 'good';
+      const warm = warmup ? `<span class="feel-badge warmup-chip">WU</span>` : '';
+      return `${warm}<span class="feel-badge ${esc(f)}">${feelEmoji(f)} ${esc(feelLabel(f))}</span>`;
+    }
+
+    function getSetFeel(index) {
+      const input = $(`[data-input="feel-${index}"]`);
+      return input?.value || active?.exercises?.[index]?.draftFeel || 'good';
+    }
+
+    function formatMaybe(value, suffix = '') {
+      const n = Number(value);
+      return Number.isFinite(n) ? `${cleanNumber(n)}${suffix}` : '—';
     }
 
     function getLastLoggedWeight(entry) {
@@ -894,6 +1097,7 @@
               </div>
               <div class="section-title"><h3 style="margin:0">Recent 7 days</h3></div>
               ${renderMiniCalendar()}
+              ${renderTodayCoachSnapshot()}
               <div class="coach-strip">
                 <div><strong>Coach check-in</strong><span>Share your recent workouts, body metrics, and next-weight recommendations with ChatGPT.</span></div>
                 <button class="btn small green" data-action="share-coach-report">Share report</button>
@@ -945,6 +1149,45 @@
       return `<div class="mini-calendar">${days.join('')}</div>`;
     }
 
+    function renderTodayCoachSnapshot() {
+      const metric = latestBodyMetric();
+      const checkin = getTodayCheckin();
+      const metrics = [...state.bodyMetrics].sort((a,b) => new Date(a.date) - new Date(b.date));
+      const first = metrics[0];
+      const delta = metric && first && metrics.length > 1 ? Number(metric.weight) - Number(first.weight) : null;
+      const cal = checkin?.calories;
+      const protein = checkin?.protein;
+      return `
+        <div class="snapshot-grid">
+          <div class="snapshot-tile ${metric ? 'good' : ''}">
+            <div class="label">Latest weight</div>
+            <div class="value">${metric ? `${esc(metric.weight)} ${esc(state.settings.units)}` : 'Add'}</div>
+            <div class="sub">${metric ? `${metric.bodyFat ? esc(metric.bodyFat) + '% body fat • ' : ''}${delta !== null ? (delta >= 0 ? '+' : '') + delta.toFixed(1) + ' total' : fmtDate(metric.date)}` : 'Progress tab → body metrics'}</div>
+          </div>
+          <div class="snapshot-tile">
+            <div class="label">Protein today</div>
+            <div class="value">${formatMaybe(protein, 'g')}</div>
+            <div class="goal-meter"><span style="width:${pct(protein, state.goals.dailyProtein)}%"></span></div>
+            <div class="sub">Goal ${esc(state.goals.dailyProtein)}g</div>
+          </div>
+          <div class="snapshot-tile">
+            <div class="label">Calories today</div>
+            <div class="value">${formatMaybe(cal)}</div>
+            <div class="goal-meter"><span style="width:${pct(cal, state.goals.dailyCalories)}%"></span></div>
+            <div class="sub">Target ${esc(state.goals.dailyCalories)}</div>
+          </div>
+          <div class="snapshot-tile">
+            <div class="label">Coach mode</div>
+            <div class="value">On</div>
+            <div class="sub">Set feel + warm-up tracking improve next-weight calls.</div>
+          </div>
+        </div>
+        <div class="wide-actions">
+          <button class="btn small" data-action="go-progress">Log body / nutrition</button>
+        </div>
+      `;
+    }
+
     function startWorkout() {
       const day = getDay();
       active = {
@@ -955,7 +1198,7 @@
         type: day.type,
         focus: day.focus,
         startedAt: new Date().toISOString(),
-        exercises: day.exercises.map(ex => ({ id: ex.id, logs: [], notes: '', draftWeight: null }))
+        exercises: day.exercises.map(ex => ({ id: ex.id, logs: [], notes: '', draftWeight: null, draftFeel: 'good' }))
       };
       saveActive();
       currentTab = 'today';
@@ -1026,16 +1269,20 @@
     function renderLogTable(ex, logs, index) {
       const rows = logs.map((log, i) => {
         if (ex.type === 'weighted') {
-          return `<tr><td>${i + 1}</td><td>${esc(log.weight)} ${esc(state.settings.units)}</td><td>${esc(log.reps)}</td><td><button class="btn small ghost" data-action="delete-set" data-exercise-index="${index}" data-set-index="${i}">Delete</button></td></tr>`;
+          const setName = log.warmup ? 'Warm-up' : String(i + 1);
+          return `<tr><td>${esc(setName)}</td><td>${esc(log.weight)} ${esc(state.settings.units)}</td><td>${esc(log.reps)}</td><td>${renderFeelBadge(log.feel, log.warmup)}</td><td><button class="btn small ghost" data-action="delete-set" data-exercise-index="${index}" data-set-index="${i}">Delete</button></td></tr>`;
         }
         if (ex.type === 'bodyweight') {
-          return `<tr><td>${i + 1}</td><td>${esc(log.reps)} reps</td><td>${log.weight ? esc(log.weight) + ' ' + esc(state.settings.units) : 'bodyweight'}</td><td><button class="btn small ghost" data-action="delete-set" data-exercise-index="${index}" data-set-index="${i}">Delete</button></td></tr>`;
+          const setName = log.warmup ? 'Warm-up' : String(i + 1);
+          return `<tr><td>${esc(setName)}</td><td>${esc(log.reps)} reps</td><td>${log.weight ? esc(log.weight) + ' ' + esc(state.settings.units) : 'bodyweight'}</td><td>${renderFeelBadge(log.feel, log.warmup)}</td><td><button class="btn small ghost" data-action="delete-set" data-exercise-index="${index}" data-set-index="${i}">Delete</button></td></tr>`;
         }
         return `<tr><td>${i + 1}</td><td>${esc(log.duration)} ${esc(ex.unit || 'min')}</td><td>${esc(log.note || '')}</td><td><button class="btn small ghost" data-action="delete-set" data-exercise-index="${index}" data-set-index="${i}">Delete</button></td></tr>`;
       }).join('');
       const headers = ex.type === 'weighted'
-        ? '<tr><th>Set</th><th>Weight</th><th>Reps</th><th></th></tr>'
-        : '<tr><th>Log</th><th>Amount</th><th>Note</th><th></th></tr>';
+        ? '<tr><th>Set</th><th>Weight</th><th>Reps</th><th>Feel</th><th></th></tr>'
+        : ex.type === 'bodyweight'
+          ? '<tr><th>Set</th><th>Reps</th><th>Added weight</th><th>Feel</th><th></th></tr>'
+          : '<tr><th>Log</th><th>Amount</th><th>Note</th><th></th></tr>';
       return `<table class="set-table"><thead>${headers}</thead><tbody>${rows}</tbody></table>`;
     }
 
@@ -1044,6 +1291,7 @@
         const weightValue = recValue ? cleanNumber(recValue) : '';
         return `
           ${renderQuickWeightControls(index, weightValue, 'Easy weight')}
+          ${renderSetOptions(index)}
           <div class="form-grid" style="margin-top:12px">
             <div class="field"><label>Weight (${esc(state.settings.units)})</label><input inputmode="decimal" data-input="weight-${index}" placeholder="${weightValue ? esc(weightValue) : 'ex: 80'}" value="${weightValue ? esc(weightValue) : ''}"></div>
             <div class="field"><label>Reps</label><input inputmode="numeric" data-input="reps-${index}" placeholder="${ex.min}-${ex.max}"></div>
@@ -1056,6 +1304,7 @@
         const weightValue = recValue ? cleanNumber(recValue) : '';
         return `
           ${renderQuickWeightControls(index, weightValue, 'Added weight')}
+          ${renderSetOptions(index)}
           <div class="form-grid" style="margin-top:12px">
             <div class="field"><label>Reps</label><input inputmode="numeric" data-input="reps-${index}" placeholder="${ex.min}-${ex.max}"></div>
             <div class="field"><label>Added weight (${esc(state.settings.units)})</label><input inputmode="decimal" data-input="weight-${index}" placeholder="optional" value="${weightValue ? esc(weightValue) : ''}"></div>
@@ -1074,6 +1323,24 @@
       `;
     }
 
+    function renderSetOptions(index) {
+      const feel = active?.exercises?.[index]?.draftFeel || 'good';
+      return `
+        <div class="feel-panel">
+          <div class="feel-head">
+            <span>How did this set feel?</span>
+            <strong>${feelEmoji(feel)} ${esc(feelLabel(feel))}</strong>
+          </div>
+          <div class="feel-buttons" data-feel-group="${index}">
+            <button class="feel-btn ${feel === 'easy' ? 'active' : ''}" data-action="set-feel" data-exercise-index="${index}" data-feel="easy" type="button">🟢 Easy</button>
+            <button class="feel-btn ${feel === 'good' ? 'active' : ''}" data-action="set-feel" data-exercise-index="${index}" data-feel="good" type="button">🟡 Just right</button>
+            <button class="feel-btn ${feel === 'hard' ? 'active' : ''}" data-action="set-feel" data-exercise-index="${index}" data-feel="hard" type="button">🔴 Hard</button>
+          </div>
+          <input type="hidden" data-input="feel-${index}" value="${esc(feel)}">
+          <label class="warmup-toggle"><input type="checkbox" data-input="warmup-${index}"> Mark this as a warm-up set so it does not drive recommendations</label>
+        </div>
+      `;
+    }
 
     function renderQuickWeightControls(index, weightValue = '', label = 'Easy weight') {
       return `
@@ -1103,12 +1370,27 @@
       return `<div class="finish-row"><span class="finish-pill ${complete ? 'done' : ''}">${count}/${target} ${label} logged</span>${complete ? '<span class="finish-pill done">target hit</span>' : '<span class="finish-pill">keep going</span>'}</div>`;
     }
 
+    function setFeel(index, feel) {
+      if (!active?.exercises?.[index]) return;
+      const valid = ['easy', 'good', 'hard'].includes(feel) ? feel : 'good';
+      active.exercises[index].draftFeel = valid;
+      saveActive();
+      const input = $(`[data-input="feel-${index}"]`);
+      if (input) input.value = valid;
+      $$(`[data-feel-group="${index}"] .feel-btn`).forEach(btn => btn.classList.toggle('active', btn.dataset.feel === valid));
+      const head = $(`[data-feel-group="${index}"]`)?.closest('.feel-panel')?.querySelector('.feel-head strong');
+      if (head) head.textContent = `${feelEmoji(valid)} ${feelLabel(valid)}`;
+      showToast(`Set feel: ${feelLabel(valid)}.`);
+    }
+
     function addSet(index) {
       if (!active || !active.exercises[index]) return;
       const entry = active.exercises[index];
       const ex = getExercise(entry.id);
       if (!ex) return;
       const note = $(`[data-input="note-${index}"]`)?.value?.trim() || '';
+      const feel = getSetFeel(index);
+      const warmup = Boolean($(`[data-input="warmup-${index}"]`)?.checked);
       if (ex.type === 'weighted') {
         const weight = parseFloat($(`[data-input="weight-${index}"]`)?.value);
         const reps = parseInt($(`[data-input="reps-${index}"]`)?.value, 10);
@@ -1116,8 +1398,9 @@
           showToast('Enter both weight and reps.');
           return;
         }
-        entry.logs.push({ weight, reps, note, at: new Date().toISOString() });
+        entry.logs.push({ weight, reps, feel, warmup, note, at: new Date().toISOString() });
         entry.draftWeight = weight;
+        entry.draftFeel = 'good';
       } else if (ex.type === 'bodyweight') {
         const reps = parseInt($(`[data-input="reps-${index}"]`)?.value, 10);
         const weightRaw = $(`[data-input="weight-${index}"]`)?.value;
@@ -1126,8 +1409,9 @@
           showToast('Enter reps.');
           return;
         }
-        entry.logs.push({ reps, weight: Number.isFinite(weight) ? weight : null, note, at: new Date().toISOString() });
+        entry.logs.push({ reps, weight: Number.isFinite(weight) ? weight : null, feel, warmup, note, at: new Date().toISOString() });
         entry.draftWeight = Number.isFinite(weight) && weight > 0 ? weight : null;
+        entry.draftFeel = 'good';
       } else {
         const duration = parseFloat($(`[data-input="duration-${index}"]`)?.value);
         const extra = $(`[data-input="extra-${index}"]`)?.value?.trim() || '';
@@ -1219,34 +1503,60 @@
       };
 
       if (ex.type === 'weighted') {
-        const working = cleanLogs.filter(l => Number.isFinite(Number(l.weight)) && Number.isFinite(Number(l.reps)));
-        if (!working.length) return { ...previous, ...base };
-        const evalSets = working.slice(-ex.sets);
+        const allWeighted = cleanLogs.filter(l => Number.isFinite(Number(l.weight)) && Number.isFinite(Number(l.reps)));
+        const working = allWeighted.filter(l => !l.warmup);
+        const evalSource = working.length ? working : allWeighted;
+        if (!evalSource.length) return { ...previous, ...base };
+        const evalSets = evalSource.slice(-ex.sets);
         const weights = evalSets.map(l => Number(l.weight));
         const reps = evalSets.map(l => Number(l.reps));
         const lastWeight = weights[weights.length - 1];
         const minReps = Math.min(...reps);
+        const maxRepsHit = reps.every(r => r >= ex.max);
+        const belowMin = reps.some(r => r < ex.min);
         const sameWorkingWeight = weights.every(w => w === lastWeight);
+        const hardCount = evalSets.filter(l => l.feel === 'hard').length;
+        const easyCount = evalSets.filter(l => l.feel === 'easy').length;
+        const majority = Math.ceil(evalSets.length / 2);
         let nextWeight = lastWeight;
         let note = `Repeat ${lastWeight} ${state.settings.units} and add reps.`;
+
         if (evalSets.length < ex.sets) {
-          note = `Repeat ${lastWeight} ${state.settings.units}; log all ${ex.sets} sets next time.`;
+          note = `Repeat ${lastWeight} ${state.settings.units}; log all ${ex.sets} working sets next time.`;
         } else if (!sameWorkingWeight) {
-          note = `Use ${lastWeight} ${state.settings.units} as your working weight next time and keep all sets consistent.`;
-        } else if (minReps >= ex.max) {
+          note = `Use ${lastWeight} ${state.settings.units} as your working weight next time and keep working sets consistent.`;
+        } else if (maxRepsHit && hardCount === 0) {
           nextWeight = roundToIncrement(lastWeight + ex.increment, ex.increment);
-          note = `Increase to ${nextWeight} ${state.settings.units} next time.`;
-        } else if (minReps < ex.min) {
-          note = `Repeat ${lastWeight} ${state.settings.units}. If form felt bad, reduce slightly.`;
+          note = `Increase to ${nextWeight} ${state.settings.units} next time. You hit the top range without marking sets hard.`;
+        } else if (easyCount >= majority && minReps >= ex.max - 1 && hardCount === 0) {
+          nextWeight = roundToIncrement(lastWeight + ex.increment, ex.increment);
+          note = `Try ${nextWeight} ${state.settings.units} next time if form was clean. You were near the top range and most sets felt easy.`;
+        } else if (belowMin && hardCount >= majority) {
+          nextWeight = Math.max(0, roundToIncrement(lastWeight - ex.increment, ex.increment));
+          note = `Drop to ${nextWeight} ${state.settings.units} or repeat lighter. Multiple working sets were hard and below the target range.`;
+        } else if (belowMin) {
+          note = `Repeat ${lastWeight} ${state.settings.units}. Get every working set to at least ${ex.min} reps before adding weight.`;
+        } else if (hardCount >= majority) {
+          note = `Repeat ${lastWeight} ${state.settings.units}. Keep this weight until it feels more controlled.`;
         }
+        const warmups = allWeighted.length - working.length;
+        if (warmups > 0) note += ` Warm-up sets were ignored for this recommendation.`;
         const bestSet = bestWeightedSet(ex.id);
         return { ...previous, ...base, lastWeight, nextWeight, note, bestSet };
       }
 
       if (ex.type === 'bodyweight') {
-        const reps = cleanLogs.map(l => Number(l.reps)).filter(Number.isFinite);
-        const minReps = reps.length ? Math.min(...reps.slice(-ex.sets)) : 0;
-        const note = minReps >= ex.max ? 'Next time: add 1–3 reps per set or slow the tempo.' : 'Repeat and try to add reps with clean form.';
+        const allSets = cleanLogs.filter(l => Number.isFinite(Number(l.reps)));
+        const working = allSets.filter(l => !l.warmup);
+        const evalSets = (working.length ? working : allSets).slice(-ex.sets);
+        const reps = evalSets.map(l => Number(l.reps)).filter(Number.isFinite);
+        const minReps = reps.length ? Math.min(...reps) : 0;
+        const hardCount = evalSets.filter(l => l.feel === 'hard').length;
+        const note = minReps >= ex.max && hardCount === 0
+          ? 'Next time: add 1–3 reps per set, slow the tempo, or add light weight.'
+          : hardCount >= Math.ceil(Math.max(1, evalSets.length) / 2)
+            ? 'Repeat with cleaner control before adding reps.'
+            : 'Repeat and try to add reps with clean form.';
         return { ...previous, ...base, note, bestSet: bestBodyweightSet(ex.id) };
       }
 
@@ -1281,11 +1591,11 @@
     function summarizeLogs(ex, logs) {
       if (!logs?.length) return 'No logs';
       if (ex.type === 'weighted') {
-        const pieces = logs.map(l => `${l.weight}×${l.reps}`);
+        const pieces = logs.map(l => `${l.warmup ? 'WU ' : ''}${l.weight}×${l.reps}${l.feel ? ' ' + feelEmoji(l.feel) : ''}`);
         return pieces.slice(0, 5).join(', ') + (pieces.length > 5 ? '…' : '');
       }
       if (ex.type === 'bodyweight') {
-        const pieces = logs.map(l => `${l.reps} reps${l.weight ? ' +' + l.weight : ''}`);
+        const pieces = logs.map(l => `${l.warmup ? 'WU ' : ''}${l.reps} reps${l.weight ? ' +' + l.weight : ''}${l.feel ? ' ' + feelEmoji(l.feel) : ''}`);
         return pieces.slice(0, 5).join(', ') + (pieces.length > 5 ? '…' : '');
       }
       return logs.map(l => `${l.duration} ${ex.unit || 'min'}`).join(', ');
@@ -1298,6 +1608,7 @@
           if (entry.id !== exerciseId) continue;
           const ex = getExercise(entry.id);
           for (const log of entry.logs || []) {
+            if (log.warmup) continue;
             const weight = Number(log.weight), reps = Number(log.reps);
             if (!Number.isFinite(weight) || !Number.isFinite(reps)) continue;
             const estimate = weight * (1 + reps / 30);
@@ -1315,6 +1626,7 @@
           if (entry.id !== exerciseId) continue;
           const ex = getExercise(entry.id);
           for (const log of entry.logs || []) {
+            if (log.warmup) continue;
             const reps = Number(log.reps);
             if (!Number.isFinite(reps)) continue;
             if (!best || reps > best.reps) best = { reps, date: session.startedAt, name: ex?.name || exerciseId };
@@ -1388,14 +1700,15 @@
       view.innerHTML = `
         <section class="card">
           <div class="card-inner">
-            <div class="kicker">Progress</div>
-            <h1>Stats</h1>
+            <div class="kicker">Coach dashboard</div>
+            <h1>Progress</h1>
             <div class="stat-row">
               <div class="stat"><div class="label">Lift sessions</div><div class="value">${stats.liftSessions}</div></div>
               <div class="stat"><div class="label">Rest days logged</div><div class="value">${stats.restSessions}</div></div>
               <div class="stat"><div class="label">Total sets</div><div class="value">${stats.totalSets}</div></div>
               <div class="stat"><div class="label">Volume</div><div class="value">${Math.round(stats.totalVolume).toLocaleString()}</div></div>
             </div>
+            ${renderBodySnapshotStats()}
           </div>
         </section>
         <section class="grid two" style="margin-top:16px">
@@ -1404,15 +1717,42 @@
               <div class="section-title" style="margin-top:0"><h2 style="margin:0">Body metrics</h2></div>
               ${renderBodyChart()}
               ${renderMetricForm()}
+              ${renderMetricTable()}
             </div>
           </div>
           <div class="card">
             <div class="card-inner">
-              <div class="section-title" style="margin-top:0"><h2 style="margin:0">Estimated PRs</h2></div>
-              ${prRows ? `<table class="set-table"><thead><tr><th>Exercise</th><th>Best</th><th>Date</th></tr></thead><tbody>${prRows}</tbody></table>` : `<div class="empty">No PRs yet. Log a few weighted workouts first.</div>`}
+              <div class="section-title" style="margin-top:0"><h2 style="margin:0">Nutrition & recovery</h2></div>
+              ${renderCheckinSummary()}
+              ${renderDailyCheckinForm()}
             </div>
           </div>
         </section>
+        <section class="card" style="margin-top:16px">
+          <div class="card-inner">
+            <div class="section-title" style="margin-top:0"><h2 style="margin:0">Estimated PRs</h2></div>
+            ${prRows ? `<table class="set-table"><thead><tr><th>Exercise</th><th>Best</th><th>Date</th></tr></thead><tbody>${prRows}</tbody></table>` : `<div class="empty">No PRs yet. Log a few weighted workouts first.</div>`}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderBodySnapshotStats() {
+      const metric = latestBodyMetric();
+      const metrics = [...state.bodyMetrics].sort((a,b) => new Date(a.date) - new Date(b.date));
+      const first = metrics[0];
+      const delta = metric && first && metrics.length > 1 ? Number(metric.weight) - Number(first.weight) : null;
+      const bf = Number(metric?.bodyFat);
+      const leanMass = metric && Number.isFinite(Number(metric.weight)) && Number.isFinite(bf)
+        ? Number(metric.weight) * (1 - bf / 100)
+        : null;
+      return `
+        <div class="body-snapshot-row stat-row">
+          <div class="stat"><div class="label">Latest weight</div><div class="value">${metric ? `${esc(metric.weight)} ${esc(state.settings.units)}` : '—'}</div></div>
+          <div class="stat"><div class="label">Total change</div><div class="value">${delta !== null ? `${delta >= 0 ? '+' : ''}${delta.toFixed(1)}` : '—'}</div></div>
+          <div class="stat"><div class="label">Body fat</div><div class="value">${Number.isFinite(bf) ? `${cleanNumber(bf)}%` : '—'}</div></div>
+          <div class="stat"><div class="label">Est. lean mass</div><div class="value">${Number.isFinite(leanMass) ? `${cleanNumber(leanMass)} ${esc(state.settings.units)}` : '—'}</div></div>
+        </div>
       `;
     }
 
@@ -1495,28 +1835,124 @@
 
     function renderMetricForm() {
       return `
-        <div class="form-grid" style="margin-top:12px">
-          <div class="field"><label>Body weight (${esc(state.settings.units)})</label><input inputmode="decimal" data-input="metric-weight" placeholder="ex: 215"></div>
+        <div class="coach-tip"><strong>Scale check-in:</strong> log the same way each time if possible — morning, after bathroom, before food. Smart-scale body-fat numbers are best used as trends.</div>
+        <div class="metric-form-grid" style="margin-top:12px">
+          <div class="field"><label>Body weight (${esc(state.settings.units)})</label><input inputmode="decimal" data-input="metric-weight" placeholder="ex: 220"></div>
+          <div class="field"><label>Body fat %</label><input inputmode="decimal" data-input="metric-bodyfat" placeholder="ex: 26"></div>
           <div class="field"><label>Waist</label><input inputmode="decimal" data-input="metric-waist" placeholder="optional"></div>
+          <div class="field"><label>Skeletal muscle %</label><input inputmode="decimal" data-input="metric-skeletal" placeholder="ex: 47.8"></div>
+          <div class="field"><label>Muscle mass (${esc(state.settings.units)})</label><input inputmode="decimal" data-input="metric-musclemass" placeholder="ex: 154.5"></div>
+          <div class="field"><label>Visceral fat</label><input inputmode="decimal" data-input="metric-visceral" placeholder="ex: 12"></div>
+          <div class="field"><label>BMR</label><input inputmode="numeric" data-input="metric-bmr" placeholder="ex: 1964"></div>
           <div class="field"><label>Note</label><input data-input="metric-note" placeholder="optional"></div>
-          <button class="btn primary" data-action="save-metric">Save metric</button>
         </div>
+        <div class="wide-actions"><button class="btn primary" data-action="save-metric">Save scale reading</button></div>
       `;
+    }
+
+    function renderMetricTable() {
+      const rows = [...state.bodyMetrics].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 8).map(m => `
+        <tr>
+          <td>${fmtDate(m.date)}</td>
+          <td>${esc(m.weight)} ${esc(state.settings.units)}</td>
+          <td>${m.bodyFat ? esc(m.bodyFat) + '%' : '—'}</td>
+          <td>${m.waist ? esc(m.waist) : '—'}</td>
+          <td>${m.visceralFat ? esc(m.visceralFat) : '—'}</td>
+        </tr>
+      `).join('');
+      return rows ? `<div class="metric-table-wrap"><table class="set-table"><thead><tr><th>Date</th><th>Weight</th><th>Body fat</th><th>Waist</th><th>Visceral</th></tr></thead><tbody>${rows}</tbody></table></div>` : '';
     }
 
     function saveMetric() {
       const weight = parseFloat($('[data-input="metric-weight"]')?.value);
+      const bodyFatRaw = $('[data-input="metric-bodyfat"]')?.value;
       const waistRaw = $('[data-input="metric-waist"]')?.value;
-      const waist = waistRaw ? parseFloat(waistRaw) : null;
+      const skeletalRaw = $('[data-input="metric-skeletal"]')?.value;
+      const muscleMassRaw = $('[data-input="metric-musclemass"]')?.value;
+      const visceralRaw = $('[data-input="metric-visceral"]')?.value;
+      const bmrRaw = $('[data-input="metric-bmr"]')?.value;
       const note = $('[data-input="metric-note"]')?.value?.trim() || '';
       if (!Number.isFinite(weight) || weight <= 0) {
         showToast('Enter a valid body weight.');
         return;
       }
-      state.bodyMetrics.push({ id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), date: new Date().toISOString(), weight, waist: Number.isFinite(waist) ? waist : null, note });
+      const item = {
+        id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+        date: new Date().toISOString(),
+        weight,
+        bodyFat: bodyFatRaw ? parseFloat(bodyFatRaw) : null,
+        waist: waistRaw ? parseFloat(waistRaw) : null,
+        skeletalMuscle: skeletalRaw ? parseFloat(skeletalRaw) : null,
+        muscleMass: muscleMassRaw ? parseFloat(muscleMassRaw) : null,
+        visceralFat: visceralRaw ? parseFloat(visceralRaw) : null,
+        bmr: bmrRaw ? parseFloat(bmrRaw) : null,
+        note
+      };
+      state.bodyMetrics.push(item);
       saveState();
       renderProgress();
-      showToast('Metric saved.');
+      showToast('Scale reading saved.');
+    }
+
+    function renderCheckinSummary() {
+      const recent = recentCheckins(7);
+      const today = getTodayCheckin();
+      const avgCalories = avg(recent.map(c => c.calories));
+      const avgProtein = avg(recent.map(c => c.protein));
+      const avgSteps = avg(recent.map(c => c.steps));
+      const avgSleep = avg(recent.map(c => c.sleep));
+      return `
+        <div class="checkin-summary">
+          <div class="checkin-card"><span>Avg calories / 7d</span><strong>${avgCalories ? Math.round(avgCalories) : '—'}</strong><div class="goal-meter"><span style="width:${pct(avgCalories, state.goals.dailyCalories)}%"></span></div></div>
+          <div class="checkin-card"><span>Avg protein / 7d</span><strong>${avgProtein ? Math.round(avgProtein) + 'g' : '—'}</strong><div class="goal-meter"><span style="width:${pct(avgProtein, state.goals.dailyProtein)}%"></span></div></div>
+          <div class="checkin-card"><span>Avg steps / 7d</span><strong>${avgSteps ? Math.round(avgSteps).toLocaleString() : '—'}</strong><div class="goal-meter"><span style="width:${pct(avgSteps, state.goals.dailySteps)}%"></span></div></div>
+          <div class="checkin-card"><span>Avg sleep / 7d</span><strong>${avgSleep ? cleanNumber(avgSleep) + 'h' : '—'}</strong><div class="goal-meter"><span style="width:${pct(avgSleep, state.goals.dailySleep)}%"></span></div></div>
+        </div>
+        <div class="small-text">Today: ${today ? `${today.calories || '—'} calories • ${today.protein || '—'}g protein • ${today.steps || '—'} steps • ${today.sleep || '—'}h sleep` : 'nothing logged yet'}</div>
+      `;
+    }
+
+    function renderDailyCheckinForm() {
+      const c = getTodayCheckin() || {};
+      return `
+        <div class="coach-tip"><strong>Daily check-in:</strong> this does not need to be perfect. Calories and protein are the big two for fat loss and muscle definition.</div>
+        <div class="checkin-form-grid" style="margin-top:12px">
+          <div class="field"><label>Calories</label><input inputmode="numeric" data-input="checkin-calories" placeholder="goal ${esc(state.goals.dailyCalories)}" value="${c.calories ? esc(c.calories) : ''}"></div>
+          <div class="field"><label>Protein (g)</label><input inputmode="numeric" data-input="checkin-protein" placeholder="goal ${esc(state.goals.dailyProtein)}" value="${c.protein ? esc(c.protein) : ''}"></div>
+          <div class="field"><label>Steps</label><input inputmode="numeric" data-input="checkin-steps" placeholder="goal ${esc(state.goals.dailySteps)}" value="${c.steps ? esc(c.steps) : ''}"></div>
+          <div class="field"><label>Water (oz)</label><input inputmode="numeric" data-input="checkin-water" placeholder="goal ${esc(state.goals.dailyWater)}" value="${c.water ? esc(c.water) : ''}"></div>
+          <div class="field"><label>Sleep (hours)</label><input inputmode="decimal" data-input="checkin-sleep" placeholder="goal ${esc(state.goals.dailySleep)}" value="${c.sleep ? esc(c.sleep) : ''}"></div>
+          <div class="field"><label>Note</label><input data-input="checkin-note" placeholder="optional" value="${c.note ? esc(c.note) : ''}"></div>
+        </div>
+        <div class="wide-actions"><button class="btn primary" data-action="save-checkin">Save today’s check-in</button></div>
+      `;
+    }
+
+    function saveDailyCheckin() {
+      const key = dateKey();
+      const parseMaybe = selector => {
+        const raw = $(selector)?.value;
+        if (raw === '' || raw == null) return null;
+        const n = parseFloat(raw);
+        return Number.isFinite(n) ? n : null;
+      };
+      const item = {
+        id: getTodayCheckin()?.id || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
+        key,
+        date: new Date().toISOString(),
+        calories: parseMaybe('[data-input="checkin-calories"]'),
+        protein: parseMaybe('[data-input="checkin-protein"]'),
+        steps: parseMaybe('[data-input="checkin-steps"]'),
+        water: parseMaybe('[data-input="checkin-water"]'),
+        sleep: parseMaybe('[data-input="checkin-sleep"]'),
+        note: $('[data-input="checkin-note"]')?.value?.trim() || ''
+      };
+      const i = state.dailyCheckins.findIndex(c => c.key === key);
+      if (i >= 0) state.dailyCheckins[i] = item;
+      else state.dailyCheckins.push(item);
+      saveState();
+      renderProgress();
+      showToast('Today’s check-in saved.');
     }
 
     function renderPlan() {
@@ -1578,6 +2014,15 @@
                 <select data-setting="theme"><option value="dark" ${state.settings.theme === 'dark' ? 'selected' : ''}>Dark</option><option value="light" ${state.settings.theme === 'light' ? 'selected' : ''}>Light</option></select>
               </div>
             </div>
+            <div class="section-title"><h2 style="margin:0">Coach goals</h2></div>
+            <div class="goals-grid">
+              <div class="field"><label>Daily calories</label><input inputmode="numeric" data-goal="dailyCalories" value="${esc(state.goals.dailyCalories)}"></div>
+              <div class="field"><label>Daily protein (g)</label><input inputmode="numeric" data-goal="dailyProtein" value="${esc(state.goals.dailyProtein)}"></div>
+              <div class="field"><label>Daily steps</label><input inputmode="numeric" data-goal="dailySteps" value="${esc(state.goals.dailySteps)}"></div>
+              <div class="field"><label>Water (oz)</label><input inputmode="numeric" data-goal="dailyWater" value="${esc(state.goals.dailyWater)}"></div>
+              <div class="field"><label>Sleep (hours)</label><input inputmode="decimal" data-goal="dailySleep" value="${esc(state.goals.dailySleep)}"></div>
+              <div class="field"><label>Target body fat %</label><input inputmode="decimal" data-goal="targetBodyFat" value="${esc(state.goals.targetBodyFat)}"></div>
+            </div>
             <div class="toolbar">
               <label class="badge" style="cursor:pointer"><input type="checkbox" data-setting="autoRest" ${state.settings.autoRest ? 'checked' : ''} style="width:auto;margin:0 7px 0 0"> Auto-start rest timer after sets</label>
               <button class="btn primary" data-action="save-settings">Save settings</button>
@@ -1636,6 +2081,11 @@
       state.settings.units = units;
       state.settings.theme = theme;
       state.settings.autoRest = autoRest;
+      $$('[data-goal]').forEach(input => {
+        const key = input.dataset.goal;
+        const value = parseFloat(input.value);
+        if (key && Number.isFinite(value) && value > 0) state.goals[key] = value;
+      });
       saveState();
       render();
       showToast('Settings saved.');
@@ -1649,19 +2099,37 @@
       const metrics = [...state.bodyMetrics].sort((a,b) => new Date(a.date) - new Date(b.date));
       const lastMetric = metrics[metrics.length - 1];
       const firstMetric = metrics[0];
+      const checks = recentCheckins(7);
       const recent = [...state.history].sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt)).slice(0, 6);
       const lines = [];
-      lines.push('PF WORKOUT TRACKER — COACH CHECK-IN');
+      lines.push('PF WORKOUT COACH v5 — COACH CHECK-IN');
       lines.push(`Generated: ${new Date().toLocaleString()}`);
       lines.push(`Next workout: Day ${next.day} — ${next.title} (${typeLabel(next)}: ${next.focus})`);
       lines.push(`Stats: ${stats.liftSessions} lift sessions, ${stats.restSessions} rest days, ${stats.thisWeek} completed in the last 7 days, ${stats.totalSets} logged sets, ${Math.round(stats.totalVolume).toLocaleString()} total volume.`);
+      lines.push(`Goals: ${state.goals.dailyCalories} calories, ${state.goals.dailyProtein}g protein, ${state.goals.dailySteps.toLocaleString ? state.goals.dailySteps.toLocaleString() : state.goals.dailySteps} steps, target body fat ${state.goals.targetBodyFat}%.`);
       if (lastMetric) {
         const delta = firstMetric ? Number(lastMetric.weight) - Number(firstMetric.weight) : 0;
-        const waist = lastMetric.waist ? `, waist ${lastMetric.waist}` : '';
-        lines.push(`Body metrics: latest ${lastMetric.weight} ${state.settings.units}${waist} on ${fmtDate(lastMetric.date)}${firstMetric && metrics.length > 1 ? `; change ${delta >= 0 ? '+' : ''}${delta.toFixed(1)} ${state.settings.units} since ${fmtDate(firstMetric.date)}` : ''}.`);
+        const parts = [`latest ${lastMetric.weight} ${state.settings.units}`];
+        if (lastMetric.bodyFat) parts.push(`body fat ${lastMetric.bodyFat}%`);
+        if (lastMetric.waist) parts.push(`waist ${lastMetric.waist}`);
+        if (lastMetric.skeletalMuscle) parts.push(`skeletal muscle ${lastMetric.skeletalMuscle}%`);
+        if (lastMetric.muscleMass) parts.push(`muscle mass ${lastMetric.muscleMass} ${state.settings.units}`);
+        if (lastMetric.visceralFat) parts.push(`visceral fat ${lastMetric.visceralFat}`);
+        if (lastMetric.bmr) parts.push(`BMR ${lastMetric.bmr}`);
+        lines.push(`Body metrics: ${parts.join(', ')} on ${fmtDate(lastMetric.date)}${firstMetric && metrics.length > 1 ? `; weight change ${delta >= 0 ? '+' : ''}${delta.toFixed(1)} ${state.settings.units} since ${fmtDate(firstMetric.date)}` : ''}.`);
       } else {
         lines.push('Body metrics: none logged yet.');
       }
+      if (checks.length) {
+        const ac = avg(checks.map(c => c.calories));
+        const ap = avg(checks.map(c => c.protein));
+        const as = avg(checks.map(c => c.steps));
+        const ah = avg(checks.map(c => c.sleep));
+        lines.push(`Nutrition/recovery last 7 days: ${checks.length} check-ins; avg calories ${ac ? Math.round(ac) : 'n/a'}, protein ${ap ? Math.round(ap) + 'g' : 'n/a'}, steps ${as ? Math.round(as).toLocaleString() : 'n/a'}, sleep ${ah ? cleanNumber(ah) + 'h' : 'n/a'}.`);
+      } else {
+        lines.push('Nutrition/recovery: no daily check-ins logged yet.');
+      }
+      lines.push('Set feel legend: 🟢 easy, 🟡 just right, 🔴 hard. WU means warm-up set ignored for recommendations.');
       lines.push('');
       lines.push('Recent sessions:');
       if (!recent.length) {
@@ -1670,7 +2138,7 @@
         recent.forEach(session => {
           const setCount = (session.exercises || []).reduce((sum, entry) => sum + ((entry.logs || []).length), 0);
           lines.push(`- ${fmtDate(session.startedAt)} — Day ${session.day} ${session.title} (${session.type === 'rest' ? 'rest' : formatDuration(session.durationMs || 0)}), ${setCount} logs`);
-          (session.exercises || []).filter(entry => entry.logs?.length).slice(0, 5).forEach(entry => {
+          (session.exercises || []).filter(entry => entry.logs?.length).slice(0, 6).forEach(entry => {
             const ex = getExercise(entry.id) || { name: entry.id, type: 'weighted' };
             lines.push(`  • ${ex.name}: ${summarizeLogs(ex, entry.logs)}`);
           });
@@ -1860,12 +2328,15 @@
       if (action === 'change-current-day') return;
       if (action === 'set-current-day') { state.settings.currentDayIndex = Number(btn.dataset.dayIndex) || 0; saveState(); currentTab = 'today'; render(); showToast(`Set next workout to Day ${getDay().day}.`); }
       if (action === 'add-set') addSet(Number(btn.dataset.exerciseIndex));
+      if (action === 'set-feel') setFeel(Number(btn.dataset.exerciseIndex), btn.dataset.feel);
       if (action === 'adjust-weight') adjustWeight(Number(btn.dataset.exerciseIndex), Number(btn.dataset.delta));
       if (action === 'use-last-weight') useLastSetWeight(Number(btn.dataset.exerciseIndex));
       if (action === 'clear-weight') clearDraftWeight(Number(btn.dataset.exerciseIndex));
       if (action === 'delete-set') deleteSet(Number(btn.dataset.exerciseIndex), Number(btn.dataset.setIndex));
       if (action === 'delete-session') deleteSession(btn.dataset.sessionId);
       if (action === 'save-metric') saveMetric();
+      if (action === 'save-checkin') saveDailyCheckin();
+      if (action === 'go-progress') { currentTab = 'progress'; render(); }
       if (action === 'save-settings') saveSettingsFromUI();
       if (action === 'export-data') exportData();
       if (action === 'share-coach-report') shareCoachReport();

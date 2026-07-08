@@ -1,8 +1,8 @@
 {
-  "name": "PF Workout Coach",
+  "name": "PF Workout Coach v5",
   "short_name": "PF Coach",
-  "description": "Planet Fitness workout tracker with easy +5/+10 weight controls, 5 lift days, 2 rest days, no lunges, local history, next-weight recommendations, and ChatGPT coach check-ins.",
-  "start_url": "./index.html?v=4",
+  "description": "Planet Fitness workout coach with set feel tracking, warm-up sets, easy weight controls, body metrics, nutrition check-ins, local history, and ChatGPT coach reports.",
+  "start_url": "./index.html?v=5",
   "display": "standalone",
   "background_color": "#080b14",
   "theme_color": "#0b1020",
