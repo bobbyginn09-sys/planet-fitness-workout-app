@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0b1020" />
-  <title>PF Workout Coach v6</title>
+  <title>PF Workout Coach v7</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <style>
     :root {
@@ -607,6 +607,107 @@
       .wide-actions .btn { width: 100%; }
     }
 
+
+
+    /* v7 cleanup: cleaner mobile header and compact quick apps */
+    .brand > div:last-child { min-width: 0; }
+    .brand-short { display: none; }
+    .quick-app-panel-compact {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(circle at top left, color-mix(in srgb, var(--accent) 13%, transparent), transparent 16rem),
+        rgba(255,255,255,.045);
+      box-shadow: none;
+    }
+    .quick-app-panel-compact .quick-app-head {
+      display: grid;
+      gap: 2px;
+      margin-bottom: 10px;
+    }
+    .quick-app-panel-compact .quick-app-head strong {
+      font-size: 14px;
+      letter-spacing: -.01em;
+    }
+    .quick-app-panel-compact .quick-app-head span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.25;
+    }
+    .quick-app-panel-compact .quick-app-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 0;
+    }
+    .quick-app-panel-compact .quick-btn {
+      min-height: 44px;
+      padding: 10px 12px;
+      border-radius: 15px;
+      width: 100%;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .session-toolbar { align-items: stretch; }
+    .quick-inline-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .quick-chip {
+      min-height: 38px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--soft);
+      background: rgba(255,255,255,.055);
+      font-weight: 850;
+    }
+    .quick-chip:hover { background: var(--panel-3); }
+
+    @media (max-width: 700px) {
+      .topbar-inner {
+        display: flex;
+        grid-template-columns: none;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 0;
+      }
+      .brand { flex: 1 1 auto; gap: 10px; overflow: hidden; }
+      .logo { width: 42px; height: 42px; border-radius: 14px; }
+      .brand-title { max-width: none; font-size: 17px; line-height: 1.1; }
+      .brand-sub { max-width: none; font-size: 12px; }
+      .version-badge { padding: 2px 7px; margin-left: 4px; font-size: 9px; }
+      .top-actions { flex: 0 0 auto; gap: 6px; justify-content: flex-end; }
+      #nextChip, .top-actions .app-launch-btn { display: none !important; }
+      .theme-btn { width: 42px !important; min-width: 42px !important; flex-basis: 42px !important; }
+      .main { padding-top: 14px; }
+      h1 { line-height: 1; }
+      .badge-row { gap: 6px; }
+      .badge { font-size: 11px; padding: 6px 8px; }
+      .note { padding: 11px 13px; }
+      .toolbar { gap: 8px; }
+      .toolbar .btn { flex: 1 1 46%; }
+      .split-select { min-width: 100%; }
+      .quick-app-panel-compact .quick-app-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+      .quick-app-panel-compact .quick-app-head span { display: none; }
+      .quick-app-panel-compact .btn { width: 100%; }
+      .section-title .pill { display: none; }
+      .stat-row[style] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    }
+
+    @media (max-width: 390px) {
+      .brand-full { display: none; }
+      .brand-short { display: inline; }
+      .logo { width: 40px; height: 40px; }
+      .theme-btn { width: 40px !important; min-width: 40px !important; flex-basis: 40px !important; }
+      .card-inner { padding: 14px; }
+      .quick-app-panel-compact .quick-btn { font-size: 13px; padding-inline: 8px; }
+    }
+
     @media print {
       .topbar, .tabs, .rest-timer, .toast, .toolbar, .btn { display: none !important; }
       body { background: white; color: black; padding: 0; }
@@ -620,14 +721,12 @@
       <div class="brand">
         <div class="logo">PF</div>
         <div>
-          <div class="brand-title">PF Workout Coach <span class="version-badge">v6</span></div>
-          <div class="brand-sub" id="headerSub">5 lift days • 2 rest days • no lunges</div>
+          <div class="brand-title"><span class="brand-full">PF Workout Coach</span><span class="brand-short">PF Coach</span> <span class="version-badge">v7</span></div>
+          <div class="brand-sub" id="headerSub">5 lift days • 2 rest days</div>
         </div>
       </div>
       <div class="top-actions">
         <div class="pill" id="nextChip">Next: Day 1</div>
-        <button class="btn small app-launch-btn" data-action="open-external-app" data-app="pf" title="Open Planet Fitness app" aria-label="Open Planet Fitness app">PF</button>
-        <button class="btn small app-launch-btn music" data-action="open-external-app" data-app="music" title="Open Apple Music" aria-label="Open Apple Music">♫</button>
         <button class="btn small theme-btn" data-action="toggle-theme" title="Toggle light/dark" aria-label="Toggle light/dark">◐</button>
       </div>
     </div>
@@ -1061,7 +1160,8 @@
     function updateHeader() {
       const day = getDay();
       document.documentElement.dataset.theme = state.settings.theme || 'dark';
-      $('#nextChip').textContent = `Next: Day ${day.day} • ${day.title}`;
+      const nextChip = $('#nextChip');
+      if (nextChip) nextChip.textContent = `Next: Day ${day.day} • ${day.title}`;
       $('#headerSub').textContent = `${typeLabel(day)} • ${day.focus} • no lunges`;
     }
 
@@ -1159,16 +1259,15 @@
 
     function renderQuickAppsPanel() {
       return `
-        <div class="quick-app-panel">
+        <div class="quick-app-panel quick-app-panel-compact">
           <div class="quick-app-head">
-            <strong>Quick apps</strong>
-            <span>Jump to the PF app for check-in/crowd meter or start music without digging through your phone.</span>
+            <strong>Quick launch</strong>
+            <span>PF check-in/crowd meter or music.</span>
           </div>
           <div class="quick-app-grid">
-            <button class="btn green" data-action="open-external-app" data-app="pf">🏋️ Open Planet Fitness</button>
-            <button class="btn" data-action="open-external-app" data-app="music">🎵 Open Apple Music</button>
+            <button class="btn green quick-btn" data-action="open-external-app" data-app="pf">🏋️ PF app</button>
+            <button class="btn quick-btn" data-action="open-external-app" data-app="music">🎵 Music</button>
           </div>
-          <div class="quick-app-help">iPhone PF shortcut: create a Shortcut named <strong>Open Planet Fitness</strong> with one action, <strong>Open App → Planet Fitness</strong>. You can edit these links in Settings.</div>
         </div>
       `;
     }
@@ -1352,12 +1451,14 @@
               <div class="timer-bubble">⏱️ <span id="elapsedTime">${elapsed}</span></div>
             </div>
             <p class="note">${esc(day.warmup)}</p>
-            <div class="toolbar">
+            <div class="toolbar session-toolbar">
               <button class="btn green" data-action="finish-workout">Finish workout + save</button>
               <button class="btn warn" data-action="start-rest-manual">Start rest timer</button>
-              <button class="btn" data-action="open-external-app" data-app="pf">PF app</button>
-              <button class="btn" data-action="open-external-app" data-app="music">Music</button>
               <button class="btn danger" data-action="cancel-workout">Cancel</button>
+            </div>
+            <div class="quick-inline-actions" aria-label="Quick apps">
+              <button class="quick-chip" data-action="open-external-app" data-app="pf">🏋️ PF app</button>
+              <button class="quick-chip" data-action="open-external-app" data-app="music">🎵 Music</button>
             </div>
           </div>
         </section>
@@ -2256,7 +2357,7 @@
       const checks = recentCheckins(7);
       const recent = [...state.history].sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt)).slice(0, 6);
       const lines = [];
-      lines.push('PF WORKOUT COACH v6 — COACH CHECK-IN');
+      lines.push('PF WORKOUT COACH v7 — COACH CHECK-IN');
       lines.push(`Generated: ${new Date().toLocaleString()}`);
       lines.push(`Next workout: Day ${next.day} — ${next.title} (${typeLabel(next)}: ${next.focus})`);
       lines.push(`Stats: ${stats.liftSessions} lift sessions, ${stats.restSessions} rest days, ${stats.thisWeek} completed in the last 7 days, ${stats.totalSets} logged sets, ${Math.round(stats.totalVolume).toLocaleString()} total volume.`);
