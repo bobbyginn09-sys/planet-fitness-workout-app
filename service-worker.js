@@ -1,4 +1,4 @@
-const CACHE_NAME = 'atlas-workout-v2-2-0-phase1-20260711-1';
+const CACHE_NAME = 'atlas-workout-v2-3-0-phase2-20260711-1';
 const APP_SHELL = [
   './',
   './index.html',
