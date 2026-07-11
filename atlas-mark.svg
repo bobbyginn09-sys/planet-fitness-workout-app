@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Atlas mark">
+  <defs>
+    <linearGradient id="g" x1="96" y1="428" x2="416" y2="84" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2563FF"/>
+      <stop offset="0.52" stop-color="#4F6BFF"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="128" y1="108" x2="356" y2="432" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#66B7FF" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#B26CFF" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#020817" flood-opacity="0.65"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <!-- Geometric A legs -->
+    <path d="M256 70 77 423h91l38-82h100l38 82h91L256 70Zm0 142 39 84h-78l39-84Z" fill="url(#g)" fill-rule="evenodd"/>
+    <!-- Subtle forward bevel -->
+    <path d="M256 70 77 423h46L270 133 256 70Z" fill="url(#shine)" opacity="0.55"/>
+    <!-- Barbell-inspired crossbar -->
+    <rect x="151" y="315" width="210" height="31" rx="15.5" fill="url(#g)"/>
+    <rect x="129" y="300" width="24" height="61" rx="10" fill="#2563FF"/>
+    <rect x="359" y="300" width="24" height="61" rx="10" fill="#7C3AED"/>
+    <rect x="113" y="311" width="14" height="39" rx="6" fill="#3B82F6"/>
+    <rect x="385" y="311" width="14" height="39" rx="6" fill="#8B5CF6"/>
+  </g>
+</svg>

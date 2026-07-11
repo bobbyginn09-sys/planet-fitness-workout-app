@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 300">
+<defs><linearGradient id="g" x1="30" y1="260" x2="270" y2="20" gradientUnits="userSpaceOnUse"><stop stop-color="#2563FF"/><stop offset="1" stop-color="#7C3AED"/></linearGradient></defs>
+<rect width="1100" height="300" rx="36" fill="#0E1117"/>
+<g transform="translate(15 -6) scale(.52)"><path d="M256 70 77 423h91l38-82h100l38 82h91L256 70Zm0 142 39 84h-78l39-84Z" fill="url(#g)" fill-rule="evenodd"/><rect x="151" y="315" width="210" height="31" rx="15.5" fill="url(#g)"/><rect x="129" y="300" width="24" height="61" rx="10" fill="#2563FF"/><rect x="359" y="300" width="24" height="61" rx="10" fill="#7C3AED"/></g>
+<text x="315" y="155" fill="#F7F9FC" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif" font-size="112" font-weight="800" letter-spacing="22">ATLAS</text>
+<text x="320" y="216" fill="#8B95A7" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif" font-size="30" font-weight="500" letter-spacing="7">BUILT FOR PROGRESS.</text>
+</svg>
