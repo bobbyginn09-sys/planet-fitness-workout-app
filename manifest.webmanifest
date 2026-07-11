@@ -1,11 +1,12 @@
 {
-  "name": "PF Workout Coach v9",
+  "name": "PF Workout Coach \u2014 Atlas",
   "short_name": "PF Coach",
-  "description": "Planet Fitness workout coach with previous-workout targets, easy weight controls, RPE and set feel, weekly reviews, body-weight trends, PR tracking, deload planning, Smith plate calculator, body metrics, nutrition check-ins, and ChatGPT coach reports.",
-  "start_url": "./index.html?v=8",
+  "description": "A focused Planet Fitness training coach with flash-card workout mode, progression, body trends, recovery days, and no nutrition tracking.",
+  "start_url": "./index.html?atlas=2",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#080b14",
-  "theme_color": "#0b1020",
+  "background_color": "#070a12",
+  "theme_color": "#070a12",
   "orientation": "portrait-primary",
   "icons": [
     {
