@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pf-workout-tracker-v7';
+const CACHE_NAME = 'pf-workout-tracker-v9';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', event => {

@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0b1020" />
-  <title>PF Workout Coach v7</title>
+  <title>PF Workout Coach v9</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <style>
     :root {
@@ -713,6 +713,149 @@
       body { background: white; color: black; padding: 0; }
       .card { box-shadow: none; border: 1px solid #ddd; }
     }
+
+
+    /* v8 coaching and trend tools */
+    .previous-workout-card {
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 13%, transparent), rgba(255,255,255,.045));
+    }
+    .previous-workout-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+    .previous-workout-head strong { display:block; font-size:14px; }
+    .previous-workout-date { color:var(--muted); font-size:12px; white-space:nowrap; }
+    .previous-set-list { display:flex; flex-wrap:wrap; gap:7px; margin-top:10px; }
+    .previous-set-chip {
+      display:inline-flex; align-items:center; gap:5px;
+      padding:7px 9px; border-radius:999px;
+      background:rgba(255,255,255,.07); border:1px solid var(--line);
+      color:var(--soft); font-size:12px; font-weight:780;
+    }
+    .previous-target { margin-top:10px; color:var(--muted); font-size:12px; line-height:1.45; }
+    .session-note-details, .exercise-note-details, .plate-calculator {
+      margin-top:12px; border:1px solid var(--line); border-radius:16px; background:rgba(255,255,255,.045); overflow:hidden;
+    }
+    .session-note-details summary, .exercise-note-details summary, .plate-calculator summary {
+      cursor:pointer; padding:12px 14px; font-size:13px; font-weight:800; color:var(--soft); list-style:none;
+    }
+    .session-note-details summary::-webkit-details-marker,
+    .exercise-note-details summary::-webkit-details-marker,
+    .plate-calculator summary::-webkit-details-marker { display:none; }
+    .details-body { padding:0 12px 12px; }
+    .details-body textarea { min-height:78px; resize:vertical; }
+    .plate-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+    .plate-result {
+      margin-top:10px; padding:11px 12px; border-radius:13px;
+      background:rgba(255,255,255,.06); border:1px solid var(--line);
+      color:var(--soft); font-size:13px; line-height:1.45;
+    }
+    .plate-result strong { color:var(--text); }
+    .weekly-review { margin-top:16px; }
+    .review-top { display:grid; grid-template-columns:auto minmax(0,1fr); gap:14px; align-items:center; }
+    .review-grade {
+      width:82px; min-height:82px; border-radius:24px; display:grid; place-items:center; text-align:center;
+      background:linear-gradient(135deg, var(--accent), #2563eb); color:white;
+      box-shadow:0 18px 44px color-mix(in srgb, var(--accent) 30%, transparent);
+      font-size:28px; font-weight:950; line-height:.9;
+    }
+    .review-grade small { display:block; margin-top:6px; font-size:9px; letter-spacing:.08em; text-transform:uppercase; opacity:.85; }
+    .review-metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:14px; }
+    .review-metric { padding:12px; border-radius:15px; background:rgba(255,255,255,.055); border:1px solid var(--line); }
+    .review-metric span { display:block; color:var(--muted); font-size:11px; font-weight:750; }
+    .review-metric strong { display:block; margin-top:4px; font-size:19px; letter-spacing:-.03em; }
+    .review-columns { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:14px; }
+    .review-list { padding:13px; border-radius:17px; background:rgba(255,255,255,.045); border:1px solid var(--line); }
+    .review-list h3 { margin:0 0 9px; }
+    .review-list ul { margin:0; padding-left:18px; color:var(--muted); font-size:13px; line-height:1.55; }
+    .trend-down { color:color-mix(in srgb, var(--accent-2) 82%, white) !important; }
+    .trend-up { color:color-mix(in srgb, var(--danger) 82%, white) !important; }
+    .trend-flat { color:color-mix(in srgb, var(--warn) 82%, white) !important; }
+    .pr-badge {
+      display:inline-flex; align-items:center; gap:6px; margin-top:9px; margin-right:6px;
+      padding:6px 9px; border-radius:999px; background:color-mix(in srgb, var(--warn) 18%, transparent);
+      border:1px solid color-mix(in srgb, var(--warn) 38%, var(--line)); color:var(--text); font-size:12px; font-weight:800;
+    }
+    .cycle-strip { margin-top:12px; padding:12px 14px; border-radius:16px; border:1px solid var(--line); background:rgba(255,255,255,.045); }
+    .cycle-strip strong { display:block; }
+    .cycle-strip span { display:block; color:var(--muted); font-size:12px; margin-top:3px; }
+    .history-note { margin-top:10px; padding:10px 12px; border-left:3px solid var(--accent); background:rgba(255,255,255,.04); border-radius:0 12px 12px 0; color:var(--muted); font-size:13px; }
+    .coach-target-line { color:color-mix(in srgb, var(--accent-2) 84%, white); font-weight:750; }
+    @media (max-width: 720px) {
+      .review-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .review-columns { grid-template-columns:1fr; }
+      .plate-grid { grid-template-columns:1fr; }
+      .previous-workout-head { display:block; }
+      .previous-workout-date { margin-top:3px; }
+    }
+
+  
+    /* v9 flash-card workout flow */
+    .exercise-flash-shell { margin-top: 16px; }
+    .exercise-flash-nav {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .exercise-flash-status { text-align: center; min-width: 0; }
+    .exercise-flash-status strong { display: block; font-size: 1rem; }
+    .exercise-flash-status span { color: var(--muted); font-size: .84rem; }
+    .exercise-progress-track {
+      height: 8px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 10px 0 14px;
+    }
+    .exercise-progress-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transition: width .25s ease;
+    }
+    .exercise-flash-card { animation: flashCardIn .22s ease; }
+    @keyframes flashCardIn {
+      from { opacity: 0; transform: translateX(12px) scale(.995); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    .exercise-jump-row {
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      padding: 2px 1px 8px;
+      scrollbar-width: none;
+    }
+    .exercise-jump-row::-webkit-scrollbar { display: none; }
+    .exercise-dot {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--muted);
+      flex: 0 0 auto;
+      font-weight: 800;
+    }
+    .exercise-dot.active { border-color: var(--accent); color: white; background: var(--accent); }
+    .exercise-dot.done { border-color: var(--green); color: var(--green); }
+    .flash-bottom-nav {
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .flash-bottom-nav .btn { min-height: 52px; }
+    .flash-bottom-nav.one { grid-template-columns: 1fr; }
+    @media (max-width: 560px) {
+      .exercise-flash-nav { grid-template-columns: 44px 1fr 44px; }
+      .exercise-flash-nav .btn { padding: 10px 8px; min-width: 44px; }
+      .exercise-flash-status strong { font-size: .94rem; }
+    }
+
   </style>
 </head>
 <body>
@@ -721,8 +864,8 @@
       <div class="brand">
         <div class="logo">PF</div>
         <div>
-          <div class="brand-title"><span class="brand-full">PF Workout Coach</span><span class="brand-short">PF Coach</span> <span class="version-badge">v7</span></div>
-          <div class="brand-sub" id="headerSub">5 lift days • 2 rest days</div>
+          <div class="brand-title"><span class="brand-full">PF Workout Coach</span><span class="brand-short">PF Coach</span> <span class="version-badge">v9</span></div>
+          <div class="brand-sub" id="headerSub">Coach mode • trends • 5 lift days</div>
         </div>
       </div>
       <div class="top-actions">
@@ -907,6 +1050,9 @@
           autoRest: true,
           units: 'lb',
           theme: 'dark',
+          coachMode: 'fat_loss',
+          smithBarWeight: 20,
+          deloadEveryWeeks: 8,
           pfAppUrl: 'shortcuts://run-shortcut?name=Open%20Planet%20Fitness',
           musicAppUrl: 'music://',
           pfFallbackUrl: 'https://apps.apple.com/us/app/planet-fitness/id399857015',
@@ -1117,6 +1263,8 @@
       const display = cleanNumber(clean);
       const input = $(`[data-input="weight-${index}"]`);
       if (input) input.value = display;
+      const plateTarget = $(`[data-plate-target="${index}"]`);
+      if (plateTarget) { plateTarget.value = display; updatePlateCalculator(index); }
       const label = $(`[data-current-weight="${index}"]`);
       if (label) label.textContent = `${display} ${state.settings.units}`;
       if (message) showToast(message.replace('{weight}', `${display} ${state.settings.units}`));
@@ -1272,6 +1420,377 @@
       `;
     }
 
+
+    function coachModeLabel(mode = state.settings.coachMode) {
+      if (mode === 'maintenance') return 'Maintenance';
+      if (mode === 'muscle_gain') return 'Muscle gain';
+      return 'Fat loss';
+    }
+
+    function startOfLocalDay(value = new Date()) {
+      const d = value instanceof Date ? new Date(value) : new Date(value);
+      d.setHours(0, 0, 0, 0);
+      return d;
+    }
+
+    function validDailyWeights() {
+      const grouped = new Map();
+      for (const metric of state.bodyMetrics || []) {
+        const weight = Number(metric.weight);
+        const when = new Date(metric.date);
+        if (!Number.isFinite(weight) || Number.isNaN(when.getTime())) continue;
+        const key = dateKey(when);
+        if (!grouped.has(key)) grouped.set(key, { key, date: startOfLocalDay(when), weights: [] });
+        grouped.get(key).weights.push(weight);
+      }
+      return [...grouped.values()]
+        .map(item => ({ key: item.key, date: item.date, weight: avg(item.weights), readings: item.weights.length }))
+        .sort((a, b) => a.date - b.date);
+    }
+
+    function regressionWeeklyRate(entries) {
+      if (!entries || entries.length < 2) return null;
+      const base = entries[0].date.getTime();
+      const xs = entries.map(item => (item.date.getTime() - base) / 86400000);
+      const ys = entries.map(item => Number(item.weight));
+      const xMean = avg(xs), yMean = avg(ys);
+      let numerator = 0, denominator = 0;
+      for (let i = 0; i < xs.length; i++) {
+        numerator += (xs[i] - xMean) * (ys[i] - yMean);
+        denominator += Math.pow(xs[i] - xMean, 2);
+      }
+      if (!denominator) return null;
+      return (numerator / denominator) * 7;
+    }
+
+    function getWeightTrend() {
+      const daily = validDailyWeights();
+      const latest = daily[daily.length - 1] || null;
+      const today = startOfLocalDay();
+      const daysAgo = item => Math.round((today - item.date) / 86400000);
+      const current7 = daily.filter(item => daysAgo(item) >= 0 && daysAgo(item) <= 6);
+      const previous7 = daily.filter(item => daysAgo(item) >= 7 && daysAgo(item) <= 13);
+      const recent30 = daily.filter(item => daysAgo(item) >= 0 && daysAgo(item) <= 29);
+      const spanDays = recent30.length > 1 ? Math.round((recent30[recent30.length - 1].date - recent30[0].date) / 86400000) : 0;
+      const enoughForRate = recent30.length >= 4 && spanDays >= 5;
+      const weeklyRate = enoughForRate ? regressionWeeklyRate(recent30) : null;
+      const currentAvg = avg(current7.map(item => item.weight));
+      const previousAvg = avg(previous7.map(item => item.weight));
+      let status = 'insufficient';
+      if (Number.isFinite(weeklyRate)) {
+        if (weeklyRate < -0.2) status = 'down';
+        else if (weeklyRate > 0.2) status = 'up';
+        else status = 'flat';
+      }
+      return { daily, latest, current7, previous7, recent30, currentAvg, previousAvg, weeklyRate, status, spanDays, enoughForRate };
+    }
+
+    function weightTrendText(trend = getWeightTrend()) {
+      if (!Number.isFinite(trend.weeklyRate)) return 'Collecting trend';
+      const arrow = trend.weeklyRate < -0.2 ? '↓' : trend.weeklyRate > 0.2 ? '↑' : '→';
+      return `${arrow} ${Math.abs(trend.weeklyRate).toFixed(1)} ${state.settings.units}/week`;
+    }
+
+    function weightTrendClass(trend = getWeightTrend()) {
+      if (trend.status === 'down') return state.settings.coachMode === 'muscle_gain' ? 'trend-up' : 'trend-down';
+      if (trend.status === 'up') return state.settings.coachMode === 'muscle_gain' ? 'trend-down' : 'trend-up';
+      return 'trend-flat';
+    }
+
+    function weightTrendGuidance(trend = getWeightTrend()) {
+      if (!trend.daily.length) return 'Add your first scale reading, then use morning weigh-ins under similar conditions.';
+      if (!Number.isFinite(trend.weeklyRate)) return `Keep logging 3–4 morning weights per week. ${trend.recent30.length}/4 readings collected for a dependable trend.`;
+      const rate = trend.weeklyRate;
+      const mode = state.settings.coachMode || 'fat_loss';
+      if (mode === 'muscle_gain') {
+        if (rate < -0.25) return 'Weight is trending down during muscle-gain mode. Add a small amount of food if strength or recovery slips.';
+        if (rate > 0.75) return 'Weight is rising quickly. Slow the surplus to limit unnecessary fat gain.';
+        return 'Weight trend is reasonable for controlled muscle gain.';
+      }
+      if (mode === 'maintenance') {
+        if (Math.abs(rate) <= 0.5) return 'Weight is staying within a useful maintenance range.';
+        return 'Weight is moving more than expected for maintenance; review average calories and sodium consistency.';
+      }
+      if (rate < -2) return 'Loss looks fast. Protect muscle by keeping protein high and avoid cutting calories further.';
+      if (rate <= -0.3) return 'Weight trend is moving in the right direction for fat loss. Keep the plan steady.';
+      if (rate <= 0.3) return 'Weight is roughly stable. Give it another week, then adjust calories or steps only if the average stays flat.';
+      return 'Weight trend is rising. Review average calories, weekend intake, and step consistency before changing training.';
+    }
+
+    function getPreviousExercisePerformance(exerciseId) {
+      const sessions = [...state.history].sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt));
+      for (const session of sessions) {
+        const entry = (session.exercises || []).find(item => item.id === exerciseId && item.logs?.length);
+        if (entry) return { session, entry };
+      }
+      return null;
+    }
+
+    function previousSetChips(ex, logs) {
+      const all = logs || [];
+      const working = all.filter(log => !log.warmup);
+      const chosen = (working.length ? working : all).slice(-Math.max(1, ex.sets || 1));
+      if (ex.type === 'weighted') return chosen.map(log => `<span class="previous-set-chip">${esc(cleanNumber(log.weight))}×${esc(log.reps)} ${feelEmoji(log.feel)}</span>`).join('');
+      if (ex.type === 'bodyweight') return chosen.map(log => `<span class="previous-set-chip">${esc(log.reps)} reps${log.weight ? ` +${esc(cleanNumber(log.weight))}` : ''} ${feelEmoji(log.feel)}</span>`).join('');
+      return chosen.map(log => `<span class="previous-set-chip">${esc(cleanNumber(log.duration))} ${esc(ex.unit || 'min')}</span>`).join('');
+    }
+
+    function renderPreviousWorkoutCard(ex) {
+      const previous = getPreviousExercisePerformance(ex.id);
+      if (!previous) {
+        return `<div class="previous-workout-card"><div class="previous-workout-head"><strong>Previous workout</strong><span class="previous-workout-date">First logged session</span></div><div class="previous-target"><span class="coach-target-line">Coach target:</span> ${esc(recommendationFor(ex))}</div></div>`;
+      }
+      const noteBits = [previous.entry.notes, previous.session.sessionNote].filter(Boolean);
+      return `
+        <div class="previous-workout-card">
+          <div class="previous-workout-head">
+            <div><strong>Previous workout</strong><span class="small-text">${esc(previous.session.title)} • ${esc(ex.name)}</span></div>
+            <span class="previous-workout-date">${fmtDate(previous.session.startedAt)}</span>
+          </div>
+          <div class="previous-set-list">${previousSetChips(ex, previous.entry.logs)}</div>
+          <div class="previous-target"><span class="coach-target-line">Coach target:</span> ${esc(recommendationFor(ex))}${noteBits.length ? `<br><span>Last note: ${esc(noteBits.join(' • '))}</span>` : ''}</div>
+        </div>`;
+    }
+
+    function isSmithExercise(ex) {
+      return /smith/i.test(`${ex?.name || ''} ${ex?.equipment || ''}`);
+    }
+
+    function plateDenominations() {
+      return state.settings.units === 'kg' ? [20, 15, 10, 5, 2.5, 1.25] : [45, 35, 25, 10, 5, 2.5];
+    }
+
+    function calculatePlateLoad(target, barWeight) {
+      const total = Number(target), bar = Number(barWeight);
+      if (!Number.isFinite(total) || total <= 0) return { text: 'Enter a target weight.' };
+      if (!Number.isFinite(bar) || bar < 0) return { text: 'Enter the machine’s labeled starting resistance.' };
+      const perSideTarget = (total - bar) / 2;
+      if (perSideTarget < 0) return { text: `Target is below the ${cleanNumber(bar)} ${state.settings.units} starting resistance.` };
+      let remaining = Math.round(perSideTarget * 100) / 100;
+      const plates = [];
+      for (const plate of plateDenominations()) {
+        const count = Math.floor((remaining + 0.0001) / plate);
+        if (count > 0) {
+          plates.push({ plate, count });
+          remaining = Math.round((remaining - count * plate) * 100) / 100;
+        }
+      }
+      const loadedPerSide = perSideTarget - remaining;
+      const actualTotal = bar + loadedPerSide * 2;
+      const plateText = plates.length ? plates.map(p => `${p.count}×${cleanNumber(p.plate)}`).join(' + ') : 'no plates';
+      const exact = Math.abs(remaining) < 0.01;
+      return {
+        text: `<strong>Each side:</strong> ${plateText}${exact ? '' : ` <span class="muted">(nearest load: ${cleanNumber(actualTotal)} ${state.settings.units})</span>`}`,
+        exact,
+        actualTotal
+      };
+    }
+
+    function renderSmithPlateCalculator(ex, index, weightValue) {
+      if (!isSmithExercise(ex)) return '';
+      const bar = Number(state.settings.smithBarWeight) || 0;
+      const target = Number(weightValue) || 0;
+      const result = calculatePlateLoad(target, bar);
+      return `
+        <details class="plate-calculator">
+          <summary>🧮 Smith plate calculator</summary>
+          <div class="details-body">
+            <div class="plate-grid">
+              <div class="field"><label>Target total (${esc(state.settings.units)})</label><input inputmode="decimal" data-plate-target="${index}" value="${target ? esc(cleanNumber(target)) : ''}" placeholder="ex: 135"></div>
+              <div class="field"><label>Starting resistance (${esc(state.settings.units)})</label><input inputmode="decimal" data-plate-bar="${index}" value="${esc(cleanNumber(bar))}"></div>
+            </div>
+            <div class="plate-result" data-plate-output="${index}">${result.text}</div>
+            <div class="small-text" style="margin-top:8px">Planet Fitness Smith machines can vary. Use the starting resistance printed on your machine and update it in Settings.</div>
+          </div>
+        </details>`;
+    }
+
+    function updatePlateCalculator(index) {
+      const targetInput = $(`[data-plate-target="${index}"]`);
+      const barInput = $(`[data-plate-bar="${index}"]`);
+      const output = $(`[data-plate-output="${index}"]`);
+      if (!output) return;
+      output.innerHTML = calculatePlateLoad(targetInput?.value, barInput?.value).text;
+    }
+
+    function getCurrentPRScoreMap() {
+      const map = {};
+      for (const [id, progress] of Object.entries(state.exerciseProgress || {})) {
+        const ex = getExercise(id);
+        if (!ex || !progress.bestSet) continue;
+        if (ex.type === 'weighted') map[id] = Number(progress.bestSet.estimate);
+        if (ex.type === 'bodyweight') map[id] = Number(progress.bestSet.reps);
+      }
+      return map;
+    }
+
+    function formatBestSet(ex, best) {
+      if (!best) return '';
+      if (ex.type === 'weighted') return `${cleanNumber(best.weight)}×${best.reps} (${Math.round(best.estimate)} est.)`;
+      if (ex.type === 'bodyweight') return `${best.reps} reps`;
+      return '';
+    }
+
+    function getTrainingCycle() {
+      const lifts = state.history.filter(session => session.type !== 'rest').sort((a, b) => new Date(a.startedAt) - new Date(b.startedAt));
+      const length = clamp(Number(state.settings.deloadEveryWeeks) || 8, 4, 16);
+      if (!lifts.length) return { cycleWeek: 1, length, weeksUntil: length - 1, deloadDue: false, totalWeek: 1 };
+      const first = startOfLocalDay(lifts[0].startedAt);
+      const totalWeek = Math.max(1, Math.floor((startOfLocalDay() - first) / (7 * 86400000)) + 1);
+      const cycleWeek = ((totalWeek - 1) % length) + 1;
+      return { cycleWeek, length, weeksUntil: Math.max(0, length - cycleWeek), deloadDue: cycleWeek === length, totalWeek };
+    }
+
+    function weeklyCardioTarget() {
+      if (state.settings.coachMode === 'muscle_gain') return 90;
+      if (state.settings.coachMode === 'maintenance') return 120;
+      return 150;
+    }
+
+    function getWeeklyReview() {
+      const end = startOfLocalDay();
+      const start = new Date(end); start.setDate(end.getDate() - 6);
+      const sessions = state.history.filter(session => {
+        const d = startOfLocalDay(session.startedAt);
+        return d >= start && d <= end;
+      });
+      const liftSessions = sessions.filter(s => s.type !== 'rest');
+      const restSessions = sessions.filter(s => s.type === 'rest');
+      let workingSets = 0, volume = 0, cardioMinutes = 0, hardSets = 0, ratedSets = 0;
+      for (const session of sessions) {
+        for (const entry of session.exercises || []) {
+          const ex = getExercise(entry.id);
+          for (const log of entry.logs || []) {
+            if (ex?.type === 'cardio' && Number.isFinite(Number(log.duration))) cardioMinutes += Number(log.duration);
+            if (log.warmup) continue;
+            if (Number.isFinite(Number(log.reps))) workingSets += 1;
+            if (Number.isFinite(Number(log.weight)) && Number.isFinite(Number(log.reps))) volume += Number(log.weight) * Number(log.reps);
+            if (log.feel) {
+              ratedSets += 1;
+              if (log.feel === 'hard') hardSets += 1;
+            }
+          }
+        }
+      }
+      const checks = recentCheckins(7);
+      const avgCalories = avg(checks.map(c => c.calories));
+      const avgProtein = avg(checks.map(c => c.protein));
+      const avgSteps = avg(checks.map(c => c.steps));
+      const avgSleep = avg(checks.map(c => c.sleep));
+      const weightTrend = getWeightTrend();
+      const firstActivity = [
+        ...state.history.map(s => new Date(s.startedAt)),
+        ...state.bodyMetrics.map(m => new Date(m.date)),
+        ...state.dailyCheckins.map(c => new Date(c.date || c.key))
+      ].filter(d => !Number.isNaN(d.getTime())).sort((a,b) => a-b)[0];
+      const daysObserved = firstActivity ? Math.min(7, Math.max(1, Math.floor((end - startOfLocalDay(firstActivity)) / 86400000) + 1)) : 0;
+      const complete = daysObserved >= 7;
+      let score = 0;
+      score += Math.min(50, (liftSessions.length / 5) * 50);
+      score += Math.min(10, (restSessions.length / 2) * 10);
+      score += Math.min(10, (checks.length / 5) * 10);
+      if (Number.isFinite(avgProtein)) score += Math.min(10, (avgProtein / Number(state.goals.dailyProtein || 1)) * 10);
+      if (Number.isFinite(avgSteps)) score += Math.min(10, (avgSteps / Number(state.goals.dailySteps || 1)) * 10);
+      if (Number.isFinite(avgSleep)) score += Math.min(10, (avgSleep / Number(state.goals.dailySleep || 1)) * 10);
+      score = Math.round(score);
+      const grade = !complete ? '…' : score >= 90 ? 'A' : score >= 80 ? 'B' : score >= 70 ? 'C' : score >= 60 ? 'D' : 'F';
+      const newPrs = sessions.flatMap(s => s.prs || []);
+      const progressionCount = Object.values(state.exerciseProgress || {}).filter(p => /^(Increase|Try)/i.test(p.note || '')).length;
+      const wins = [];
+      if (liftSessions.length) wins.push(`${liftSessions.length} lift session${liftSessions.length === 1 ? '' : 's'} completed with ${workingSets} working sets.`);
+      if (newPrs.length) wins.push(`${newPrs.length} new PR${newPrs.length === 1 ? '' : 's'} recorded.`);
+      if (progressionCount) wins.push(`${progressionCount} exercise${progressionCount === 1 ? '' : 's'} currently ready for a small progression.`);
+      if (cardioMinutes) wins.push(`${cleanNumber(cardioMinutes)} cardio minutes logged.`);
+      if (!wins.length) wins.push('Start the next scheduled session and log working sets consistently.');
+      const adjustments = [];
+      if (checks.length === 0) adjustments.push('Log calories and protein on at least 4 days so fat-loss decisions are based on data, not guesses.');
+      else if (Number.isFinite(avgProtein) && avgProtein < state.goals.dailyProtein * 0.9) adjustments.push(`Average protein is ${Math.round(avgProtein)}g; move closer to the ${state.goals.dailyProtein}g goal.`);
+      const proratedCardio = weeklyCardioTarget() * Math.max(1, daysObserved) / 7;
+      if (cardioMinutes + 1 < proratedCardio) adjustments.push(`Build cardio gradually toward ${weeklyCardioTarget()} minutes per full week; ${cleanNumber(cardioMinutes)} minutes are logged so far.`);
+      const hardRate = ratedSets ? hardSets / ratedSets : 0;
+      if (hardRate > 0.35) adjustments.push(`${Math.round(hardRate * 100)}% of rated working sets were marked hard. Keep most sets “just right” and save true grinders for occasional final sets.`);
+      adjustments.push(weightTrendGuidance(weightTrend));
+      const cycle = getTrainingCycle();
+      if (cycle.deloadDue) adjustments.push('Deload week is due: reduce working sets about 30–40% and keep every set comfortably short of failure.');
+      const avgDuration = avg(liftSessions.map(s => Number(s.durationMs) / 60000));
+      return {
+        start, end, sessions, liftSessions, restSessions, workingSets, volume, cardioMinutes, hardRate,
+        checks, avgCalories, avgProtein, avgSteps, avgSleep, weightTrend, daysObserved, complete, score, grade,
+        newPrs, wins, adjustments, cycle, avgDuration
+      };
+    }
+
+    function renderWeeklyReviewCard() {
+      const review = getWeeklyReview();
+      const statusLabel = review.complete ? `Grade ${review.grade}` : `Day ${review.daysObserved || 1} of 7`;
+      const trend = weightTrendText(review.weightTrend);
+      return `
+        <section class="card weekly-review" id="weeklyReview">
+          <div class="card-inner">
+            <div class="review-top">
+              <div class="review-grade">${esc(review.grade)}<small>${review.complete ? 'week grade' : 'in progress'}</small></div>
+              <div>
+                <div class="kicker">Weekly coach review</div>
+                <h2 style="margin-bottom:5px">${esc(statusLabel)} • ${fmtDate(review.start)}–${fmtDate(review.end)}</h2>
+                <p class="muted" style="margin-bottom:0">${esc(coachModeLabel())} mode • ${esc(weightTrendGuidance(review.weightTrend))}</p>
+              </div>
+            </div>
+            <div class="review-metrics">
+              <div class="review-metric"><span>Lift days</span><strong>${review.liftSessions.length}/5</strong></div>
+              <div class="review-metric"><span>Working sets</span><strong>${review.workingSets}</strong></div>
+              <div class="review-metric"><span>Cardio</span><strong>${cleanNumber(review.cardioMinutes)}m</strong></div>
+              <div class="review-metric"><span>Weight trend</span><strong class="${weightTrendClass(review.weightTrend)}">${esc(trend)}</strong></div>
+            </div>
+            <div class="review-columns">
+              <div class="review-list"><h3>✅ Wins</h3><ul>${review.wins.map(item => `<li>${esc(item)}</li>`).join('')}</ul></div>
+              <div class="review-list"><h3>🎯 Next adjustments</h3><ul>${review.adjustments.slice(0,4).map(item => `<li>${esc(item)}</li>`).join('')}</ul></div>
+            </div>
+            <div class="cycle-strip"><strong>Training cycle: week ${review.cycle.cycleWeek} of ${review.cycle.length}</strong><span>${review.cycle.deloadDue ? 'Deload recommended this week.' : `${review.cycle.weeksUntil} week${review.cycle.weeksUntil === 1 ? '' : 's'} until the planned deload.`}</span></div>
+            <div class="toolbar"><button class="btn green" data-action="share-weekly-review">Share weekly review</button><button class="btn" data-action="share-coach-report">Full coach check-in</button></div>
+          </div>
+        </section>`;
+    }
+
+    function buildWeeklyReviewReport() {
+      const r = getWeeklyReview();
+      const lines = [];
+      lines.push('PF WORKOUT COACH v9 — WEEKLY REVIEW');
+      lines.push(`Period: ${fmtDate(r.start)}–${fmtDate(r.end)} (${r.complete ? `grade ${r.grade}, score ${r.score}/100` : `week in progress, day ${r.daysObserved || 1} of 7`})`);
+      lines.push(`Mode: ${coachModeLabel()}; cycle week ${r.cycle.cycleWeek} of ${r.cycle.length}.`);
+      lines.push(`Training: ${r.liftSessions.length}/5 lift days, ${r.restSessions.length}/2 rest days logged, ${r.workingSets} working sets, ${Math.round(r.volume).toLocaleString()} working-set volume, ${cleanNumber(r.cardioMinutes)} cardio minutes${Number.isFinite(r.avgDuration) ? `, avg lift duration ${Math.round(r.avgDuration)} min` : ''}.`);
+      lines.push(`Body trend: latest ${r.weightTrend.latest ? cleanNumber(r.weightTrend.latest.weight) + ' ' + state.settings.units : 'n/a'}, 7-day average ${Number.isFinite(r.weightTrend.currentAvg) ? cleanNumber(r.weightTrend.currentAvg) + ' ' + state.settings.units : 'n/a'}, 30-day pace ${Number.isFinite(r.weightTrend.weeklyRate) ? weightTrendText(r.weightTrend) : 'not enough readings yet'}.`);
+      lines.push(`Nutrition/recovery: ${r.checks.length} check-ins; avg calories ${Number.isFinite(r.avgCalories) ? Math.round(r.avgCalories) : 'n/a'}, protein ${Number.isFinite(r.avgProtein) ? Math.round(r.avgProtein) + 'g' : 'n/a'}, steps ${Number.isFinite(r.avgSteps) ? Math.round(r.avgSteps).toLocaleString() : 'n/a'}, sleep ${Number.isFinite(r.avgSleep) ? cleanNumber(r.avgSleep) + 'h' : 'n/a'}.`);
+      lines.push('');
+      lines.push('Wins:');
+      r.wins.forEach(item => lines.push(`- ${item}`));
+      lines.push('');
+      lines.push('Adjustments:');
+      r.adjustments.forEach(item => lines.push(`- ${item}`));
+      lines.push('');
+      lines.push('Ask: Review this full week and adjust my next week for fat loss, muscle definition, recovery, and progressive overload.');
+      return lines.join('\n');
+    }
+
+    async function shareWeeklyReview() {
+      const report = buildWeeklyReviewReport();
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: 'PF Workout Coach Weekly Review', text: report });
+          showToast('Weekly review shared.');
+          return;
+        } catch (err) {
+          if (err && err.name === 'AbortError') return;
+        }
+      }
+      try {
+        await navigator.clipboard.writeText(report);
+        showToast('Weekly review copied. Paste it into ChatGPT.');
+      } catch (err) {
+        downloadTextFile(`pf-weekly-review-${new Date().toISOString().slice(0,10)}.txt`, report);
+        showToast('Weekly review downloaded.');
+      }
+    }
+
     function render() {
       updateHeader();
       $$('.tab-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === currentTab));
@@ -1381,9 +1900,7 @@
     function renderTodayCoachSnapshot() {
       const metric = latestBodyMetric();
       const checkin = getTodayCheckin();
-      const metrics = [...state.bodyMetrics].sort((a,b) => new Date(a.date) - new Date(b.date));
-      const first = metrics[0];
-      const delta = metric && first && metrics.length > 1 ? Number(metric.weight) - Number(first.weight) : null;
+      const trend = getWeightTrend();
       const cal = checkin?.calories;
       const protein = checkin?.protein;
       return `
@@ -1391,7 +1908,7 @@
           <div class="snapshot-tile ${metric ? 'good' : ''}">
             <div class="label">Latest weight</div>
             <div class="value">${metric ? `${esc(metric.weight)} ${esc(state.settings.units)}` : 'Add'}</div>
-            <div class="sub">${metric ? `${metric.bodyFat ? esc(metric.bodyFat) + '% body fat • ' : ''}${delta !== null ? (delta >= 0 ? '+' : '') + delta.toFixed(1) + ' total' : fmtDate(metric.date)}` : 'Progress tab → body metrics'}</div>
+            <div class="sub">${metric ? `${Number.isFinite(trend.currentAvg) ? `7-day avg ${cleanNumber(trend.currentAvg)} • ` : ''}${weightTrendText(trend)}` : 'Progress tab → body metrics'}</div>
           </div>
           <div class="snapshot-tile">
             <div class="label">Protein today</div>
@@ -1407,12 +1924,13 @@
           </div>
           <div class="snapshot-tile">
             <div class="label">Coach mode</div>
-            <div class="value">On</div>
-            <div class="sub">Set feel + warm-up tracking improve next-weight calls.</div>
+            <div class="value">${esc(coachModeLabel())}</div>
+            <div class="sub">Set feel, warm-ups, trends, and weekly review are active.</div>
           </div>
         </div>
         <div class="wide-actions">
           <button class="btn small" data-action="go-progress">Log body / nutrition</button>
+          <button class="btn small" data-action="go-weekly-review">Weekly review</button>
         </div>
       `;
     }
@@ -1427,6 +1945,8 @@
         type: day.type,
         focus: day.focus,
         startedAt: new Date().toISOString(),
+        sessionNote: '',
+        currentExerciseIndex: 0,
         exercises: day.exercises.map(ex => ({ id: ex.id, logs: [], notes: '', draftWeight: null, draftFeel: 'good' }))
       };
       saveActive();
@@ -1460,22 +1980,91 @@
               <button class="quick-chip" data-action="open-external-app" data-app="pf">🏋️ PF app</button>
               <button class="quick-chip" data-action="open-external-app" data-app="music">🎵 Music</button>
             </div>
+            <details class="session-note-details" ${active.sessionNote ? 'open' : ''}>
+              <summary>📝 Session note ${active.sessionNote ? '• saved' : ''}</summary>
+              <div class="details-body"><textarea data-input="session-note" placeholder="Energy, soreness, sleep, machine differences, anything the coach should know…">${esc(active.sessionNote || '')}</textarea></div>
+            </details>
           </div>
         </section>
-        <section class="grid" style="margin-top:16px">
-          ${active.exercises.map((entry, index) => renderExerciseLogCard(entry, index)).join('')}
-        </section>
+        ${renderExerciseFlashFlow()}
       `;
       restartElapsedClock();
+    }
+
+    function clampActiveExerciseIndex(index) {
+      const max = Math.max(0, (active?.exercises?.length || 1) - 1);
+      const value = Number.isFinite(Number(index)) ? Number(index) : 0;
+      return Math.min(max, Math.max(0, value));
+    }
+
+    function renderExerciseFlashFlow() {
+      if (!active?.exercises?.length) return '';
+      active.currentExerciseIndex = clampActiveExerciseIndex(active.currentExerciseIndex);
+      const index = active.currentExerciseIndex;
+      const entry = active.exercises[index];
+      const ex = getExercise(entry.id);
+      const total = active.exercises.length;
+      const completed = active.exercises.filter(item => {
+        const itemEx = getExercise(item.id);
+        return itemEx && (item.logs || []).length >= (itemEx.sets || 1);
+      }).length;
+      const pct = Math.round((completed / total) * 100);
+      const dots = active.exercises.map((item, i) => {
+        const itemEx = getExercise(item.id);
+        const done = itemEx && (item.logs || []).length >= (itemEx.sets || 1);
+        const label = itemEx?.name || `Exercise ${i + 1}`;
+        return `<button class="exercise-dot ${i === index ? 'active' : ''} ${done ? 'done' : ''}" data-action="jump-exercise" data-exercise-index="${i}" aria-label="Open ${esc(label)}" title="${esc(label)}">${done && i !== index ? '✓' : i + 1}</button>`;
+      }).join('');
+      return `
+        <section class="exercise-flash-shell">
+          <div class="card">
+            <div class="card-inner">
+              <div class="exercise-flash-nav">
+                <button class="btn small ghost" data-action="previous-exercise" ${index === 0 ? 'disabled' : ''} aria-label="Previous exercise">←</button>
+                <div class="exercise-flash-status">
+                  <strong>Exercise ${index + 1} of ${total}</strong>
+                  <span>${completed}/${total} targets completed</span>
+                </div>
+                <button class="btn small ghost" data-action="next-exercise" ${index === total - 1 ? 'disabled' : ''} aria-label="Next exercise">→</button>
+              </div>
+              <div class="exercise-progress-track"><div class="exercise-progress-fill" style="width:${pct}%"></div></div>
+              <div class="exercise-jump-row">${dots}</div>
+            </div>
+          </div>
+          <div class="exercise-flash-card" data-flash-card-index="${index}">
+            ${renderExerciseLogCard(entry, index)}
+          </div>
+          <div class="flash-bottom-nav ${index === 0 ? 'one' : ''}">
+            ${index > 0 ? '<button class="btn ghost" data-action="previous-exercise">← Previous exercise</button>' : ''}
+            ${index < total - 1
+              ? '<button class="btn primary" data-action="next-exercise">Next exercise →</button>'
+              : '<button class="btn green" data-action="finish-workout">Finish workout + save</button>'}
+          </div>
+        </section>
+      `;
+    }
+
+    function changeActiveExercise(delta) {
+      if (!active?.exercises?.length) return;
+      active.currentExerciseIndex = clampActiveExerciseIndex((active.currentExerciseIndex || 0) + delta);
+      saveActive();
+      render();
+      setTimeout(() => document.querySelector('.exercise-flash-shell')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 30);
+    }
+
+    function jumpToExercise(index) {
+      if (!active?.exercises?.length) return;
+      active.currentExerciseIndex = clampActiveExerciseIndex(index);
+      saveActive();
+      render();
+      setTimeout(() => document.querySelector('.exercise-flash-shell')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 30);
     }
 
     function renderExerciseLogCard(entry, index) {
       const ex = getExercise(entry.id);
       if (!ex) return '';
       const logs = entry.logs || [];
-      const rec = recommendationFor(ex);
       const recValue = getSessionWeightValue(entry, ex, recommendedInputValue(ex));
-      const last = state.exerciseProgress[ex.id]?.lastSummary || 'No previous log yet';
       return `
         <article class="card" data-card-index="${index}">
           <div class="card-inner">
@@ -1486,14 +2075,15 @@
               </div>
               <span class="target">${esc(ex.type)}</span>
             </div>
-            <div class="badge-row">
-              <span class="badge">Last: ${esc(last)}</span>
-              <span class="badge">Next: ${esc(rec)}</span>
-            </div>
+            ${renderPreviousWorkoutCard(ex)}
             ${renderExerciseCompletion(ex, logs)}
             ${logs.length ? renderLogTable(ex, logs, index) : `<div class="empty" style="margin-top:12px">No sets logged yet for this exercise.</div>`}
             ${renderLogInputs(ex, index, recValue)}
-            <div class="small-text" style="margin-top:10px">${esc(ex.cues || '')}</div>
+            <details class="exercise-note-details" ${entry.notes ? 'open' : ''}>
+              <summary>📝 Exercise note ${entry.notes ? '• saved' : ''}</summary>
+              <div class="details-body"><textarea data-input="exercise-note-${index}" placeholder="Setup, pain, grip, seat position, machine used…">${esc(entry.notes || '')}</textarea></div>
+            </details>
+            <div class="small-text" style="margin-top:10px"><strong>Form cue:</strong> ${esc(ex.cues || '')}</div>
           </div>
         </article>
       `;
@@ -1524,6 +2114,7 @@
         const weightValue = recValue ? cleanNumber(recValue) : '';
         return `
           ${renderQuickWeightControls(index, weightValue, 'Easy weight')}
+          ${renderSmithPlateCalculator(ex, index, weightValue)}
           ${renderSetOptions(index)}
           <div class="form-grid" style="margin-top:12px">
             <div class="field"><label>Weight (${esc(state.settings.units)})</label><input inputmode="decimal" data-input="weight-${index}" placeholder="${weightValue ? esc(weightValue) : 'ex: 80'}" value="${weightValue ? esc(weightValue) : ''}"></div>
@@ -1673,15 +2264,29 @@
       if (!active) return;
       const loggedCount = active.exercises.reduce((sum, ex) => sum + (ex.logs?.length || 0), 0);
       if (loggedCount === 0 && !confirm('No sets have been logged. Save anyway?')) return;
+      const priorScores = getCurrentPRScoreMap();
       const now = new Date().toISOString();
       const session = {
         ...active,
         endedAt: now,
         durationMs: new Date(now).getTime() - new Date(active.startedAt).getTime(),
-        completedAt: now
+        completedAt: now,
+        prs: []
       };
       state.history.push(session);
       rebuildProgressFromHistory();
+      const seen = new Set();
+      for (const entry of session.exercises || []) {
+        if (seen.has(entry.id)) continue;
+        seen.add(entry.id);
+        const ex = getExercise(entry.id);
+        const best = state.exerciseProgress[entry.id]?.bestSet;
+        if (!ex || !best || !Number.isFinite(priorScores[entry.id])) continue;
+        const after = ex.type === 'weighted' ? Number(best.estimate) : ex.type === 'bodyweight' ? Number(best.reps) : null;
+        if (Number.isFinite(after) && after > Number(priorScores[entry.id]) + 0.01) {
+          session.prs.push({ exerciseId: entry.id, name: ex.name, value: formatBestSet(ex, best), score: after, date: now });
+        }
+      }
       state.settings.currentDayIndex = (active.dayIndex + 1) % PLAN.length;
       active = null;
       saveActive();
@@ -1689,7 +2294,8 @@
       stopRestTimer();
       currentTab = 'history';
       render();
-      showToast(`Saved. Next up: Day ${getDay().day} • ${getDay().title}.`);
+      if (session.prs.length) showToast(`Saved • 🏆 ${session.prs.length} new PR${session.prs.length === 1 ? '' : 's'}!`);
+      else showToast(`Saved. Next up: Day ${getDay().day} • ${getDay().title}.`);
     }
 
     function cancelWorkout() {
@@ -1899,8 +2505,9 @@
       const exercises = session.exercises || [];
       const summaryRows = exercises.filter(e => e.logs?.length).slice(0, 7).map(entry => {
         const ex = getExercise(entry.id);
-        return `<div><strong>${esc(ex?.name || entry.id)}:</strong> ${esc(summarizeLogs(ex || { type:'weighted' }, entry.logs))}</div>`;
+        return `<div><strong>${esc(ex?.name || entry.id)}:</strong> ${esc(summarizeLogs(ex || { type:'weighted' }, entry.logs))}${entry.notes ? `<br><span class="muted">Note: ${esc(entry.notes)}</span>` : ''}</div>`;
       }).join('');
+      const prs = (session.prs || []).map(pr => `<span class="pr-badge">🏆 ${esc(pr.name)} • ${esc(pr.value)}</span>`).join('');
       return `
         <article class="history-card">
           <div class="history-card-head">
@@ -1910,6 +2517,8 @@
             </div>
             <button class="btn small danger" data-action="delete-session" data-session-id="${esc(session.id)}">Delete</button>
           </div>
+          ${session.sessionNote ? `<div class="history-note"><strong>Session note:</strong> ${esc(session.sessionNote)}</div>` : ''}
+          ${prs ? `<div>${prs}</div>` : ''}
           ${summaryRows ? `<div class="history-summary">${summaryRows}${exercises.filter(e => e.logs?.length).length > 7 ? '<div>…</div>' : ''}</div>` : `<div class="history-summary"><div>Rest day or no sets logged.</div></div>`}
         </article>
       `;
@@ -1926,6 +2535,7 @@
 
     function renderProgress() {
       const stats = getStats();
+      const cycle = getTrainingCycle();
       const prRows = getPRRows().slice(0, 12).map(pr => `
         <tr><td>${esc(pr.name)}</td><td>${esc(pr.value)}</td><td>${fmtDate(pr.date)}</td></tr>
       `).join('');
@@ -1939,11 +2549,12 @@
               <div class="stat"><div class="label">Lift sessions</div><div class="value">${stats.liftSessions}</div></div>
               <div class="stat"><div class="label">Rest days logged</div><div class="value">${stats.restSessions}</div></div>
               <div class="stat"><div class="label">Total sets</div><div class="value">${stats.totalSets}</div></div>
-              <div class="stat"><div class="label">Volume</div><div class="value">${Math.round(stats.totalVolume).toLocaleString()}</div></div>
+              <div class="stat"><div class="label">Cycle week</div><div class="value">${cycle.cycleWeek}/${cycle.length}</div></div>
             </div>
             ${renderBodySnapshotStats()}
           </div>
         </section>
+        ${renderWeeklyReviewCard()}
         <section class="grid two" style="margin-top:16px">
           <div class="card chart-card">
             <div class="card-inner">
@@ -1972,9 +2583,7 @@
 
     function renderBodySnapshotStats() {
       const metric = latestBodyMetric();
-      const metrics = [...state.bodyMetrics].sort((a,b) => new Date(a.date) - new Date(b.date));
-      const first = metrics[0];
-      const delta = metric && first && metrics.length > 1 ? Number(metric.weight) - Number(first.weight) : null;
+      const trend = getWeightTrend();
       const bf = Number(metric?.bodyFat);
       const leanMass = metric && Number.isFinite(Number(metric.weight)) && Number.isFinite(bf)
         ? Number(metric.weight) * (1 - bf / 100)
@@ -1982,9 +2591,9 @@
       return `
         <div class="body-snapshot-row stat-row">
           <div class="stat"><div class="label">Latest weight</div><div class="value">${metric ? `${esc(metric.weight)} ${esc(state.settings.units)}` : '—'}</div></div>
-          <div class="stat"><div class="label">Total change</div><div class="value">${delta !== null ? `${delta >= 0 ? '+' : ''}${delta.toFixed(1)}` : '—'}</div></div>
-          <div class="stat"><div class="label">Body fat</div><div class="value">${Number.isFinite(bf) ? `${cleanNumber(bf)}%` : '—'}</div></div>
-          <div class="stat"><div class="label">Est. lean mass</div><div class="value">${Number.isFinite(leanMass) ? `${cleanNumber(leanMass)} ${esc(state.settings.units)}` : '—'}</div></div>
+          <div class="stat"><div class="label">7-day average</div><div class="value">${Number.isFinite(trend.currentAvg) ? `${cleanNumber(trend.currentAvg)} ${esc(state.settings.units)}` : '—'}</div></div>
+          <div class="stat"><div class="label">30-day pace</div><div class="value ${weightTrendClass(trend)}">${esc(weightTrendText(trend))}</div></div>
+          <div class="stat"><div class="label">Body fat / lean</div><div class="value">${Number.isFinite(bf) ? `${cleanNumber(bf)}%` : '—'}</div><div class="small-text">${Number.isFinite(leanMass) ? `${cleanNumber(leanMass)} ${esc(state.settings.units)} est. lean` : 'Add body fat'}</div></div>
         </div>
       `;
     }
@@ -2038,10 +2647,11 @@
     }
 
     function renderBodyChart() {
-      const metrics = [...state.bodyMetrics].sort((a,b) => new Date(a.date) - new Date(b.date));
-      if (metrics.length < 2) return `<div class="empty">Add body weight entries to see a trend chart.</div>`;
+      const metrics = [...state.bodyMetrics].filter(m => Number.isFinite(Number(m.weight))).sort((a,b) => new Date(a.date) - new Date(b.date));
+      const trend = getWeightTrend();
+      if (metrics.length < 2) return `<div class="empty">Add body weight entries to see a trend chart. Aim for 3–4 morning readings per week.</div>`;
       const width = 640, height = 220, pad = 28;
-      const weights = metrics.map(m => Number(m.weight)).filter(Number.isFinite);
+      const weights = metrics.map(m => Number(m.weight));
       const minW = Math.min(...weights), maxW = Math.max(...weights);
       const span = Math.max(1, maxW - minW);
       const points = metrics.map((m, i) => {
@@ -2050,11 +2660,9 @@
         return `${x},${y}`;
       }).join(' ');
       const last = metrics[metrics.length - 1];
-      const first = metrics[0];
-      const delta = Number(last.weight) - Number(first.weight);
       return `
         <div class="big-metric">${esc(last.weight)} ${esc(state.settings.units)}</div>
-        <div class="small-text">Change: ${delta > 0 ? '+' : ''}${delta.toFixed(1)} ${esc(state.settings.units)} since ${fmtDate(first.date)}</div>
+        <div class="small-text">7-day average: ${Number.isFinite(trend.currentAvg) ? cleanNumber(trend.currentAvg) + ' ' + state.settings.units : 'collecting'} • <span class="${weightTrendClass(trend)}">${esc(weightTrendText(trend))}</span></div>
         <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Body weight chart">
           <polyline fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" points="${points}" opacity=".95"></polyline>
           ${metrics.map((m, i) => {
@@ -2063,6 +2671,7 @@
             return `<circle cx="${x}" cy="${y}" r="5" fill="currentColor"></circle>`;
           }).join('')}
         </svg>
+        <div class="coach-tip"><strong>Trend coach:</strong> ${esc(weightTrendGuidance(trend))}</div>
       `;
     }
 
@@ -2247,6 +2856,13 @@
                 <select data-setting="theme"><option value="dark" ${state.settings.theme === 'dark' ? 'selected' : ''}>Dark</option><option value="light" ${state.settings.theme === 'light' ? 'selected' : ''}>Light</option></select>
               </div>
             </div>
+            <div class="section-title"><h2 style="margin:0">Training tools</h2></div>
+            <div class="grid three">
+              <div class="field"><label>Coach mode</label><select data-setting="coachMode"><option value="fat_loss" ${state.settings.coachMode === 'fat_loss' ? 'selected' : ''}>Fat loss</option><option value="maintenance" ${state.settings.coachMode === 'maintenance' ? 'selected' : ''}>Maintenance</option><option value="muscle_gain" ${state.settings.coachMode === 'muscle_gain' ? 'selected' : ''}>Muscle gain</option></select></div>
+              <div class="field"><label>Smith starting resistance (${esc(state.settings.units)})</label><input inputmode="decimal" data-setting="smithBarWeight" value="${esc(state.settings.smithBarWeight)}"></div>
+              <div class="field"><label>Deload every (weeks)</label><input inputmode="numeric" data-setting="deloadEveryWeeks" value="${esc(state.settings.deloadEveryWeeks)}"></div>
+            </div>
+            <p class="small-text" style="margin-top:10px">For the Smith calculator, enter the starting resistance printed on the machine you use. The app will show plates per side.</p>
             <div class="section-title"><h2 style="margin:0">Coach goals</h2></div>
             <div class="goals-grid">
               <div class="field"><label>Daily calories</label><input inputmode="numeric" data-goal="dailyCalories" value="${esc(state.goals.dailyCalories)}"></div>
@@ -2259,7 +2875,7 @@
             <div class="quick-app-panel">
               <div class="quick-app-head">
                 <strong>Quick app buttons</strong>
-                <span>These power the PF and music buttons at the top of the app and on Today.</span>
+                <span>These power the PF and music buttons on Today and during an active workout.</span>
               </div>
               <div class="grid two" style="margin-top:12px">
                 <div class="field"><label>Planet Fitness button URL</label><input data-setting="pfAppUrl" value="${esc(state.settings.pfAppUrl || quickAppDefaults().pfAppUrl)}"></div>
@@ -2308,6 +2924,7 @@
             <p class="muted">Your data stays on your phone. Tap this to share or copy a clean check-in report, then paste it into ChatGPT so I can review your progress and adjust the plan.</p>
             <div class="toolbar">
               <button class="btn green" data-action="share-coach-report">Share / copy coach report</button>
+              <button class="btn" data-action="share-weekly-review">Share weekly review</button>
               <button class="btn" data-action="export-data">Download full backup</button>
             </div>
             <details class="coach-details">
@@ -2325,6 +2942,9 @@
       const units = $('[data-setting="units"]')?.value || 'lb';
       const theme = $('[data-setting="theme"]')?.value || 'dark';
       const autoRest = $('[data-setting="autoRest"]')?.checked ?? true;
+      const coachMode = $('[data-setting="coachMode"]')?.value || 'fat_loss';
+      const smithBarWeight = parseFloat($('[data-setting="smithBarWeight"]')?.value);
+      const deloadEveryWeeks = parseInt($('[data-setting="deloadEveryWeeks"]')?.value, 10);
       const pfAppUrl = $('[data-setting="pfAppUrl"]')?.value?.trim();
       const musicAppUrl = $('[data-setting="musicAppUrl"]')?.value?.trim();
       state.settings.currentDayIndex = Number.isFinite(day) ? day : state.settings.currentDayIndex;
@@ -2332,6 +2952,9 @@
       state.settings.units = units;
       state.settings.theme = theme;
       state.settings.autoRest = autoRest;
+      state.settings.coachMode = ['fat_loss', 'maintenance', 'muscle_gain'].includes(coachMode) ? coachMode : 'fat_loss';
+      state.settings.smithBarWeight = Number.isFinite(smithBarWeight) && smithBarWeight >= 0 ? smithBarWeight : 20;
+      state.settings.deloadEveryWeeks = clamp(Number.isFinite(deloadEveryWeeks) ? deloadEveryWeeks : 8, 4, 16);
       state.settings.pfAppUrl = safeLaunchUrl(pfAppUrl) || quickAppDefaults().pfAppUrl;
       state.settings.musicAppUrl = safeLaunchUrl(musicAppUrl) || quickAppDefaults().musicAppUrl;
       state.settings.pfFallbackUrl = state.settings.pfFallbackUrl || quickAppDefaults().pfFallbackUrl;
@@ -2353,25 +2976,29 @@
       const next = getDay();
       const metrics = [...state.bodyMetrics].sort((a,b) => new Date(a.date) - new Date(b.date));
       const lastMetric = metrics[metrics.length - 1];
-      const firstMetric = metrics[0];
+      const trend = getWeightTrend();
       const checks = recentCheckins(7);
+      const weekly = getWeeklyReview();
       const recent = [...state.history].sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt)).slice(0, 6);
       const lines = [];
-      lines.push('PF WORKOUT COACH v7 — COACH CHECK-IN');
+      lines.push('PF WORKOUT COACH v9 — COACH CHECK-IN');
       lines.push(`Generated: ${new Date().toLocaleString()}`);
       lines.push(`Next workout: Day ${next.day} — ${next.title} (${typeLabel(next)}: ${next.focus})`);
+      lines.push(`Coach mode: ${coachModeLabel()}; training cycle week ${weekly.cycle.cycleWeek} of ${weekly.cycle.length}.`);
       lines.push(`Stats: ${stats.liftSessions} lift sessions, ${stats.restSessions} rest days, ${stats.thisWeek} completed in the last 7 days, ${stats.totalSets} logged sets, ${Math.round(stats.totalVolume).toLocaleString()} total volume.`);
       lines.push(`Goals: ${state.goals.dailyCalories} calories, ${state.goals.dailyProtein}g protein, ${state.goals.dailySteps.toLocaleString ? state.goals.dailySteps.toLocaleString() : state.goals.dailySteps} steps, target body fat ${state.goals.targetBodyFat}%.`);
       if (lastMetric) {
-        const delta = firstMetric ? Number(lastMetric.weight) - Number(firstMetric.weight) : 0;
         const parts = [`latest ${lastMetric.weight} ${state.settings.units}`];
+        if (Number.isFinite(trend.currentAvg)) parts.push(`7-day average ${cleanNumber(trend.currentAvg)} ${state.settings.units}`);
+        parts.push(`30-day pace ${Number.isFinite(trend.weeklyRate) ? weightTrendText(trend) : 'not enough readings yet'}`);
         if (lastMetric.bodyFat) parts.push(`body fat ${lastMetric.bodyFat}%`);
         if (lastMetric.waist) parts.push(`waist ${lastMetric.waist}`);
         if (lastMetric.skeletalMuscle) parts.push(`skeletal muscle ${lastMetric.skeletalMuscle}%`);
         if (lastMetric.muscleMass) parts.push(`muscle mass ${lastMetric.muscleMass} ${state.settings.units}`);
         if (lastMetric.visceralFat) parts.push(`visceral fat ${lastMetric.visceralFat}`);
         if (lastMetric.bmr) parts.push(`BMR ${lastMetric.bmr}`);
-        lines.push(`Body metrics: ${parts.join(', ')} on ${fmtDate(lastMetric.date)}${firstMetric && metrics.length > 1 ? `; weight change ${delta >= 0 ? '+' : ''}${delta.toFixed(1)} ${state.settings.units} since ${fmtDate(firstMetric.date)}` : ''}.`);
+        lines.push(`Body metrics: ${parts.join(', ')} on ${fmtDate(lastMetric.date)}.`);
+        lines.push(`Body-trend coaching: ${weightTrendGuidance(trend)}`);
       } else {
         lines.push('Body metrics: none logged yet.');
       }
@@ -2384,6 +3011,9 @@
       } else {
         lines.push('Nutrition/recovery: no daily check-ins logged yet.');
       }
+      lines.push(`Weekly review: ${weekly.complete ? `grade ${weekly.grade} (${weekly.score}/100)` : `in progress, day ${weekly.daysObserved || 1} of 7`}; ${weekly.liftSessions.length}/5 lift days, ${weekly.workingSets} working sets, ${cleanNumber(weekly.cardioMinutes)} cardio minutes.`);
+      lines.push('Weekly adjustments:');
+      weekly.adjustments.slice(0, 4).forEach(item => lines.push(`- ${item}`));
       lines.push('Set feel legend: 🟢 easy, 🟡 just right, 🔴 hard. WU means warm-up set ignored for recommendations.');
       lines.push('');
       lines.push('Recent sessions:');
@@ -2392,10 +3022,11 @@
       } else {
         recent.forEach(session => {
           const setCount = (session.exercises || []).reduce((sum, entry) => sum + ((entry.logs || []).length), 0);
-          lines.push(`- ${fmtDate(session.startedAt)} — Day ${session.day} ${session.title} (${session.type === 'rest' ? 'rest' : formatDuration(session.durationMs || 0)}), ${setCount} logs`);
-          (session.exercises || []).filter(entry => entry.logs?.length).slice(0, 6).forEach(entry => {
+          lines.push(`- ${fmtDate(session.startedAt)} — Day ${session.day} ${session.title} (${session.type === 'rest' ? 'rest' : formatDuration(session.durationMs || 0)}), ${setCount} logs${session.prs?.length ? `, ${session.prs.length} PR` : ''}`);
+          if (session.sessionNote) lines.push(`  Session note: ${session.sessionNote}`);
+          (session.exercises || []).filter(entry => entry.logs?.length).slice(0, 7).forEach(entry => {
             const ex = getExercise(entry.id) || { name: entry.id, type: 'weighted' };
-            lines.push(`  • ${ex.name}: ${summarizeLogs(ex, entry.logs)}`);
+            lines.push(`  • ${ex.name}: ${summarizeLogs(ex, entry.logs)}${entry.notes ? ` | Note: ${entry.notes}` : ''}`);
           });
         });
       }
@@ -2404,7 +3035,7 @@
       const recs = Object.entries(state.exerciseProgress)
         .map(([id, progress]) => ({ ex: getExercise(id), progress }))
         .filter(item => item.ex && item.progress?.note)
-        .slice(0, 18);
+        .slice(0, 20);
       if (!recs.length) {
         lines.push('- None yet. Log a workout first.');
       } else {
@@ -2413,7 +3044,7 @@
         });
       }
       lines.push('');
-      lines.push('Ask: Review this and tell me what to adjust for fat loss and muscle definition.');
+      lines.push('Ask: Review this and tell me what to adjust for fat loss, muscle definition, recovery, and progressive overload.');
       return lines.join('\n');
     }
 
@@ -2489,7 +3120,14 @@
           const incoming = parsed.data || parsed;
           if (!incoming.history || !incoming.settings) throw new Error('Invalid backup');
           if (!confirm('Import this backup? It will replace the current data in this browser.')) return;
-          const next = Object.assign(defaultState(), incoming);
+          const defaults = defaultState();
+          const next = Object.assign({}, defaults, incoming);
+          next.settings = Object.assign({}, defaults.settings, incoming.settings || {});
+          next.goals = Object.assign({}, defaults.goals, incoming.goals || {});
+          next.exerciseProgress = incoming.exerciseProgress || {};
+          next.history = Array.isArray(incoming.history) ? incoming.history : [];
+          next.bodyMetrics = Array.isArray(incoming.bodyMetrics) ? incoming.bodyMetrics : [];
+          next.dailyCheckins = Array.isArray(incoming.dailyCheckins) ? incoming.dailyCheckins : [];
           Object.keys(state).forEach(k => delete state[k]);
           Object.assign(state, next);
           rebuildProgressFromHistory();
@@ -2595,6 +3233,9 @@
       if (action === 'start-workout') startWorkout();
       if (action === 'finish-workout') finishWorkout();
       if (action === 'cancel-workout') cancelWorkout();
+      if (action === 'previous-exercise') changeActiveExercise(-1);
+      if (action === 'next-exercise') changeActiveExercise(1);
+      if (action === 'jump-exercise') jumpToExercise(Number(btn.dataset.exerciseIndex));
       if (action === 'mark-rest-complete') markRestComplete();
       if (action === 'advance-day') { state.settings.currentDayIndex = (state.settings.currentDayIndex + 1) % PLAN.length; saveState(); render(); showToast(`Next up: Day ${getDay().day} • ${getDay().title}.`); }
       if (action === 'change-current-day') return;
@@ -2609,6 +3250,8 @@
       if (action === 'save-metric') saveMetric();
       if (action === 'save-checkin') saveDailyCheckin();
       if (action === 'go-progress') { currentTab = 'progress'; render(); }
+      if (action === 'go-weekly-review') { currentTab = 'progress'; render(); setTimeout(() => $('#weeklyReview')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 40); }
+      if (action === 'share-weekly-review') shareWeeklyReview();
       if (action === 'save-settings') saveSettingsFromUI();
       if (action === 'export-data') exportData();
       if (action === 'share-coach-report') shareCoachReport();
@@ -2630,8 +3273,34 @@
     }
 
     function handleInput(event) {
+      if (!active) {
+        const plateOnly = event.target.closest('[data-plate-target], [data-plate-bar]');
+        if (plateOnly) updatePlateCalculator(Number(plateOnly.dataset.plateTarget ?? plateOnly.dataset.plateBar));
+        return;
+      }
+      const sessionNote = event.target.closest('[data-input="session-note"]');
+      if (sessionNote) {
+        active.sessionNote = sessionNote.value;
+        saveActive();
+        return;
+      }
+      const exerciseNote = event.target.closest('[data-input^="exercise-note-"]');
+      if (exerciseNote) {
+        const index = Number(String(exerciseNote.dataset.input || '').split('-').pop());
+        if (Number.isInteger(index) && active.exercises[index]) {
+          active.exercises[index].notes = exerciseNote.value;
+          saveActive();
+        }
+        return;
+      }
+      const plateInput = event.target.closest('[data-plate-target], [data-plate-bar]');
+      if (plateInput) {
+        const index = Number(plateInput.dataset.plateTarget ?? plateInput.dataset.plateBar);
+        updatePlateCalculator(index);
+        return;
+      }
       const input = event.target.closest('[data-input^="weight-"]');
-      if (!input || !active) return;
+      if (!input) return;
       const index = Number(String(input.dataset.input || '').split('-')[1]);
       if (!Number.isInteger(index) || !active.exercises[index]) return;
       const weight = Number(input.value);
@@ -2640,6 +3309,8 @@
       saveActive();
       const label = $(`[data-current-weight="${index}"]`);
       if (label) label.textContent = `${cleanNumber(weight)} ${state.settings.units}`;
+      const plateTarget = $(`[data-plate-target="${index}"]`);
+      if (plateTarget) { plateTarget.value = cleanNumber(weight); updatePlateCalculator(index); }
     }
 
 
