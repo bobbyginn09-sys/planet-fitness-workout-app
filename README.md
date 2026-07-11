@@ -1,6 +1,6 @@
-# ATLAS 2.1.2.2 — Workout Coach
+# ATLAS 2.2.0 — Workout Coach
 
-ATLAS 2.1.2 is the branded, iPhone-first redesign of the workout app. It keeps the same saved-data keys as previous PF Workout Coach / Atlas builds, so existing workout history should remain available when the files are uploaded to the same GitHub Pages address.
+ATLAS 2.2.0 is the branded, iPhone-first redesign of the workout app. It keeps the same saved-data keys as previous PF Workout Coach / Atlas builds, so existing workout history should remain available when the files are uploaded to the same GitHub Pages address.
 
 ## What changed
 
@@ -36,14 +36,14 @@ The `brand` folder contains the mark, wordmark, concept board, and written brand
 1. In the current app, open **More → Backup & restore → Export** and save the JSON backup.
 2. Upload every file and folder from this package to the repository root, replacing the old files.
 3. Commit the changes.
-4. Open the site once with `?atlas=2.1.2` appended.
+4. Open the site once with `?atlas=2.2.0` appended.
 5. Open **More → Backup & restore → Refresh app cache**.
 6. Fully close and reopen the Home Screen app.
 
 Example:
 
 ```text
-https://bobbyginn09-sys.github.io/planet-fitness-workout-app/?atlas=2.1.2
+https://bobbyginn09-sys.github.io/planet-fitness-workout-app/?atlas=2.2.0
 ```
 
 ## App icon note
@@ -52,7 +52,7 @@ Safari may keep the old Home Screen icon after the website files change. If the 
 
 ## Data compatibility
 
-ATLAS 2.1.2 keeps:
+ATLAS 2.2.0 keeps:
 
 ```text
 pfWorkoutApp.v1
