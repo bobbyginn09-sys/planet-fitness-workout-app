@@ -1,9 +1,8 @@
-const CACHE_NAME = 'atlas-workout-v2-1-20260711-1';
+const CACHE_NAME = 'atlas-workout-v2-1-2-20260711-1';
 const ASSETS = [
   './',
   './index.html',
   './manifest.webmanifest',
-  './icons/atlas-mark.svg',
   './icons/apple-touch-icon.png',
   './icons/icon-192.png',
   './icons/icon-512.png',
