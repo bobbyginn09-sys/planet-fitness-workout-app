@@ -3,7 +3,7 @@
 
     const STORAGE_KEY = 'pfWorkoutApp.v1';
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
-    const APP_VERSION = 'nexset-3.1.0';
+    const APP_VERSION = 'nexset-3.1.1';
 
     const PLAN = [
       {
@@ -308,6 +308,74 @@
     function sessionWorkingSets(session) { return (session.exercises||[]).reduce((sum,e)=>sum+workingLogs(e.logs||[]).length,0); }
     function sessionCardioMinutes(session) { let total=0; for(const e of session.exercises||[]){ const ex=getExercise(e.id); if(ex&&(ex.type==='cardio'||ex.type==='timed')) for(const log of e.logs||[]) total += Number(log.duration)||0; } return Math.round(total*100)/100; }
 
+
+    function figureModeForDay(day) {
+      const text=`${day?.title||''} ${day?.focus||''}`.toLowerCase();
+      if(text.includes('push')) return 'push';
+      if(text.includes('pull')) return 'pull';
+      if(text.includes('leg')) return 'legs';
+      if(text.includes('recover')||text.includes('rest')||text.includes('cardio')||text.includes('mobility')) return 'recovery';
+      return 'push';
+    }
+
+    function resolveSessionDay(session) {
+      if(Number.isInteger(session?.dayIndex) && PLAN[session.dayIndex]) return PLAN[session.dayIndex];
+      const title=String(session?.title||'').toLowerCase();
+      return PLAN.find(day => String(day.title||'').toLowerCase()===title) || {title: session?.title || 'Workout', focus: session?.focus || ''};
+    }
+
+    function renderMuscleFigure(day, compact=false) {
+      const mode = figureModeForDay(day);
+      let highlights = '';
+      if(mode==='push') highlights = `
+        <ellipse cx="106" cy="118" rx="27" ry="21" transform="rotate(-12 106 118)" fill="url(#muscleRed)" filter="url(#redGlow)"/>
+        <ellipse cx="174" cy="118" rx="27" ry="21" transform="rotate(12 174 118)" fill="url(#muscleRed)" filter="url(#redGlow)"/>
+        <ellipse cx="72" cy="110" rx="18" ry="22" transform="rotate(-20 72 110)" fill="url(#muscleRed)" filter="url(#redGlow)"/>
+        <ellipse cx="208" cy="110" rx="18" ry="22" transform="rotate(20 208 110)" fill="url(#muscleRed)" filter="url(#redGlow)"/>
+        <ellipse cx="56" cy="154" rx="15" ry="29" transform="rotate(7 56 154)" fill="url(#muscleRed)" filter="url(#redGlow)"/>
+        <ellipse cx="224" cy="154" rx="15" ry="29" transform="rotate(-7 224 154)" fill="url(#muscleRed)" filter="url(#redGlow)"/>
+      `;
+      else if(mode==='pull') highlights = `
+        <path d="M92 118c-17 8-27 22-29 43 7 19 19 29 37 32 8-21 4-49-8-75Z" fill="url(#muscleRed)" filter="url(#redGlow)" opacity=".95"/>
+        <path d="M188 118c17 8 27 22 29 43-7 19-19 29-37 32-8-21-4-49 8-75Z" fill="url(#muscleRed)" filter="url(#redGlow)" opacity=".95"/>
+        <ellipse cx="69" cy="153" rx="16" ry="27" transform="rotate(8 69 153)" fill="url(#muscleRed)" filter="url(#redGlow)"/>
+        <ellipse cx="211" cy="153" rx="16" ry="27" transform="rotate(-8 211 153)" fill="url(#muscleRed)" filter="url(#redGlow)"/>
+        <path d="M102 88c24 7 52 7 76 0 7 9 5 17-4 23-22 8-46 8-68 0-9-6-11-14-4-23Z" fill="url(#muscleRed)" filter="url(#redGlow)" opacity=".9"/>
+      `;
+      else if(mode==='legs') highlights = `
+        <ellipse cx="118" cy="246" rx="23" ry="51" fill="url(#muscleRed)" filter="url(#redGlow)"/>
+        <ellipse cx="162" cy="246" rx="23" ry="51" fill="url(#muscleRed)" filter="url(#redGlow)"/>
+        <ellipse cx="112" cy="314" rx="16" ry="29" fill="url(#muscleRed)" filter="url(#redGlow)"/>
+        <ellipse cx="168" cy="314" rx="16" ry="29" fill="url(#muscleRed)" filter="url(#redGlow)"/>
+      `;
+      else highlights = `
+        <ellipse cx="106" cy="118" rx="27" ry="21" transform="rotate(-12 106 118)" fill="url(#recoveryBlue)" filter="url(#blueGlow)" opacity=".7"/>
+        <ellipse cx="174" cy="118" rx="27" ry="21" transform="rotate(12 174 118)" fill="url(#recoveryBlue)" filter="url(#blueGlow)" opacity=".7"/>
+        <ellipse cx="118" cy="246" rx="23" ry="51" fill="url(#recoveryBlue)" filter="url(#blueGlow)" opacity=".5"/>
+        <ellipse cx="162" cy="246" rx="23" ry="51" fill="url(#recoveryBlue)" filter="url(#blueGlow)" opacity=".5"/>
+      `;
+      return `<div class="muscle-figure${compact?' compact':''}" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 360" role="img" aria-label="Muscle focus figure">
+        <defs>
+          <linearGradient id="steel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2A3644"/><stop offset="1" stop-color="#0A0F15"/></linearGradient>
+          <linearGradient id="muscleRed" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FF6262"/><stop offset=".45" stop-color="#FF2222"/><stop offset="1" stop-color="#8E0000"/></linearGradient>
+          <linearGradient id="recoveryBlue" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#44C4FF"/><stop offset="1" stop-color="#006CF1"/></linearGradient>
+          <filter id="redGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="blueGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="shadow" x="-40%" y="-30%" width="180%" height="180%"><feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#000" flood-opacity=".65"/></filter>
+        </defs>
+        <g filter="url(#shadow)">
+          <path d="M117 27c8-10 38-10 46 0l8 27-9 30h-44l-9-30Z" fill="url(#steel)" stroke="#44576E" stroke-width="2"/>
+          <path d="M105 70 67 84 29 123 45 178l42-21 17-30 9 53-18 123h90l-18-123 9-53 17 30 42 21 16-55-37-39-39-14-19 21h-32Z" fill="url(#steel)" stroke="#36465B" stroke-width="2"/>
+          <path d="M67 84 28 123 15 197l25 10 26-50 24-29-9-30Z" fill="#101821" stroke="#334155" stroke-width="2"/>
+          <path d="m213 84 39 39 13 74-25 10-26-50-24-29 9-30Z" fill="#101821" stroke="#334155" stroke-width="2"/>
+          ${highlights}
+          <path d="M112 148h25v39h-31Zm31 0h25l6 39h-31Zm-39 47h33v42h-39Zm39 0h33l6 42h-39Zm-47 51h41v48H89Zm47 0h41l7 48h-48Z" fill="#111822" stroke="#35465D" stroke-width="2"/>
+          <path d="M140 78v216M92 88c16 10 31 14 48 14s32-4 48-14" fill="none" stroke="#B9C4D4" stroke-opacity=".2" stroke-width="2"/>
+          <path d="M55 190 88 160m137 30-33-30M111 59h58" fill="none" stroke="#5A6A7D" stroke-width="2" stroke-linecap="round"/>
+        </g>
+      </svg></div>`;
+    }
+
     function renderHome() {
       const day=getDay(), st=stats(), metric=latestBodyMetric(), trend=getWeightTrend();
       const isRest=day.type==='rest', resume=Boolean(active), name=state.settings.profileName||'Athlete';
@@ -317,7 +385,7 @@
         <div class="home-screen home-dashboard">
           <div class="home-welcome"><div><h1>Welcome back, ${esc(name)}.</h1><p>${isRest?'Recovery is part of the work.':'Let’s get stronger today.'}</p></div></div>
           <section class="today-card reference-today-card">
-            <img class="workout-figure" src="nexset-strength-figure.svg" alt="" aria-hidden="true">
+            ${renderMuscleFigure(day)}
             <div class="today-card-content">
               <div class="section-kicker">${resume?'Workout in progress':'Today’s workout'}</div>
               <h2>${esc(day.title)}</h2>
@@ -707,7 +775,7 @@
     function openBodySheet(){
       closeBodySheet();
       const metric=latestBodyMetric();
-      document.body.insertAdjacentHTML('beforeend',`<div class="sheet-backdrop" id="bodySheet" data-action="close-body-sheet"><section class="bottom-sheet body-quick-sheet" role="dialog" aria-modal="true" aria-label="Log today’s body metrics" onclick="event.stopPropagation()"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">Daily check-in</span><h2>Log body metrics</h2><p class="muted" style="margin:5px 0 0;font-size:12px">Weight is required. Everything else is optional.</p></div><button data-action="close-body-sheet" aria-label="Close">×</button></div>${renderBodyForm(metric)}</section></div>`);
+      document.body.insertAdjacentHTML('beforeend',`<div class="sheet-backdrop" id="bodySheet" data-action="close-body-sheet"><section class="bottom-sheet body-quick-sheet" role="dialog" aria-modal="true" aria-label="Log today’s body metrics"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">Daily check-in</span><h2>Log body metrics</h2><p class="muted" style="margin:5px 0 0;font-size:12px">Weight is required. Everything else is optional.</p></div><button data-action="close-body-sheet" aria-label="Close">×</button></div>${renderBodyForm(metric)}</section></div>`);
       setTimeout(()=>document.querySelector('#bodySheet [data-body="weight"]')?.focus(),120);
     }
     function closeBodySheet(){document.querySelector('#bodySheet')?.remove();}
@@ -729,7 +797,7 @@
         <section class="program-list">${PLAN.map((day,i)=>`<button class="program-row ${i===state.settings.currentDayIndex?'selected':''} ${completed.has(i)?'completed':''}" data-action="select-plan-day" data-index="${i}"><span class="program-weekday">${weekdays[i]}</span><span class="program-copy"><b>${esc(day.title)}</b><small>${esc(day.focus)}</small></span><span class="program-state">${completed.has(i)?'✓':i===state.settings.currentDayIndex?'›':'○'}</span></button>`).join('')}</section>
         <details class="program-detail-drawer"><summary><span><b>${esc(selected.title)}</b><small>${estimatedMinutes(selected)} min · ${selected.exercises.length} exercises</small></span><strong>View details⌄</strong></summary><div class="program-detail-body"><div class="program-focus-note"><span>Focus</span><p>${esc(selected.note)}</p></div><div class="compact-exercise-list">${selected.exercises.map((ex,i)=>`<div><span>${i+1}</span><p><strong>${esc(ex.name)}</strong><small>${esc(ex.equipment||'')}</small></p><b>${esc(targetLabel(ex))}</b></div>`).join('')}</div></div></details>
         <div class="program-recent-head"><span>Recent workouts</span><button data-action="open-history">View all</button></div>
-        <section class="program-recent-list">${sessions.length?sessions.map(s=>`<button class="program-history-card" data-action="open-history"><span class="history-mark"><img src="nexset-mark.svg" alt=""></span><span class="history-card-copy"><b>${esc(s.title||'Workout')}</b><small>${fmtDate(s.startedAt)} · ${formatDuration(s.durationMs)}</small><span><i>Volume</i><strong>${sessionVolume(s).toLocaleString()} lb</strong><i>Sets</i><strong>${sessionWorkingSets(s)}</strong></span></span><em>✓</em></button>`).join(''):'<div class="program-empty">Your completed workouts will appear here.</div>'}</section>
+        <section class="program-recent-list">${sessions.length?sessions.map(s=>`<button class="program-history-card" data-action="open-history"><span class="history-mark">${renderMuscleFigure(resolveSessionDay(s), true)}</span><span class="history-card-copy"><b>${esc(s.title||'Workout')}</b><small>${fmtDate(s.startedAt)} · ${formatDuration(s.durationMs)}</small><span><i>Volume</i><strong>${sessionVolume(s).toLocaleString()} lb</strong><i>Sets</i><strong>${sessionWorkingSets(s)}</strong></span></span><em>✓</em></button>`).join(''):'<div class="program-empty">Your completed workouts will appear here.</div>'}</section>
       </div>`;
     }
 
@@ -739,7 +807,7 @@
       if(moreSection==='coach'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><section class="card"><div class="card-pad"><div class="eyebrow">Coach</div><h1 style="margin-top:8px">Check-in</h1><p class="muted">Share your workouts, body trends, and next-weight recommendations with ChatGPT.</p><button class="btn green block" data-action="share-coach">Share full check-in</button><button class="btn block" style="margin-top:10px" data-action="share-weekly">Share weekly review</button></div></section></div>`; return; }
       if(moreSection==='settings'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><div class="page-title-row"><div><div class="eyebrow">Preferences</div><h1>Settings</h1></div></div>${renderSettings()}</div>`; return; }
       if(moreSection==='backup'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><section class="card"><div class="card-pad"><div class="eyebrow">Your data</div><h1 style="margin-top:8px">Backup</h1><p class="muted">Workout data stays on this device. Export a backup before changing phones or clearing Safari data.</p><div class="button-row"><button class="btn primary" data-action="export-backup">Export</button><button class="btn" data-action="import-backup">Import</button></div><button class="btn block" style="margin-top:10px" data-action="refresh-cache">Refresh app cache</button><button class="btn danger block" style="margin-top:10px" data-action="reset-app">Reset app data</button></div></section></div>`; return; }
-      $('#view').innerHTML=`<div class="stack"><div class="page-title-row"><div><div class="eyebrow">NEXSET</div><h1>More</h1></div></div><section class="card"><div class="more-menu"><button data-action="more-section" data-section="history"><span class="menu-icon">↺</span><div><strong>History</strong><small>${sessions.length} saved sessions</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">N</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-nexset"><img src="nexset-mark.svg" alt=""><span>NEXSET 3.1.0</span><small>Progress Starts With Your Next Set.</small></div></div>`;
+      $('#view').innerHTML=`<div class="stack"><div class="page-title-row"><div><div class="eyebrow">NEXSET</div><h1>More</h1></div></div><section class="card"><div class="more-menu"><button data-action="more-section" data-section="history"><span class="menu-icon">↺</span><div><strong>History</strong><small>${sessions.length} saved sessions</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">N</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-nexset"><img src="nexset-mark.svg" alt=""><span>NEXSET 3.1.1</span><small>Progress Starts With Your Next Set.</small></div></div>`;
     }
 
     function renderHistoryCard(s){const sets=sessionWorkingSets(s),volume=sessionVolume(s),cardio=sessionCardioMinutes(s);return`<details class="history-card"><summary><div class="history-top"><div><strong style="font-size:18px">${esc(s.title||'Workout')}</strong><div class="muted" style="font-size:12px;margin-top:4px">${fmtDate(s.startedAt)} · ${formatDuration(s.durationMs)}</div></div><span class="target-pill">${s.type==='rest'?'☁️ Rest':s.prs?.length?`🏆 ${s.prs.length} PR`:'✓ Done'}</span></div><div class="history-stats"><span class="chip">${sets} sets</span><span class="chip">${volume.toLocaleString()} lb</span>${cardio?`<span class="chip">${cardio} min cardio</span>`:''}</div></summary><div class="history-body">${s.sessionNote?`<div class="soft-card"><strong>Session note</strong><p class="muted" style="margin:6px 0 0">${esc(s.sessionNote)}</p></div>`:''}${(s.exercises||[]).map(entry=>{const ex=getExercise(entry.id);if(!ex||(entry.logs||[]).length===0)return'';return`<div class="history-ex"><strong>${esc(ex.name)}</strong><div class="set-inline">${(entry.logs||[]).map(log=>`<span class="set-chip ${log.warmup?'wu':''}">${esc(formatLogShort(ex,log))} ${ex.type==='weighted'||ex.type==='bodyweight'?feelEmoji(log.feel):''}</span>`).join('')}</div>${entry.notes?`<div class="muted" style="font-size:12px;margin-top:7px">Note: ${esc(entry.notes)}</div>`:''}</div>`;}).join('')}<button class="btn danger block" data-action="delete-session" data-id="${esc(s.id)}">Delete session</button></div></details>`;}
@@ -748,14 +816,14 @@
 
     function saveSettings(){$$('[data-setting]').forEach(input=>{const key=input.dataset.setting;let value=input.value;if(['restSeconds','smithBarWeight'].includes(key))value=Number(value);state.settings[key]=value;});$$('[data-setting-check]').forEach(input=>state.settings[input.dataset.settingCheck]=input.checked);$$('[data-goal]').forEach(input=>{const n=Number(input.value);if(Number.isFinite(n))state.goals[input.dataset.goal]=n;});saveState();render();showToast('Settings saved.');}
 
-    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`NEXSET 3.1.0 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
-    function weeklyReportText(){const w=weeklyReview();return[`NEXSET 3.1.0 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
+    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`NEXSET 3.1.1 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
+    function weeklyReportText(){const w=weeklyReview();return[`NEXSET 3.1.1 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
     async function shareText(text,title){try{if(navigator.share){await navigator.share({title,text});return;}await navigator.clipboard.writeText(text);showToast('Copied. Paste it into ChatGPT.');}catch(err){if(err?.name!=='AbortError'){downloadBlob(`${title.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.txt`,text,'text/plain');showToast('Report downloaded.');}}}
 
     function openApp(kind){const url=kind==='music'?state.settings.musicAppUrl:state.settings.pfAppUrl,fallback=kind==='music'?state.settings.musicFallbackUrl:state.settings.pfFallbackUrl;if(!url){showToast('Add this app link in More → Settings.');return;}try{window.location.href=url;setTimeout(()=>{if(!document.hidden&&fallback&&!url.startsWith('shortcuts:'))window.open(fallback,'_blank','noopener');},1200);}catch(_){if(fallback)window.open(fallback,'_blank','noopener');}}
     function openQuickMenu(){
       $('#quickMenu')?.remove();
-      document.body.insertAdjacentHTML('beforeend',`<div class="sheet-backdrop" id="quickMenu" data-action="close-quick-menu"><section class="bottom-sheet quick-menu-sheet" role="dialog" aria-modal="true" aria-label="Quick actions" onclick="event.stopPropagation()"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">NEXSET</span><h2>Quick actions</h2></div><button data-action="close-quick-menu" aria-label="Close">×</button></div><div class="quick-action-list"><button data-action="open-app" data-app="pf"><span>PF</span><div><strong>Planet Fitness</strong><small>Check in or view the crowd meter</small></div><b>›</b></button><button data-action="open-app" data-app="music"><span>♫</span><div><strong>Apple Music</strong><small>Start your gym music</small></div><b>›</b></button><button data-action="share-coach"><span>N</span><div><strong>Coach check-in</strong><small>Share your latest training report</small></div><b>›</b></button></div></section></div>`);
+      document.body.insertAdjacentHTML('beforeend',`<div class="sheet-backdrop" id="quickMenu" data-action="close-quick-menu"><section class="bottom-sheet quick-menu-sheet" role="dialog" aria-modal="true" aria-label="Quick actions"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">NEXSET</span><h2>Quick actions</h2></div><button data-action="close-quick-menu" aria-label="Close">×</button></div><div class="quick-action-list"><button data-action="open-app" data-app="pf"><span>PF</span><div><strong>Planet Fitness</strong><small>Check in or view the crowd meter</small></div><b>›</b></button><button data-action="open-app" data-app="music"><span>♫</span><div><strong>Apple Music</strong><small>Start your gym music</small></div><b>›</b></button><button data-action="share-coach"><span>N</span><div><strong>Coach check-in</strong><small>Share your latest training report</small></div><b>›</b></button></div></section></div>`);
     }
     function closeQuickMenu(){ $('#quickMenu')?.remove(); }
 
@@ -770,7 +838,7 @@
 
     document.addEventListener('click',event=>{
       const viewBtn=event.target.closest('[data-view]');if(viewBtn){haptic('light');currentView=viewBtn.dataset.view;render();return;}
-      const btn=event.target.closest('[data-action]');if(!btn)return;const action=btn.dataset.action;
+      const btn=event.target.closest('[data-action]');if(!btn)return;if(btn.classList.contains('sheet-backdrop')&&event.target!==btn)return;const action=btn.dataset.action;
       haptic(['finish-workout','complete-done','mark-rest','save-body'].includes(action)?'success':['start-workout','resume-workout','log-set'].includes(action)?'medium':'light');
       if(action==='start-workout')startWorkout();
       else if(action==='resume-workout'){currentView='workout';render();}
