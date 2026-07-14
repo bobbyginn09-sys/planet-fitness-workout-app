@@ -256,6 +256,18 @@
     .exercise-hero { display:grid; grid-template-columns:108px 1fr; gap:14px; align-items:center; }
     .exercise-hero-visual { height:108px; border-radius:24px; background:linear-gradient(145deg,rgba(37,99,255,.16),rgba(124,58,237,.14)); border:1px solid rgba(96,165,250,.24); display:grid; place-items:center; overflow:hidden; }
     .exercise-hero-visual svg { width:88px; height:88px; }
+    .exercise-hero-visual { position:relative; }
+    .exercise-hero-visual::after { content:"Animated guide"; position:absolute; left:8px; bottom:7px; padding:4px 7px; border-radius:999px; background:rgba(4,8,15,.72); color:#bcd0ff; font-size:8px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; border:1px solid rgba(255,255,255,.08); }
+    .exercise-hero-visual svg { transform-origin:center; animation:exerciseGuideMove 2.2s ease-in-out infinite; }
+    .exercise-hero-visual svg circle { transform-box:fill-box; transform-origin:center; animation:exerciseGuidePulse 2.2s ease-in-out infinite; }
+    @keyframes exerciseGuideMove { 0%,100%{transform:translateY(1px) scale(.985)} 50%{transform:translateY(-3px) scale(1.015)} }
+    @keyframes exerciseGuidePulse { 0%,100%{opacity:.74} 50%{opacity:1} }
+    .set-reference-row { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:7px; margin:7px 0 2px; }
+    .set-reference { padding:8px 9px; border-radius:12px; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.075); min-width:0; }
+    .set-reference span { display:block; color:#8390a5; font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:.07em; }
+    .set-reference strong { display:block; margin-top:4px; color:#eff4ff; font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .prefill-badge { display:inline-flex; align-items:center; gap:5px; margin-top:5px; color:#9ec0ff; font-size:10px; font-weight:850; }
+    .prefill-badge::before { content:"↗"; }
     .exercise-hero-copy p { margin:8px 0 0; color:#c9d6e8; font-size:13px; line-height:1.45; }
     .cue-steps { margin:10px 0 0; padding-left:18px; color:#d6deea; font-size:13px; line-height:1.45; }
     .cue-steps li + li { margin-top:7px; }
@@ -322,7 +334,7 @@
       .focus-title strong { font-size:14px; }
       .focus-bottom { grid-template-columns:.8fr 1.35fr; }
     }
-    /* ATLAS 2.4 — premium motion and tactile polish */
+    /* ATLAS 2.5 — premium motion and tactile polish */
     #view.view-enter { animation: atlasViewIn .32s cubic-bezier(.2,.8,.2,1) both; }
     @keyframes atlasViewIn { from { opacity:0; transform:translateY(8px) scale(.995); } to { opacity:1; transform:none; } }
     .btn,.icon-btn,.mini-action,.nav-btn,.weight-add,.quick-square button,.plan-week-tabs button {
@@ -352,7 +364,7 @@
 
 
     /* =========================================================
-       ATLAS 2.4.0 — professional brand + iPhone-first layout
+       ATLAS 2.5.0 — professional brand + iPhone-first layout
        ========================================================= */
     :root {
       --bg:#0E1117; --bg2:#080B12; --surface:#141A25; --surface2:#1A1F2B; --surface3:#222A38;
@@ -636,7 +648,7 @@
     <div class="shell header-inner">
       <div class="brand">
         <div class="brand-mark" aria-hidden="true"><img src="atlas-mark.svg" alt="" /></div>
-        <div class="brand-copy"><div class="brand-title">ATLAS <span class="version-badge">2.4.0</span></div><div class="brand-sub" id="headerSub">Built for progress.</div></div>
+        <div class="brand-copy"><div class="brand-title">ATLAS <span class="version-badge">2.5.0</span></div><div class="brand-sub" id="headerSub">Built for progress.</div></div>
       </div>
       <button class="icon-btn" data-action="open-quick-menu" aria-label="Quick actions">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
@@ -664,7 +676,7 @@
 
     const STORAGE_KEY = 'pfWorkoutApp.v1';
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
-    const APP_VERSION = 'atlas-2.4.0';
+    const APP_VERSION = 'atlas-2.5.0';
 
     const PLAN = [
       {
@@ -1044,8 +1056,25 @@
       saveActive();currentView='workout';render();showToast(day.type==='rest'?'Recovery session started.':'Workout started.');
     }
 
-    function initialWeight(ex) { const p=state.exerciseProgress[ex.id]; if(ex.type==='weighted') return Number.isFinite(Number(p?.nextWeight))?Number(p.nextWeight):Number.isFinite(Number(p?.lastWeight))?Number(p.lastWeight):null; return null; }
+    function initialWeight(ex) { const p=state.exerciseProgress[ex.id]||exerciseAliases(ex.id).map(id=>state.exerciseProgress[id]).find(Boolean); if(ex.type==='weighted') return Number.isFinite(Number(p?.nextWeight))?Number(p.nextWeight):Number.isFinite(Number(p?.lastWeight))?Number(p.lastWeight):null; return null; }
     function initialReps(ex) { const prev=getPreviousExercise(ex.id); const logs=prev?workingLogs(prev.entry.logs||[]):[]; const last=logs.at(-1); return Number.isFinite(Number(last?.reps))?clamp(Number(last.reps),1,99):ex.min; }
+    function exerciseAliases(id) {
+      const aliases={smith_squat:['smith_squat_box'],leg_press_45:['leg_press'],romanian_deadlift:['smith_rdl']};
+      return [id,...(aliases[id]||[])];
+    }
+    function previousWorkingSet(ex, entry) {
+      const current=workingLogs(entry?.logs||[]).at(-1);
+      if(current) return {label:formatLogShort(ex,current),source:'This workout'};
+      const prev=getPreviousExercise(ex.id), last=prev?workingLogs(prev.entry.logs||[]).at(-1):null;
+      return last?{label:formatLogShort(ex,last),source:'Last workout'}:null;
+    }
+    function renderSetReferences(ex,entry) {
+      if(ex.type!=='weighted'&&ex.type!=='bodyweight') return '';
+      const previous=previousWorkingSet(ex,entry);
+      const p=state.exerciseProgress[ex.id]||exerciseAliases(ex.id).map(id=>state.exerciseProgress[id]).find(Boolean);
+      const suggested=nextTargetLabel(ex,p);
+      return `<div class="set-reference-row"><div class="set-reference"><span>${esc(previous?.source||'Previous set')}</span><strong>${esc(previous?.label||'No previous set')}</strong></div><div class="set-reference"><span>Suggested next</span><strong>${esc(suggested)}</strong></div></div>`;
+    }
 
     function renderFocusWorkout() {
       if(!active){currentView='workout';renderWorkoutPreview();return;}
@@ -1078,7 +1107,7 @@
     }
 
     function renderPreviousCard(ex) {
-      const prev=getPreviousExercise(ex.id), p=state.exerciseProgress[ex.id];
+      const prev=getPreviousExercise(ex.id), p=state.exerciseProgress[ex.id]||exerciseAliases(ex.id).map(id=>state.exerciseProgress[id]).find(Boolean);
       if(!prev) return `<div class="previous-compact"><div><span>Previous</span><strong>First session</strong></div><div class="previous-grid"><div class="previous-stat"><span>Last time</span><strong>Not logged yet</strong></div><div class="previous-stat"><span>Suggested next</span><strong>Start clean</strong></div></div><p><span>Coach</span>Choose a clean starting load and leave 1–3 reps in reserve.</p></div>`;
       const logs=workingLogs(prev.entry.logs||[]);
       const lastSummary=logs.length ? logs.slice(-3).map(log=>formatLogShort(ex,log)).join(' · ') : 'Logged';
@@ -1093,12 +1122,13 @@
     function renderFocusLogPanel(ex, entry, index, weight, reps) {
       const feel=entry.draftFeel||'good', setNo=workingLogs(entry.logs||[]).length+1;
       if(ex.type==='weighted') return `<div class="compact-log-panel">
+        ${renderSetReferences(ex,entry)}
         <div class="control-grid">
-          <div class="control-block"><div class="control-label"><span>Weight</span><small>${state.settings.units}</small></div><div class="compact-stepper"><button data-action="adjust-weight" data-delta="-5">−</button><input inputmode="decimal" data-input="weight" value="${esc(weight)}" placeholder="0"><button data-action="adjust-weight" data-delta="5">+</button></div><div class="micro-adjust"><button data-action="adjust-weight" data-delta="-10">−10</button><button data-action="adjust-weight" data-delta="-5">−5</button><button data-action="adjust-weight" data-delta="5">+5</button><button data-action="adjust-weight" data-delta="10">+10</button></div></div>
+          <div class="control-block"><div class="control-label"><span>Weight</span><small>${state.settings.units}</small></div><div class="compact-stepper"><button data-action="adjust-weight" data-delta="-5">−</button><input inputmode="decimal" data-input="weight" value="${esc(weight)}" placeholder="0"><button data-action="adjust-weight" data-delta="5">+</button></div>${Number.isFinite(Number(state.exerciseProgress[ex.id]?.nextWeight))?'<div class="prefill-badge">Suggested weight prefilled</div>':''}<div class="micro-adjust"><button data-action="adjust-weight" data-delta="-10">−10</button><button data-action="adjust-weight" data-delta="-5">−5</button><button data-action="adjust-weight" data-delta="5">+5</button><button data-action="adjust-weight" data-delta="10">+10</button></div></div>
           <div class="control-block"><div class="control-label"><span>Reps</span><small>${ex.min}–${ex.max}</small></div><div class="compact-stepper"><button data-action="adjust-reps" data-delta="-1">−</button><input inputmode="numeric" data-input="reps" value="${esc(reps)}"><button data-action="adjust-reps" data-delta="1">+</button></div><div class="rep-hint">Target ${ex.min}–${ex.max}</div></div>
         </div>${renderFeelOnly(entry,feel)}<button class="log-set-btn" data-action="log-set">Log set ${setNo}<span>✓</span></button>
       </div>`;
-      if(ex.type==='bodyweight') return `<div class="compact-log-panel single-control"><div class="control-block"><div class="control-label"><span>Reps</span><small>${ex.min}–${ex.max}</small></div><div class="compact-stepper"><button data-action="adjust-reps" data-delta="-1">−</button><input inputmode="numeric" data-input="reps" value="${esc(reps)}"><button data-action="adjust-reps" data-delta="1">+</button></div></div>${renderFeelOnly(entry,feel)}<button class="log-set-btn" data-action="log-set">Log set ${setNo}<span>✓</span></button></div>`;
+      if(ex.type==='bodyweight') return `<div class="compact-log-panel single-control">${renderSetReferences(ex,entry)}<div class="control-block"><div class="control-label"><span>Reps</span><small>${ex.min}–${ex.max}</small></div><div class="compact-stepper"><button data-action="adjust-reps" data-delta="-1">−</button><input inputmode="numeric" data-input="reps" value="${esc(reps)}"><button data-action="adjust-reps" data-delta="1">+</button></div></div>${renderFeelOnly(entry,feel)}<button class="log-set-btn" data-action="log-set">Log set ${setNo}<span>✓</span></button></div>`;
       const duration=Number.isFinite(Number(entry.draftReps))?Number(entry.draftReps):ex.min;
       return `<div class="compact-log-panel single-control"><div class="control-block"><div class="control-label"><span>Duration</span><small>${esc(ex.unit||'min')}</small></div><div class="compact-stepper"><button data-action="adjust-duration" data-delta="-1">−</button><input inputmode="decimal" data-input="duration" value="${esc(duration)}"><button data-action="adjust-duration" data-delta="1">+</button></div><div class="rep-hint">Target ${ex.min}–${ex.max} ${esc(ex.unit||'min')}</div></div><button class="log-set-btn" data-action="log-set">Log ${esc(ex.unit||'time')}<span>✓</span></button></div>`;
     }
@@ -1152,8 +1182,9 @@
     function plateCalculation(total,bar) { if(!Number.isFinite(total)||total<=0) return 'Enter a target weight.'; const per=Math.max(0,(total-bar)/2); const plates=[45,35,25,10,5,2.5]; let remaining=per, used=[]; for(const p of plates){const count=Math.floor((remaining+.001)/p);for(let i=0;i<count;i++)used.push(p);remaining-=count*p;} return remaining>.2?`${cleanNumber(per)} lb per side (closest plates vary)`:`Per side: ${used.length?used.join(' + '):'no plates'}`; }
 
     function getPreviousExercise(id) {
+      const ids=exerciseAliases(id);
       const sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt));
-      for(const session of sessions){const entry=(session.exercises||[]).find(e=>e.id===id && (e.logs||[]).length);if(entry)return{session,entry};} return null;
+      for(const session of sessions){const entry=(session.exercises||[]).find(e=>ids.includes(e.id) && (e.logs||[]).length);if(entry)return{session,entry};} return null;
     }
 
     function formatLogShort(ex,log) {
@@ -1314,7 +1345,7 @@
       if(moreSection==='coach'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><section class="card"><div class="card-pad"><div class="eyebrow">Coach</div><h1 style="margin-top:8px">Check-in</h1><p class="muted">Share your workouts, body trends, and next-weight recommendations with ChatGPT.</p><button class="btn green block" data-action="share-coach">Share full check-in</button><button class="btn block" style="margin-top:10px" data-action="share-weekly">Share weekly review</button></div></section></div>`; return; }
       if(moreSection==='settings'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><div class="page-title-row"><div><div class="eyebrow">Preferences</div><h1>Settings</h1></div></div>${renderSettings()}</div>`; return; }
       if(moreSection==='backup'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><section class="card"><div class="card-pad"><div class="eyebrow">Your data</div><h1 style="margin-top:8px">Backup</h1><p class="muted">Workout data stays on this device. Export a backup before changing phones or clearing Safari data.</p><div class="button-row"><button class="btn primary" data-action="export-backup">Export</button><button class="btn" data-action="import-backup">Import</button></div><button class="btn block" style="margin-top:10px" data-action="refresh-cache">Refresh app cache</button><button class="btn danger block" style="margin-top:10px" data-action="reset-app">Reset app data</button></div></section></div>`; return; }
-      $('#view').innerHTML=`<div class="stack"><div class="page-title-row"><div><div class="eyebrow">ATLAS</div><h1>More</h1></div></div><section class="card"><div class="more-menu"><button data-action="more-section" data-section="history"><span class="menu-icon">↺</span><div><strong>History</strong><small>${sessions.length} saved sessions</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">A</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-atlas"><img src="atlas-mark.svg" alt=""><span>ATLAS 2.4.0</span><small>Built for progress.</small></div></div>`;
+      $('#view').innerHTML=`<div class="stack"><div class="page-title-row"><div><div class="eyebrow">ATLAS</div><h1>More</h1></div></div><section class="card"><div class="more-menu"><button data-action="more-section" data-section="history"><span class="menu-icon">↺</span><div><strong>History</strong><small>${sessions.length} saved sessions</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">A</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-atlas"><img src="atlas-mark.svg" alt=""><span>ATLAS 2.5.0</span><small>Built for progress.</small></div></div>`;
     }
 
     function renderHistoryCard(s){const sets=sessionWorkingSets(s),volume=sessionVolume(s),cardio=sessionCardioMinutes(s);return`<details class="history-card"><summary><div class="history-top"><div><strong style="font-size:18px">${esc(s.title||'Workout')}</strong><div class="muted" style="font-size:12px;margin-top:4px">${fmtDate(s.startedAt)} · ${formatDuration(s.durationMs)}</div></div><span class="target-pill">${s.type==='rest'?'☁️ Rest':s.prs?.length?`🏆 ${s.prs.length} PR`:'✓ Done'}</span></div><div class="history-stats"><span class="chip">${sets} sets</span><span class="chip">${volume.toLocaleString()} lb</span>${cardio?`<span class="chip">${cardio} min cardio</span>`:''}</div></summary><div class="history-body">${s.sessionNote?`<div class="soft-card"><strong>Session note</strong><p class="muted" style="margin:6px 0 0">${esc(s.sessionNote)}</p></div>`:''}${(s.exercises||[]).map(entry=>{const ex=getExercise(entry.id);if(!ex||(entry.logs||[]).length===0)return'';return`<div class="history-ex"><strong>${esc(ex.name)}</strong><div class="set-inline">${(entry.logs||[]).map(log=>`<span class="set-chip ${log.warmup?'wu':''}">${esc(formatLogShort(ex,log))} ${ex.type==='weighted'||ex.type==='bodyweight'?feelEmoji(log.feel):''}</span>`).join('')}</div>${entry.notes?`<div class="muted" style="font-size:12px;margin-top:7px">Note: ${esc(entry.notes)}</div>`:''}</div>`;}).join('')}<button class="btn danger block" data-action="delete-session" data-id="${esc(s.id)}">Delete session</button></div></details>`;}
@@ -1323,8 +1354,8 @@
 
     function saveSettings(){$$('[data-setting]').forEach(input=>{const key=input.dataset.setting;let value=input.value;if(['restSeconds','smithBarWeight'].includes(key))value=Number(value);state.settings[key]=value;});$$('[data-setting-check]').forEach(input=>state.settings[input.dataset.settingCheck]=input.checked);$$('[data-goal]').forEach(input=>{const n=Number(input.value);if(Number.isFinite(n))state.goals[input.dataset.goal]=n;});saveState();render();showToast('Settings saved.');}
 
-    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`ATLAS 2.4.0 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
-    function weeklyReportText(){const w=weeklyReview();return[`ATLAS 2.4.0 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
+    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`ATLAS 2.5.0 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
+    function weeklyReportText(){const w=weeklyReview();return[`ATLAS 2.5.0 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
     async function shareText(text,title){try{if(navigator.share){await navigator.share({title,text});return;}await navigator.clipboard.writeText(text);showToast('Copied. Paste it into ChatGPT.');}catch(err){if(err?.name!=='AbortError'){downloadBlob(`${title.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.txt`,text,'text/plain');showToast('Report downloaded.');}}}
 
     function openApp(kind){const url=kind==='music'?state.settings.musicAppUrl:state.settings.pfAppUrl,fallback=kind==='music'?state.settings.musicFallbackUrl:state.settings.pfFallbackUrl;if(!url){showToast('Add this app link in More → Settings.');return;}try{window.location.href=url;setTimeout(()=>{if(!document.hidden&&fallback&&!url.startsWith('shortcuts:'))window.open(fallback,'_blank','noopener');},1200);}catch(_){if(fallback)window.open(fallback,'_blank','noopener');}}
