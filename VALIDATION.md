@@ -1,8 +1,8 @@
-# NEXSET 3.1.1 Validation
+# NEXSET 3.1.2 Validation
 
 - JavaScript syntax: checked with Node.js.
 - Manifest name: `NEXSET — Workout Coach`
-- Start URL: `./index.html?nexset=3.1.1`
+- Start URL: `./index.html?nexset=3.1.2`
 - Service-worker asset references: all present.
 - Legacy ATLAS runtime text: removed.
 - Saved-data keys: unchanged.
