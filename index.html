@@ -320,7 +320,7 @@
       .focus-title strong { font-size:14px; }
       .focus-bottom { grid-template-columns:.8fr 1.35fr; }
     }
-    /* ATLAS 2.5.5 — premium motion and tactile polish */
+    /* ATLAS 2.5.6 — premium motion and tactile polish */
     #view.view-enter { animation: atlasViewIn .32s cubic-bezier(.2,.8,.2,1) both; }
     @keyframes atlasViewIn { from { opacity:0; transform:translateY(8px) scale(.995); } to { opacity:1; transform:none; } }
     .btn,.icon-btn,.mini-action,.nav-btn,.weight-add,.quick-square button,.plan-week-tabs button {
@@ -350,7 +350,7 @@
 
 
     /* =========================================================
-       ATLAS 2.5.5 — professional brand + iPhone-first layout
+       ATLAS 2.5.6 — professional brand + iPhone-first layout
        ========================================================= */
     :root {
       --bg:#0E1117; --bg2:#080B12; --surface:#141A25; --surface2:#1A1F2B; --surface3:#222A38;
@@ -511,10 +511,14 @@
     .focus-nav-btn.complete-action { background:rgba(37,99,255,.12);border-color:rgba(37,99,255,.3);color:#AFC8FF; }
     .extra-set-btn { min-height:42px;background:rgba(37,99,255,.1);border:1px solid rgba(37,99,255,.25);box-shadow:none;color:#BBD0FF; }
 
-    .logged-strip { min-height:37px;padding:0;gap:6px; }
-    .logged-set { min-width:63px;padding:6px 7px;border-radius:12px; }
-    .logged-set b { font-size:12px; }
-    .logged-set span { font-size:8px; }
+    .logged-strip { min-height:56px;padding:0 0 2px;gap:6px;flex:0 0 auto;align-items:stretch;overflow-y:hidden; }
+    .logged-set { -webkit-appearance:none;appearance:none;min-width:66px;min-height:52px;padding:7px 8px 8px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;line-height:1;flex:0 0 auto; }
+    .logged-set b { display:block;font-size:12px;line-height:1.05; }
+    .logged-set .logged-set-meta { display:inline-flex;align-items:center;justify-content:center;gap:4px;min-height:12px;color:#9aa7bd;font-size:8px;line-height:1.2;white-space:nowrap; }
+    .set-feel-dot { width:7px;height:7px;border-radius:50%;display:inline-block;flex:0 0 7px; }
+    .set-feel-dot.easy { background:#22C55E; }
+    .set-feel-dot.good { background:#FACC15; }
+    .set-feel-dot.hard { background:#EF4444; }
     .logged-placeholder { min-height:30px;display:flex;align-items:center;color:#657083;font-size:10px; }
     .set-reference-row { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:0; }
     .set-reference { min-width:0;padding:8px 9px;border-radius:12px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075); }
@@ -647,7 +651,7 @@
       .header-inner { min-height:54px; }.brand-mark{width:36px;height:36px}.brand-sub{display:none}.icon-btn{width:36px;height:36px}
       .bottom-nav{padding-top:4px}.nav-btn{min-height:50px}.nav-icon{width:19px;height:19px}.nav-icon svg{width:19px;height:19px}
       .home-screen{gap:6px}.home-greeting h1{font-size:23px}.home-greeting span{font-size:11px}.today-card{padding:12px}.today-card h2{font-size:29px}.today-card p{font-size:11px}.today-mark{width:45px;height:45px;border-radius:15px}.today-meta{margin:8px 0;font-size:9px}.today-actions .btn{min-height:43px;font-size:12px}.coach-compact{padding:9px 10px}.compact-head strong{font-size:12px}.coach-compact-list{grid-template-columns:1fr;margin-top:5px}.coach-compact-list>div:nth-child(2){display:none}.home-bottom-grid{min-height:65px}.snapshot-card{padding:8px}.snapshot-card>strong{font-size:18px}.snapshot-card>small{display:none}.weight-card{padding:0;grid-template-columns:minmax(0,1fr) 36px}.weight-summary{padding:8px 3px 8px 8px}.weight-summary>strong{font-size:18px}.weight-summary>small{display:none}.weight-add{margin:5px 5px 5px 0;font-size:20px}.week-dots{margin-top:5px}.quick-square{gap:5px}.quick-square button{border-radius:13px;font-size:13px}
-      .focus-shell{grid-template-rows:50px 11px minmax(0,1fr) calc(58px + var(--safe-bottom))}.focus-header{min-height:50px;padding:4px 9px}.focus-close,.focus-menu{width:36px;height:36px}.exercise-stage{padding:4px 8px 5px}.exercise-card-inner{padding:8px 10px 7px;gap:4px}.exercise-title{font-size:23px;margin:3px 0}.exercise-target{font-size:9px}.previous-compact,.logged-placeholder{display:none}.logged-strip{min-height:30px}.control-block{padding:6px}.control-label{margin-bottom:2px}.compact-stepper button{height:34px}.compact-stepper input{height:36px;font-size:21px}.micro-adjust{margin-top:3px}.micro-adjust button{min-height:23px}.feel-btn{min-height:30px}.warm-compact{min-height:25px}.log-set-btn{min-height:41px;font-size:13px}.focus-bottom{padding-top:4px}.focus-nav-btn{min-height:42px}
+      .focus-shell{grid-template-rows:50px 11px minmax(0,1fr) calc(58px + var(--safe-bottom))}.focus-header{min-height:50px;padding:4px 9px}.focus-close,.focus-menu{width:36px;height:36px}.exercise-stage{padding:4px 8px 5px}.exercise-card-inner{padding:8px 10px 7px;gap:4px}.exercise-title{font-size:23px;margin:3px 0}.exercise-target{font-size:9px}.previous-compact,.logged-placeholder{display:none}.logged-strip{min-height:49px;padding-bottom:1px}.logged-set{min-height:46px;padding:5px 7px 6px;gap:3px}.control-block{padding:6px}.control-label{margin-bottom:2px}.compact-stepper button{height:34px}.compact-stepper input{height:36px;font-size:21px}.micro-adjust{margin-top:3px}.micro-adjust button{min-height:23px}.feel-btn{min-height:30px}.warm-compact{min-height:25px}.log-set-btn{min-height:41px;font-size:13px}.focus-bottom{padding-top:4px}.focus-nav-btn{min-height:42px}
     }
 
   </style>
@@ -657,7 +661,7 @@
     <div class="shell header-inner">
       <div class="brand">
         <div class="brand-mark" aria-hidden="true"><img src="atlas-mark.svg" alt="" /></div>
-        <div class="brand-copy"><div class="brand-title">ATLAS <span class="version-badge">2.5.5</span></div><div class="brand-sub" id="headerSub">Built for progress.</div></div>
+        <div class="brand-copy"><div class="brand-title">ATLAS <span class="version-badge">2.5.6</span></div><div class="brand-sub" id="headerSub">Built for progress.</div></div>
       </div>
       <button class="icon-btn" data-action="open-quick-menu" aria-label="Quick actions">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
@@ -685,7 +689,7 @@
 
     const STORAGE_KEY = 'pfWorkoutApp.v1';
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
-    const APP_VERSION = 'atlas-2.5.5';
+    const APP_VERSION = 'atlas-2.5.6';
 
     const PLAN = [
       {
@@ -1142,7 +1146,9 @@
     }
 
     function renderLoggedSet(ex, log, setIndex, exerciseIndex) {
-      const label=formatLogShort(ex,log); return `<button class="logged-set ${log.warmup?'warmup':''}" data-action="edit-set" data-set-index="${setIndex}" title="Tap to delete"><b>${esc(label)}</b><span>${log.warmup?'warm-up':`${feelEmoji(log.feel)} set ${setIndex+1}`}</span></button>`;
+      const label=formatLogShort(ex,log), feelClass=['easy','good','hard'].includes(log.feel)?log.feel:'good';
+      const meta=log.warmup?'Warm-up':`<i class="set-feel-dot ${feelClass}" aria-hidden="true"></i>Set ${setIndex+1}`;
+      return `<button class="logged-set ${log.warmup?'warmup':''}" data-action="edit-set" data-set-index="${setIndex}" title="Tap to delete"><b>${esc(label)}</b><span class="logged-set-meta">${meta}</span></button>`;
     }
 
     function renderFocusLogPanel(ex, entry, index, weight, reps) {
@@ -1388,7 +1394,7 @@
       if(moreSection==='coach'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><section class="card"><div class="card-pad"><div class="eyebrow">Coach</div><h1 style="margin-top:8px">Check-in</h1><p class="muted">Share your workouts, body trends, and next-weight recommendations with ChatGPT.</p><button class="btn green block" data-action="share-coach">Share full check-in</button><button class="btn block" style="margin-top:10px" data-action="share-weekly">Share weekly review</button></div></section></div>`; return; }
       if(moreSection==='settings'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><div class="page-title-row"><div><div class="eyebrow">Preferences</div><h1>Settings</h1></div></div>${renderSettings()}</div>`; return; }
       if(moreSection==='backup'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><section class="card"><div class="card-pad"><div class="eyebrow">Your data</div><h1 style="margin-top:8px">Backup</h1><p class="muted">Workout data stays on this device. Export a backup before changing phones or clearing Safari data.</p><div class="button-row"><button class="btn primary" data-action="export-backup">Export</button><button class="btn" data-action="import-backup">Import</button></div><button class="btn block" style="margin-top:10px" data-action="refresh-cache">Refresh app cache</button><button class="btn danger block" style="margin-top:10px" data-action="reset-app">Reset app data</button></div></section></div>`; return; }
-      $('#view').innerHTML=`<div class="stack"><div class="page-title-row"><div><div class="eyebrow">ATLAS</div><h1>More</h1></div></div><section class="card"><div class="more-menu"><button data-action="more-section" data-section="history"><span class="menu-icon">↺</span><div><strong>History</strong><small>${sessions.length} saved sessions</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">A</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-atlas"><img src="atlas-mark.svg" alt=""><span>ATLAS 2.5.5</span><small>Built for progress.</small></div></div>`;
+      $('#view').innerHTML=`<div class="stack"><div class="page-title-row"><div><div class="eyebrow">ATLAS</div><h1>More</h1></div></div><section class="card"><div class="more-menu"><button data-action="more-section" data-section="history"><span class="menu-icon">↺</span><div><strong>History</strong><small>${sessions.length} saved sessions</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">A</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-atlas"><img src="atlas-mark.svg" alt=""><span>ATLAS 2.5.6</span><small>Built for progress.</small></div></div>`;
     }
 
     function renderHistoryCard(s){const sets=sessionWorkingSets(s),volume=sessionVolume(s),cardio=sessionCardioMinutes(s);return`<details class="history-card"><summary><div class="history-top"><div><strong style="font-size:18px">${esc(s.title||'Workout')}</strong><div class="muted" style="font-size:12px;margin-top:4px">${fmtDate(s.startedAt)} · ${formatDuration(s.durationMs)}</div></div><span class="target-pill">${s.type==='rest'?'☁️ Rest':s.prs?.length?`🏆 ${s.prs.length} PR`:'✓ Done'}</span></div><div class="history-stats"><span class="chip">${sets} sets</span><span class="chip">${volume.toLocaleString()} lb</span>${cardio?`<span class="chip">${cardio} min cardio</span>`:''}</div></summary><div class="history-body">${s.sessionNote?`<div class="soft-card"><strong>Session note</strong><p class="muted" style="margin:6px 0 0">${esc(s.sessionNote)}</p></div>`:''}${(s.exercises||[]).map(entry=>{const ex=getExercise(entry.id);if(!ex||(entry.logs||[]).length===0)return'';return`<div class="history-ex"><strong>${esc(ex.name)}</strong><div class="set-inline">${(entry.logs||[]).map(log=>`<span class="set-chip ${log.warmup?'wu':''}">${esc(formatLogShort(ex,log))} ${ex.type==='weighted'||ex.type==='bodyweight'?feelEmoji(log.feel):''}</span>`).join('')}</div>${entry.notes?`<div class="muted" style="font-size:12px;margin-top:7px">Note: ${esc(entry.notes)}</div>`:''}</div>`;}).join('')}<button class="btn danger block" data-action="delete-session" data-id="${esc(s.id)}">Delete session</button></div></details>`;}
@@ -1397,8 +1403,8 @@
 
     function saveSettings(){$$('[data-setting]').forEach(input=>{const key=input.dataset.setting;let value=input.value;if(['restSeconds','smithBarWeight'].includes(key))value=Number(value);state.settings[key]=value;});$$('[data-setting-check]').forEach(input=>state.settings[input.dataset.settingCheck]=input.checked);$$('[data-goal]').forEach(input=>{const n=Number(input.value);if(Number.isFinite(n))state.goals[input.dataset.goal]=n;});saveState();render();showToast('Settings saved.');}
 
-    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`ATLAS 2.5.5 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
-    function weeklyReportText(){const w=weeklyReview();return[`ATLAS 2.5.5 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
+    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`ATLAS 2.5.6 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
+    function weeklyReportText(){const w=weeklyReview();return[`ATLAS 2.5.6 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
     async function shareText(text,title){try{if(navigator.share){await navigator.share({title,text});return;}await navigator.clipboard.writeText(text);showToast('Copied. Paste it into ChatGPT.');}catch(err){if(err?.name!=='AbortError'){downloadBlob(`${title.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.txt`,text,'text/plain');showToast('Report downloaded.');}}}
 
     function openApp(kind){const url=kind==='music'?state.settings.musicAppUrl:state.settings.pfAppUrl,fallback=kind==='music'?state.settings.musicFallbackUrl:state.settings.pfFallbackUrl;if(!url){showToast('Add this app link in More → Settings.');return;}try{window.location.href=url;setTimeout(()=>{if(!document.hidden&&fallback&&!url.startsWith('shortcuts:'))window.open(fallback,'_blank','noopener');},1200);}catch(_){if(fallback)window.open(fallback,'_blank','noopener');}}
