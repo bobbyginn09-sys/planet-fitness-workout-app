@@ -1,10 +1,12 @@
-const CACHE_NAME = 'atlas-workout-v2-5-6-safari-set-chip-20260714-1';
+const CACHE_NAME = 'nexset-workout-v3-0-0-brand-refresh-20260714-1';
 const APP_SHELL = [
   './',
   './index.html',
   './manifest.webmanifest',
   './manifest.json',
-  './atlas-mark.svg',
+  './nexset-mark.svg',
+  './nexset-wordmark.svg',
+  './nexset-icon.svg',
   './apple-touch-icon.png',
   './icon-192.png',
   './icon-512.png',

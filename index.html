@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
-  <meta name="theme-color" content="#0E1117" />
+  <meta name="theme-color" content="#060A11" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="ATLAS" />
-  <title>ATLAS · Workout Coach</title>
+  <meta name="apple-mobile-web-app-title" content="NEXSET" />
+  <title>NEXSET · Workout Coach</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-  <link rel="icon" type="image/svg+xml" href="atlas-mark.svg" />
+  <link rel="icon" type="image/svg+xml" href="nexset-mark.svg" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-startup-image" href="launch-1170x2532.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)" />
   <link rel="apple-touch-startup-image" href="launch-1179x2556.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)" />
@@ -19,18 +19,18 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #070a12;
-      --bg2: #0b1120;
-      --surface: #111827;
-      --surface2: #182132;
-      --surface3: #202b3e;
-      --text: #f7f9fd;
-      --muted: #9aa7bd;
+      --bg: #060A11;
+      --bg2: #0C121B;
+      --surface: #101722;
+      --surface2: #161F2B;
+      --surface3: #1E2938;
+      --text: #F7F9FD;
+      --muted: #93A2B7;
       --line: rgba(255,255,255,.105);
-      --purple: #8b5cf6;
-      --blue: #3b82f6;
+      --purple: #0D7DFF;
+      --blue: #1FA2FF;
       --green: #22c55e;
-      --cyan: #06b6d4;
+      --cyan: #4FB3FF;
       --orange: #f59e0b;
       --red: #fb7185;
       --safe-top: env(safe-area-inset-top, 0px);
@@ -43,13 +43,13 @@
     }
     :root[data-theme="light"] {
       color-scheme: light;
-      --bg: #eef2f8;
-      --bg2: #f8fafc;
-      --surface: #ffffff;
-      --surface2: #f1f5f9;
-      --surface3: #e7edf5;
+      --bg: #EEF3FA;
+      --bg2: #F8FAFD;
+      --surface: #FFFFFF;
+      --surface2: #F1F5FA;
+      --surface3: #E7EDF5;
       --text: #111827;
-      --muted: #5f6b7e;
+      --muted: #5F6B7E;
       --line: rgba(15,23,42,.11);
       --shadow: 0 18px 45px rgba(30,41,59,.13);
     }
@@ -58,8 +58,8 @@
     html { background: var(--bg); }
     body {
       background:
-        radial-gradient(circle at 2% -8%, rgba(139,92,246,.24), transparent 31rem),
-        radial-gradient(circle at 100% 0%, rgba(6,182,212,.12), transparent 27rem),
+        radial-gradient(circle at 2% -8%, rgba(31,162,255,.20), transparent 31rem),
+        radial-gradient(circle at 100% 0%, rgba(13,125,255,.12), transparent 27rem),
         linear-gradient(150deg, var(--bg), var(--bg2));
       color: var(--text);
       padding-bottom: calc(86px + var(--safe-bottom));
@@ -81,8 +81,8 @@
     }
     textarea { min-height: 92px; resize: vertical; }
     input:focus, select:focus, textarea:focus {
-      border-color: rgba(139,92,246,.75);
-      box-shadow: 0 0 0 4px rgba(139,92,246,.14);
+      border-color: rgba(13,125,255,.75);
+      box-shadow: 0 0 0 4px rgba(13,125,255,.14);
     }
     h1,h2,h3,p { margin-top: 0; }
     h1 { margin-bottom: 8px; font-size: clamp(34px, 9vw, 54px); line-height: .95; letter-spacing: -.058em; }
@@ -105,8 +105,8 @@
     .brand-mark {
       width: 48px; height: 48px; border-radius: 16px; flex: 0 0 auto;
       display: grid; place-items: center;
-      background: linear-gradient(135deg, var(--purple), var(--blue));
-      box-shadow: 0 14px 34px rgba(84,83,255,.28);
+      background: linear-gradient(135deg, #0D7DFF, #1FA2FF);
+      box-shadow: 0 14px 34px rgba(13,125,255,.28);
       overflow: hidden;
     }
     .brand-mark svg { width: 29px; height: 29px; }
@@ -148,7 +148,7 @@
       transition: transform .12s ease, filter .12s ease;
     }
     .btn:active { transform: scale(.985); }
-    .btn.primary { background: linear-gradient(135deg, var(--purple), #2863ef); color: #fff; border: 0; box-shadow: 0 18px 38px rgba(91,71,230,.3); }
+    .btn.primary { background: linear-gradient(135deg, #0D7DFF, #1FA2FF); color: #fff; border: 0; box-shadow: 0 18px 38px rgba(13,125,255,.24); }
     .btn.green { background: linear-gradient(135deg, var(--green), var(--cyan)); color: #fff; border: 0; }
     .btn.danger { color: #ffd5dc; background: rgba(251,113,133,.12); border-color: rgba(251,113,133,.28); }
     .btn.ghost { background: transparent; }
@@ -231,7 +231,7 @@
     .focus-progress { padding:10px 17px 8px; }
     .focus-progress-top { display:flex;justify-content:space-between;gap:10px;color:#aab5c9;font-size:12px;font-weight:800;margin-bottom:8px; }
     .progress-track { height:6px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden; }
-    .progress-fill { height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--purple),var(--blue),var(--cyan));transition:width .25s ease; }
+    .progress-fill { height:100%;border-radius:inherit;background:linear-gradient(90deg,#0D7DFF,#1FA2FF,#6EC4FF);transition:width .25s ease; }
     .exercise-stage { min-height:0;padding:6px 14px 10px;touch-action:pan-y; }
     .exercise-focus-card { height:100%;max-width:680px;margin:0 auto;background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.045));border:1px solid rgba(255,255,255,.12);border-radius:30px;box-shadow:0 26px 70px rgba(0,0,0,.42);overflow:hidden;animation:cardIn .22s ease; }
     @keyframes cardIn { from{opacity:.2;transform:translateX(18px) scale(.985)} to{opacity:1;transform:none} }
@@ -296,7 +296,7 @@
     .rest-overlay { position:fixed;inset:0;z-index:160;background:rgba(3,5,10,.94);backdrop-filter:blur(18px);display:grid;place-items:center;padding:24px;padding-top:calc(24px + var(--safe-top));padding-bottom:calc(24px + var(--safe-bottom)); }
     .rest-card { width:min(430px,100%);text-align:center; }
     .rest-label { color:#a7b3c7;letter-spacing:.22em;text-transform:uppercase;font-weight:900;font-size:13px; }
-    .rest-ring { --rest-pct:100%;width:240px;height:240px;margin:22px auto;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--purple) var(--rest-pct),rgba(255,255,255,.08) 0);position:relative; }
+    .rest-ring { --rest-pct:100%;width:240px;height:240px;margin:22px auto;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#0D7DFF var(--rest-pct),rgba(255,255,255,.08) 0);position:relative; }
     .rest-ring::after { content:"";position:absolute;inset:12px;border-radius:50%;background:#080c16; }
     .rest-time { position:relative;z-index:1;font-size:62px;font-weight:950;letter-spacing:-.07em;font-variant-numeric:tabular-nums; }
     .rest-next { color:#a9b4c8;line-height:1.5;margin:0 auto 20px;max-width:330px; }
@@ -320,7 +320,7 @@
       .focus-title strong { font-size:14px; }
       .focus-bottom { grid-template-columns:.8fr 1.35fr; }
     }
-    /* ATLAS 2.5.6 — premium motion and tactile polish */
+    /* NEXSET 3.0.0 — premium motion and tactile polish */
     #view.view-enter { animation: atlasViewIn .32s cubic-bezier(.2,.8,.2,1) both; }
     @keyframes atlasViewIn { from { opacity:0; transform:translateY(8px) scale(.995); } to { opacity:1; transform:none; } }
     .btn,.icon-btn,.mini-action,.nav-btn,.weight-add,.quick-square button,.plan-week-tabs button {
@@ -350,36 +350,36 @@
 
 
     /* =========================================================
-       ATLAS 2.5.6 — professional brand + iPhone-first layout
+       NEXSET 3.0.0 — professional brand + iPhone-first layout
        ========================================================= */
     :root {
-      --bg:#0E1117; --bg2:#080B12; --surface:#141A25; --surface2:#1A1F2B; --surface3:#222A38;
-      --text:#F7F9FC; --muted:#8B95A7; --line:rgba(139,149,167,.18);
-      --blue:#2563FF; --purple:#7C3AED; --green:#22C55E; --cyan:#18BDEB; --orange:#F59E0B; --red:#EF4444;
-      --brand-gradient:linear-gradient(115deg,#2563FF 0%,#4D65FF 48%,#7C3AED 100%);
+      --bg:#060A11; --bg2:#0C121B; --surface:#101722; --surface2:#161F2B; --surface3:#1E2938;
+      --text:#F7F9FC; --muted:#8FA0B6; --line:rgba(139,149,167,.18);
+      --blue:#1FA2FF; --purple:#0D7DFF; --green:#22C55E; --cyan:#6EC4FF; --orange:#F59E0B; --red:#EF4444;
+      --brand-gradient:linear-gradient(115deg,#1FA2FF 0%,#0D7DFF 48%,#005DE8 100%);
       --shadow:0 18px 50px rgba(0,0,0,.34); --header-h:62px; --nav-h:72px;
       font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display",Inter,system-ui,sans-serif;
     }
     :root[data-theme="light"] { --bg:#F3F6FB;--bg2:#FFFFFF;--surface:#FFFFFF;--surface2:#EDF1F7;--surface3:#E4EAF2;--text:#0E1117;--muted:#667085;--line:rgba(14,17,23,.12); }
-    body { background:radial-gradient(circle at 10% -8%,rgba(37,99,255,.17),transparent 26rem),radial-gradient(circle at 100% 8%,rgba(124,58,237,.11),transparent 24rem),linear-gradient(165deg,var(--bg),var(--bg2)); padding-bottom:calc(var(--nav-h) + var(--safe-bottom) + 10px); }
+    body { background:radial-gradient(circle at 10% -8%,rgba(31,162,255,.17),transparent 26rem),radial-gradient(circle at 100% 8%,rgba(13,125,255,.11),transparent 24rem),linear-gradient(165deg,var(--bg),var(--bg2)); padding-bottom:calc(var(--nav-h) + var(--safe-bottom) + 10px); }
     h1,h2,h3 { font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,system-ui,sans-serif; }
     h1 { letter-spacing:-.055em; }
     .shell { width:min(680px,calc(100% - 24px)); }
     .app-header { background:color-mix(in srgb,var(--bg) 91%,transparent); border-color:rgba(139,149,167,.12); }
     .header-inner { min-height:var(--header-h); }
     .brand { gap:10px; }
-    .brand-mark { width:40px;height:40px;border-radius:13px;padding:4px;background:linear-gradient(145deg,#131B2B,#090D16);border:1px solid rgba(139,149,167,.2);box-shadow:0 10px 26px rgba(37,99,255,.14); }
+    .brand-mark { width:40px;height:40px;border-radius:13px;padding:4px;background:linear-gradient(145deg,#131B2B,#090D16);border:1px solid rgba(139,149,167,.2);box-shadow:0 10px 26px rgba(13,125,255,.16); }
     .brand-mark img { width:100%;height:100%;object-fit:contain; }
     .brand-title { font-size:19px;letter-spacing:.15em;font-weight:900; }
     .brand-sub { font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted); }
-    .version-badge { margin-left:5px;padding:2px 6px;font-size:9px;letter-spacing:.06em;color:#AFC4FF;background:rgba(37,99,255,.1);border-color:rgba(37,99,255,.28);vertical-align:3px; }
+    .version-badge { margin-left:5px;padding:2px 6px;font-size:9px;letter-spacing:.06em;color:#C9E5FF;background:rgba(13,125,255,.12);border-color:rgba(13,125,255,.28);vertical-align:3px; }
     .icon-btn { width:40px;height:40px;border-radius:13px;background:var(--surface2); }
     .icon-btn svg { width:21px;height:21px;fill:currentColor; }
     .main { padding:12px 0 24px; }
     .card { background:linear-gradient(155deg,color-mix(in srgb,var(--surface) 96%,transparent),color-mix(in srgb,var(--surface2) 76%,transparent));border-radius:24px; }
     .card-pad { padding:18px; }
     .btn { border-radius:15px;min-height:48px; }
-    .btn.primary { background:var(--brand-gradient);box-shadow:0 14px 30px rgba(72,78,244,.25); }
+    .btn.primary { background:var(--brand-gradient);box-shadow:0 14px 30px rgba(13,125,255,.22); }
     .btn.subtle { background:var(--surface2);border-color:var(--line); }
     .eyebrow,.section-kicker { color:var(--blue);font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.14em; }
 
@@ -390,7 +390,7 @@
     .home-greeting h1 { font-size:31px;line-height:1;margin:3px 0 0; }
     .home-status { padding:6px 10px;border-radius:999px;color:#A7F3D0;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.26);font-size:11px!important;font-weight:850; }
     .home-status.rest { color:#BFD4FF;background:rgba(37,99,255,.1);border-color:rgba(37,99,255,.25); }
-    .today-card { position:relative;overflow:hidden;padding:18px;border:1px solid rgba(91,111,255,.25);border-radius:25px;background:radial-gradient(circle at 100% 0%,rgba(124,58,237,.22),transparent 15rem),radial-gradient(circle at 0 100%,rgba(37,99,255,.17),transparent 17rem),linear-gradient(155deg,#151C29,#10151F);box-shadow:var(--shadow); }
+    .today-card { position:relative;overflow:hidden;padding:18px;border:1px solid rgba(91,111,255,.25);border-radius:25px;background:radial-gradient(circle at 100% 0%,rgba(13,125,255,.18),transparent 15rem),radial-gradient(circle at 0 100%,rgba(31,162,255,.17),transparent 17rem),linear-gradient(155deg,#141B28,#0D131D);box-shadow:var(--shadow); }
     .today-card::after { content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 1px 0 rgba(255,255,255,.06); }
     .today-card-top { display:flex;justify-content:space-between;gap:16px;align-items:flex-start; }
     .today-card h2 { font-size:39px;line-height:.96;margin:7px 0 6px;letter-spacing:-.055em; }
@@ -474,7 +474,7 @@
 
     /* Full-screen Focus Mode — no vertical scrolling */
     body.focus-running { position:fixed;inset:0;overflow:hidden; }
-    .focus-shell { height:100dvh;grid-template-rows:56px 14px minmax(0,1fr) calc(64px + var(--safe-bottom));padding-top:var(--safe-top);background:radial-gradient(circle at 50% -12%,rgba(37,99,255,.13),transparent 22rem),linear-gradient(165deg,#080B12,#0E1117 62%,#0A0E17); }
+    .focus-shell { height:100dvh;grid-template-rows:56px 14px minmax(0,1fr) calc(64px + var(--safe-bottom));padding-top:var(--safe-top);background:radial-gradient(circle at 50% -12%,rgba(31,162,255,.13),transparent 22rem),linear-gradient(165deg,#080B12,#0D121A 62%,#0A0E17); }
     .focus-header { min-height:56px;padding:7px 12px;border-bottom:0;grid-template-columns:42px 1fr 42px; }
     .focus-close,.focus-menu { width:40px;height:40px;border-radius:14px;background:#151B26;border:1px solid rgba(139,149,167,.16); }
     .focus-close { font-size:24px;font-weight:300; }
@@ -642,7 +642,7 @@
     .quick-action-list { display:grid;gap:8px;margin-top:13px; }
     .quick-action-list>button { width:100%;display:grid;grid-template-columns:42px 1fr auto;gap:11px;align-items:center;text-align:left;padding:12px;border-radius:17px;background:#101620;border:1px solid rgba(139,149,167,.12); }
     .quick-action-list>button>span { width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:rgba(37,99,255,.12);color:#AFC7FF;font-weight:900; }
-    .quick-action-list>button:nth-child(2)>span { background:rgba(124,58,237,.14);color:#C8B4FF; }
+    .quick-action-list>button:nth-child(2)>span { background:rgba(13,125,255,.12);color:#B9D8FF; }
     .quick-action-list>button:nth-child(3)>span { background:var(--brand-gradient);color:white; }
     .quick-action-list strong,.quick-action-list small { display:block; }.quick-action-list strong{font-size:13px}.quick-action-list small{margin-top:3px;color:#8793A5;font-size:9px}.quick-action-list b{color:#657084;font-size:20px}
 
@@ -660,8 +660,8 @@
   <header class="app-header" id="appHeader">
     <div class="shell header-inner">
       <div class="brand">
-        <div class="brand-mark" aria-hidden="true"><img src="atlas-mark.svg" alt="" /></div>
-        <div class="brand-copy"><div class="brand-title">ATLAS <span class="version-badge">2.5.6</span></div><div class="brand-sub" id="headerSub">Built for progress.</div></div>
+        <div class="brand-mark" aria-hidden="true"><img src="nexset-mark.svg" alt="" /></div>
+        <div class="brand-copy"><div class="brand-title">NEXSET <span class="version-badge">3.0.0</span></div><div class="brand-sub" id="headerSub">Progress Starts With Your Next Set.</div></div>
       </div>
       <button class="icon-btn" data-action="open-quick-menu" aria-label="Quick actions">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
@@ -689,7 +689,7 @@
 
     const STORAGE_KEY = 'pfWorkoutApp.v1';
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
-    const APP_VERSION = 'atlas-2.5.6';
+    const APP_VERSION = 'nexset-3.0.0';
 
     const PLAN = [
       {
@@ -922,7 +922,7 @@
     }
     function dayMark(day) {
       if(day?.type==='rest') return `<svg viewBox="0 0 64 64" role="img" aria-label="Recovery"><defs><linearGradient id="recoveryGlow" x1="8" y1="52" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop stop-color="#38BDF8"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs><path d="M17 35c0-10.5 7.8-19.2 18-20.6-4.2 3.7-6.8 9.1-6.8 15.1 0 10.9 8.8 19.7 19.7 19.7 2 0 4-.3 5.8-.9A23 23 0 0 1 17 35Z" fill="url(#recoveryGlow)"/><path d="M43.5 12.5l1.8 4.2 4.2 1.8-4.2 1.8-1.8 4.2-1.8-4.2-4.2-1.8 4.2-1.8 1.8-4.2Z" fill="#E0E7FF"/><path d="M17 18l1.2 2.8L21 22l-2.8 1.2L17 26l-1.2-2.8L13 22l2.8-1.2L17 18Z" fill="#BAE6FD"/></svg>`;
-      return `<img src="atlas-mark.svg" alt="" />`;
+      return `<img src="nexset-mark.svg" alt="" />`;
     }
     function haptic(kind='light') {
       try {
@@ -944,7 +944,7 @@
       document.documentElement.dataset.theme = state.settings.theme || 'dark';
       const day=getDay();
       const sub=$('#headerSub');
-      if(sub) sub.textContent = active ? `${day.title} in progress` : 'Built for progress.';
+      if(sub) sub.textContent = active ? `${day.title} in progress` : 'Progress Starts With Your Next Set.';
       const focus = Boolean(active && currentView==='workout');
       document.body.classList.toggle('focus-running', focus);
       document.body.dataset.screen = currentView;
@@ -1056,7 +1056,7 @@
       const day=getDay();
       $('#view').innerHTML=`<div class="stack workout-preview-v21">
         <section class="card workout-brief-card"><div class="card-pad">
-          <div class="workout-brief-top"><div><div class="eyebrow">Day ${day.day} of 7</div><h1>${esc(day.title)}</h1><p>${esc(day.focus)}</p></div><div class="brief-logo"><img src="atlas-mark.svg" alt=""></div></div>
+          <div class="workout-brief-top"><div><div class="eyebrow">Day ${day.day} of 7</div><h1>${esc(day.title)}</h1><p>${esc(day.focus)}</p></div><div class="brief-logo"><img src="nexset-mark.svg" alt=""></div></div>
           <div class="brief-stats"><span>${estimatedMinutes(day)} min</span><span>${day.exercises.length} exercises</span><span>${day.type==='rest'?'Recovery':'Lift day'}</span></div>
           <div class="brief-note"><strong>Warm-up</strong><span>${esc(day.warmup)}</span></div>
           <div class="today-actions ${day.type==='rest'?'two':''}">${day.type==='rest'?'<button class="btn subtle" data-action="mark-rest">Mark rest day</button>':''}<button class="btn primary" data-action="start-workout">${day.type==='rest'?'Start optional recovery':'Start workout'}<span>→</span></button></div>
@@ -1326,7 +1326,7 @@
     function renderCompletion() {
       const s=lastCompletedSession || [...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt))[0];if(!s){currentView='home';render();return;}
       const working=sessionWorkingSets(s),volume=sessionVolume(s),cardio=sessionCardioMinutes(s),recs=(s.exercises||[]).map(e=>({ex:getExercise(e.id),p:state.exerciseProgress[e.id]})).filter(x=>x.ex&&x.p?.note).slice(0,2);
-      $('#view').innerHTML=`<div class="completion-screen"><div class="completion-brand"><div class="completion-mark"><img src="atlas-mark.svg" alt=""></div><div class="eyebrow">Workout complete</div><h1>${esc(s.title)}</h1><p>Your session is saved.</p></div><div class="completion-stats"><div><span>Duration</span><strong>${formatDuration(s.durationMs)}</strong></div><div><span>Working sets</span><strong>${working}</strong></div><div><span>Volume</span><strong>${volume.toLocaleString()}</strong><small>lb</small></div>${cardio?`<div><span>Cardio</span><strong>${cardio}</strong><small>min</small></div>`:''}</div>${s.prs?.length?`<div class="completion-pr"><span>🏆 New PR</span><strong>${esc(s.prs[0].name)}</strong><small>${esc(s.prs[0].value)}${s.prs.length>1?` · +${s.prs.length-1} more`:''}</small></div>`:''}<div class="completion-notes"><span class="section-kicker">Coach notes</span>${recs.length?recs.map(x=>`<p><strong>${esc(x.ex.name)}</strong> · ${esc(x.p.note)}</p>`).join(''):'<p>Rest day logged. Your next workout is ready when you are.</p>'}</div><button class="btn primary block completion-button" data-action="complete-done">Return home</button></div>`;
+      $('#view').innerHTML=`<div class="completion-screen"><div class="completion-brand"><div class="completion-mark"><img src="nexset-mark.svg" alt=""></div><div class="eyebrow">Workout complete</div><h1>${esc(s.title)}</h1><p>Your session is saved.</p></div><div class="completion-stats"><div><span>Duration</span><strong>${formatDuration(s.durationMs)}</strong></div><div><span>Working sets</span><strong>${working}</strong></div><div><span>Volume</span><strong>${volume.toLocaleString()}</strong><small>lb</small></div>${cardio?`<div><span>Cardio</span><strong>${cardio}</strong><small>min</small></div>`:''}</div>${s.prs?.length?`<div class="completion-pr"><span>🏆 New PR</span><strong>${esc(s.prs[0].name)}</strong><small>${esc(s.prs[0].value)}${s.prs.length>1?` · +${s.prs.length-1} more`:''}</small></div>`:''}<div class="completion-notes"><span class="section-kicker">Coach notes</span>${recs.length?recs.map(x=>`<p><strong>${esc(x.ex.name)}</strong> · ${esc(x.p.note)}</p>`).join(''):'<p>Rest day logged. Your next workout is ready when you are.</p>'}</div><button class="btn primary block completion-button" data-action="complete-done">Return home</button></div>`;
     }
 
     function analyzeExercise(ex, logs, previous={}) {
@@ -1394,7 +1394,7 @@
       if(moreSection==='coach'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><section class="card"><div class="card-pad"><div class="eyebrow">Coach</div><h1 style="margin-top:8px">Check-in</h1><p class="muted">Share your workouts, body trends, and next-weight recommendations with ChatGPT.</p><button class="btn green block" data-action="share-coach">Share full check-in</button><button class="btn block" style="margin-top:10px" data-action="share-weekly">Share weekly review</button></div></section></div>`; return; }
       if(moreSection==='settings'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><div class="page-title-row"><div><div class="eyebrow">Preferences</div><h1>Settings</h1></div></div>${renderSettings()}</div>`; return; }
       if(moreSection==='backup'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><section class="card"><div class="card-pad"><div class="eyebrow">Your data</div><h1 style="margin-top:8px">Backup</h1><p class="muted">Workout data stays on this device. Export a backup before changing phones or clearing Safari data.</p><div class="button-row"><button class="btn primary" data-action="export-backup">Export</button><button class="btn" data-action="import-backup">Import</button></div><button class="btn block" style="margin-top:10px" data-action="refresh-cache">Refresh app cache</button><button class="btn danger block" style="margin-top:10px" data-action="reset-app">Reset app data</button></div></section></div>`; return; }
-      $('#view').innerHTML=`<div class="stack"><div class="page-title-row"><div><div class="eyebrow">ATLAS</div><h1>More</h1></div></div><section class="card"><div class="more-menu"><button data-action="more-section" data-section="history"><span class="menu-icon">↺</span><div><strong>History</strong><small>${sessions.length} saved sessions</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">A</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-atlas"><img src="atlas-mark.svg" alt=""><span>ATLAS 2.5.6</span><small>Built for progress.</small></div></div>`;
+      $('#view').innerHTML=`<div class="stack"><div class="page-title-row"><div><div class="eyebrow">NEXSET</div><h1>More</h1></div></div><section class="card"><div class="more-menu"><button data-action="more-section" data-section="history"><span class="menu-icon">↺</span><div><strong>History</strong><small>${sessions.length} saved sessions</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">N</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-atlas"><img src="nexset-mark.svg" alt=""><span>NEXSET 3.0.0</span><small>Progress Starts With Your Next Set.</small></div></div>`;
     }
 
     function renderHistoryCard(s){const sets=sessionWorkingSets(s),volume=sessionVolume(s),cardio=sessionCardioMinutes(s);return`<details class="history-card"><summary><div class="history-top"><div><strong style="font-size:18px">${esc(s.title||'Workout')}</strong><div class="muted" style="font-size:12px;margin-top:4px">${fmtDate(s.startedAt)} · ${formatDuration(s.durationMs)}</div></div><span class="target-pill">${s.type==='rest'?'☁️ Rest':s.prs?.length?`🏆 ${s.prs.length} PR`:'✓ Done'}</span></div><div class="history-stats"><span class="chip">${sets} sets</span><span class="chip">${volume.toLocaleString()} lb</span>${cardio?`<span class="chip">${cardio} min cardio</span>`:''}</div></summary><div class="history-body">${s.sessionNote?`<div class="soft-card"><strong>Session note</strong><p class="muted" style="margin:6px 0 0">${esc(s.sessionNote)}</p></div>`:''}${(s.exercises||[]).map(entry=>{const ex=getExercise(entry.id);if(!ex||(entry.logs||[]).length===0)return'';return`<div class="history-ex"><strong>${esc(ex.name)}</strong><div class="set-inline">${(entry.logs||[]).map(log=>`<span class="set-chip ${log.warmup?'wu':''}">${esc(formatLogShort(ex,log))} ${ex.type==='weighted'||ex.type==='bodyweight'?feelEmoji(log.feel):''}</span>`).join('')}</div>${entry.notes?`<div class="muted" style="font-size:12px;margin-top:7px">Note: ${esc(entry.notes)}</div>`:''}</div>`;}).join('')}<button class="btn danger block" data-action="delete-session" data-id="${esc(s.id)}">Delete session</button></div></details>`;}
@@ -1403,18 +1403,18 @@
 
     function saveSettings(){$$('[data-setting]').forEach(input=>{const key=input.dataset.setting;let value=input.value;if(['restSeconds','smithBarWeight'].includes(key))value=Number(value);state.settings[key]=value;});$$('[data-setting-check]').forEach(input=>state.settings[input.dataset.settingCheck]=input.checked);$$('[data-goal]').forEach(input=>{const n=Number(input.value);if(Number.isFinite(n))state.goals[input.dataset.goal]=n;});saveState();render();showToast('Settings saved.');}
 
-    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`ATLAS 2.5.6 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
-    function weeklyReportText(){const w=weeklyReview();return[`ATLAS 2.5.6 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
+    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`NEXSET 3.0.0 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
+    function weeklyReportText(){const w=weeklyReview();return[`NEXSET 3.0.0 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
     async function shareText(text,title){try{if(navigator.share){await navigator.share({title,text});return;}await navigator.clipboard.writeText(text);showToast('Copied. Paste it into ChatGPT.');}catch(err){if(err?.name!=='AbortError'){downloadBlob(`${title.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.txt`,text,'text/plain');showToast('Report downloaded.');}}}
 
     function openApp(kind){const url=kind==='music'?state.settings.musicAppUrl:state.settings.pfAppUrl,fallback=kind==='music'?state.settings.musicFallbackUrl:state.settings.pfFallbackUrl;if(!url){showToast('Add this app link in More → Settings.');return;}try{window.location.href=url;setTimeout(()=>{if(!document.hidden&&fallback&&!url.startsWith('shortcuts:'))window.open(fallback,'_blank','noopener');},1200);}catch(_){if(fallback)window.open(fallback,'_blank','noopener');}}
     function openQuickMenu(){
       $('#quickMenu')?.remove();
-      document.body.insertAdjacentHTML('beforeend',`<div class="sheet-backdrop" id="quickMenu" data-action="close-quick-menu"><section class="bottom-sheet quick-menu-sheet" role="dialog" aria-modal="true" aria-label="Quick actions" onclick="event.stopPropagation()"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">ATLAS</span><h2>Quick actions</h2></div><button data-action="close-quick-menu" aria-label="Close">×</button></div><div class="quick-action-list"><button data-action="open-app" data-app="pf"><span>PF</span><div><strong>Planet Fitness</strong><small>Check in or view the crowd meter</small></div><b>›</b></button><button data-action="open-app" data-app="music"><span>♫</span><div><strong>Apple Music</strong><small>Start your gym music</small></div><b>›</b></button><button data-action="share-coach"><span>A</span><div><strong>Coach check-in</strong><small>Share your latest training report</small></div><b>›</b></button></div></section></div>`);
+      document.body.insertAdjacentHTML('beforeend',`<div class="sheet-backdrop" id="quickMenu" data-action="close-quick-menu"><section class="bottom-sheet quick-menu-sheet" role="dialog" aria-modal="true" aria-label="Quick actions" onclick="event.stopPropagation()"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">NEXSET</span><h2>Quick actions</h2></div><button data-action="close-quick-menu" aria-label="Close">×</button></div><div class="quick-action-list"><button data-action="open-app" data-app="pf"><span>PF</span><div><strong>Planet Fitness</strong><small>Check in or view the crowd meter</small></div><b>›</b></button><button data-action="open-app" data-app="music"><span>♫</span><div><strong>Apple Music</strong><small>Start your gym music</small></div><b>›</b></button><button data-action="share-coach"><span>N</span><div><strong>Coach check-in</strong><small>Share your latest training report</small></div><b>›</b></button></div></section></div>`);
     }
     function closeQuickMenu(){ $('#quickMenu')?.remove(); }
 
-    function exportBackup(){downloadBlob(`atlas-workout-backup-${dateKey()}.json`,JSON.stringify({appVersion:APP_VERSION,exportedAt:new Date().toISOString(),state,active},null,2),'application/json');showToast('Backup exported.');}
+    function exportBackup(){downloadBlob(`nexset-workout-backup-${dateKey()}.json`,JSON.stringify({appVersion:APP_VERSION,exportedAt:new Date().toISOString(),state,active},null,2),'application/json');showToast('Backup exported.');}
     function downloadBlob(name,text,type){const blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
     function importBackup(file){const reader=new FileReader();reader.onload=()=>{try{const parsed=JSON.parse(reader.result),incoming=parsed.state||parsed;if(!incoming.history)throw new Error('Invalid backup');const base=defaultState();state={...base,...incoming,settings:{...base.settings,...(incoming.settings||{})},goals:{...base.goals,...(incoming.goals||{})},history:Array.isArray(incoming.history)?incoming.history:[],bodyMetrics:Array.isArray(incoming.bodyMetrics)?incoming.bodyMetrics:[],dailyCheckins:Array.isArray(incoming.dailyCheckins)?incoming.dailyCheckins:[]};active=parsed.active||null;rebuildProgress();saveState();saveActive();currentView=active?'workout':'home';render();showToast('Backup imported.');}catch(err){showToast('Could not import that backup.');}};reader.readAsText(file);}
     async function refreshCache(){try{if('serviceWorker'in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(const r of regs)await r.update();}if('caches'in window){for(const key of await caches.keys())await caches.delete(key);}showToast('Cache refreshed. Reloading…');setTimeout(()=>location.reload(true),700);}catch(_){location.reload(true);}}
@@ -1459,8 +1459,8 @@
       else if(action==='more-back'){moreSection='menu';renderMore();}
       else if(action==='save-body')saveBody();
       else if(action==='delete-body'){state.bodyMetrics=state.bodyMetrics.filter(m=>m.id!==btn.dataset.id);saveState();renderProgress();}
-      else if(action==='share-weekly')shareText(weeklyReportText(),'ATLAS Weekly Review');
-      else if(action==='share-coach')shareText(coachReport(),'ATLAS Coach Check-In');
+      else if(action==='share-weekly')shareText(weeklyReportText(),'NEXSET Weekly Review');
+      else if(action==='share-coach')shareText(coachReport(),'NEXSET Coach Check-In');
       else if(action==='save-settings')saveSettings();
       else if(action==='export-backup')exportBackup();
       else if(action==='import-backup')$('#importFile').click();
