@@ -2,7 +2,7 @@
   "name": "ATLAS — Workout Coach",
   "short_name": "ATLAS",
   "description": "An iPhone-first workout coach with focused exercise cards, progression, rest timing, body trends, and a repeatable Planet Fitness plan.",
-  "start_url": "./index.html?atlas=2.3.0",
+  "start_url": "./index.html?atlas=2.4.0",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0E1117",
