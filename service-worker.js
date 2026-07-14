@@ -1,18 +1,18 @@
-const CACHE_NAME = 'atlas-workout-v2-5-2-exercise-sheet-fix-20260714-1';
+const CACHE_NAME = 'atlas-workout-v2-5-3-start-finish-guides-20260714-1';
 const APP_SHELL = [
   './',
   './index.html',
   './manifest.webmanifest',
   './manifest.json',
   './atlas-mark.svg',
-  './apple-touch-icon.png',
-  './icon-192.png',
-  './icon-512.png',
-  './icon-1024.png',
-  './launch-1125x2436.png',
-  './launch-1170x2532.png',
-  './launch-1179x2556.png',
-  './launch-1290x2796.png'
+  './icons/apple-touch-icon.png',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/icon-1024.png',
+  './splash/launch-1125x2436.png',
+  './splash/launch-1170x2532.png',
+  './splash/launch-1179x2556.png',
+  './splash/launch-1290x2796.png'
 ];
 
 self.addEventListener('install', event => {
