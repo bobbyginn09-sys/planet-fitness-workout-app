@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nexset-workout-v3-1-1-muscle-map-20260714-1';
+const CACHE_NAME = 'nexset-workout-v3-1-2-reference-finish-20260714-1';
 const APP_SHELL = [
   './',
   './index.html',
@@ -8,6 +8,10 @@ const APP_SHELL = [
   './nexset-wordmark.svg',
   './nexset-icon.svg',
   './nexset-strength-figure.svg',
+  './muscle-recovery.png',
+  './muscle-legs.png',
+  './muscle-pull.png',
+  './muscle-push.png',
   './nexset-lockup.svg',
   './apple-touch-icon.png',
   './icon-192.png',

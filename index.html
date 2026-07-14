@@ -320,7 +320,7 @@
       .focus-title strong { font-size:14px; }
       .focus-bottom { grid-template-columns:.8fr 1.35fr; }
     }
-    /* NEXSET 3.1.1 — premium motion and tactile polish */
+    /* NEXSET 3.1.2 — premium motion and tactile polish */
     #view.view-enter { animation: nexsetViewIn .32s cubic-bezier(.2,.8,.2,1) both; }
     @keyframes nexsetViewIn { from { opacity:0; transform:translateY(8px) scale(.995); } to { opacity:1; transform:none; } }
     .btn,.icon-btn,.mini-action,.nav-btn,.weight-add,.quick-square button,.plan-week-tabs button {
@@ -350,7 +350,7 @@
 
 
     /* =========================================================
-       NEXSET 3.1.1 — professional brand + iPhone-first layout
+       NEXSET 3.1.2 — professional brand + iPhone-first layout
        ========================================================= */
     :root {
       --bg:#060A11; --bg2:#0C121B; --surface:#101722; --surface2:#161F2B; --surface3:#1E2938;
@@ -802,6 +802,82 @@
       .reference-today-card{min-height:212px}.workout-figure{width:130px;height:162px}.reference-quick-grid button{min-height:64px}.summary-row{min-height:39px}.home-dashboard{gap:7px}.home-welcome h1{font-size:21px}.home-welcome p{font-size:10px}
     }
 
+
+    /* NEXSET 3.1.2 — approved reference finish */
+    .shell { width:min(680px,calc(100% - 22px)); }
+    .app-header { box-shadow:0 12px 32px rgba(0,0,0,.16); }
+    .brand-lockup { width:178px;height:35px; }
+    .icon-btn.header-alert { position:relative;overflow:visible; }
+    .icon-btn.header-alert svg { width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round; }
+    .header-alert-dot { position:absolute;right:8px;top:7px;width:5px;height:5px;border-radius:50%;background:#159CFF;box-shadow:0 0 9px rgba(21,156,255,.75); }
+
+    .home-dashboard { gap:9px; }
+    .home-welcome { padding:4px 5px 1px; }
+    .home-welcome h1 { font-size:22px;font-weight:820; }
+    .reference-today-card { min-height:228px;padding:16px 16px 66px;border-radius:19px;border:1px solid rgba(255,255,255,.115);background:radial-gradient(circle at 90% 25%,rgba(255,35,35,.045),transparent 9rem),linear-gradient(145deg,#121A25 0%,#0B1119 100%);box-shadow:0 18px 44px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.035); }
+    .reference-today-card::after { box-shadow:inset 0 0 0 1px rgba(16,143,255,.025); }
+    .today-card-content { max-width:64%; }
+    .reference-today-card h2 { font-size:29px;margin:7px 0 6px; }
+    .today-focus { font-size:11px!important;line-height:1.32; }
+    .today-detail-list { margin-top:12px;gap:4px;font-size:9px; }
+    .reference-today-card>.muscle-figure.hero { position:absolute;right:-2px;top:1px;z-index:1;width:154px;height:183px;display:block;pointer-events:none;filter:drop-shadow(0 13px 18px rgba(0,0,0,.44)); }
+    .muscle-figure img { display:block;width:100%;height:100%;object-fit:contain;object-position:center top; }
+    .reference-today-card .today-actions { left:12px;right:12px;bottom:12px; }
+    .home-start { min-height:47px;border-radius:10px;background:linear-gradient(135deg,#149FFF,#076FF7 55%,#0052D8)!important;border:1px solid rgba(95,185,255,.34)!important;box-shadow:0 13px 30px rgba(0,76,220,.34)!important; }
+    .home-start:active { transform:translateY(1px) scale(.992); }
+
+    .reference-quick-grid { gap:8px; }
+    .reference-quick-grid button { min-height:71px;border-radius:13px;background:linear-gradient(155deg,#141D29,#0B1118);border-color:rgba(255,255,255,.095);box-shadow:0 9px 22px rgba(0,0,0,.15),inset 0 1px 0 rgba(255,255,255,.03); }
+    .quick-action-icon { transition:transform .18s ease,filter .18s ease; }
+    .reference-quick-grid button:active .quick-action-icon { transform:scale(.92);filter:brightness(1.15); }
+    .reference-summary-card { border-radius:14px;box-shadow:0 11px 28px rgba(0,0,0,.17),inset 0 1px 0 rgba(255,255,255,.025); }
+    .summary-row { min-height:42px; }
+
+    .bottom-nav { box-shadow:0 -14px 32px rgba(0,0,0,.3); }
+    .nav-icon svg { stroke-width:1.7; }
+    .nav-btn.active .nav-icon { filter:drop-shadow(0 0 9px rgba(13,125,255,.5)); }
+
+    .exercise-focus-card { border-radius:23px;border-color:rgba(255,255,255,.12);box-shadow:0 22px 55px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.035); }
+    .exercise-focus-card::before { content:"";position:absolute;left:18px;right:18px;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(36,166,255,.5),transparent);pointer-events:none; }
+    .focus-close,.focus-menu { box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 8px 18px rgba(0,0,0,.18); }
+    .control-block,.previous-compact,.warm-compact { border-color:rgba(255,255,255,.1); }
+    .compact-stepper button { background:linear-gradient(155deg,#1C2532,#111822); }
+    .feel-btn { border-color:rgba(255,255,255,.11); }
+    .focus-nav-btn.log-action { box-shadow:0 13px 30px rgba(0,82,230,.34); }
+
+    .program-segment { background:rgba(5,10,16,.38);border-radius:12px 12px 0 0; }
+    .program-segment button { font-weight:820; }
+    .program-list { border-radius:14px;box-shadow:0 13px 31px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.025); }
+    .program-row { position:relative;min-height:49px; }
+    .program-row.selected::before { content:"";position:absolute;left:0;top:8px;bottom:8px;width:2px;border-radius:2px;background:#159CFF;box-shadow:0 0 10px rgba(21,156,255,.65); }
+    .program-state { font-weight:900; }
+    .program-history-card { min-height:69px;border-radius:14px;box-shadow:0 10px 24px rgba(0,0,0,.15),inset 0 1px 0 rgba(255,255,255,.025); }
+    .history-mark { width:42px;height:48px;border-radius:11px;background:radial-gradient(circle at 50% 30%,rgba(255,35,35,.08),transparent 70%),#080E15;border-color:rgba(255,255,255,.085);overflow:hidden; }
+    .history-mark .muscle-figure.compact { width:40px;height:46px; }
+    .history-mark .muscle-figure.compact img { object-fit:contain; }
+
+    .history-card { border-radius:16px;background:linear-gradient(150deg,#111923,#0A1017);border-color:rgba(255,255,255,.09);box-shadow:0 12px 30px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.025); }
+    .history-card summary { padding:11px 12px; }
+    .history-top { display:grid;grid-template-columns:48px minmax(0,1fr) auto;align-items:center;gap:10px; }
+    .history-muscle { width:46px;height:53px;border-radius:11px;display:grid;place-items:center;background:#080E15;border:1px solid rgba(255,255,255,.085);overflow:hidden; }
+    .history-muscle .muscle-figure.compact { width:44px;height:51px; }
+    .history-main { min-width:0; }
+    .history-main>strong,.history-main>small { display:block; }
+    .history-main>strong { font-size:14px; }
+    .history-main>small { margin-top:2px;color:#8F9CAF;font-size:9px; }
+    .history-metrics { display:flex;gap:5px;margin-top:7px;flex-wrap:wrap; }
+    .history-metrics i { padding:3px 6px;border-radius:7px;background:rgba(255,255,255,.045);color:#A8B4C4;font-size:7px;font-style:normal;white-space:nowrap; }
+    .history-status { width:29px;height:29px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#1CA7FF,#0067EE);color:#fff;font-size:12px;box-shadow:0 0 13px rgba(13,125,255,.28); }
+    .history-status small { display:none; }
+    .history-status.rest { background:#172231;color:#AFC8DF;box-shadow:none; }
+    .history-body { padding:14px; }
+
+    @media (max-height:760px) {
+      .reference-today-card { min-height:213px;padding-bottom:61px; }
+      .reference-today-card>.muscle-figure.hero { width:141px;height:168px;right:-4px; }
+      .reference-quick-grid button { min-height:63px; }
+    }
+
     :root[data-theme="light"] body { background:linear-gradient(180deg,#EEF4FB,#F7F9FC 58%,#EDF2F8); }
     :root[data-theme="light"] .app-header,:root[data-theme="light"] .bottom-nav { background:rgba(5,10,17,.96); }
     :root[data-theme="light"] .home-welcome h1,:root[data-theme="light"] .home-section-title,:root[data-theme="light"] .program-heading span,:root[data-theme="light"] .program-recent-head span { color:#111827; }
@@ -835,8 +911,8 @@
         <img class="brand-lockup" src="nexset-lockup.svg" alt="NEXSET" />
         <span class="sr-only" id="headerSub">Progress Starts With Your Next Set.</span>
       </div>
-      <button class="icon-btn" data-action="open-quick-menu" aria-label="Quick actions">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+      <button class="icon-btn header-alert" data-action="open-quick-menu" aria-label="Open quick actions">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.8 9.6a5.2 5.2 0 0 1 10.4 0v3.1c0 1.5.5 2.8 1.5 3.9H5.3c1-1.1 1.5-2.4 1.5-3.9Z"/><path d="M9.7 19.1a2.6 2.6 0 0 0 4.6 0"/></svg><span class="header-alert-dot"></span>
       </button>
     </div>
   </header>
@@ -848,7 +924,7 @@
       <button class="nav-btn active" data-view="home" aria-label="Home"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3.5 10.4 12 3l8.5 7.4v9.1a1.5 1.5 0 0 1-1.5 1.5h-4.6v-6.4H9.6V21H5a1.5 1.5 0 0 1-1.5-1.5Z"/></svg></span><span>Home</span></button>
       <button class="nav-btn" data-view="workout" aria-label="Workout"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M2.5 9v6M5.5 6.5v11M8.5 10.2h7M15.5 6.5v11M18.5 9v6M21.5 10.5v3"/></svg></span><span>Workout</span></button>
       <button class="nav-btn" data-view="progress" aria-label="Progress"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 19V9m5 10V5m5 14v-7m5 7V3"/><path d="m4 12 5-4 5 2 5-6"/></svg></span><span>Progress</span></button>
-      <button class="nav-btn" data-view="plan" aria-label="Plan"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="15" rx="2.5"/><path d="M8 3v5M16 3v5M3.5 10h17"/></svg></span><span>Plan</span></button>
+      <button class="nav-btn" data-view="plan" aria-label="Plan"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="15" rx="2.5"/><path d="M8 3v5M16 3v5M3.5 10h17"/></svg></span><span>Program</span></button>
       <button class="nav-btn" data-view="more" aria-label="More"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg></span><span>More</span></button>
     </div>
   </nav>
@@ -861,7 +937,7 @@
 
     const STORAGE_KEY = 'pfWorkoutApp.v1';
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
-    const APP_VERSION = 'nexset-3.1.1';
+    const APP_VERSION = 'nexset-3.1.2';
 
     const PLAN = [
       {
@@ -1183,55 +1259,8 @@
     }
 
     function renderMuscleFigure(day, compact=false) {
-      const mode = figureModeForDay(day);
-      let highlights = '';
-      if(mode==='push') highlights = `
-        <ellipse cx="106" cy="118" rx="27" ry="21" transform="rotate(-12 106 118)" fill="url(#muscleRed)" filter="url(#redGlow)"/>
-        <ellipse cx="174" cy="118" rx="27" ry="21" transform="rotate(12 174 118)" fill="url(#muscleRed)" filter="url(#redGlow)"/>
-        <ellipse cx="72" cy="110" rx="18" ry="22" transform="rotate(-20 72 110)" fill="url(#muscleRed)" filter="url(#redGlow)"/>
-        <ellipse cx="208" cy="110" rx="18" ry="22" transform="rotate(20 208 110)" fill="url(#muscleRed)" filter="url(#redGlow)"/>
-        <ellipse cx="56" cy="154" rx="15" ry="29" transform="rotate(7 56 154)" fill="url(#muscleRed)" filter="url(#redGlow)"/>
-        <ellipse cx="224" cy="154" rx="15" ry="29" transform="rotate(-7 224 154)" fill="url(#muscleRed)" filter="url(#redGlow)"/>
-      `;
-      else if(mode==='pull') highlights = `
-        <path d="M92 118c-17 8-27 22-29 43 7 19 19 29 37 32 8-21 4-49-8-75Z" fill="url(#muscleRed)" filter="url(#redGlow)" opacity=".95"/>
-        <path d="M188 118c17 8 27 22 29 43-7 19-19 29-37 32-8-21-4-49 8-75Z" fill="url(#muscleRed)" filter="url(#redGlow)" opacity=".95"/>
-        <ellipse cx="69" cy="153" rx="16" ry="27" transform="rotate(8 69 153)" fill="url(#muscleRed)" filter="url(#redGlow)"/>
-        <ellipse cx="211" cy="153" rx="16" ry="27" transform="rotate(-8 211 153)" fill="url(#muscleRed)" filter="url(#redGlow)"/>
-        <path d="M102 88c24 7 52 7 76 0 7 9 5 17-4 23-22 8-46 8-68 0-9-6-11-14-4-23Z" fill="url(#muscleRed)" filter="url(#redGlow)" opacity=".9"/>
-      `;
-      else if(mode==='legs') highlights = `
-        <ellipse cx="118" cy="246" rx="23" ry="51" fill="url(#muscleRed)" filter="url(#redGlow)"/>
-        <ellipse cx="162" cy="246" rx="23" ry="51" fill="url(#muscleRed)" filter="url(#redGlow)"/>
-        <ellipse cx="112" cy="314" rx="16" ry="29" fill="url(#muscleRed)" filter="url(#redGlow)"/>
-        <ellipse cx="168" cy="314" rx="16" ry="29" fill="url(#muscleRed)" filter="url(#redGlow)"/>
-      `;
-      else highlights = `
-        <ellipse cx="106" cy="118" rx="27" ry="21" transform="rotate(-12 106 118)" fill="url(#recoveryBlue)" filter="url(#blueGlow)" opacity=".7"/>
-        <ellipse cx="174" cy="118" rx="27" ry="21" transform="rotate(12 174 118)" fill="url(#recoveryBlue)" filter="url(#blueGlow)" opacity=".7"/>
-        <ellipse cx="118" cy="246" rx="23" ry="51" fill="url(#recoveryBlue)" filter="url(#blueGlow)" opacity=".5"/>
-        <ellipse cx="162" cy="246" rx="23" ry="51" fill="url(#recoveryBlue)" filter="url(#blueGlow)" opacity=".5"/>
-      `;
-      return `<div class="muscle-figure${compact?' compact':''}" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 360" role="img" aria-label="Muscle focus figure">
-        <defs>
-          <linearGradient id="steel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2A3644"/><stop offset="1" stop-color="#0A0F15"/></linearGradient>
-          <linearGradient id="muscleRed" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FF6262"/><stop offset=".45" stop-color="#FF2222"/><stop offset="1" stop-color="#8E0000"/></linearGradient>
-          <linearGradient id="recoveryBlue" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#44C4FF"/><stop offset="1" stop-color="#006CF1"/></linearGradient>
-          <filter id="redGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <filter id="blueGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <filter id="shadow" x="-40%" y="-30%" width="180%" height="180%"><feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#000" flood-opacity=".65"/></filter>
-        </defs>
-        <g filter="url(#shadow)">
-          <path d="M117 27c8-10 38-10 46 0l8 27-9 30h-44l-9-30Z" fill="url(#steel)" stroke="#44576E" stroke-width="2"/>
-          <path d="M105 70 67 84 29 123 45 178l42-21 17-30 9 53-18 123h90l-18-123 9-53 17 30 42 21 16-55-37-39-39-14-19 21h-32Z" fill="url(#steel)" stroke="#36465B" stroke-width="2"/>
-          <path d="M67 84 28 123 15 197l25 10 26-50 24-29-9-30Z" fill="#101821" stroke="#334155" stroke-width="2"/>
-          <path d="m213 84 39 39 13 74-25 10-26-50-24-29 9-30Z" fill="#101821" stroke="#334155" stroke-width="2"/>
-          ${highlights}
-          <path d="M112 148h25v39h-31Zm31 0h25l6 39h-31Zm-39 47h33v42h-39Zm39 0h33l6 42h-39Zm-47 51h41v48H89Zm47 0h41l7 48h-48Z" fill="#111822" stroke="#35465D" stroke-width="2"/>
-          <path d="M140 78v216M92 88c16 10 31 14 48 14s32-4 48-14" fill="none" stroke="#B9C4D4" stroke-opacity=".2" stroke-width="2"/>
-          <path d="M55 190 88 160m137 30-33-30M111 59h58" fill="none" stroke="#5A6A7D" stroke-width="2" stroke-linecap="round"/>
-        </g>
-      </svg></div>`;
+      const mode=figureModeForDay(day);
+      return `<span class="muscle-figure ${compact?'compact':'hero'}" aria-hidden="true"><img src="muscle-${mode}.png" alt=""></span>`;
     }
 
     function renderHome() {
@@ -1665,17 +1694,21 @@
       if(moreSection==='coach'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><section class="card"><div class="card-pad"><div class="eyebrow">Coach</div><h1 style="margin-top:8px">Check-in</h1><p class="muted">Share your workouts, body trends, and next-weight recommendations with ChatGPT.</p><button class="btn green block" data-action="share-coach">Share full check-in</button><button class="btn block" style="margin-top:10px" data-action="share-weekly">Share weekly review</button></div></section></div>`; return; }
       if(moreSection==='settings'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><div class="page-title-row"><div><div class="eyebrow">Preferences</div><h1>Settings</h1></div></div>${renderSettings()}</div>`; return; }
       if(moreSection==='backup'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><section class="card"><div class="card-pad"><div class="eyebrow">Your data</div><h1 style="margin-top:8px">Backup</h1><p class="muted">Workout data stays on this device. Export a backup before changing phones or clearing Safari data.</p><div class="button-row"><button class="btn primary" data-action="export-backup">Export</button><button class="btn" data-action="import-backup">Import</button></div><button class="btn block" style="margin-top:10px" data-action="refresh-cache">Refresh app cache</button><button class="btn danger block" style="margin-top:10px" data-action="reset-app">Reset app data</button></div></section></div>`; return; }
-      $('#view').innerHTML=`<div class="stack"><div class="page-title-row"><div><div class="eyebrow">NEXSET</div><h1>More</h1></div></div><section class="card"><div class="more-menu"><button data-action="more-section" data-section="history"><span class="menu-icon">↺</span><div><strong>History</strong><small>${sessions.length} saved sessions</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">N</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-nexset"><img src="nexset-mark.svg" alt=""><span>NEXSET 3.1.1</span><small>Progress Starts With Your Next Set.</small></div></div>`;
+      $('#view').innerHTML=`<div class="stack"><div class="page-title-row"><div><div class="eyebrow">NEXSET</div><h1>More</h1></div></div><section class="card"><div class="more-menu"><button data-action="more-section" data-section="history"><span class="menu-icon">↺</span><div><strong>History</strong><small>${sessions.length} saved sessions</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">N</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-nexset"><img src="nexset-mark.svg" alt=""><span>NEXSET 3.1.2</span><small>Progress Starts With Your Next Set.</small></div></div>`;
     }
 
-    function renderHistoryCard(s){const sets=sessionWorkingSets(s),volume=sessionVolume(s),cardio=sessionCardioMinutes(s);return`<details class="history-card"><summary><div class="history-top"><div><strong style="font-size:18px">${esc(s.title||'Workout')}</strong><div class="muted" style="font-size:12px;margin-top:4px">${fmtDate(s.startedAt)} · ${formatDuration(s.durationMs)}</div></div><span class="target-pill">${s.type==='rest'?'☁️ Rest':s.prs?.length?`🏆 ${s.prs.length} PR`:'✓ Done'}</span></div><div class="history-stats"><span class="chip">${sets} sets</span><span class="chip">${volume.toLocaleString()} lb</span>${cardio?`<span class="chip">${cardio} min cardio</span>`:''}</div></summary><div class="history-body">${s.sessionNote?`<div class="soft-card"><strong>Session note</strong><p class="muted" style="margin:6px 0 0">${esc(s.sessionNote)}</p></div>`:''}${(s.exercises||[]).map(entry=>{const ex=getExercise(entry.id);if(!ex||(entry.logs||[]).length===0)return'';return`<div class="history-ex"><strong>${esc(ex.name)}</strong><div class="set-inline">${(entry.logs||[]).map(log=>`<span class="set-chip ${log.warmup?'wu':''}">${esc(formatLogShort(ex,log))} ${ex.type==='weighted'||ex.type==='bodyweight'?feelEmoji(log.feel):''}</span>`).join('')}</div>${entry.notes?`<div class="muted" style="font-size:12px;margin-top:7px">Note: ${esc(entry.notes)}</div>`:''}</div>`;}).join('')}<button class="btn danger block" data-action="delete-session" data-id="${esc(s.id)}">Delete session</button></div></details>`;}
+    function renderHistoryCard(s){
+      const sets=sessionWorkingSets(s),volume=sessionVolume(s),cardio=sessionCardioMinutes(s),sessionDay=resolveSessionDay(s);
+      const status=s.type==='rest'?'Rest':s.prs?.length?`${s.prs.length} PR`:'Done';
+      return`<details class="history-card"><summary><div class="history-top"><span class="history-muscle">${renderMuscleFigure(sessionDay,true)}</span><div class="history-main"><strong>${esc(s.title||'Workout')}</strong><small>${fmtDate(s.startedAt)} · ${formatDuration(s.durationMs)}</small><span class="history-metrics"><i>${sets} sets</i><i>${volume.toLocaleString()} lb</i>${cardio?`<i>${cardio} min</i>`:''}</span></div><span class="history-status ${s.type==='rest'?'rest':''}">${s.type==='rest'?'☁':'✓'}<small>${status}</small></span></div></summary><div class="history-body">${s.sessionNote?`<div class="soft-card"><strong>Session note</strong><p class="muted" style="margin:6px 0 0">${esc(s.sessionNote)}</p></div>`:''}${(s.exercises||[]).map(entry=>{const ex=getExercise(entry.id);if(!ex||(entry.logs||[]).length===0)return'';return`<div class="history-ex"><strong>${esc(ex.name)}</strong><div class="set-inline">${(entry.logs||[]).map(log=>`<span class="set-chip ${log.warmup?'wu':''}">${esc(formatLogShort(ex,log))} ${ex.type==='weighted'||ex.type==='bodyweight'?feelEmoji(log.feel):''}</span>`).join('')}</div>${entry.notes?`<div class="muted" style="font-size:12px;margin-top:7px">Note: ${esc(entry.notes)}</div>`:''}</div>`;}).join('')}<button class="btn danger block" data-action="delete-session" data-id="${esc(s.id)}">Delete session</button></div></details>`;
+    }
 
     function renderSettings(){return`<div class="stack" style="gap:10px"><details class="setting" open><summary>Training preferences <span>⌄</span></summary><div class="setting-body"><div class="field"><label>Your name</label><input data-setting="profileName" value="${esc(state.settings.profileName||'')}"></div><div class="mini-grid"><div class="field"><label>Default rest seconds</label><input data-setting="restSeconds" inputmode="numeric" value="${esc(state.settings.restSeconds)}"></div><div class="field"><label>Smith starting resistance</label><input data-setting="smithBarWeight" inputmode="decimal" value="${esc(state.settings.smithBarWeight)}"></div><div class="field"><label>Units</label><select data-setting="units"><option value="lb" ${state.settings.units==='lb'?'selected':''}>lb</option><option value="kg" ${state.settings.units==='kg'?'selected':''}>kg</option></select></div><div class="field"><label>Theme</label><select data-setting="theme"><option value="dark" ${state.settings.theme==='dark'?'selected':''}>Dark</option><option value="light" ${state.settings.theme==='light'?'selected':''}>Light</option></select></div></div><label class="warm-toggle"><input type="checkbox" data-setting-check="autoRest" ${state.settings.autoRest?'checked':''}> Start the rest timer after logged lifting sets</label><label class="warm-toggle"><input type="checkbox" data-setting-check="sound" ${state.settings.sound?'checked':''}> Play an alert when rest ends</label><button class="btn primary block" data-action="save-settings">Save preferences</button></div></details><details class="setting"><summary>Quick-app links <span>⌄</span></summary><div class="setting-body"><div class="field"><label>Planet Fitness URL / Shortcut</label><input data-setting="pfAppUrl" value="${esc(state.settings.pfAppUrl||'')}"></div><div class="field"><label>Apple Music URL</label><input data-setting="musicAppUrl" value="${esc(state.settings.musicAppUrl||'')}"></div><p class="muted" style="font-size:12px;margin:0">On iPhone, the PF button can run a Shortcut named “Open Planet Fitness.”</p><button class="btn primary block" data-action="save-settings">Save links</button></div></details><details class="setting"><summary>Body goals <span>⌄</span></summary><div class="setting-body"><div class="mini-grid"><div class="field"><label>Target weight</label><input data-goal="targetWeight" inputmode="decimal" value="${esc(state.goals.targetWeight||'')}"></div><div class="field"><label>Target body fat %</label><input data-goal="targetBodyFat" inputmode="decimal" value="${esc(state.goals.targetBodyFat||'')}"></div></div><p class="muted" style="font-size:12px;margin:0">Nutrition tracking is intentionally left out for now. This version focuses on training, recovery, strength, and body trends.</p><button class="btn primary block" data-action="save-settings">Save goals</button></div></details></div>`;}
 
     function saveSettings(){$$('[data-setting]').forEach(input=>{const key=input.dataset.setting;let value=input.value;if(['restSeconds','smithBarWeight'].includes(key))value=Number(value);state.settings[key]=value;});$$('[data-setting-check]').forEach(input=>state.settings[input.dataset.settingCheck]=input.checked);$$('[data-goal]').forEach(input=>{const n=Number(input.value);if(Number.isFinite(n))state.goals[input.dataset.goal]=n;});saveState();render();showToast('Settings saved.');}
 
-    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`NEXSET 3.1.1 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
-    function weeklyReportText(){const w=weeklyReview();return[`NEXSET 3.1.1 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
+    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`NEXSET 3.1.2 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
+    function weeklyReportText(){const w=weeklyReview();return[`NEXSET 3.1.2 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
     async function shareText(text,title){try{if(navigator.share){await navigator.share({title,text});return;}await navigator.clipboard.writeText(text);showToast('Copied. Paste it into ChatGPT.');}catch(err){if(err?.name!=='AbortError'){downloadBlob(`${title.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.txt`,text,'text/plain');showToast('Report downloaded.');}}}
 
     function openApp(kind){const url=kind==='music'?state.settings.musicAppUrl:state.settings.pfAppUrl,fallback=kind==='music'?state.settings.musicFallbackUrl:state.settings.pfFallbackUrl;if(!url){showToast('Add this app link in More → Settings.');return;}try{window.location.href=url;setTimeout(()=>{if(!document.hidden&&fallback&&!url.startsWith('shortcuts:'))window.open(fallback,'_blank','noopener');},1200);}catch(_){if(fallback)window.open(fallback,'_blank','noopener');}}
