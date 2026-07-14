@@ -1,4 +1,4 @@
-# NEXSET 3.0.0 — Phase Two
+# NEXSET 3.1.0 — Phase Two
 
 ## Premium UI polish
 - Added a dedicated recovery/moon icon to rest-day cards.

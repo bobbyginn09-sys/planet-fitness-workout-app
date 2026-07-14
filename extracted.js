@@ -1,9 +1,9 @@
-(()=>{
+(() => {
     'use strict';
 
     const STORAGE_KEY = 'pfWorkoutApp.v1';
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
-    const APP_VERSION = 'nexset-3.0.0';
+    const APP_VERSION = 'nexset-3.1.0';
 
     const PLAN = [
       {
@@ -235,7 +235,7 @@
       return Math.round(8 + working*2.15 + cardio);
     }
     function dayMark(day) {
-      if(day?.type==='rest') return `<svg viewBox="0 0 64 64" role="img" aria-label="Recovery"><defs><linearGradient id="recoveryGlow" x1="8" y1="52" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop stop-color="#38BDF8"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs><path d="M17 35c0-10.5 7.8-19.2 18-20.6-4.2 3.7-6.8 9.1-6.8 15.1 0 10.9 8.8 19.7 19.7 19.7 2 0 4-.3 5.8-.9A23 23 0 0 1 17 35Z" fill="url(#recoveryGlow)"/><path d="M43.5 12.5l1.8 4.2 4.2 1.8-4.2 1.8-1.8 4.2-1.8-4.2-4.2-1.8 4.2-1.8 1.8-4.2Z" fill="#E0E7FF"/><path d="M17 18l1.2 2.8L21 22l-2.8 1.2L17 26l-1.2-2.8L13 22l2.8-1.2L17 18Z" fill="#BAE6FD"/></svg>`;
+      if(day?.type==='rest') return `<svg viewBox="0 0 64 64" role="img" aria-label="Recovery"><defs><linearGradient id="recoveryGlow" x1="8" y1="52" x2="54" y2="10" gradientUnits="userSpaceOnUse"><stop stop-color="#38BDF8"/><stop offset="1" stop-color="#087CFF"/></linearGradient></defs><path d="M17 35c0-10.5 7.8-19.2 18-20.6-4.2 3.7-6.8 9.1-6.8 15.1 0 10.9 8.8 19.7 19.7 19.7 2 0 4-.3 5.8-.9A23 23 0 0 1 17 35Z" fill="url(#recoveryGlow)"/><path d="M43.5 12.5l1.8 4.2 4.2 1.8-4.2 1.8-1.8 4.2-1.8-4.2-4.2-1.8 4.2-1.8 1.8-4.2Z" fill="#E0E7FF"/><path d="M17 18l1.2 2.8L21 22l-2.8 1.2L17 26l-1.2-2.8L13 22l2.8-1.2L17 18Z" fill="#BAE6FD"/></svg>`;
       return `<img src="nexset-mark.svg" alt="" />`;
     }
     function haptic(kind='light') {
@@ -258,7 +258,7 @@
       document.documentElement.dataset.theme = state.settings.theme || 'dark';
       const day=getDay();
       const sub=$('#headerSub');
-      if(sub) sub.textContent = active ? `${day.title} in progress` : 'Progress starts with your next set.';
+      if(sub) sub.textContent = active ? `${day.title} in progress` : 'Progress Starts With Your Next Set.';
       const focus = Boolean(active && currentView==='workout');
       document.body.classList.toggle('focus-running', focus);
       document.body.dataset.screen = currentView;
@@ -311,23 +311,40 @@
     function renderHome() {
       const day=getDay(), st=stats(), metric=latestBodyMetric(), trend=getWeightTrend();
       const isRest=day.type==='rest', resume=Boolean(active), name=state.settings.profileName||'Athlete';
-      const coachItems=coachBriefItems(day).slice(0,2);
+      const weekPct=Math.max(0,Math.min(100,Math.round((st.thisWeek/7)*100)));
+      const totalVolume=st.totalVolume.toLocaleString();
       $('#view').innerHTML=`
-        <div class="home-screen">
-          <div class="home-greeting"><div><span>${esc(greeting())},</span><h1>${esc(name)}</h1></div><span class="home-status ${isRest?'rest':''}">${isRest?'Recovery':'Ready'}</span></div>
-          <section class="today-card">
-            <div class="today-card-top"><div><div class="section-kicker">${resume?'Workout in progress':'Today’s workout'}</div><h2>${esc(day.title)}</h2><p>${esc(day.focus)}</p></div><div class="today-mark">${dayMark(day)}</div></div>
-            <div class="today-meta"><span>${estimatedMinutes(day)} min</span><i></i><span>${day.exercises.length} exercises</span><i></i><span>Day ${day.day}/7</span></div>
-            <div class="today-actions ${isRest&&!resume?'two':''}">${isRest&&!resume?`<button class="btn subtle" data-action="mark-rest">Mark rest day</button>`:''}<button class="btn primary" data-action="${resume?'resume-workout':'start-workout'}">${resume?'Resume workout':isRest?'Start optional recovery':'Start workout'}<span>→</span></button></div>
+        <div class="home-screen home-dashboard">
+          <div class="home-welcome"><div><h1>Welcome back, ${esc(name)}.</h1><p>${isRest?'Recovery is part of the work.':'Let’s get stronger today.'}</p></div></div>
+          <section class="today-card reference-today-card">
+            <img class="workout-figure" src="nexset-strength-figure.svg" alt="" aria-hidden="true">
+            <div class="today-card-content">
+              <div class="section-kicker">${resume?'Workout in progress':'Today’s workout'}</div>
+              <h2>${esc(day.title)}</h2>
+              <p class="today-focus">${esc(day.focus)}</p>
+              <div class="today-detail-list">
+                <span><b>◌</b>${day.exercises.length} exercises · ${day.exercises.reduce((sum,ex)=>sum+(Number(ex.sets)||0),0)} sets</span>
+                <span><b>◷</b>Est. ${estimatedMinutes(day)} min</span>
+              </div>
+            </div>
+            <div class="today-actions ${isRest&&!resume?'two':''}">${isRest&&!resume?`<button class="btn subtle" data-action="mark-rest">Mark rest day</button>`:''}<button class="btn primary home-start" data-action="${resume?'resume-workout':'start-workout'}">${resume?'Resume workout':isRest?'Start optional recovery':'Start workout'}<span>›</span></button></div>
           </section>
-          <section class="coach-compact">
-            <div class="compact-head"><div><span class="section-kicker">Coach brief</span><strong>${isRest?'Keep it easy today':'What matters today'}</strong></div><button class="mini-action" data-action="share-coach" aria-label="Share coach check-in">↗</button></div>
-            <div class="coach-compact-list">${coachItems.map((item,i)=>`<div><span>${i+1}</span><p>${esc(item)}</p></div>`).join('')}</div>
+          <section class="home-section quick-actions-section">
+            <div class="home-section-title">Quick actions</div>
+            <div class="reference-quick-grid">
+              <button data-action="open-body-sheet"><span class="quick-action-icon body-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.6" r="2.2"/><path d="M8.2 10.2 5.3 13m10.5-2.8 2.9 2.8M12 7.4v7.2m0 0-3.2 5.1m3.2-5.1 3.2 5.1"/></svg></span><small>Body Weight</small></button>
+              <button data-action="open-history"><span class="quick-action-icon history-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.2v5.1l3.5 2"/></svg></span><small>History</small></button>
+              <button data-action="open-app" data-app="pf"><span class="quick-action-icon pf-icon">pf</span><small>Planet Fitness</small></button>
+              <button data-action="open-app" data-app="music"><span class="quick-action-icon music-icon">♫</span><small>Music</small></button>
+            </div>
           </section>
-          <section class="home-bottom-grid">
-            <div class="snapshot-card weight-card"><button class="weight-summary" data-view="progress" aria-label="View body progress"><span>Latest weight</span><strong>${metric?`${esc(metric.weight)} lb`:'—'}</strong><small>${metric&&Number.isFinite(trend.avg7)?`7-day avg ${cleanNumber(trend.avg7)} lb`:trend.label}</small></button><button class="weight-add" data-action="open-body-sheet" aria-label="Log today’s body weight">＋</button></div>
-            <div class="snapshot-card consistency"><span>This week</span><strong>${st.thisWeek}<small>/7</small></strong><div class="week-dots">${renderWeekDots()}</div></div>
-            <div class="quick-square"><button data-action="open-app" data-app="pf" aria-label="Open Planet Fitness">PF</button><button data-action="open-app" data-app="music" aria-label="Open Apple Music">♫</button></div>
+          <section class="home-section progress-summary-section">
+            <div class="home-section-title">Progress summary</div>
+            <div class="reference-summary-card">
+              <button data-view="progress" class="summary-row"><span class="summary-icon">▣</span><span class="summary-copy"><b>This week</b><i><span style="width:${weekPct}%"></span></i></span><strong>${st.thisWeek} / 7 workouts</strong></button>
+              <button data-view="progress" class="summary-row"><span class="summary-icon">▥</span><span class="summary-copy"><b>Total volume</b></span><strong>${totalVolume} lb</strong></button>
+              <button data-view="workout" class="summary-row"><span class="summary-icon">◷</span><span class="summary-copy"><b>Next workout</b></span><strong>${resume?'In progress':`Day ${day.day} · ${esc(day.title)}`} <em>›</em></strong></button>
+            </div>
           </section>
         </div>`;
     }
@@ -406,6 +423,22 @@
       return `<div class="set-reference-row"><div class="set-reference"><span>${esc(previous?.source||'Previous set')}</span><strong>${esc(previous?.label||'No previous set')}</strong></div><div class="set-reference"><span>Suggested next</span><strong>${esc(suggested)}</strong></div></div>`;
     }
 
+    function renderFocusFooter(ex,entry,index,total) {
+      const workingCount=workingLogs(entry?.logs||[]).length;
+      const target=Math.max(1,Number(ex?.sets)||1);
+      const complete=workingCount>=target;
+      const leftAction=index>0?'previous-exercise':'pause-workout';
+      const leftLabel=index>0?'← Previous':'Pause';
+      let action='log-set',label='';
+      if(!complete){
+        if(entry?.draftWarmup) label='Log Warm-Up';
+        else if(ex?.type==='cardio'||ex?.type==='timed') label=`Log ${cleanNumber(entry?.draftReps||ex.min)} ${ex.unit||'min'}`;
+        else label=`Log Set ${workingCount+1}`;
+      } else if(index<total-1){ action='next-exercise'; label='Next Exercise'; }
+      else { action='finish-workout'; label='Finish Workout'; }
+      return `<footer class="focus-bottom"><button class="focus-nav-btn" data-action="${leftAction}">${leftLabel}</button><div class="focus-elapsed" id="elapsed">${formatDuration(Date.now()-new Date(active.startedAt))}</div><button class="focus-nav-btn primary ${complete?'complete-action':'log-action'}" data-action="${action}">${esc(label)}</button></footer>`;
+    }
+
     function renderFocusWorkout() {
       if(!active){currentView='workout';renderWorkoutPreview();return;}
       const day=PLAN[active.dayIndex]||getDay();
@@ -414,10 +447,10 @@
       const completed=active.exercises.filter(e=>{const x=getExercise(e.id);return workingLogs(e.logs||[]).length>=(x?.sets||1);}).length;
       const progress=Math.max(4,Math.round(((index+1)/Math.max(1,total))*100));
       $('#view').innerHTML=`<div class="focus-shell">
-        <header class="focus-header"><button class="focus-close" data-action="pause-workout" aria-label="Pause workout">×</button><div class="focus-title"><strong>Exercise ${index+1} / ${total}</strong><span>${esc(day.title)}</span></div><button class="focus-menu" data-action="open-exercise-tools" aria-label="Exercise details">•••</button></header>
+        <header class="focus-header"><button class="focus-close" data-action="pause-workout" aria-label="Pause workout">×</button><div class="focus-title"><img class="focus-mini-brand" src="nexset-mark.svg" alt=""><strong>Exercise ${index+1} / ${total}</strong><span>${esc(day.title)}</span></div><button class="focus-menu" data-action="open-exercise-tools" aria-label="Exercise details">•••</button></header>
         <div class="focus-progress"><div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div></div>
         <main class="exercise-stage" id="exerciseStage">${renderFocusCard(ex,entry,index,total)}</main>
-        <footer class="focus-bottom"><button class="focus-nav-btn" data-action="${index>0?'previous-exercise':'pause-workout'}">${index>0?'← Previous':'Pause'}</button><div class="focus-elapsed" id="elapsed">${formatDuration(Date.now()-new Date(active.startedAt))}</div><button class="focus-nav-btn primary" data-action="${index<total-1?'next-exercise':'finish-workout'}">${index<total-1?'Next →':'Finish'}</button></footer>
+        ${renderFocusFooter(ex,entry,index,total)}
       </div>`;
       bindSwipe();startElapsedClock();
     }
@@ -428,44 +461,45 @@
       const weight=Number.isFinite(Number(entry.draftWeight))?Number(entry.draftWeight):(initialWeight(ex)||'');
       const reps=Number.isFinite(Number(entry.draftReps))?Number(entry.draftReps):ex.min;
       return `<article class="exercise-focus-card"><div class="exercise-card-inner">
-        <div class="exercise-card-head"><div><span class="exercise-number">${targetHit?'Target complete':`Set ${Math.min(working.length+1,ex.sets)} of ${ex.sets}`}</span><button class="exercise-head-tap" data-action="open-exercise-tools" aria-label="Open exercise picture and instructions"><h1 class="exercise-title">${esc(ex.name)}</h1><div class="exercise-target">${esc(targetLabel(ex))} · ${esc(ex.equipment||'')}</div><small>Tap for picture, cues, and notes</small></button>${renderExerciseNoteChip(entry)}</div><button class="details-dot" data-action="open-exercise-tools" aria-label="Details">•••</button></div>
+        <div class="exercise-card-head"><div><span class="exercise-number">${targetHit?'Target complete':`Set ${Math.min(working.length+1,ex.sets)} of ${ex.sets}`}</span><button class="exercise-head-tap" data-action="open-exercise-tools" aria-label="Open exercise cues and notes"><h1 class="exercise-title">${esc(ex.name)}</h1><div class="exercise-target">${esc(targetLabel(ex))} · ${esc(ex.equipment||'')}</div><small>Tap for cues and notes</small></button>${renderExerciseNoteChip(entry)}</div><button class="details-dot" data-action="open-exercise-tools" aria-label="Details">•••</button></div>
         ${renderPreviousCard(ex)}
-        ${logs.length?`<div class="logged-strip">${logs.slice(-6).map((log,i)=>renderLoggedSet(ex,log,Math.max(0,logs.length-6)+i,index)).join('')}</div>`:'<div class="logged-placeholder">No sets logged yet</div>'}
+        ${logs.length?`<div class="logged-strip">${logs.slice(-6).map((log,i)=>renderLoggedSet(ex,log,Math.max(0,logs.length-6)+i,index)).join('')}</div>`:''}
         <div class="focus-log-wrap">${renderFocusLogPanel(ex,entry,index,weight,reps)}</div>
       </div></article>`;
     }
 
     function renderPreviousCard(ex) {
       const prev=getPreviousExercise(ex.id), p=state.exerciseProgress[ex.id]||exerciseAliases(ex.id).map(id=>state.exerciseProgress[id]).find(Boolean);
-      if(!prev) return `<div class="previous-compact"><div><span>Previous</span><strong>First session</strong></div><div class="previous-grid"><div class="previous-stat"><span>Last time</span><strong>Not logged yet</strong></div><div class="previous-stat"><span>Suggested next</span><strong>Start clean</strong></div></div><p><span>Coach</span>Choose a clean starting load and leave 1–3 reps in reserve.</p></div>`;
+      if(!prev) return `<div class="previous-compact first-session"><div class="previous-summary-row"><div><span>Starting point</span><strong>First session</strong></div><div class="next-target"><span>Suggested</span><strong>Start clean</strong></div></div><p><span>Coach</span>Pick a load you could do for 1–3 more reps.</p></div>`;
       const logs=workingLogs(prev.entry.logs||[]);
-      const lastSummary=logs.length ? logs.slice(-3).map(log=>formatLogShort(ex,log)).join(' · ') : 'Logged';
       const suggestion=nextTargetLabel(ex,p);
-      return `<div class="previous-compact"><div class="previous-row"><div><span>Previous · ${fmtDate(prev.session.startedAt)}</span><div class="previous-set-row">${logs.slice(-5).map(log=>`<b>${esc(formatLogShort(ex,log))}</b>`).join('')}</div></div></div><div class="previous-grid"><div class="previous-stat"><span>Last time</span><strong>${esc(lastSummary)}</strong></div><div class="previous-stat"><span>Suggested next</span><strong>${esc(suggestion)}</strong></div></div><p><span>Coach</span>${esc(p?.note||'Repeat the last clean setup.')}</p></div>`;
+      return `<div class="previous-compact"><div class="previous-summary-row"><div><span>Last workout · ${fmtDate(prev.session.startedAt)}</span><div class="previous-set-row">${logs.slice(-4).map(log=>`<b>${esc(formatLogShort(ex,log))}</b>`).join('')}</div></div><div class="next-target"><span>Suggested</span><strong>${esc(suggestion)}</strong></div></div><p><span>Coach</span>${esc(p?.note||'Repeat the last clean setup.')}</p></div>`;
     }
 
     function renderLoggedSet(ex, log, setIndex, exerciseIndex) {
-      const label=formatLogShort(ex,log); return `<button class="logged-set ${log.warmup?'warmup':''}" data-action="edit-set" data-set-index="${setIndex}" title="Tap to delete"><b>${esc(label)}</b><span>${log.warmup?'warm-up':`${feelEmoji(log.feel)} set ${setIndex+1}`}</span></button>`;
+      const label=formatLogShort(ex,log), feelClass=['easy','good','hard'].includes(log.feel)?log.feel:'good';
+      const meta=log.warmup?'Warm-up':`<i class="set-feel-dot ${feelClass}" aria-hidden="true"></i>Set ${setIndex+1}`;
+      return `<button class="logged-set ${log.warmup?'warmup':''}" data-action="edit-set" data-set-index="${setIndex}" title="Tap to delete"><b>${esc(label)}</b><span class="logged-set-meta">${meta}</span></button>`;
     }
 
     function renderFocusLogPanel(ex, entry, index, weight, reps) {
-      const feel=entry.draftFeel||'good', setNo=workingLogs(entry.logs||[]).length+1;
+      const feel=entry.draftFeel||'good', workingCount=workingLogs(entry.logs||[]).length, targetHit=workingCount>=ex.sets;
+      const extraSet=targetHit&&ex.type!=='cardio'&&ex.type!=='timed'?`<button class="log-set-btn extra-set-btn" data-action="log-set">+ Log Extra Set</button>`:'';
       if(ex.type==='weighted') return `<div class="compact-log-panel">
-        ${renderSetReferences(ex,entry)}
         <div class="control-grid">
           <div class="control-block"><div class="control-label"><span>Weight</span><small>${state.settings.units}</small></div><div class="compact-stepper"><button data-action="adjust-weight" data-delta="-5">−</button><input inputmode="decimal" data-input="weight" value="${esc(weight)}" placeholder="0"><button data-action="adjust-weight" data-delta="5">+</button></div>${Number.isFinite(Number(state.exerciseProgress[ex.id]?.nextWeight))?'<div class="prefill-badge">Suggested weight prefilled</div>':''}<div class="micro-adjust"><button data-action="adjust-weight" data-delta="-10">−10</button><button data-action="adjust-weight" data-delta="-5">−5</button><button data-action="adjust-weight" data-delta="5">+5</button><button data-action="adjust-weight" data-delta="10">+10</button></div></div>
           <div class="control-block"><div class="control-label"><span>Reps</span><small>${ex.min}–${ex.max}</small></div><div class="compact-stepper"><button data-action="adjust-reps" data-delta="-1">−</button><input inputmode="numeric" data-input="reps" value="${esc(reps)}"><button data-action="adjust-reps" data-delta="1">+</button></div><div class="rep-hint">Target ${ex.min}–${ex.max}</div></div>
-        </div>${renderFeelOnly(entry,feel)}<button class="log-set-btn" data-action="log-set">Log set ${setNo}<span>✓</span></button>
+        </div>${renderFeelOnly(entry,feel)}${extraSet}
       </div>`;
-      if(ex.type==='bodyweight') return `<div class="compact-log-panel single-control">${renderSetReferences(ex,entry)}<div class="control-block"><div class="control-label"><span>Reps</span><small>${ex.min}–${ex.max}</small></div><div class="compact-stepper"><button data-action="adjust-reps" data-delta="-1">−</button><input inputmode="numeric" data-input="reps" value="${esc(reps)}"><button data-action="adjust-reps" data-delta="1">+</button></div></div>${renderFeelOnly(entry,feel)}<button class="log-set-btn" data-action="log-set">Log set ${setNo}<span>✓</span></button></div>`;
+      if(ex.type==='bodyweight') return `<div class="compact-log-panel single-control"><div class="control-block"><div class="control-label"><span>Reps</span><small>${ex.min}–${ex.max}</small></div><div class="compact-stepper"><button data-action="adjust-reps" data-delta="-1">−</button><input inputmode="numeric" data-input="reps" value="${esc(reps)}"><button data-action="adjust-reps" data-delta="1">+</button></div></div>${renderFeelOnly(entry,feel)}${extraSet}</div>`;
       const duration=Number.isFinite(Number(entry.draftReps))?Number(entry.draftReps):ex.min;
-      return `<div class="compact-log-panel single-control"><div class="control-block"><div class="control-label"><span>Duration</span><small>${esc(ex.unit||'min')}</small></div><div class="compact-stepper"><button data-action="adjust-duration" data-delta="-1">−</button><input inputmode="decimal" data-input="duration" value="${esc(duration)}"><button data-action="adjust-duration" data-delta="1">+</button></div><div class="rep-hint">Target ${ex.min}–${ex.max} ${esc(ex.unit||'min')}</div></div><button class="log-set-btn" data-action="log-set">Log ${esc(ex.unit||'time')}<span>✓</span></button></div>`;
+      return `<div class="compact-log-panel single-control"><div class="control-block"><div class="control-label"><span>Duration</span><small>${esc(ex.unit||'min')}</small></div><div class="compact-stepper"><button data-action="adjust-duration" data-delta="-1">−</button><input inputmode="decimal" data-input="duration" value="${esc(duration)}"><button data-action="adjust-duration" data-delta="1">+</button></div><div class="rep-hint">Target ${ex.min}–${ex.max} ${esc(ex.unit||'min')}</div></div></div>`;
     }
 
     function renderRepAndFeel(entry,reps,feel) { return renderFeelOnly(entry,feel); }
     function renderFeelOnly(entry,feel) { return `<div class="feel-row"><button class="feel-btn easy ${feel==='easy'?'active':''}" data-action="set-feel" data-feel="easy">Easy</button><button class="feel-btn right ${feel==='good'?'active':''}" data-action="set-feel" data-feel="good">Just right</button><button class="feel-btn hard ${feel==='hard'?'active':''}" data-action="set-feel" data-feel="hard">Hard</button></div><label class="warm-compact"><div><span>Warm-up set</span><small>Tracked separately and does not count toward your working sets or stats.</small></div><input type="checkbox" data-input="warmup" ${entry.draftWarmup?'checked':''}></label>`; }
 
-    function renderExerciseSheet(ex,entry,index){return `<div class="sheet-backdrop exercise-sheet-overlay" id="exerciseSheetOverlay"><section class="bottom-sheet" role="dialog" aria-modal="true" aria-label="Exercise details"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">Exercise details</span><h2>${esc(ex.name)}</h2></div><button data-action="close-exercise-tools" aria-label="Close">×</button></div><div class="sheet-section"><div class="exercise-hero"><div class="exercise-hero-visual">${renderExerciseVisual(ex)}</div><div class="exercise-hero-copy"><strong class="sheet-section-title">Quick guide</strong><div class="sheet-meta-chips"><span class="sheet-chip">${esc(targetLabel(ex))}</span><span class="sheet-chip">${esc(ex.equipment||'Gym floor')}</span></div><p>${esc(ex.cues||'Use controlled reps and clean form.')}</p></div></div></div><div class="sheet-section"><strong class="sheet-section-title">How to do it</strong><ol class="cue-steps">${exerciseSteps(ex).map(step=>`<li>${esc(step)}</li>`).join('')}</ol></div><div class="sheet-section"><label class="sheet-section-title">Exercise note</label><textarea data-input="exercise-note" placeholder="Seat position, grip, machine used, discomfort…">${esc(entry.notes||'')}</textarea></div>${ex.name.includes('Smith Machine')?`<div class="sheet-section">${renderPlateTool(ex,index,entry.draftWeight)}</div>`:''}<button class="btn danger block" data-action="delete-last-set">Delete last set</button><button class="btn danger block" style="margin-top:10px" data-action="cancel-workout">Cancel workout</button></section></div>`;}
+    function renderExerciseSheet(ex,entry,index){return `<div class="sheet-backdrop exercise-sheet-overlay" id="exerciseSheetOverlay"><section class="bottom-sheet" role="dialog" aria-modal="true" aria-label="Exercise details"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">Exercise details</span><h2>${esc(ex.name)}</h2></div><button data-action="close-exercise-tools" aria-label="Close">×</button></div><div class="sheet-section"><strong class="sheet-section-title">Quick guide</strong><div class="sheet-meta-chips"><span class="sheet-chip">${esc(targetLabel(ex))}</span><span class="sheet-chip">${esc(ex.equipment||'Gym floor')}</span></div><p class="guide-cue">${esc(ex.cues||'Use controlled reps and clean form.')}</p></div><div class="sheet-section"><strong class="sheet-section-title">How to do it</strong><ol class="cue-steps">${exerciseSteps(ex).map(step=>`<li>${esc(step)}</li>`).join('')}</ol></div><div class="sheet-section"><label class="sheet-section-title">Exercise note</label><textarea data-input="exercise-note" placeholder="Seat position, grip, machine used, discomfort…">${esc(entry.notes||'')}</textarea></div>${ex.name.includes('Smith Machine')?`<div class="sheet-section">${renderPlateTool(ex,index,entry.draftWeight)}</div>`:''}<button class="btn danger block" data-action="delete-last-set">Delete last set</button><button class="btn danger block" style="margin-top:10px" data-action="cancel-workout">Cancel workout</button></section></div>`;}
     function renderExerciseNoteChip(entry) {
       const note = String(entry?.notes || '').trim();
       if (!note) return '<button class="exercise-note-chip empty" data-action="open-exercise-tools" aria-label="Add an exercise note">📝 Add note</button>';
@@ -477,50 +511,6 @@
       if (ex.type === 'weighted' && Number.isFinite(Number(progress.nextWeight))) return `${cleanNumber(progress.nextWeight)} ${state.settings.units}`;
       if ((ex.type === 'cardio' || ex.type === 'timed') && Number.isFinite(Number(progress.nextDuration))) return `${cleanNumber(progress.nextDuration)} ${ex.unit||'min'}`;
       return progress.lastSummary || progress.note || 'Repeat last clean setup';
-    }
-
-    function renderExerciseVisual(ex) {
-      const lower = `${ex.id} ${ex.name} ${ex.equipment||''}`.toLowerCase();
-      const stroke = '#E7EEFF', accent = '#7EA6FF', accent2 = '#A78BFA';
-      const pose=(label,svg,kind)=>`<div class="exercise-pose ${kind}"><span class="pose-label">${label}</span>${svg}</div>`;
-      if (lower.includes('bench') || (lower.includes('chest press') && !lower.includes('shoulder'))) {
-        const start=`<svg viewBox="0 0 80 70"><path d="M10 53h58" stroke="${stroke}" stroke-width="4"/><circle cx="28" cy="31" r="5" fill="${accent}"/><path d="M32 35l14 5 12-9M39 40l-4 12M45 40l7 12" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><path d="M18 26h42" stroke="${accent2}" stroke-width="5" stroke-linecap="round"/></svg>`;
-        const finish=`<svg viewBox="0 0 80 70"><path d="M10 53h58" stroke="${stroke}" stroke-width="4"/><circle cx="28" cy="31" r="5" fill="${accent}"/><path d="M32 35l14 5 12-9M39 40l-4 12M45 40l7 12" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><path d="M18 13h42" stroke="${accent2}" stroke-width="5" stroke-linecap="round"/><path d="M30 31V15M52 31V15" stroke="${accent2}" stroke-width="4" stroke-linecap="round"/></svg>`;
-        return pose('START',start,'start')+pose('FINISH',finish,'finish');
-      }
-      if (lower.includes('leg press')) {
-        const start=`<svg viewBox="0 0 80 70"><path d="M9 56h38" stroke="${stroke}" stroke-width="4"/><rect x="52" y="11" width="18" height="47" rx="5" fill="none" stroke="${stroke}" stroke-width="4"/><circle cx="28" cy="22" r="5" fill="${accent}"/><path d="M30 28l10 10 11 5M40 38l-8 13M50 43l8-12" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/></svg>`;
-        const finish=`<svg viewBox="0 0 80 70"><path d="M9 56h38" stroke="${stroke}" stroke-width="4"/><rect x="52" y="11" width="18" height="47" rx="5" fill="none" stroke="${stroke}" stroke-width="4"/><circle cx="28" cy="22" r="5" fill="${accent}"/><path d="M30 28l10 10 11 5M40 38l-8 13M50 43l17-23" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/></svg>`;
-        return pose('BOTTOM',start,'start')+pose('PRESS',finish,'finish');
-      }
-      if (lower.includes('squat')) {
-        const start=`<svg viewBox="0 0 80 70"><circle cx="40" cy="14" r="5" fill="${accent}"/><path d="M40 20v19m0 0-12 12m12-12 12 12M28 51l-5 11m29-11 5 11M20 23h40" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/></svg>`;
-        const finish=`<svg viewBox="0 0 80 70"><circle cx="40" cy="24" r="5" fill="${accent}"/><path d="M40 30l-2 14m0 0-15 7m15-7 15 7M23 51l-5 9m35-9 5 9M20 23h40" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/></svg>`;
-        return pose('TOP',start,'start')+pose('DEPTH',finish,'finish');
-      }
-      if (lower.includes('deadlift') || lower.includes('rdl')) {
-        const start=`<svg viewBox="0 0 80 70"><circle cx="39" cy="13" r="5" fill="${accent}"/><path d="M39 19v20m0 0-10 18m10-18 11 18M18 57h44" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><circle cx="16" cy="57" r="6" fill="${accent2}"/><circle cx="64" cy="57" r="6" fill="${accent2}"/></svg>`;
-        const finish=`<svg viewBox="0 0 80 70"><circle cx="42" cy="19" r="5" fill="${accent}"/><path d="M40 25l-4 16-12 13m12-13 15 11M18 57h44" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><circle cx="16" cy="57" r="6" fill="${accent2}"/><circle cx="64" cy="57" r="6" fill="${accent2}"/></svg>`;
-        return pose('TALL',start,'start')+pose('HINGE',finish,'finish');
-      }
-      if (lower.includes('curl')) {
-        const start=`<svg viewBox="0 0 80 70"><circle cx="40" cy="13" r="5" fill="${accent}"/><path d="M40 20v20m0 0-10 18m10-18 10 18M28 29l-5 18m29-18 5 18" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><circle cx="22" cy="50" r="5" fill="${accent2}"/><circle cx="58" cy="50" r="5" fill="${accent2}"/></svg>`;
-        const finish=`<svg viewBox="0 0 80 70"><circle cx="40" cy="13" r="5" fill="${accent}"/><path d="M40 20v20m0 0-10 18m10-18 10 18M28 29l-2 10m26-10 2 10" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><circle cx="25" cy="35" r="5" fill="${accent2}"/><circle cx="55" cy="35" r="5" fill="${accent2}"/></svg>`;
-        return pose('BOTTOM',start,'start')+pose('SQUEEZE',finish,'finish');
-      }
-      if (lower.includes('row') || lower.includes('pulldown') || lower.includes('face pull')) {
-        const start=`<svg viewBox="0 0 80 70"><circle cx="31" cy="18" r="5" fill="${accent}"/><path d="M31 24l5 17 12 8m-10-9-10 15" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><path d="M64 10v48M60 24L43 36" stroke="${accent2}" stroke-width="4" stroke-linecap="round"/></svg>`;
-        const finish=`<svg viewBox="0 0 80 70"><circle cx="31" cy="18" r="5" fill="${accent}"/><path d="M31 24l5 17 12 8m-10-9-10 15" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><path d="M64 10v48M55 28L38 34" stroke="${accent2}" stroke-width="4" stroke-linecap="round"/></svg>`;
-        return pose('REACH',start,'start')+pose('PULL',finish,'finish');
-      }
-      if (lower.includes('press')) {
-        const start=`<svg viewBox="0 0 80 70"><circle cx="40" cy="15" r="5" fill="${accent}"/><path d="M40 21v20m0 0-10 17m10-17 10 17M30 28l-8 8m28-8 8 8" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><circle cx="20" cy="38" r="5" fill="${accent2}"/><circle cx="60" cy="38" r="5" fill="${accent2}"/></svg>`;
-        const finish=`<svg viewBox="0 0 80 70"><circle cx="40" cy="25" r="5" fill="${accent}"/><path d="M40 31v20m0 0-10 12m10-12 10 12M32 32l-5-17m21 17 5-17" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><circle cx="26" cy="12" r="5" fill="${accent2}"/><circle cx="54" cy="12" r="5" fill="${accent2}"/></svg>`;
-        return pose('START',start,'start')+pose('LOCKOUT',finish,'finish');
-      }
-      const a=`<svg viewBox="0 0 80 70"><circle cx="40" cy="15" r="5" fill="${accent}"/><path d="M40 21v20m0 0-10 17m10-17 10 17M31 29l-10 9m28-9 10 9" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/></svg>`;
-      const b=`<svg viewBox="0 0 80 70"><circle cx="40" cy="15" r="5" fill="${accent}"/><path d="M40 21v20m0 0-10 17m10-17 10 17M31 29l-14-4m32 4 14-4" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/></svg>`;
-      return pose('START',a,'start')+pose('FINISH',b,'finish');
     }
 
     function exerciseSteps(ex) {
@@ -708,7 +698,7 @@
     function weightPoints(){return [...state.bodyMetrics].sort((a,b)=>new Date(a.date)-new Date(b.date)).filter(m=>Number.isFinite(Number(m.weight))).map(m=>({date:m.date,value:Number(m.weight)}));}
     function renderWeightChart(){const pts=weightPoints();return renderLineChart(pts,'lb');}
     function renderStrengthChart(id){return renderLineChart(strengthPoints(id),'e1RM');}
-    function renderLineChart(points,unit){if(points.length<2)return`<div class="chart-empty">Log at least two readings to build this chart.</div>`;const w=600,h=180,pad=18,vals=points.map(p=>p.value),min=Math.min(...vals),max=Math.max(...vals),range=Math.max(1,max-min),coords=points.map((p,i)=>({x:pad+(i/(points.length-1))*(w-pad*2),y:h-pad-((p.value-min)/range)*(h-pad*2),...p})),path=coords.map((p,i)=>`${i?'L':'M'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');return`<div style="display:flex;justify-content:space-between;gap:10px"><strong>${cleanNumber(points.at(-1).value)} ${esc(unit)}</strong><span class="muted" style="font-size:12px">${fmtDate(points[0].date)} → ${fmtDate(points.at(-1).date)}</span></div><div class="chart-wrap"><svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img"><defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8b5cf6" stop-opacity=".35"/><stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/></linearGradient></defs><path d="${path} L ${coords.at(-1).x} ${h-pad} L ${coords[0].x} ${h-pad} Z" fill="url(#area)"/><path d="${path}" fill="none" stroke="#c4b5fd" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>${coords.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="5" fill="#f8fafc"/>`).join('')}</svg></div>`;}
+    function renderLineChart(points,unit){if(points.length<2)return`<div class="chart-empty">Log at least two readings to build this chart.</div>`;const w=600,h=180,pad=18,vals=points.map(p=>p.value),min=Math.min(...vals),max=Math.max(...vals),range=Math.max(1,max-min),coords=points.map((p,i)=>({x:pad+(i/(points.length-1))*(w-pad*2),y:h-pad-((p.value-min)/range)*(h-pad*2),...p})),path=coords.map((p,i)=>`${i?'L':'M'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');return`<div style="display:flex;justify-content:space-between;gap:10px"><strong>${cleanNumber(points.at(-1).value)} ${esc(unit)}</strong><span class="muted" style="font-size:12px">${fmtDate(points[0].date)} → ${fmtDate(points.at(-1).date)}</span></div><div class="chart-wrap"><svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img"><defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0D7DFF" stop-opacity=".35"/><stop offset="1" stop-color="#0D7DFF" stop-opacity="0"/></linearGradient></defs><path d="${path} L ${coords.at(-1).x} ${h-pad} L ${coords[0].x} ${h-pad} Z" fill="url(#area)"/><path d="${path}" fill="none" stroke="#49B4FF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>${coords.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="5" fill="#f8fafc"/>`).join('')}</svg></div>`;}
 
     function getWeightTrend(){const pts=weightPoints(),now=Date.now();const avgFor=days=>{const cut=now-days*86400000,vals=pts.filter(p=>new Date(p.date).getTime()>=cut).map(p=>p.value);return vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:null;};const avg7=avgFor(7);let label='Collecting trend';if(pts.length>=4){const recent=pts.slice(-3).reduce((a,b)=>a+b.value,0)/Math.min(3,pts.length),older=pts.slice(0,Math.max(1,pts.length-3)).slice(-3).reduce((a,b)=>a+b.value,0)/Math.max(1,pts.slice(0,Math.max(1,pts.length-3)).slice(-3).length),diff=recent-older;label=Math.abs(diff)<.5?'Stable trend':diff<0?`Trending down ${cleanNumber(Math.abs(diff))} lb`:`Trending up ${cleanNumber(diff)} lb`; }return{avg7,label};}
 
@@ -727,7 +717,21 @@
     function saveBody(){const fromHome=Boolean(document.querySelector('#bodySheet'));const weight=Number($('[data-body="weight"]')?.value);if(!Number.isFinite(weight)||weight<=0){showToast('Enter body weight.');return;}const value=name=>{const n=Number($(`[data-body="${name}"]`)?.value);return Number.isFinite(n)?n:null;};state.bodyMetrics.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),date:new Date().toISOString(),weight,bodyFat:value('bodyFat'),waist:value('waist'),muscleMass:value('muscleMass'),skeletalMuscle:value('skeletalMuscle'),visceralFat:value('visceralFat'),note:$('[data-body="note"]')?.value?.trim()||''});saveState();if(fromHome){closeBodySheet();renderHome();}else renderProgress();showToast('Today’s body reading saved.');}
     function renderPRs(){const items=[];for(const id of weightedExerciseIds()){const ex=getExercise(id),best=bestSet(id);if(best)items.push({ex,best});}items.sort((a,b)=>b.best.score-a.best.score);if(!items.length)return'<div class="empty">Complete workouts to build personal records.</div>';return`<div class="stack" style="gap:10px">${items.slice(0,12).map(({ex,best})=>`<div class="soft-card" style="display:flex;justify-content:space-between;gap:12px;align-items:center"><div><strong>${esc(ex.name)}</strong><div class="muted" style="font-size:12px;margin-top:3px">${fmtDate(best.date)}</div></div><span class="target-pill">🏆 ${esc(formatLogShort(ex,best.log))}</span></div>`).join('')}</div>`;}
 
-    function renderPlan(){const selected=getDay();$('#view').innerHTML=`<div class="stack"><div class="page-title-row"><div><div class="eyebrow">Fixed seven-day split</div><h1>Plan</h1></div></div><div class="plan-week-tabs">${PLAN.map((day,i)=>`<button class="${i===state.settings.currentDayIndex?'active':''} ${day.type==='rest'?'rest':''}" data-action="select-plan-day" data-index="${i}"><span>${day.day}</span><small>${day.title.split(' ')[0]}</small></button>`).join('')}</div><section class="card plan-detail-card"><div class="card-pad"><div class="plan-detail-head"><div><span class="section-kicker">Day ${selected.day}</span><h2>${esc(selected.title)}</h2><p>${esc(selected.focus)}</p></div><span class="target-pill">${estimatedMinutes(selected)} min</span></div><div class="brief-note"><strong>Focus</strong><span>${esc(selected.note)}</span></div><div class="compact-exercise-list">${selected.exercises.map((ex,i)=>`<div><span>${i+1}</span><p><strong>${esc(ex.name)}</strong><small>${esc(ex.equipment||'')}</small></p><b>${esc(targetLabel(ex))}</b></div>`).join('')}</div></div></section></div>`;}
+    function renderPlan(){
+      const selected=getDay();
+      const cutoff=new Date();cutoff.setDate(cutoff.getDate()-6);cutoff.setHours(0,0,0,0);
+      const completed=new Set(state.history.filter(s=>new Date(s.startedAt)>=cutoff).map(s=>Number(s.dayIndex)));
+      const sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,2);
+      const weekdays=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      $('#view').innerHTML=`<div class="stack program-screen">
+        <div class="program-segment"><button class="active">Program</button><button data-action="open-history">History</button></div>
+        <div class="program-heading"><div><span>7-Day Split</span><small>Tap a day to make it next</small></div><strong>Day ${selected.day} of 7</strong></div>
+        <section class="program-list">${PLAN.map((day,i)=>`<button class="program-row ${i===state.settings.currentDayIndex?'selected':''} ${completed.has(i)?'completed':''}" data-action="select-plan-day" data-index="${i}"><span class="program-weekday">${weekdays[i]}</span><span class="program-copy"><b>${esc(day.title)}</b><small>${esc(day.focus)}</small></span><span class="program-state">${completed.has(i)?'✓':i===state.settings.currentDayIndex?'›':'○'}</span></button>`).join('')}</section>
+        <details class="program-detail-drawer"><summary><span><b>${esc(selected.title)}</b><small>${estimatedMinutes(selected)} min · ${selected.exercises.length} exercises</small></span><strong>View details⌄</strong></summary><div class="program-detail-body"><div class="program-focus-note"><span>Focus</span><p>${esc(selected.note)}</p></div><div class="compact-exercise-list">${selected.exercises.map((ex,i)=>`<div><span>${i+1}</span><p><strong>${esc(ex.name)}</strong><small>${esc(ex.equipment||'')}</small></p><b>${esc(targetLabel(ex))}</b></div>`).join('')}</div></div></details>
+        <div class="program-recent-head"><span>Recent workouts</span><button data-action="open-history">View all</button></div>
+        <section class="program-recent-list">${sessions.length?sessions.map(s=>`<button class="program-history-card" data-action="open-history"><span class="history-mark"><img src="nexset-mark.svg" alt=""></span><span class="history-card-copy"><b>${esc(s.title||'Workout')}</b><small>${fmtDate(s.startedAt)} · ${formatDuration(s.durationMs)}</small><span><i>Volume</i><strong>${sessionVolume(s).toLocaleString()} lb</strong><i>Sets</i><strong>${sessionWorkingSets(s)}</strong></span></span><em>✓</em></button>`).join(''):'<div class="program-empty">Your completed workouts will appear here.</div>'}</section>
+      </div>`;
+    }
 
     function renderMore(){
       const sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt));
@@ -735,7 +739,7 @@
       if(moreSection==='coach'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><section class="card"><div class="card-pad"><div class="eyebrow">Coach</div><h1 style="margin-top:8px">Check-in</h1><p class="muted">Share your workouts, body trends, and next-weight recommendations with ChatGPT.</p><button class="btn green block" data-action="share-coach">Share full check-in</button><button class="btn block" style="margin-top:10px" data-action="share-weekly">Share weekly review</button></div></section></div>`; return; }
       if(moreSection==='settings'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><div class="page-title-row"><div><div class="eyebrow">Preferences</div><h1>Settings</h1></div></div>${renderSettings()}</div>`; return; }
       if(moreSection==='backup'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><section class="card"><div class="card-pad"><div class="eyebrow">Your data</div><h1 style="margin-top:8px">Backup</h1><p class="muted">Workout data stays on this device. Export a backup before changing phones or clearing Safari data.</p><div class="button-row"><button class="btn primary" data-action="export-backup">Export</button><button class="btn" data-action="import-backup">Import</button></div><button class="btn block" style="margin-top:10px" data-action="refresh-cache">Refresh app cache</button><button class="btn danger block" style="margin-top:10px" data-action="reset-app">Reset app data</button></div></section></div>`; return; }
-      $('#view').innerHTML=`<div class="stack"><div class="page-title-row"><div><div class="eyebrow">NEXSET</div><h1>More</h1></div></div><section class="card"><div class="more-menu"><button data-action="more-section" data-section="history"><span class="menu-icon">↺</span><div><strong>History</strong><small>${sessions.length} saved sessions</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">N</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-atlas"><img src="nexset-mark.svg" alt=""><span>NEXSET 3.0.0</span><small>Progress starts with your next set.</small></div></div>`;
+      $('#view').innerHTML=`<div class="stack"><div class="page-title-row"><div><div class="eyebrow">NEXSET</div><h1>More</h1></div></div><section class="card"><div class="more-menu"><button data-action="more-section" data-section="history"><span class="menu-icon">↺</span><div><strong>History</strong><small>${sessions.length} saved sessions</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">N</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-nexset"><img src="nexset-mark.svg" alt=""><span>NEXSET 3.1.0</span><small>Progress Starts With Your Next Set.</small></div></div>`;
     }
 
     function renderHistoryCard(s){const sets=sessionWorkingSets(s),volume=sessionVolume(s),cardio=sessionCardioMinutes(s);return`<details class="history-card"><summary><div class="history-top"><div><strong style="font-size:18px">${esc(s.title||'Workout')}</strong><div class="muted" style="font-size:12px;margin-top:4px">${fmtDate(s.startedAt)} · ${formatDuration(s.durationMs)}</div></div><span class="target-pill">${s.type==='rest'?'☁️ Rest':s.prs?.length?`🏆 ${s.prs.length} PR`:'✓ Done'}</span></div><div class="history-stats"><span class="chip">${sets} sets</span><span class="chip">${volume.toLocaleString()} lb</span>${cardio?`<span class="chip">${cardio} min cardio</span>`:''}</div></summary><div class="history-body">${s.sessionNote?`<div class="soft-card"><strong>Session note</strong><p class="muted" style="margin:6px 0 0">${esc(s.sessionNote)}</p></div>`:''}${(s.exercises||[]).map(entry=>{const ex=getExercise(entry.id);if(!ex||(entry.logs||[]).length===0)return'';return`<div class="history-ex"><strong>${esc(ex.name)}</strong><div class="set-inline">${(entry.logs||[]).map(log=>`<span class="set-chip ${log.warmup?'wu':''}">${esc(formatLogShort(ex,log))} ${ex.type==='weighted'||ex.type==='bodyweight'?feelEmoji(log.feel):''}</span>`).join('')}</div>${entry.notes?`<div class="muted" style="font-size:12px;margin-top:7px">Note: ${esc(entry.notes)}</div>`:''}</div>`;}).join('')}<button class="btn danger block" data-action="delete-session" data-id="${esc(s.id)}">Delete session</button></div></details>`;}
@@ -744,8 +748,8 @@
 
     function saveSettings(){$$('[data-setting]').forEach(input=>{const key=input.dataset.setting;let value=input.value;if(['restSeconds','smithBarWeight'].includes(key))value=Number(value);state.settings[key]=value;});$$('[data-setting-check]').forEach(input=>state.settings[input.dataset.settingCheck]=input.checked);$$('[data-goal]').forEach(input=>{const n=Number(input.value);if(Number.isFinite(n))state.goals[input.dataset.goal]=n;});saveState();render();showToast('Settings saved.');}
 
-    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`NEXSET 3.0.0 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
-    function weeklyReportText(){const w=weeklyReview();return[`NEXSET 3.0.0 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
+    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`NEXSET 3.1.0 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
+    function weeklyReportText(){const w=weeklyReview();return[`NEXSET 3.1.0 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
     async function shareText(text,title){try{if(navigator.share){await navigator.share({title,text});return;}await navigator.clipboard.writeText(text);showToast('Copied. Paste it into ChatGPT.');}catch(err){if(err?.name!=='AbortError'){downloadBlob(`${title.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.txt`,text,'text/plain');showToast('Report downloaded.');}}}
 
     function openApp(kind){const url=kind==='music'?state.settings.musicAppUrl:state.settings.pfAppUrl,fallback=kind==='music'?state.settings.musicFallbackUrl:state.settings.pfFallbackUrl;if(!url){showToast('Add this app link in More → Settings.');return;}try{window.location.href=url;setTimeout(()=>{if(!document.hidden&&fallback&&!url.startsWith('shortcuts:'))window.open(fallback,'_blank','noopener');},1200);}catch(_){if(fallback)window.open(fallback,'_blank','noopener');}}
@@ -797,6 +801,7 @@
       else if(action==='close-exercise-tools')closeExerciseTools();
       else if(action==='progress-tab'){progressTab=btn.dataset.tab||'overview';renderProgress();}
       else if(action==='more-section'){moreSection=btn.dataset.section||'menu';renderMore();}
+      else if(action==='open-history'){moreSection='history';currentView='more';render();}
       else if(action==='more-back'){moreSection='menu';renderMore();}
       else if(action==='save-body')saveBody();
       else if(action==='delete-body'){state.bodyMetrics=state.bodyMetrics.filter(m=>m.id!==btn.dataset.id);saveState();renderProgress();}
@@ -823,7 +828,7 @@
       else if(event.target.matches('[data-input="reps"],[data-input="duration"]')) { const n=Number(event.target.value); if(Number.isFinite(n)) entry.draftReps=n; }
       saveActive();
     });
-    document.addEventListener('change',event=>{ if(active&&event.target.matches('[data-input="warmup"]')) { active.exercises[active.currentExerciseIndex].draftWarmup=event.target.checked; saveActive(); } });
+    document.addEventListener('change',event=>{ if(active&&event.target.matches('[data-input="warmup"]')) { active.exercises[active.currentExerciseIndex].draftWarmup=event.target.checked; saveActive(); renderFocusWorkout(); } });
     document.addEventListener('keydown',event=>{if(event.key==='Escape'&&$('#exerciseSheetOverlay'))closeExerciseTools();});
     document.addEventListener('visibilitychange',()=>{if(!document.hidden&&restState)updateRest();});
 

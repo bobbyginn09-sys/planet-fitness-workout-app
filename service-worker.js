@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nexset-workout-v3-0-0-brand-refresh-20260714-1';
+const CACHE_NAME = 'nexset-workout-v3-1-0-reference-polish-20260714-1';
 const APP_SHELL = [
   './',
   './index.html',
@@ -7,6 +7,8 @@ const APP_SHELL = [
   './nexset-mark.svg',
   './nexset-wordmark.svg',
   './nexset-icon.svg',
+  './nexset-strength-figure.svg',
+  './nexset-lockup.svg',
   './apple-touch-icon.png',
   './icon-192.png',
   './icon-512.png',

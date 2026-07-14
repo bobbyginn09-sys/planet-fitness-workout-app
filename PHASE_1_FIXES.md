@@ -16,6 +16,6 @@
 1. Export a backup from **More → Backup & restore**.
 2. Upload or commit all files and folders in this package to the existing repository.
 3. In GitHub, open **Settings → Pages** and select **GitHub Actions** as the source.
-4. After deployment, open the site once with `?atlas=2.2.0` appended.
+4. After deployment, open the site once with `?nexset=3.1.0` appended.
 5. Use **More → Backup & restore → Refresh app cache**, then fully close and reopen NEXSET.
 6. If the iPhone Home Screen icon remains stale, remove and re-add the Home Screen shortcut after confirming the backup is saved.

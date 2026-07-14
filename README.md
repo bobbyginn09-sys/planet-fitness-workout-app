@@ -1,4 +1,13 @@
-# NEXSET 3.0.0 — Workout Coach
+# NEXSET 3.1.0 — Reference-Inspired Polish
+
+## 3.1.0 visual-polish update
+
+- Compact NEXSET header lockup and a short branded startup animation.
+- Reference-inspired Home dashboard with the workout hero card, four quick actions, and a progress summary.
+- The flash-card workout logger remains intact, with a small NEXSET mark and refined electric-blue treatment.
+- Program page now uses a 7-day list, recent-workout cards, and an expandable exercise-detail drawer.
+- Existing storage keys, workout history, progression logic, and interaction behavior are preserved.
+
 
 This release fixes the completed-set chip being clipped at the bottom in iPhone Safari. The working-set status now uses a small CSS indicator instead of an emoji, and the chip has explicit height and line spacing so the full **Set 1**, **Set 2**, and later labels remain visible.
 
@@ -29,7 +38,7 @@ NEXSET 3.0.0 is the branded, iPhone-first redesign of the workout app. It keeps 
 
 ### Professional NEXSET identity
 - New NEXSET geometric app mark and Home Screen icon.
-- New blue-to-violet brand gradient.
+- New electric-blue performance gradient.
 - Deep navy, slate, muted gray, success, warning, and danger color system.
 - iPhone system typography and more consistent spacing.
 - App name, manifest, splash screens, coach reports, and backup filenames now use NEXSET.
@@ -59,14 +68,14 @@ The `brand` folder contains the mark, wordmark, concept board, and written brand
 1. In the current app, open **More → Backup & restore → Export** and save the JSON backup.
 2. Upload every file and folder from this package to the repository root, replacing the old files.
 3. Commit the changes.
-4. Open the site once with `?nexset=3.0.0` appended.
+4. Open the site once with `?nexset=3.1.0` appended.
 5. Open **More → Backup & restore → Refresh app cache**.
 6. Fully close and reopen the Home Screen app.
 
 Example:
 
 ```text
-https://bobbyginn09-sys.github.io/planet-fitness-workout-app/?nexset=3.0.0
+https://bobbyginn09-sys.github.io/planet-fitness-workout-app/?nexset=3.1.0
 ```
 
 ## App icon note
