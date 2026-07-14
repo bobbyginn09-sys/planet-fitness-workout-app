@@ -1,4 +1,4 @@
-const CACHE_NAME = 'atlas-workout-v2-4-0-coach-tools-20260714-1';
+const CACHE_NAME = 'atlas-workout-v2-5-0-animated-guides-20260714-1';
 const APP_SHELL = [
   './',
   './index.html',
