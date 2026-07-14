@@ -1,8 +1,8 @@
-NEXSET 3.0.0 — WORKOUT COACH
+NEXSET 3.1.0 — WORKOUT COACH
 
 This release fixes the completed-set chip being clipped at the bottom in iPhone Safari. Set status now uses a CSS dot instead of an emoji, with explicit chip height and line spacing so Set 1, Set 2, and later labels remain fully visible.
 
-VERSION 2.5.6
+VERSION 3.1.0
 - Prevents logged-set chips from shrinking inside the workout card.
 - Replaces the Apple emoji status dot with a stable CSS dot.
 - Adds enough vertical space for the full set label in Safari.
@@ -18,15 +18,15 @@ VERSION 2.5.5
 
 ----------------------------------------
 
-# NEXSET 3.0.0 — Workout Coach
+# NEXSET 3.1.0 — Workout Coach
 
-NEXSET 3.0.0 is the branded, iPhone-first redesign of the workout app. It keeps the same saved-data keys as previous PF Workout Coach / NEXSET builds, so existing workout history should remain available when the files are uploaded to the same GitHub Pages address.
+NEXSET 3.1.0 is the branded, iPhone-first redesign of the workout app. It keeps the same saved-data keys as previous PF Workout Coach / NEXSET builds, so existing workout history should remain available when the files are uploaded to the same GitHub Pages address.
 
 ## What changed
 
 ### Professional NEXSET identity
 - New NEXSET geometric app mark and Home Screen icon.
-- New blue-to-violet brand gradient.
+- New electric-blue performance gradient.
 - Deep navy, slate, muted gray, success, warning, and danger color system.
 - iPhone system typography and more consistent spacing.
 - App name, manifest, splash screens, coach reports, and backup filenames now use NEXSET.
@@ -56,14 +56,14 @@ The `brand` folder contains the mark, wordmark, concept board, and written brand
 1. In the current app, open **More → Backup & restore → Export** and save the JSON backup.
 2. Upload every file and folder from this package to the repository root, replacing the old files.
 3. Commit the changes.
-4. Open the site once with `?nexset=3.0.0` appended.
+4. Open the site once with `?nexset=3.1.0` appended.
 5. Open **More → Backup & restore → Refresh app cache**.
 6. Fully close and reopen the Home Screen app.
 
 Example:
 
 ```text
-https://bobbyginn09-sys.github.io/planet-fitness-workout-app/?nexset=3.0.0
+https://bobbyginn09-sys.github.io/planet-fitness-workout-app/?nexset=3.1.0
 ```
 
 ## App icon note
@@ -72,7 +72,7 @@ Safari may keep the old Home Screen icon after the website files change. If the 
 
 ## Data compatibility
 
-NEXSET 3.0.0 keeps:
+NEXSET 3.1.0 keeps:
 
 ```text
 pfWorkoutApp.v1
