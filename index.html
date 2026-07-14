@@ -9,13 +9,13 @@
   <meta name="apple-mobile-web-app-title" content="ATLAS" />
   <title>ATLAS · Workout Coach</title>
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="icon" type="image/svg+xml" href="atlas-mark.svg" />
-  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
-  <link rel="apple-touch-startup-image" href="splash/launch-1170x2532.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)" />
-  <link rel="apple-touch-startup-image" href="splash/launch-1179x2556.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)" />
-  <link rel="apple-touch-startup-image" href="splash/launch-1290x2796.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)" />
-  <link rel="apple-touch-startup-image" href="splash/launch-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+  <link rel="apple-touch-startup-image" href="launch-1170x2532.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)" />
+  <link rel="apple-touch-startup-image" href="launch-1179x2556.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)" />
+  <link rel="apple-touch-startup-image" href="launch-1290x2796.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)" />
+  <link rel="apple-touch-startup-image" href="launch-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" />
   <style>
     :root {
       color-scheme: dark;
@@ -253,28 +253,8 @@
     .warm-compact span { display:block; color:#dfe7f6; font-size:12px; font-weight:800; }
     .warm-compact small { display:block; margin-top:3px; color:#8ea0b8; font-size:10px; font-weight:600; line-height:1.25; }
     .warm-compact input { width:18px; height:18px; accent-color:var(--purple); }
-    .exercise-hero { display:grid; grid-template-columns:108px 1fr; gap:14px; align-items:center; }
-    .exercise-hero-visual { height:108px; border-radius:24px; background:linear-gradient(145deg,rgba(37,99,255,.16),rgba(124,58,237,.14)); border:1px solid rgba(96,165,250,.24); display:grid; place-items:center; overflow:hidden; }
-    .exercise-hero-visual svg { width:88px; height:88px; }
-    .exercise-hero-visual { position:relative; grid-template-columns:1fr 1fr; gap:5px; padding:8px 7px 22px; }
-    .exercise-hero-visual::after { content:"Start  →  Finish"; position:absolute; left:50%; bottom:6px; transform:translateX(-50%); color:#bcd0ff; font-size:8px; font-weight:900; letter-spacing:.11em; text-transform:uppercase; white-space:nowrap; }
-    .exercise-pose { height:76px; border-radius:16px; display:grid; place-items:center; background:rgba(4,8,15,.42); border:1px solid rgba(255,255,255,.08); opacity:.48; transform:scale(.96); transition:opacity .25s ease,transform .25s ease,border-color .25s ease,background .25s ease; }
-    .exercise-pose svg { width:100%; height:68px; animation:none !important; }
-    .exercise-pose circle { animation:none !important; }
-    .exercise-pose.start { animation:poseStartHighlight 3s ease-in-out infinite; }
-    .exercise-pose.finish { animation:poseFinishHighlight 3s ease-in-out infinite; }
-    .pose-label { position:absolute; top:10px; padding:3px 6px; border-radius:999px; background:#0b1220; border:1px solid rgba(255,255,255,.08); color:#dbe7ff; font-size:7px; font-weight:900; letter-spacing:.08em; }
-    .exercise-pose.start .pose-label { left:11px; }
-    .exercise-pose.finish .pose-label { right:11px; }
-    @keyframes poseStartHighlight { 0%,42%,100%{opacity:1;transform:scale(1);border-color:rgba(96,165,250,.45);background:rgba(37,99,255,.14)} 52%,90%{opacity:.42;transform:scale(.95);border-color:rgba(255,255,255,.08);background:rgba(4,8,15,.42)} }
-    @keyframes poseFinishHighlight { 0%,42%,100%{opacity:.42;transform:scale(.95);border-color:rgba(255,255,255,.08);background:rgba(4,8,15,.42)} 52%,90%{opacity:1;transform:scale(1);border-color:rgba(167,139,250,.5);background:rgba(124,58,237,.14)} }
-    .set-reference-row { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:7px; margin:7px 0 2px; }
-    .set-reference { padding:8px 9px; border-radius:12px; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.075); min-width:0; }
-    .set-reference span { display:block; color:#8390a5; font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:.07em; }
-    .set-reference strong { display:block; margin-top:4px; color:#eff4ff; font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .prefill-badge { display:inline-flex; align-items:center; gap:5px; margin-top:5px; color:#9ec0ff; font-size:10px; font-weight:850; }
-    .prefill-badge::before { content:"↗"; }
-    .exercise-hero-copy p { margin:8px 0 0; color:#c9d6e8; font-size:13px; line-height:1.45; }
+    .guide-cue { margin:12px 0 0; color:#d7e0ef; font-size:15px; line-height:1.5; font-weight:650; }
+    .guide-cue::before { content:"Form cue"; display:block; margin-bottom:7px; color:#7ea6ff; font-size:10px; font-weight:900; letter-spacing:.11em; text-transform:uppercase; }
     .cue-steps { margin:10px 0 0; padding-left:18px; color:#d6deea; font-size:13px; line-height:1.45; }
     .cue-steps li + li { margin-top:7px; }
     .sheet-meta-chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
@@ -340,7 +320,7 @@
       .focus-title strong { font-size:14px; }
       .focus-bottom { grid-template-columns:.8fr 1.35fr; }
     }
-    /* ATLAS 2.5.3 — premium motion and tactile polish */
+    /* ATLAS 2.5.4 — premium motion and tactile polish */
     #view.view-enter { animation: atlasViewIn .32s cubic-bezier(.2,.8,.2,1) both; }
     @keyframes atlasViewIn { from { opacity:0; transform:translateY(8px) scale(.995); } to { opacity:1; transform:none; } }
     .btn,.icon-btn,.mini-action,.nav-btn,.weight-add,.quick-square button,.plan-week-tabs button {
@@ -370,7 +350,7 @@
 
 
     /* =========================================================
-       ATLAS 2.5.3 — professional brand + iPhone-first layout
+       ATLAS 2.5.4 — professional brand + iPhone-first layout
        ========================================================= */
     :root {
       --bg:#0E1117; --bg2:#080B12; --surface:#141A25; --surface2:#1A1F2B; --surface3:#222A38;
@@ -659,7 +639,7 @@
     <div class="shell header-inner">
       <div class="brand">
         <div class="brand-mark" aria-hidden="true"><img src="atlas-mark.svg" alt="" /></div>
-        <div class="brand-copy"><div class="brand-title">ATLAS <span class="version-badge">2.5.3</span></div><div class="brand-sub" id="headerSub">Built for progress.</div></div>
+        <div class="brand-copy"><div class="brand-title">ATLAS <span class="version-badge">2.5.4</span></div><div class="brand-sub" id="headerSub">Built for progress.</div></div>
       </div>
       <button class="icon-btn" data-action="open-quick-menu" aria-label="Quick actions">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
@@ -687,7 +667,7 @@
 
     const STORAGE_KEY = 'pfWorkoutApp.v1';
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
-    const APP_VERSION = 'atlas-2.5.3';
+    const APP_VERSION = 'atlas-2.5.4';
 
     const PLAN = [
       {
@@ -1112,7 +1092,7 @@
       const weight=Number.isFinite(Number(entry.draftWeight))?Number(entry.draftWeight):(initialWeight(ex)||'');
       const reps=Number.isFinite(Number(entry.draftReps))?Number(entry.draftReps):ex.min;
       return `<article class="exercise-focus-card"><div class="exercise-card-inner">
-        <div class="exercise-card-head"><div><span class="exercise-number">${targetHit?'Target complete':`Set ${Math.min(working.length+1,ex.sets)} of ${ex.sets}`}</span><button class="exercise-head-tap" data-action="open-exercise-tools" aria-label="Open exercise picture and instructions"><h1 class="exercise-title">${esc(ex.name)}</h1><div class="exercise-target">${esc(targetLabel(ex))} · ${esc(ex.equipment||'')}</div><small>Tap for picture, cues, and notes</small></button>${renderExerciseNoteChip(entry)}</div><button class="details-dot" data-action="open-exercise-tools" aria-label="Details">•••</button></div>
+        <div class="exercise-card-head"><div><span class="exercise-number">${targetHit?'Target complete':`Set ${Math.min(working.length+1,ex.sets)} of ${ex.sets}`}</span><button class="exercise-head-tap" data-action="open-exercise-tools" aria-label="Open exercise cues and notes"><h1 class="exercise-title">${esc(ex.name)}</h1><div class="exercise-target">${esc(targetLabel(ex))} · ${esc(ex.equipment||'')}</div><small>Tap for cues and notes</small></button>${renderExerciseNoteChip(entry)}</div><button class="details-dot" data-action="open-exercise-tools" aria-label="Details">•••</button></div>
         ${renderPreviousCard(ex)}
         ${logs.length?`<div class="logged-strip">${logs.slice(-6).map((log,i)=>renderLoggedSet(ex,log,Math.max(0,logs.length-6)+i,index)).join('')}</div>`:'<div class="logged-placeholder">No sets logged yet</div>'}
         <div class="focus-log-wrap">${renderFocusLogPanel(ex,entry,index,weight,reps)}</div>
@@ -1149,7 +1129,7 @@
     function renderRepAndFeel(entry,reps,feel) { return renderFeelOnly(entry,feel); }
     function renderFeelOnly(entry,feel) { return `<div class="feel-row"><button class="feel-btn easy ${feel==='easy'?'active':''}" data-action="set-feel" data-feel="easy">Easy</button><button class="feel-btn right ${feel==='good'?'active':''}" data-action="set-feel" data-feel="good">Just right</button><button class="feel-btn hard ${feel==='hard'?'active':''}" data-action="set-feel" data-feel="hard">Hard</button></div><label class="warm-compact"><div><span>Warm-up set</span><small>Tracked separately and does not count toward your working sets or stats.</small></div><input type="checkbox" data-input="warmup" ${entry.draftWarmup?'checked':''}></label>`; }
 
-    function renderExerciseSheet(ex,entry,index){return `<div class="sheet-backdrop exercise-sheet-overlay" id="exerciseSheetOverlay"><section class="bottom-sheet" role="dialog" aria-modal="true" aria-label="Exercise details"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">Exercise details</span><h2>${esc(ex.name)}</h2></div><button data-action="close-exercise-tools" aria-label="Close">×</button></div><div class="sheet-section"><div class="exercise-hero"><div class="exercise-hero-visual">${renderExerciseVisual(ex)}</div><div class="exercise-hero-copy"><strong class="sheet-section-title">Quick guide</strong><div class="sheet-meta-chips"><span class="sheet-chip">${esc(targetLabel(ex))}</span><span class="sheet-chip">${esc(ex.equipment||'Gym floor')}</span></div><p>${esc(ex.cues||'Use controlled reps and clean form.')}</p></div></div></div><div class="sheet-section"><strong class="sheet-section-title">How to do it</strong><ol class="cue-steps">${exerciseSteps(ex).map(step=>`<li>${esc(step)}</li>`).join('')}</ol></div><div class="sheet-section"><label class="sheet-section-title">Exercise note</label><textarea data-input="exercise-note" placeholder="Seat position, grip, machine used, discomfort…">${esc(entry.notes||'')}</textarea></div>${ex.name.includes('Smith Machine')?`<div class="sheet-section">${renderPlateTool(ex,index,entry.draftWeight)}</div>`:''}<button class="btn danger block" data-action="delete-last-set">Delete last set</button><button class="btn danger block" style="margin-top:10px" data-action="cancel-workout">Cancel workout</button></section></div>`;}
+    function renderExerciseSheet(ex,entry,index){return `<div class="sheet-backdrop exercise-sheet-overlay" id="exerciseSheetOverlay"><section class="bottom-sheet" role="dialog" aria-modal="true" aria-label="Exercise details"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">Exercise details</span><h2>${esc(ex.name)}</h2></div><button data-action="close-exercise-tools" aria-label="Close">×</button></div><div class="sheet-section"><strong class="sheet-section-title">Quick guide</strong><div class="sheet-meta-chips"><span class="sheet-chip">${esc(targetLabel(ex))}</span><span class="sheet-chip">${esc(ex.equipment||'Gym floor')}</span></div><p class="guide-cue">${esc(ex.cues||'Use controlled reps and clean form.')}</p></div><div class="sheet-section"><strong class="sheet-section-title">How to do it</strong><ol class="cue-steps">${exerciseSteps(ex).map(step=>`<li>${esc(step)}</li>`).join('')}</ol></div><div class="sheet-section"><label class="sheet-section-title">Exercise note</label><textarea data-input="exercise-note" placeholder="Seat position, grip, machine used, discomfort…">${esc(entry.notes||'')}</textarea></div>${ex.name.includes('Smith Machine')?`<div class="sheet-section">${renderPlateTool(ex,index,entry.draftWeight)}</div>`:''}<button class="btn danger block" data-action="delete-last-set">Delete last set</button><button class="btn danger block" style="margin-top:10px" data-action="cancel-workout">Cancel workout</button></section></div>`;}
     function renderExerciseNoteChip(entry) {
       const note = String(entry?.notes || '').trim();
       if (!note) return '<button class="exercise-note-chip empty" data-action="open-exercise-tools" aria-label="Add an exercise note">📝 Add note</button>';
@@ -1161,50 +1141,6 @@
       if (ex.type === 'weighted' && Number.isFinite(Number(progress.nextWeight))) return `${cleanNumber(progress.nextWeight)} ${state.settings.units}`;
       if ((ex.type === 'cardio' || ex.type === 'timed') && Number.isFinite(Number(progress.nextDuration))) return `${cleanNumber(progress.nextDuration)} ${ex.unit||'min'}`;
       return progress.lastSummary || progress.note || 'Repeat last clean setup';
-    }
-
-    function renderExerciseVisual(ex) {
-      const lower = `${ex.id} ${ex.name} ${ex.equipment||''}`.toLowerCase();
-      const stroke = '#E7EEFF', accent = '#7EA6FF', accent2 = '#A78BFA';
-      const pose=(label,svg,kind)=>`<div class="exercise-pose ${kind}"><span class="pose-label">${label}</span>${svg}</div>`;
-      if (lower.includes('bench') || (lower.includes('chest press') && !lower.includes('shoulder'))) {
-        const start=`<svg viewBox="0 0 80 70"><path d="M10 53h58" stroke="${stroke}" stroke-width="4"/><circle cx="28" cy="31" r="5" fill="${accent}"/><path d="M32 35l14 5 12-9M39 40l-4 12M45 40l7 12" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><path d="M18 26h42" stroke="${accent2}" stroke-width="5" stroke-linecap="round"/></svg>`;
-        const finish=`<svg viewBox="0 0 80 70"><path d="M10 53h58" stroke="${stroke}" stroke-width="4"/><circle cx="28" cy="31" r="5" fill="${accent}"/><path d="M32 35l14 5 12-9M39 40l-4 12M45 40l7 12" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><path d="M18 13h42" stroke="${accent2}" stroke-width="5" stroke-linecap="round"/><path d="M30 31V15M52 31V15" stroke="${accent2}" stroke-width="4" stroke-linecap="round"/></svg>`;
-        return pose('START',start,'start')+pose('FINISH',finish,'finish');
-      }
-      if (lower.includes('leg press')) {
-        const start=`<svg viewBox="0 0 80 70"><path d="M9 56h38" stroke="${stroke}" stroke-width="4"/><rect x="52" y="11" width="18" height="47" rx="5" fill="none" stroke="${stroke}" stroke-width="4"/><circle cx="28" cy="22" r="5" fill="${accent}"/><path d="M30 28l10 10 11 5M40 38l-8 13M50 43l8-12" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/></svg>`;
-        const finish=`<svg viewBox="0 0 80 70"><path d="M9 56h38" stroke="${stroke}" stroke-width="4"/><rect x="52" y="11" width="18" height="47" rx="5" fill="none" stroke="${stroke}" stroke-width="4"/><circle cx="28" cy="22" r="5" fill="${accent}"/><path d="M30 28l10 10 11 5M40 38l-8 13M50 43l17-23" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/></svg>`;
-        return pose('BOTTOM',start,'start')+pose('PRESS',finish,'finish');
-      }
-      if (lower.includes('squat')) {
-        const start=`<svg viewBox="0 0 80 70"><circle cx="40" cy="14" r="5" fill="${accent}"/><path d="M40 20v19m0 0-12 12m12-12 12 12M28 51l-5 11m29-11 5 11M20 23h40" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/></svg>`;
-        const finish=`<svg viewBox="0 0 80 70"><circle cx="40" cy="24" r="5" fill="${accent}"/><path d="M40 30l-2 14m0 0-15 7m15-7 15 7M23 51l-5 9m35-9 5 9M20 23h40" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/></svg>`;
-        return pose('TOP',start,'start')+pose('DEPTH',finish,'finish');
-      }
-      if (lower.includes('deadlift') || lower.includes('rdl')) {
-        const start=`<svg viewBox="0 0 80 70"><circle cx="39" cy="13" r="5" fill="${accent}"/><path d="M39 19v20m0 0-10 18m10-18 11 18M18 57h44" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><circle cx="16" cy="57" r="6" fill="${accent2}"/><circle cx="64" cy="57" r="6" fill="${accent2}"/></svg>`;
-        const finish=`<svg viewBox="0 0 80 70"><circle cx="42" cy="19" r="5" fill="${accent}"/><path d="M40 25l-4 16-12 13m12-13 15 11M18 57h44" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><circle cx="16" cy="57" r="6" fill="${accent2}"/><circle cx="64" cy="57" r="6" fill="${accent2}"/></svg>`;
-        return pose('TALL',start,'start')+pose('HINGE',finish,'finish');
-      }
-      if (lower.includes('curl')) {
-        const start=`<svg viewBox="0 0 80 70"><circle cx="40" cy="13" r="5" fill="${accent}"/><path d="M40 20v20m0 0-10 18m10-18 10 18M28 29l-5 18m29-18 5 18" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><circle cx="22" cy="50" r="5" fill="${accent2}"/><circle cx="58" cy="50" r="5" fill="${accent2}"/></svg>`;
-        const finish=`<svg viewBox="0 0 80 70"><circle cx="40" cy="13" r="5" fill="${accent}"/><path d="M40 20v20m0 0-10 18m10-18 10 18M28 29l-2 10m26-10 2 10" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><circle cx="25" cy="35" r="5" fill="${accent2}"/><circle cx="55" cy="35" r="5" fill="${accent2}"/></svg>`;
-        return pose('BOTTOM',start,'start')+pose('SQUEEZE',finish,'finish');
-      }
-      if (lower.includes('row') || lower.includes('pulldown') || lower.includes('face pull')) {
-        const start=`<svg viewBox="0 0 80 70"><circle cx="31" cy="18" r="5" fill="${accent}"/><path d="M31 24l5 17 12 8m-10-9-10 15" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><path d="M64 10v48M60 24L43 36" stroke="${accent2}" stroke-width="4" stroke-linecap="round"/></svg>`;
-        const finish=`<svg viewBox="0 0 80 70"><circle cx="31" cy="18" r="5" fill="${accent}"/><path d="M31 24l5 17 12 8m-10-9-10 15" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><path d="M64 10v48M55 28L38 34" stroke="${accent2}" stroke-width="4" stroke-linecap="round"/></svg>`;
-        return pose('REACH',start,'start')+pose('PULL',finish,'finish');
-      }
-      if (lower.includes('press')) {
-        const start=`<svg viewBox="0 0 80 70"><circle cx="40" cy="15" r="5" fill="${accent}"/><path d="M40 21v20m0 0-10 17m10-17 10 17M30 28l-8 8m28-8 8 8" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><circle cx="20" cy="38" r="5" fill="${accent2}"/><circle cx="60" cy="38" r="5" fill="${accent2}"/></svg>`;
-        const finish=`<svg viewBox="0 0 80 70"><circle cx="40" cy="25" r="5" fill="${accent}"/><path d="M40 31v20m0 0-10 12m10-12 10 12M32 32l-5-17m21 17 5-17" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/><circle cx="26" cy="12" r="5" fill="${accent2}"/><circle cx="54" cy="12" r="5" fill="${accent2}"/></svg>`;
-        return pose('START',start,'start')+pose('LOCKOUT',finish,'finish');
-      }
-      const a=`<svg viewBox="0 0 80 70"><circle cx="40" cy="15" r="5" fill="${accent}"/><path d="M40 21v20m0 0-10 17m10-17 10 17M31 29l-10 9m28-9 10 9" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/></svg>`;
-      const b=`<svg viewBox="0 0 80 70"><circle cx="40" cy="15" r="5" fill="${accent}"/><path d="M40 21v20m0 0-10 17m10-17 10 17M31 29l-14-4m32 4 14-4" fill="none" stroke="${stroke}" stroke-width="5" stroke-linecap="round"/></svg>`;
-      return pose('START',a,'start')+pose('FINISH',b,'finish');
     }
 
     function exerciseSteps(ex) {
@@ -1419,7 +1355,7 @@
       if(moreSection==='coach'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><section class="card"><div class="card-pad"><div class="eyebrow">Coach</div><h1 style="margin-top:8px">Check-in</h1><p class="muted">Share your workouts, body trends, and next-weight recommendations with ChatGPT.</p><button class="btn green block" data-action="share-coach">Share full check-in</button><button class="btn block" style="margin-top:10px" data-action="share-weekly">Share weekly review</button></div></section></div>`; return; }
       if(moreSection==='settings'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><div class="page-title-row"><div><div class="eyebrow">Preferences</div><h1>Settings</h1></div></div>${renderSettings()}</div>`; return; }
       if(moreSection==='backup'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><section class="card"><div class="card-pad"><div class="eyebrow">Your data</div><h1 style="margin-top:8px">Backup</h1><p class="muted">Workout data stays on this device. Export a backup before changing phones or clearing Safari data.</p><div class="button-row"><button class="btn primary" data-action="export-backup">Export</button><button class="btn" data-action="import-backup">Import</button></div><button class="btn block" style="margin-top:10px" data-action="refresh-cache">Refresh app cache</button><button class="btn danger block" style="margin-top:10px" data-action="reset-app">Reset app data</button></div></section></div>`; return; }
-      $('#view').innerHTML=`<div class="stack"><div class="page-title-row"><div><div class="eyebrow">ATLAS</div><h1>More</h1></div></div><section class="card"><div class="more-menu"><button data-action="more-section" data-section="history"><span class="menu-icon">↺</span><div><strong>History</strong><small>${sessions.length} saved sessions</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">A</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-atlas"><img src="atlas-mark.svg" alt=""><span>ATLAS 2.5.3</span><small>Built for progress.</small></div></div>`;
+      $('#view').innerHTML=`<div class="stack"><div class="page-title-row"><div><div class="eyebrow">ATLAS</div><h1>More</h1></div></div><section class="card"><div class="more-menu"><button data-action="more-section" data-section="history"><span class="menu-icon">↺</span><div><strong>History</strong><small>${sessions.length} saved sessions</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">A</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-atlas"><img src="atlas-mark.svg" alt=""><span>ATLAS 2.5.4</span><small>Built for progress.</small></div></div>`;
     }
 
     function renderHistoryCard(s){const sets=sessionWorkingSets(s),volume=sessionVolume(s),cardio=sessionCardioMinutes(s);return`<details class="history-card"><summary><div class="history-top"><div><strong style="font-size:18px">${esc(s.title||'Workout')}</strong><div class="muted" style="font-size:12px;margin-top:4px">${fmtDate(s.startedAt)} · ${formatDuration(s.durationMs)}</div></div><span class="target-pill">${s.type==='rest'?'☁️ Rest':s.prs?.length?`🏆 ${s.prs.length} PR`:'✓ Done'}</span></div><div class="history-stats"><span class="chip">${sets} sets</span><span class="chip">${volume.toLocaleString()} lb</span>${cardio?`<span class="chip">${cardio} min cardio</span>`:''}</div></summary><div class="history-body">${s.sessionNote?`<div class="soft-card"><strong>Session note</strong><p class="muted" style="margin:6px 0 0">${esc(s.sessionNote)}</p></div>`:''}${(s.exercises||[]).map(entry=>{const ex=getExercise(entry.id);if(!ex||(entry.logs||[]).length===0)return'';return`<div class="history-ex"><strong>${esc(ex.name)}</strong><div class="set-inline">${(entry.logs||[]).map(log=>`<span class="set-chip ${log.warmup?'wu':''}">${esc(formatLogShort(ex,log))} ${ex.type==='weighted'||ex.type==='bodyweight'?feelEmoji(log.feel):''}</span>`).join('')}</div>${entry.notes?`<div class="muted" style="font-size:12px;margin-top:7px">Note: ${esc(entry.notes)}</div>`:''}</div>`;}).join('')}<button class="btn danger block" data-action="delete-session" data-id="${esc(s.id)}">Delete session</button></div></details>`;}
@@ -1428,8 +1364,8 @@
 
     function saveSettings(){$$('[data-setting]').forEach(input=>{const key=input.dataset.setting;let value=input.value;if(['restSeconds','smithBarWeight'].includes(key))value=Number(value);state.settings[key]=value;});$$('[data-setting-check]').forEach(input=>state.settings[input.dataset.settingCheck]=input.checked);$$('[data-goal]').forEach(input=>{const n=Number(input.value);if(Number.isFinite(n))state.goals[input.dataset.goal]=n;});saveState();render();showToast('Settings saved.');}
 
-    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`ATLAS 2.5.3 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
-    function weeklyReportText(){const w=weeklyReview();return[`ATLAS 2.5.3 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
+    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`ATLAS 2.5.4 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
+    function weeklyReportText(){const w=weeklyReview();return[`ATLAS 2.5.4 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
     async function shareText(text,title){try{if(navigator.share){await navigator.share({title,text});return;}await navigator.clipboard.writeText(text);showToast('Copied. Paste it into ChatGPT.');}catch(err){if(err?.name!=='AbortError'){downloadBlob(`${title.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.txt`,text,'text/plain');showToast('Report downloaded.');}}}
 
     function openApp(kind){const url=kind==='music'?state.settings.musicAppUrl:state.settings.pfAppUrl,fallback=kind==='music'?state.settings.musicFallbackUrl:state.settings.pfFallbackUrl;if(!url){showToast('Add this app link in More → Settings.');return;}try{window.location.href=url;setTimeout(()=>{if(!document.hidden&&fallback&&!url.startsWith('shortcuts:'))window.open(fallback,'_blank','noopener');},1200);}catch(_){if(fallback)window.open(fallback,'_blank','noopener');}}

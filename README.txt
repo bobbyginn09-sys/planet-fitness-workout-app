@@ -1,3 +1,15 @@
+ATLAS 2.5.4 — WORKOUT COACH
+
+This release removes the temporary start/finish figure from the exercise-details sheet. The sheet now uses a compact text-only quick guide with step-by-step cues, personal notes, and the Smith plate calculator where applicable. Existing workout history and active-session storage keys are unchanged.
+
+VERSION 2.5.4
+- Removed the placeholder animated/start-finish exercise figure.
+- Changed the workout prompt to “Tap for cues and notes.”
+- Kept form cues, instructions, notes, progression suggestions, warm-up tracking, and cancel workout.
+- Updated cache and PWA asset paths for the repository’s flat file layout.
+
+----------------------------------------
+
 # ATLAS 2.3.0 — Workout Coach
 
 ATLAS 2.3.0 is the branded, iPhone-first redesign of the workout app. It keeps the same saved-data keys as previous PF Workout Coach / Atlas builds, so existing workout history should remain available when the files are uploaded to the same GitHub Pages address.
