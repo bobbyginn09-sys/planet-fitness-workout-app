@@ -642,7 +642,7 @@
 
     const STORAGE_KEY = 'pfWorkoutApp.v1';
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
-    const APP_VERSION = 'atlas-2.3.0';
+    const APP_VERSION = 'atlas-2.3.1';
 
     const PLAN = [
       {
@@ -1083,7 +1083,7 @@
     function renderRepAndFeel(entry,reps,feel) { return renderFeelOnly(entry,feel); }
     function renderFeelOnly(entry,feel) { return `<div class="feel-row"><button class="feel-btn easy ${feel==='easy'?'active':''}" data-action="set-feel" data-feel="easy">Easy</button><button class="feel-btn right ${feel==='good'?'active':''}" data-action="set-feel" data-feel="good">Just right</button><button class="feel-btn hard ${feel==='hard'?'active':''}" data-action="set-feel" data-feel="hard">Hard</button></div><label class="warm-compact"><span>Warm-up set</span><input type="checkbox" data-input="warmup" ${entry.draftWarmup?'checked':''}></label>`; }
 
-    function renderExerciseSheet(ex,entry,index){return `<div class="sheet-backdrop" data-action="close-exercise-tools"><section class="bottom-sheet" role="dialog" aria-modal="true" aria-label="Exercise details" onclick="event.stopPropagation()"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">Exercise details</span><h2>${esc(ex.name)}</h2></div><button data-action="close-exercise-tools" aria-label="Close">×</button></div><div class="sheet-section"><strong>Form cue</strong><p>${esc(ex.cues||'Use controlled reps and clean form.')}</p></div><div class="sheet-section"><label>Exercise note</label><textarea data-input="exercise-note" placeholder="Seat position, grip, machine used, discomfort…">${esc(entry.notes||'')}</textarea></div>${ex.name.includes('Smith Machine')?`<div class="sheet-section">${renderPlateTool(ex,index,entry.draftWeight)}</div>`:''}<button class="btn danger block" data-action="delete-last-set">Delete last set</button></section></div>`;}
+    function renderExerciseSheet(ex,entry,index){return `<div class="sheet-backdrop" data-action="close-exercise-tools"><section class="bottom-sheet" role="dialog" aria-modal="true" aria-label="Exercise details" onclick="event.stopPropagation()"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">Exercise details</span><h2>${esc(ex.name)}</h2></div><button data-action="close-exercise-tools" aria-label="Close">×</button></div><div class="sheet-section"><strong>Form cue</strong><p>${esc(ex.cues||'Use controlled reps and clean form.')}</p></div><div class="sheet-section"><label>Exercise note</label><textarea data-input="exercise-note" placeholder="Seat position, grip, machine used, discomfort…">${esc(entry.notes||'')}</textarea></div>${ex.name.includes('Smith Machine')?`<div class="sheet-section">${renderPlateTool(ex,index,entry.draftWeight)}</div>`:''}<button class="btn danger block" data-action="delete-last-set">Delete last set</button><button class="btn danger block" style="margin-top:10px" data-action="cancel-workout">Cancel workout</button></section></div>`;}
     function openExerciseTools(){if(!active)return;syncDraftFromInputs();exerciseSheetOpen=true;renderFocusWorkout();}
     function closeExerciseTools(){if(!active)return;syncDraftFromInputs();exerciseSheetOpen=false;renderFocusWorkout();}
 
@@ -1278,7 +1278,7 @@
     function importBackup(file){const reader=new FileReader();reader.onload=()=>{try{const parsed=JSON.parse(reader.result),incoming=parsed.state||parsed;if(!incoming.history)throw new Error('Invalid backup');const base=defaultState();state={...base,...incoming,settings:{...base.settings,...(incoming.settings||{})},goals:{...base.goals,...(incoming.goals||{})},history:Array.isArray(incoming.history)?incoming.history:[],bodyMetrics:Array.isArray(incoming.bodyMetrics)?incoming.bodyMetrics:[],dailyCheckins:Array.isArray(incoming.dailyCheckins)?incoming.dailyCheckins:[]};active=parsed.active||null;rebuildProgress();saveState();saveActive();currentView=active?'workout':'home';render();showToast('Backup imported.');}catch(err){showToast('Could not import that backup.');}};reader.readAsText(file);}
     async function refreshCache(){try{if('serviceWorker'in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(const r of regs)await r.update();}if('caches'in window){for(const key of await caches.keys())await caches.delete(key);}showToast('Cache refreshed. Reloading…');setTimeout(()=>location.reload(true),700);}catch(_){location.reload(true);}}
 
-    function cancelActive(){if(!active)return;if(!confirm('Cancel this workout? Logged sets from this active session will be discarded.'))return;active=null;saveActive();stopRest();currentView='home';render();showToast('Workout canceled.');}
+    function cancelActive(){if(!active)return;syncDraftFromInputs();const hasActivity=active.exercises.some(e=>(e.logs||[]).length||String(e.notes||'').trim())||String(active.sessionNote||'').trim();const message=hasActivity?'Cancel this workout? All logged sets, notes, and elapsed time from this active session will be permanently discarded.':'Discard this empty workout? It will not be added to your history.';if(!confirm(message))return;active=null;exerciseSheetOpen=false;saveActive();stopRest();currentView='home';render();showToast('Workout canceled. Nothing was saved.');}
     function deleteSession(id){if(!confirm('Delete this completed session?'))return;state.history=state.history.filter(s=>s.id!==id);rebuildProgress();saveState();renderMore();showToast('Session deleted.');}
     function resetApp(){if(!confirm('Delete all workouts, body metrics, and settings from this device?'))return;localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(ACTIVE_KEY);state=defaultState();active=null;currentView='home';render();showToast('App reset.');}
 
@@ -1289,6 +1289,7 @@
       if(action==='start-workout')startWorkout();
       else if(action==='resume-workout'){currentView='workout';render();}
       else if(action==='pause-workout')pauseWorkout();
+      else if(action==='cancel-workout')cancelActive();
       else if(action==='mark-rest')markRest();
       else if(action==='previous-exercise')nextExercise(-1);
       else if(action==='next-exercise')nextExercise(1);
