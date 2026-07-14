@@ -64,3 +64,10 @@ Those are the same local storage keys used by the prior builds.
 
 ## Phase Two
 See `PHASE_2_POLISH.md` for the 2.3.0 interaction and visual-polish changes.
+
+## Version 2.3.1
+
+- Added **Cancel workout** to the active workout exercise-details menu.
+- Empty workouts receive a simple discard warning.
+- Workouts containing sets or notes receive a stronger permanent-loss warning.
+- Canceled workouts are removed from the active draft and are not added to History or progress statistics.
