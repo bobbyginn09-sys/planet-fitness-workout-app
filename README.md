@@ -1,4 +1,4 @@
-# ATLAS 2.5.6 — Workout Coach
+# NEXSET 3.0.0 — Workout Coach
 
 This release fixes the completed-set chip being clipped at the bottom in iPhone Safari. The working-set status now uses a small CSS indicator instead of an emoji, and the chip has explicit height and line spacing so the full **Set 1**, **Set 2**, and later labels remain visible.
 
@@ -21,18 +21,18 @@ This release fixes the completed-set chip being clipped at the bottom in iPhone 
 
 ---
 
-# ATLAS 2.3.0 — Workout Coach
+# NEXSET 3.0.0 — Workout Coach
 
-ATLAS 2.3.0 is the branded, iPhone-first redesign of the workout app. It keeps the same saved-data keys as previous PF Workout Coach / Atlas builds, so existing workout history should remain available when the files are uploaded to the same GitHub Pages address.
+NEXSET 3.0.0 is the branded, iPhone-first redesign of the workout app. It keeps the same saved-data keys as previous PF Workout Coach / NEXSET builds, so existing workout history should remain available when the files are uploaded to the same GitHub Pages address.
 
 ## What changed
 
-### Professional ATLAS identity
-- New ATLAS geometric app mark and Home Screen icon.
+### Professional NEXSET identity
+- New NEXSET geometric app mark and Home Screen icon.
 - New blue-to-violet brand gradient.
 - Deep navy, slate, muted gray, success, warning, and danger color system.
 - iPhone system typography and more consistent spacing.
-- App name, manifest, splash screens, coach reports, and backup filenames now use ATLAS.
+- App name, manifest, splash screens, coach reports, and backup filenames now use NEXSET.
 
 ### Less scrolling
 - Home is a single focused dashboard on current iPhones.
@@ -59,14 +59,14 @@ The `brand` folder contains the mark, wordmark, concept board, and written brand
 1. In the current app, open **More → Backup & restore → Export** and save the JSON backup.
 2. Upload every file and folder from this package to the repository root, replacing the old files.
 3. Commit the changes.
-4. Open the site once with `?atlas=2.3.0` appended.
+4. Open the site once with `?nexset=3.0.0` appended.
 5. Open **More → Backup & restore → Refresh app cache**.
 6. Fully close and reopen the Home Screen app.
 
 Example:
 
 ```text
-https://bobbyginn09-sys.github.io/planet-fitness-workout-app/?atlas=2.3.0
+https://bobbyginn09-sys.github.io/planet-fitness-workout-app/?nexset=3.0.0
 ```
 
 ## App icon note
@@ -75,7 +75,7 @@ Safari may keep the old Home Screen icon after the website files change. If the 
 
 ## Data compatibility
 
-ATLAS 2.3.0 keeps:
+NEXSET 3.0.0 keeps:
 
 ```text
 pfWorkoutApp.v1

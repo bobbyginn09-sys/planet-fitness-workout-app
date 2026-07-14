@@ -1,12 +1,12 @@
-# ATLAS Brand Guide
+# NEXSET Brand Guide
 
 ## Brand position
-ATLAS is a focused workout coach: direct, calm, useful, and data-driven. It avoids forced motivation and clutter.
+NEXSET is a focused workout coach: direct, calm, useful, and data-driven. It avoids forced motivation and clutter.
 
 ## Name
-- Product: **ATLAS**
+- Product: **NEXSET**
 - Descriptor: **Workout Coach**
-- Tagline: **Built for progress.**
+- Tagline: **Progress starts with your next set.**
 
 ## Core colors
 | Role | Hex | Usage |

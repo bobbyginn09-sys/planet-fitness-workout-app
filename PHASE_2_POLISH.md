@@ -1,4 +1,4 @@
-# ATLAS 2.3.0 — Phase Two
+# NEXSET 3.0.0 — Phase Two
 
 ## Premium UI polish
 - Added a dedicated recovery/moon icon to rest-day cards.
@@ -6,7 +6,7 @@
 - Added tactile button press states and supported-device vibration feedback.
 - Animated weekly completion dots and the current-day indicator.
 - Added restrained card glow and workout-card sheen effects.
-- Improved ATLAS mark rendering and shadow treatment.
+- Improved NEXSET mark rendering and shadow treatment.
 - Preserved reduced-motion support for accessibility.
 - Updated the PWA manifest and service-worker cache to 2.3.0.
 
