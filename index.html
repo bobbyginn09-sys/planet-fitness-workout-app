@@ -9,13 +9,13 @@
   <meta name="apple-mobile-web-app-title" content="ATLAS" />
   <title>ATLAS · Workout Coach</title>
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="icon" type="image/svg+xml" href="atlas-mark.svg" />
-  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
-  <link rel="apple-touch-startup-image" href="splash/launch-1170x2532.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)" />
-  <link rel="apple-touch-startup-image" href="splash/launch-1179x2556.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)" />
-  <link rel="apple-touch-startup-image" href="splash/launch-1290x2796.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)" />
-  <link rel="apple-touch-startup-image" href="splash/launch-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+  <link rel="apple-touch-startup-image" href="launch-1170x2532.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)" />
+  <link rel="apple-touch-startup-image" href="launch-1179x2556.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)" />
+  <link rel="apple-touch-startup-image" href="launch-1290x2796.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)" />
+  <link rel="apple-touch-startup-image" href="launch-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" />
   <style>
     :root {
       color-scheme: dark;
@@ -334,7 +334,7 @@
       .focus-title strong { font-size:14px; }
       .focus-bottom { grid-template-columns:.8fr 1.35fr; }
     }
-    /* ATLAS 2.5.1 — premium motion and tactile polish */
+    /* ATLAS 2.5.2 — premium motion and tactile polish */
     #view.view-enter { animation: atlasViewIn .32s cubic-bezier(.2,.8,.2,1) both; }
     @keyframes atlasViewIn { from { opacity:0; transform:translateY(8px) scale(.995); } to { opacity:1; transform:none; } }
     .btn,.icon-btn,.mini-action,.nav-btn,.weight-add,.quick-square button,.plan-week-tabs button {
@@ -364,7 +364,7 @@
 
 
     /* =========================================================
-       ATLAS 2.5.1 — professional brand + iPhone-first layout
+       ATLAS 2.5.2 — professional brand + iPhone-first layout
        ========================================================= */
     :root {
       --bg:#0E1117; --bg2:#080B12; --surface:#141A25; --surface2:#1A1F2B; --surface3:#222A38;
@@ -549,8 +549,13 @@
     .focus-elapsed { min-width:62px;text-align:center;color:#8F9BAD;font-size:10px; }
 
     /* Bottom sheet */
-    .sheet-backdrop { position:fixed;inset:0;z-index:190;background:rgba(1,3,8,.68);backdrop-filter:blur(10px);display:flex;align-items:flex-end; }
-    .bottom-sheet { width:100%;max-height:78dvh;overflow:auto;padding:8px 17px calc(20px + var(--safe-bottom));border-radius:28px 28px 0 0;background:#151B26;border-top:1px solid rgba(139,149,167,.18);box-shadow:0 -30px 70px rgba(0,0,0,.5); }
+    body.exercise-sheet-open { overflow:hidden; }
+    .sheet-backdrop { position:fixed;inset:0;z-index:260;background:rgba(1,3,8,.72);backdrop-filter:blur(10px);display:flex;align-items:flex-end; }
+    .bottom-sheet { width:100%;max-height:82dvh;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:8px 17px calc(20px + var(--safe-bottom));border-radius:28px 28px 0 0;background:#151B26;border-top:1px solid rgba(139,149,167,.18);box-shadow:0 -30px 70px rgba(0,0,0,.5); }
+    .exercise-sheet-overlay { opacity:0;transition:opacity .2s ease; }
+    .exercise-sheet-overlay.open { opacity:1; }
+    .exercise-sheet-overlay .bottom-sheet { transform:translate3d(0,105%,0);transition:transform .25s cubic-bezier(.2,.8,.2,1); }
+    .exercise-sheet-overlay.open .bottom-sheet { transform:translate3d(0,0,0); }
     .sheet-handle { width:42px;height:4px;border-radius:999px;background:#475063;margin:0 auto 13px; }
     .sheet-head { display:flex;align-items:flex-start;justify-content:space-between;gap:12px; }
     .sheet-head h2 { font-size:25px;margin:5px 0 0; }
@@ -648,7 +653,7 @@
     <div class="shell header-inner">
       <div class="brand">
         <div class="brand-mark" aria-hidden="true"><img src="atlas-mark.svg" alt="" /></div>
-        <div class="brand-copy"><div class="brand-title">ATLAS <span class="version-badge">2.5.1</span></div><div class="brand-sub" id="headerSub">Built for progress.</div></div>
+        <div class="brand-copy"><div class="brand-title">ATLAS <span class="version-badge">2.5.2</span></div><div class="brand-sub" id="headerSub">Built for progress.</div></div>
       </div>
       <button class="icon-btn" data-action="open-quick-menu" aria-label="Quick actions">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
@@ -676,7 +681,7 @@
 
     const STORAGE_KEY = 'pfWorkoutApp.v1';
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
-    const APP_VERSION = 'atlas-2.5.1';
+    const APP_VERSION = 'atlas-2.5.2';
 
     const PLAN = [
       {
@@ -1085,11 +1090,10 @@
       const completed=active.exercises.filter(e=>{const x=getExercise(e.id);return workingLogs(e.logs||[]).length>=(x?.sets||1);}).length;
       const progress=Math.max(4,Math.round(((index+1)/Math.max(1,total))*100));
       $('#view').innerHTML=`<div class="focus-shell">
-        <header class="focus-header"><button class="focus-close" data-action="pause-workout" aria-label="Pause workout">×</button><div class="focus-title"><strong>${index+1} of ${total}</strong><span>${esc(day.title)}</span></div><button class="focus-menu" data-action="open-exercise-tools" aria-label="Exercise details">•••</button></header>
+        <header class="focus-header"><button class="focus-close" data-action="pause-workout" aria-label="Pause workout">×</button><div class="focus-title"><strong>Exercise ${index+1} / ${total}</strong><span>${esc(day.title)}</span></div><button class="focus-menu" data-action="open-exercise-tools" aria-label="Exercise details">•••</button></header>
         <div class="focus-progress"><div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div></div>
         <main class="exercise-stage" id="exerciseStage">${renderFocusCard(ex,entry,index,total)}</main>
         <footer class="focus-bottom"><button class="focus-nav-btn" data-action="${index>0?'previous-exercise':'pause-workout'}">${index>0?'← Previous':'Pause'}</button><div class="focus-elapsed" id="elapsed">${formatDuration(Date.now()-new Date(active.startedAt))}</div><button class="focus-nav-btn primary" data-action="${index<total-1?'next-exercise':'finish-workout'}">${index<total-1?'Next →':'Finish'}</button></footer>
-        ${exerciseSheetOpen?renderExerciseSheet(ex,entry,index):''}
       </div>`;
       bindSwipe();startElapsedClock();
     }
@@ -1137,7 +1141,7 @@
     function renderRepAndFeel(entry,reps,feel) { return renderFeelOnly(entry,feel); }
     function renderFeelOnly(entry,feel) { return `<div class="feel-row"><button class="feel-btn easy ${feel==='easy'?'active':''}" data-action="set-feel" data-feel="easy">Easy</button><button class="feel-btn right ${feel==='good'?'active':''}" data-action="set-feel" data-feel="good">Just right</button><button class="feel-btn hard ${feel==='hard'?'active':''}" data-action="set-feel" data-feel="hard">Hard</button></div><label class="warm-compact"><div><span>Warm-up set</span><small>Tracked separately and does not count toward your working sets or stats.</small></div><input type="checkbox" data-input="warmup" ${entry.draftWarmup?'checked':''}></label>`; }
 
-    function renderExerciseSheet(ex,entry,index){return `<div class="sheet-backdrop" data-action="close-exercise-tools"><section class="bottom-sheet" role="dialog" aria-modal="true" aria-label="Exercise details" onclick="event.stopPropagation()"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">Exercise details</span><h2>${esc(ex.name)}</h2></div><button data-action="close-exercise-tools" aria-label="Close">×</button></div><div class="sheet-section"><div class="exercise-hero"><div class="exercise-hero-visual">${renderExerciseVisual(ex)}</div><div class="exercise-hero-copy"><strong class="sheet-section-title">Quick guide</strong><div class="sheet-meta-chips"><span class="sheet-chip">${esc(targetLabel(ex))}</span><span class="sheet-chip">${esc(ex.equipment||'Gym floor')}</span></div><p>${esc(ex.cues||'Use controlled reps and clean form.')}</p></div></div></div><div class="sheet-section"><strong class="sheet-section-title">How to do it</strong><ol class="cue-steps">${exerciseSteps(ex).map(step=>`<li>${esc(step)}</li>`).join('')}</ol></div><div class="sheet-section"><label class="sheet-section-title">Exercise note</label><textarea data-input="exercise-note" placeholder="Seat position, grip, machine used, discomfort…">${esc(entry.notes||'')}</textarea></div>${ex.name.includes('Smith Machine')?`<div class="sheet-section">${renderPlateTool(ex,index,entry.draftWeight)}</div>`:''}<button class="btn danger block" data-action="delete-last-set">Delete last set</button><button class="btn danger block" style="margin-top:10px" data-action="cancel-workout">Cancel workout</button></section></div>`;}
+    function renderExerciseSheet(ex,entry,index){return `<div class="sheet-backdrop exercise-sheet-overlay" id="exerciseSheetOverlay" data-action="close-exercise-tools"><section class="bottom-sheet" role="dialog" aria-modal="true" aria-label="Exercise details"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">Exercise details</span><h2>${esc(ex.name)}</h2></div><button data-action="close-exercise-tools" aria-label="Close">×</button></div><div class="sheet-section"><div class="exercise-hero"><div class="exercise-hero-visual">${renderExerciseVisual(ex)}</div><div class="exercise-hero-copy"><strong class="sheet-section-title">Quick guide</strong><div class="sheet-meta-chips"><span class="sheet-chip">${esc(targetLabel(ex))}</span><span class="sheet-chip">${esc(ex.equipment||'Gym floor')}</span></div><p>${esc(ex.cues||'Use controlled reps and clean form.')}</p></div></div></div><div class="sheet-section"><strong class="sheet-section-title">How to do it</strong><ol class="cue-steps">${exerciseSteps(ex).map(step=>`<li>${esc(step)}</li>`).join('')}</ol></div><div class="sheet-section"><label class="sheet-section-title">Exercise note</label><textarea data-input="exercise-note" placeholder="Seat position, grip, machine used, discomfort…">${esc(entry.notes||'')}</textarea></div>${ex.name.includes('Smith Machine')?`<div class="sheet-section">${renderPlateTool(ex,index,entry.draftWeight)}</div>`:''}<button class="btn danger block" data-action="delete-last-set">Delete last set</button><button class="btn danger block" style="margin-top:10px" data-action="cancel-workout">Cancel workout</button></section></div>`;}
     function renderExerciseNoteChip(entry) {
       const note = String(entry?.notes || '').trim();
       if (!note) return '<button class="exercise-note-chip empty" data-action="open-exercise-tools" aria-label="Add an exercise note">📝 Add note</button>';
@@ -1176,8 +1180,52 @@
       return ['Set yourself up so the machine, seat, or handles feel locked in before the first rep.', 'Move with control and match the target rep range for this exercise.', 'Use the cue above to stay strict and make every working set count.'];
     }
 
-    function openExerciseTools(){if(!active)return;syncDraftFromInputs();exerciseSheetOpen=true;renderFocusWorkout();}
-    function closeExerciseTools(){if(!active)return;syncDraftFromInputs();exerciseSheetOpen=false;renderFocusWorkout();}
+    function removeExerciseTools(saveNote=true, animate=true) {
+      const overlay=$('#exerciseSheetOverlay');
+      if(saveNote && active && overlay){
+        const note=overlay.querySelector('[data-input="exercise-note"]')?.value;
+        const entry=active.exercises[active.currentExerciseIndex];
+        if(entry && typeof note==='string'){entry.notes=note;saveActive();}
+      }
+      exerciseSheetOpen=false;
+      document.body.classList.remove('exercise-sheet-open');
+      if(!overlay)return;
+      if(!animate){overlay.remove();return;}
+      overlay.classList.remove('open');
+      setTimeout(()=>overlay.remove(),260);
+    }
+
+    function bindExerciseSheetSwipe() {
+      const overlay=$('#exerciseSheetOverlay'), sheet=overlay?.querySelector('.bottom-sheet');
+      if(!overlay||!sheet)return;
+      let startY=null;
+      sheet.addEventListener('touchstart',event=>{
+        if(sheet.scrollTop>0)return;
+        startY=event.changedTouches[0]?.clientY??null;
+      },{passive:true});
+      sheet.addEventListener('touchend',event=>{
+        if(startY===null)return;
+        const endY=event.changedTouches[0]?.clientY??startY;
+        if(endY-startY>90)closeExerciseTools();
+        startY=null;
+      },{passive:true});
+    }
+
+    function openExerciseTools(){
+      if(!active)return;
+      syncDraftFromInputs();
+      removeExerciseTools(true,false);
+      const index=active.currentExerciseIndex,entry=active.exercises[index],ex=getExercise(entry?.id);
+      if(!entry||!ex)return;
+      document.body.insertAdjacentHTML('beforeend',renderExerciseSheet(ex,entry,index));
+      exerciseSheetOpen=true;
+      document.body.classList.add('exercise-sheet-open');
+      const overlay=$('#exerciseSheetOverlay');
+      requestAnimationFrame(()=>requestAnimationFrame(()=>overlay?.classList.add('open')));
+      bindExerciseSheetSwipe();
+    }
+
+    function closeExerciseTools(){removeExerciseTools(true,true);}
 
     function renderPlateTool(ex,index,weight) { return `<div><strong style="color:#fff">Smith plate calculator</strong><div class="muted" style="margin-top:4px">Target ${esc(weight||0)} lb · starting resistance ${esc(state.settings.smithBarWeight)} lb</div><div style="margin-top:8px;color:#fff;font-weight:850">${esc(plateCalculation(Number(weight)||0,Number(state.settings.smithBarWeight)||0))}</div></div>`; }
     function plateCalculation(total,bar) { if(!Number.isFinite(total)||total<=0) return 'Enter a target weight.'; const per=Math.max(0,(total-bar)/2); const plates=[45,35,25,10,5,2.5]; let remaining=per, used=[]; for(const p of plates){const count=Math.floor((remaining+.001)/p);for(let i=0;i<count;i++)used.push(p);remaining-=count*p;} return remaining>.2?`${cleanNumber(per)} lb per side (closest plates vary)`:`Per side: ${used.length?used.join(' + '):'no plates'}`; }
@@ -1233,9 +1281,9 @@
     function deleteLastSet() { if(!active)return;const entry=active.exercises[active.currentExerciseIndex];if(!entry.logs.length){showToast('No set to delete.');return;}entry.logs.pop();saveActive();renderFocusWorkout();showToast('Last set removed.'); }
     function deleteSpecificSet(setIndex) { if(!active)return;const entry=active.exercises[active.currentExerciseIndex];if(!confirm('Delete this set?'))return;entry.logs.splice(Number(setIndex),1);saveActive();renderFocusWorkout(); }
 
-    function nextExercise(delta=1) { if(!active)return;syncDraftFromInputs();exerciseSheetOpen=false;active.currentExerciseIndex=clamp(active.currentExerciseIndex+delta,0,active.exercises.length-1);saveActive();renderFocusWorkout(); }
+    function nextExercise(delta=1) { if(!active)return;syncDraftFromInputs();removeExerciseTools(true,false);active.currentExerciseIndex=clamp(active.currentExerciseIndex+delta,0,active.exercises.length-1);saveActive();renderFocusWorkout(); }
     function jumpExercise(index) { if(!active)return;syncDraftFromInputs();active.currentExerciseIndex=clamp(Number(index),0,active.exercises.length-1);saveActive();renderFocusWorkout(); }
-    function pauseWorkout() { syncDraftFromInputs();exerciseSheetOpen=false;currentView='home';render();showToast('Workout paused. Your sets are saved.'); }
+    function pauseWorkout() { syncDraftFromInputs();removeExerciseTools(true,false);currentView='home';render();showToast('Workout paused. Your sets are saved.'); }
 
     function bindSwipe() {
       const stage=$('#exerciseStage');if(!stage)return;
@@ -1264,7 +1312,7 @@
     function bestSet(id, history=state.history) { const ex=getExercise(id);if(!ex)return null;let best=null;for(const s of history)for(const e of s.exercises||[]){if(e.id!==id)continue;for(const log of workingLogs(e.logs||[])){let score=null;if(ex.type==='weighted'){const w=Number(log.weight),r=Number(log.reps);if(Number.isFinite(w)&&Number.isFinite(r))score=w*(1+r/30);}else if(ex.type==='bodyweight'){score=Number(log.reps);}if(Number.isFinite(score)&&(!best||score>best.score))best={score,log,date:s.startedAt};}}return best; }
 
     function finishWorkout() {
-      if(!active)return;syncDraftFromInputs();const count=active.exercises.reduce((sum,e)=>sum+(e.logs||[]).length,0);if(!count&&!confirm('No activity has been logged. Save this workout anyway?'))return;
+      if(!active)return;syncDraftFromInputs();removeExerciseTools(true,false);const count=active.exercises.reduce((sum,e)=>sum+(e.logs||[]).length,0);if(!count&&!confirm('No activity has been logged. Save this workout anyway?'))return;
       const prior=currentPRScores(),now=new Date().toISOString();const session={...deepClone(active),endedAt:now,completedAt:now,durationMs:new Date(now)-new Date(active.startedAt),prs:[]};
       state.history.push(session);rebuildProgress();
       const seen=new Set();for(const entry of session.exercises||[]){if(seen.has(entry.id))continue;seen.add(entry.id);const after=bestSet(entry.id),before=prior[entry.id];const ex=getExercise(entry.id);if(ex&&after&&Number.isFinite(before)&&after.score>before+.01)session.prs.push({exerciseId:entry.id,name:ex.name,value:formatLogShort(ex,after.log),score:after.score,date:now});}
@@ -1328,7 +1376,7 @@
     function openBodySheet(){
       closeBodySheet();
       const metric=latestBodyMetric();
-      document.body.insertAdjacentHTML('beforeend',`<div class="sheet-backdrop" id="bodySheet" data-action="close-body-sheet"><section class="bottom-sheet body-quick-sheet" role="dialog" aria-modal="true" aria-label="Log today’s body metrics" onclick="event.stopPropagation()"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">Daily check-in</span><h2>Log body metrics</h2><p class="muted" style="margin:5px 0 0;font-size:12px">Weight is required. Everything else is optional.</p></div><button data-action="close-body-sheet" aria-label="Close">×</button></div>${renderBodyForm(metric)}</section></div>`);
+      document.body.insertAdjacentHTML('beforeend',`<div class="sheet-backdrop" id="bodySheet" data-action="close-body-sheet"><section class="bottom-sheet body-quick-sheet" role="dialog" aria-modal="true" aria-label="Log today’s body metrics"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">Daily check-in</span><h2>Log body metrics</h2><p class="muted" style="margin:5px 0 0;font-size:12px">Weight is required. Everything else is optional.</p></div><button data-action="close-body-sheet" aria-label="Close">×</button></div>${renderBodyForm(metric)}</section></div>`);
       setTimeout(()=>document.querySelector('#bodySheet [data-body="weight"]')?.focus(),120);
     }
     function closeBodySheet(){document.querySelector('#bodySheet')?.remove();}
@@ -1346,7 +1394,7 @@
       if(moreSection==='coach'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><section class="card"><div class="card-pad"><div class="eyebrow">Coach</div><h1 style="margin-top:8px">Check-in</h1><p class="muted">Share your workouts, body trends, and next-weight recommendations with ChatGPT.</p><button class="btn green block" data-action="share-coach">Share full check-in</button><button class="btn block" style="margin-top:10px" data-action="share-weekly">Share weekly review</button></div></section></div>`; return; }
       if(moreSection==='settings'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><div class="page-title-row"><div><div class="eyebrow">Preferences</div><h1>Settings</h1></div></div>${renderSettings()}</div>`; return; }
       if(moreSection==='backup'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><section class="card"><div class="card-pad"><div class="eyebrow">Your data</div><h1 style="margin-top:8px">Backup</h1><p class="muted">Workout data stays on this device. Export a backup before changing phones or clearing Safari data.</p><div class="button-row"><button class="btn primary" data-action="export-backup">Export</button><button class="btn" data-action="import-backup">Import</button></div><button class="btn block" style="margin-top:10px" data-action="refresh-cache">Refresh app cache</button><button class="btn danger block" style="margin-top:10px" data-action="reset-app">Reset app data</button></div></section></div>`; return; }
-      $('#view').innerHTML=`<div class="stack"><div class="page-title-row"><div><div class="eyebrow">ATLAS</div><h1>More</h1></div></div><section class="card"><div class="more-menu"><button data-action="more-section" data-section="history"><span class="menu-icon">↺</span><div><strong>History</strong><small>${sessions.length} saved sessions</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">A</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-atlas"><img src="atlas-mark.svg" alt=""><span>ATLAS 2.5.1</span><small>Built for progress.</small></div></div>`;
+      $('#view').innerHTML=`<div class="stack"><div class="page-title-row"><div><div class="eyebrow">ATLAS</div><h1>More</h1></div></div><section class="card"><div class="more-menu"><button data-action="more-section" data-section="history"><span class="menu-icon">↺</span><div><strong>History</strong><small>${sessions.length} saved sessions</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">A</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-atlas"><img src="atlas-mark.svg" alt=""><span>ATLAS 2.5.2</span><small>Built for progress.</small></div></div>`;
     }
 
     function renderHistoryCard(s){const sets=sessionWorkingSets(s),volume=sessionVolume(s),cardio=sessionCardioMinutes(s);return`<details class="history-card"><summary><div class="history-top"><div><strong style="font-size:18px">${esc(s.title||'Workout')}</strong><div class="muted" style="font-size:12px;margin-top:4px">${fmtDate(s.startedAt)} · ${formatDuration(s.durationMs)}</div></div><span class="target-pill">${s.type==='rest'?'☁️ Rest':s.prs?.length?`🏆 ${s.prs.length} PR`:'✓ Done'}</span></div><div class="history-stats"><span class="chip">${sets} sets</span><span class="chip">${volume.toLocaleString()} lb</span>${cardio?`<span class="chip">${cardio} min cardio</span>`:''}</div></summary><div class="history-body">${s.sessionNote?`<div class="soft-card"><strong>Session note</strong><p class="muted" style="margin:6px 0 0">${esc(s.sessionNote)}</p></div>`:''}${(s.exercises||[]).map(entry=>{const ex=getExercise(entry.id);if(!ex||(entry.logs||[]).length===0)return'';return`<div class="history-ex"><strong>${esc(ex.name)}</strong><div class="set-inline">${(entry.logs||[]).map(log=>`<span class="set-chip ${log.warmup?'wu':''}">${esc(formatLogShort(ex,log))} ${ex.type==='weighted'||ex.type==='bodyweight'?feelEmoji(log.feel):''}</span>`).join('')}</div>${entry.notes?`<div class="muted" style="font-size:12px;margin-top:7px">Note: ${esc(entry.notes)}</div>`:''}</div>`;}).join('')}<button class="btn danger block" data-action="delete-session" data-id="${esc(s.id)}">Delete session</button></div></details>`;}
@@ -1355,14 +1403,14 @@
 
     function saveSettings(){$$('[data-setting]').forEach(input=>{const key=input.dataset.setting;let value=input.value;if(['restSeconds','smithBarWeight'].includes(key))value=Number(value);state.settings[key]=value;});$$('[data-setting-check]').forEach(input=>state.settings[input.dataset.settingCheck]=input.checked);$$('[data-goal]').forEach(input=>{const n=Number(input.value);if(Number.isFinite(n))state.goals[input.dataset.goal]=n;});saveState();render();showToast('Settings saved.');}
 
-    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`ATLAS 2.5.1 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
-    function weeklyReportText(){const w=weeklyReview();return[`ATLAS 2.5.1 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
+    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`ATLAS 2.5.2 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
+    function weeklyReportText(){const w=weeklyReview();return[`ATLAS 2.5.2 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
     async function shareText(text,title){try{if(navigator.share){await navigator.share({title,text});return;}await navigator.clipboard.writeText(text);showToast('Copied. Paste it into ChatGPT.');}catch(err){if(err?.name!=='AbortError'){downloadBlob(`${title.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.txt`,text,'text/plain');showToast('Report downloaded.');}}}
 
     function openApp(kind){const url=kind==='music'?state.settings.musicAppUrl:state.settings.pfAppUrl,fallback=kind==='music'?state.settings.musicFallbackUrl:state.settings.pfFallbackUrl;if(!url){showToast('Add this app link in More → Settings.');return;}try{window.location.href=url;setTimeout(()=>{if(!document.hidden&&fallback&&!url.startsWith('shortcuts:'))window.open(fallback,'_blank','noopener');},1200);}catch(_){if(fallback)window.open(fallback,'_blank','noopener');}}
     function openQuickMenu(){
       $('#quickMenu')?.remove();
-      document.body.insertAdjacentHTML('beforeend',`<div class="sheet-backdrop" id="quickMenu" data-action="close-quick-menu"><section class="bottom-sheet quick-menu-sheet" role="dialog" aria-modal="true" aria-label="Quick actions" onclick="event.stopPropagation()"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">ATLAS</span><h2>Quick actions</h2></div><button data-action="close-quick-menu" aria-label="Close">×</button></div><div class="quick-action-list"><button data-action="open-app" data-app="pf"><span>PF</span><div><strong>Planet Fitness</strong><small>Check in or view the crowd meter</small></div><b>›</b></button><button data-action="open-app" data-app="music"><span>♫</span><div><strong>Apple Music</strong><small>Start your gym music</small></div><b>›</b></button><button data-action="share-coach"><span>A</span><div><strong>Coach check-in</strong><small>Share your latest training report</small></div><b>›</b></button></div></section></div>`);
+      document.body.insertAdjacentHTML('beforeend',`<div class="sheet-backdrop" id="quickMenu" data-action="close-quick-menu"><section class="bottom-sheet quick-menu-sheet" role="dialog" aria-modal="true" aria-label="Quick actions"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">ATLAS</span><h2>Quick actions</h2></div><button data-action="close-quick-menu" aria-label="Close">×</button></div><div class="quick-action-list"><button data-action="open-app" data-app="pf"><span>PF</span><div><strong>Planet Fitness</strong><small>Check in or view the crowd meter</small></div><b>›</b></button><button data-action="open-app" data-app="music"><span>♫</span><div><strong>Apple Music</strong><small>Start your gym music</small></div><b>›</b></button><button data-action="share-coach"><span>A</span><div><strong>Coach check-in</strong><small>Share your latest training report</small></div><b>›</b></button></div></section></div>`);
     }
     function closeQuickMenu(){ $('#quickMenu')?.remove(); }
 
@@ -1371,13 +1419,15 @@
     function importBackup(file){const reader=new FileReader();reader.onload=()=>{try{const parsed=JSON.parse(reader.result),incoming=parsed.state||parsed;if(!incoming.history)throw new Error('Invalid backup');const base=defaultState();state={...base,...incoming,settings:{...base.settings,...(incoming.settings||{})},goals:{...base.goals,...(incoming.goals||{})},history:Array.isArray(incoming.history)?incoming.history:[],bodyMetrics:Array.isArray(incoming.bodyMetrics)?incoming.bodyMetrics:[],dailyCheckins:Array.isArray(incoming.dailyCheckins)?incoming.dailyCheckins:[]};active=parsed.active||null;rebuildProgress();saveState();saveActive();currentView=active?'workout':'home';render();showToast('Backup imported.');}catch(err){showToast('Could not import that backup.');}};reader.readAsText(file);}
     async function refreshCache(){try{if('serviceWorker'in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(const r of regs)await r.update();}if('caches'in window){for(const key of await caches.keys())await caches.delete(key);}showToast('Cache refreshed. Reloading…');setTimeout(()=>location.reload(true),700);}catch(_){location.reload(true);}}
 
-    function cancelActive(){if(!active)return;syncDraftFromInputs();const hasActivity=active.exercises.some(e=>(e.logs||[]).length||String(e.notes||'').trim())||String(active.sessionNote||'').trim();const message=hasActivity?'Cancel this workout? All logged sets, notes, and elapsed time from this active session will be permanently discarded.':'Discard this empty workout? It will not be added to your history.';if(!confirm(message))return;active=null;exerciseSheetOpen=false;saveActive();stopRest();currentView='home';render();showToast('Workout canceled. Nothing was saved.');}
+    function cancelActive(){if(!active)return;syncDraftFromInputs();const hasActivity=active.exercises.some(e=>(e.logs||[]).length||String(e.notes||'').trim())||String(active.sessionNote||'').trim();const message=hasActivity?'Cancel this workout? All logged sets, notes, and elapsed time from this active session will be permanently discarded.':'Discard this empty workout? It will not be added to your history.';if(!confirm(message))return;removeExerciseTools(false,false);active=null;exerciseSheetOpen=false;saveActive();stopRest();currentView='home';render();showToast('Workout canceled. Nothing was saved.');}
     function deleteSession(id){if(!confirm('Delete this completed session?'))return;state.history=state.history.filter(s=>s.id!==id);rebuildProgress();saveState();renderMore();showToast('Session deleted.');}
     function resetApp(){if(!confirm('Delete all workouts, body metrics, and settings from this device?'))return;localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(ACTIVE_KEY);state=defaultState();active=null;currentView='home';render();showToast('App reset.');}
 
     document.addEventListener('click',event=>{
       const viewBtn=event.target.closest('[data-view]');if(viewBtn){haptic('light');currentView=viewBtn.dataset.view;render();return;}
-      const btn=event.target.closest('[data-action]');if(!btn)return;const action=btn.dataset.action;
+      const btn=event.target.closest('[data-action]');if(!btn)return;
+      if(btn.classList.contains('sheet-backdrop') && event.target!==btn)return;
+      const action=btn.dataset.action;
       haptic(['finish-workout','complete-done','mark-rest','save-body'].includes(action)?'success':['start-workout','resume-workout','log-set'].includes(action)?'medium':'light');
       if(action==='start-workout')startWorkout();
       else if(action==='resume-workout'){currentView='workout';render();}
@@ -1435,6 +1485,7 @@
       saveActive();
     });
     document.addEventListener('change',event=>{ if(active&&event.target.matches('[data-input="warmup"]')) { active.exercises[active.currentExerciseIndex].draftWarmup=event.target.checked; saveActive(); } });
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&$('#exerciseSheetOverlay'))closeExerciseTools();});
     document.addEventListener('visibilitychange',()=>{if(!document.hidden&&restState)updateRest();});
 
     rebuildProgress();saveState();render();
