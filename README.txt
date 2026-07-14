@@ -1,12 +1,14 @@
-ATLAS 2.5.4 — WORKOUT COACH
+ATLAS 2.5.5 — WORKOUT COACH
 
-This release removes the temporary start/finish figure from the exercise-details sheet. The sheet now uses a compact text-only quick guide with step-by-step cues, personal notes, and the Smith plate calculator where applicable. Existing workout history and active-session storage keys are unchanged.
+This release fixes clipped active-workout controls on smaller iPhone screens. The set action stays in the bottom bar, and the exercise card scrolls only when a compact viewport needs it. Existing workout history and active-session storage keys are unchanged.
 
-VERSION 2.5.4
-- Removed the placeholder animated/start-finish exercise figure.
-- Changed the workout prompt to “Tap for cues and notes.”
-- Kept form cues, instructions, notes, progression suggestions, warm-up tracking, and cancel workout.
-- Updated cache and PWA asset paths for the repository’s flat file layout.
+VERSION 2.5.5
+- The bottom action now says Log Set 1, Log Set 2, and so on while the exercise is incomplete.
+- It changes to Next Exercise only after the programmed working sets are complete.
+- The set action remains visible above the iPhone safe area.
+- Previous-session coaching is more compact and duplicate reference boxes were removed.
+- Short screens can scroll the exercise card instead of clipping the lower controls.
+- Cue-and-notes sheet, warm-up tracking, progression suggestions, and cancel workout remain included.
 
 ----------------------------------------
 
