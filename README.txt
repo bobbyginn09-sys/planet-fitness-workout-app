@@ -1,13 +1,19 @@
-ATLAS 2.5.5 — WORKOUT COACH
+ATLAS 2.5.6 — WORKOUT COACH
 
-This release fixes clipped active-workout controls on smaller iPhone screens. The set action stays in the bottom bar, and the exercise card scrolls only when a compact viewport needs it. Existing workout history and active-session storage keys are unchanged.
+This release fixes the completed-set chip being clipped at the bottom in iPhone Safari. Set status now uses a CSS dot instead of an emoji, with explicit chip height and line spacing so Set 1, Set 2, and later labels remain fully visible.
+
+VERSION 2.5.6
+- Prevents logged-set chips from shrinking inside the workout card.
+- Replaces the Apple emoji status dot with a stable CSS dot.
+- Adds enough vertical space for the full set label in Safari.
+- Preserves tap-to-delete, rest timers, progression suggestions, and saved workout data.
 
 VERSION 2.5.5
-- The bottom action now says Log Set 1, Log Set 2, and so on while the exercise is incomplete.
+- The bottom action says Log Set 1, Log Set 2, and so on while the exercise is incomplete.
 - It changes to Next Exercise only after the programmed working sets are complete.
 - The set action remains visible above the iPhone safe area.
-- Previous-session coaching is more compact and duplicate reference boxes were removed.
-- Short screens can scroll the exercise card instead of clipping the lower controls.
+- Previous-session coaching is more compact and duplicate reference boxes are removed.
+- Short screens can scroll the exercise card instead of clipping lower controls.
 - Cue-and-notes sheet, warm-up tracking, progression suggestions, and cancel workout remain included.
 
 ----------------------------------------

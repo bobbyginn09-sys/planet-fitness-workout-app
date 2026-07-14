@@ -1,4 +1,4 @@
-const CACHE_NAME = 'atlas-workout-v2-5-5-fixed-set-controls-20260714-1';
+const CACHE_NAME = 'atlas-workout-v2-5-6-safari-set-chip-20260714-1';
 const APP_SHELL = [
   './',
   './index.html',
