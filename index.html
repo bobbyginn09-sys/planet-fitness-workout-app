@@ -320,7 +320,7 @@
       .focus-title strong { font-size:14px; }
       .focus-bottom { grid-template-columns:.8fr 1.35fr; }
     }
-    /* NEXSET 3.1.3 — premium motion and tactile polish */
+    /* NEXSET 3.1.5 — premium motion and tactile polish */
     #view.view-enter { animation: nexsetViewIn .32s cubic-bezier(.2,.8,.2,1) both; }
     @keyframes nexsetViewIn { from { opacity:0; transform:translateY(8px) scale(.995); } to { opacity:1; transform:none; } }
     .btn,.icon-btn,.mini-action,.nav-btn,.weight-add,.quick-square button,.plan-week-tabs button {
@@ -350,7 +350,7 @@
 
 
     /* =========================================================
-       NEXSET 3.1.3 — professional brand + iPhone-first layout
+       NEXSET 3.1.5 — professional brand + iPhone-first layout
        ========================================================= */
     :root {
       --bg:#060A11; --bg2:#0C121B; --surface:#101722; --surface2:#161F2B; --surface3:#1E2938;
@@ -803,7 +803,7 @@
     }
 
 
-    /* NEXSET 3.1.3 — approved reference finish */
+    /* NEXSET 3.1.5 — approved reference finish */
     .shell { width:min(680px,calc(100% - 22px)); }
     .app-header { box-shadow:0 12px 32px rgba(0,0,0,.16); }
     .brand-lockup { width:178px;height:35px; }
@@ -854,7 +854,7 @@
     .program-history-card { min-height:69px;border-radius:14px;box-shadow:0 10px 24px rgba(0,0,0,.15),inset 0 1px 0 rgba(255,255,255,.025); }
     .history-mark { width:42px;height:48px;border-radius:11px;background:radial-gradient(circle at 50% 30%,rgba(255,35,35,.08),transparent 70%),#080E15;border-color:rgba(255,255,255,.085);overflow:hidden; }
     .history-mark .muscle-figure.compact { width:40px;height:46px; }
-    .history-mark .muscle-figure.compact img { object-fit:contain; }
+    .history-mark .muscle-figure.compact img { object-fit:contain; object-position:center top; }
 
     .history-card { border-radius:16px;background:linear-gradient(150deg,#111923,#0A1017);border-color:rgba(255,255,255,.09);box-shadow:0 12px 30px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.025); }
     .history-card summary { padding:11px 12px; }
@@ -902,13 +902,14 @@
     }
 
 
-    /* NEXSET 3.1.3 — mockup-match polish */
+    /* NEXSET 3.1.5 — mockup-match polish */
     :root{--header-h:62px;--nav-h:72px;--bg:#02060B;--bg2:#050A11;--surface:#0E151E;--surface2:#121B26;--surface3:#1B2634;--muted:#8E9CAF;}
     body{background:radial-gradient(circle at 50% -16%,rgba(13,125,255,.08),transparent 22rem),linear-gradient(180deg,#03080E 0%,#02060B 48%,#010409 100%);}
     .shell{width:min(680px,calc(100% - 24px));}
     .app-header{background:rgba(2,6,11,.94);border-bottom-color:rgba(255,255,255,.075);box-shadow:0 10px 28px rgba(0,0,0,.22);backdrop-filter:blur(22px);}
     .header-inner{min-height:var(--header-h);padding-inline:5px;}
-    .brand-lockup{width:190px;height:38px;}
+    .brand-lockup{width:196px;height:34px;display:block;object-fit:contain;object-position:left center;filter:none;}
+    .brand-lockup-wrap{display:flex;align-items:center;}
     .icon-btn{width:39px;height:39px;border-radius:12px;background:linear-gradient(150deg,#141D29,#0B1118);border-color:rgba(255,255,255,.105);box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 8px 19px rgba(0,0,0,.18);}
     .icon-btn[data-icon-mode] svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;}
     .main{padding-top:11px;}
@@ -932,8 +933,8 @@
     .today-focus{font-size:12px!important;line-height:1.34;color:#DCE3EC!important;}
     .today-detail-list{margin-top:14px;gap:6px;font-size:10px;color:#CCD4DF;}
     .today-detail-list svg{width:13px;height:13px;fill:none;stroke:#8B98AA;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;}
-    .reference-today-card>.muscle-figure.hero{right:-3px;top:-2px;width:170px;height:207px;filter:drop-shadow(0 14px 20px rgba(0,0,0,.48));}
-    .reference-today-card>.muscle-figure.hero img{object-position:center top;}
+    .reference-today-card>.muscle-figure.hero{right:-2px;top:0;width:176px;height:214px;filter:drop-shadow(0 16px 24px rgba(0,0,0,.52));}
+    .reference-today-card>.muscle-figure.hero img{object-position:center top;object-fit:contain;image-rendering:auto;}
     .reference-today-card .today-actions{left:13px;right:13px;bottom:13px;}
     .home-start{min-height:51px;border-radius:10px;font-size:13px;font-weight:850;letter-spacing:.025em;background:linear-gradient(135deg,#159FFF,#0876FA 55%,#0050D9)!important;border-color:rgba(104,190,255,.35)!important;box-shadow:0 14px 30px rgba(0,78,225,.36)!important;}
     .home-start span{font-size:24px;}
@@ -989,12 +990,40 @@
     .program-empty-card>span:nth-child(2){min-width:0;}.program-empty-card b,.program-empty-card small{display:block;}.program-empty-card b{font-size:11px;}.program-empty-card small{margin-top:3px;color:#8F9CAF;font-size:8px;line-height:1.3;}
 
     .history-page-head{padding:2px 3px;display:flex;align-items:end;justify-content:space-between;}.history-page-head span{display:block;color:#E4EBF4;font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:850;}.history-page-head small{display:block;margin-top:3px;color:#8E9CAF;font-size:9px;}.history-list{display:grid;gap:8px;}
-    .history-card{border-radius:12px;}.history-card summary{padding:9px 10px;}.history-top{grid-template-columns:51px minmax(0,1fr) 29px;gap:10px;}.history-muscle{width:49px;height:58px;border-radius:9px;}.history-muscle .muscle-figure.compact{width:47px;height:56px;}.history-main>strong{font-size:13px;}.history-main>small{font-size:8.5px;}.history-metrics i{font-size:7px;}
+    .history-card{border-radius:12px;}.history-card summary{padding:9px 10px;}.history-top{grid-template-columns:51px minmax(0,1fr) 29px;gap:10px;}.history-muscle{width:49px;height:58px;border-radius:9px;}.history-muscle .muscle-figure.compact{width:47px;height:56px;}
+    .muscle-figure.hero img,.muscle-figure.compact img{display:block;width:100%;height:100%;}.history-main>strong{font-size:13px;}.history-main>small{font-size:8.5px;}.history-metrics i{font-size:7px;}
 
     .profile-screen{gap:11px;}.profile-hero{min-height:106px;padding:16px;display:flex;align-items:center;gap:14px;border-radius:19px;background:radial-gradient(circle at 15% 25%,rgba(13,125,255,.16),transparent 9rem),linear-gradient(145deg,#121B27,#090F16);border:1px solid rgba(255,255,255,.1);box-shadow:0 15px 35px rgba(0,0,0,.22);}
     .profile-avatar{width:62px;height:62px;border-radius:18px;display:grid;place-items:center;background:#070C13;border:1px solid rgba(13,125,255,.25);box-shadow:0 0 25px rgba(13,125,255,.12);}.profile-avatar img{width:49px;height:49px;}.profile-hero>span:last-child{min-width:0;}.profile-hero small{color:#66ADFF;font-size:8px;text-transform:uppercase;letter-spacing:.13em;font-weight:850;}.profile-hero h1{margin:4px 0 3px;font-size:27px;}.profile-hero p{margin:0;color:#8F9CAF;font-size:9px;}.profile-menu-card{overflow:hidden;}
 
     @media(max-height:760px){.home-dashboard{gap:8px}.home-welcome{padding-top:3px}.reference-today-card{min-height:222px;padding-bottom:63px}.reference-today-card>.muscle-figure.hero{width:145px;height:176px}.reference-quick-grid button{min-height:66px}.summary-row{min-height:41px}.focus-shell{grid-template-rows:54px 11px minmax(0,1fr) calc(59px + var(--safe-bottom))}.focus-header{min-height:54px}.focus-mini-brand{width:29px;height:22px}.exercise-card-inner{padding:9px 11px;gap:5px}.exercise-title{font-size:21px}.previous-compact{padding:8px 9px}.control-block{padding:7px}.compact-stepper button{height:36px}.compact-stepper input{height:38px;font-size:23px}.micro-adjust button{min-height:24px}.feel-btn{min-height:32px}.warm-compact{min-height:52px;padding:8px 9px}.focus-nav-btn{min-height:43px}.program-row{min-height:48px}}
+
+
+    /* NEXSET 3.1.5 — production logo and muscle-map correction */
+    .brand-lockup-wrap{display:flex;align-items:center;min-width:0;}
+    .brand-lockup{width:212px;height:39px;display:block;object-fit:contain;object-position:left center;filter:none;transform:none;}
+    .reference-today-card>.muscle-figure.hero{right:-1px;top:-2px;width:181px;height:216px;display:block;filter:drop-shadow(0 16px 24px rgba(0,0,0,.54));}
+    .reference-today-card>.muscle-figure.hero.mode-legs-a,
+    .reference-today-card>.muscle-figure.hero.mode-legs-b,
+    .reference-today-card>.muscle-figure.hero.mode-recovery{right:6px;top:-1px;width:145px;height:211px;}
+    .muscle-figure img{display:block;width:100%;height:100%;object-fit:contain;object-position:center top;}
+    .program-row{grid-template-columns:40px 44px minmax(0,1fr) 28px;gap:8px;}
+    .program-muscle{width:42px;height:49px;display:grid;place-items:center;overflow:hidden;align-self:center;}
+    .program-muscle .muscle-figure.compact{width:42px;height:49px;display:block;}
+    .program-muscle .muscle-figure.compact.mode-legs-a,
+    .program-muscle .muscle-figure.compact.mode-legs-b,
+    .program-muscle .muscle-figure.compact.mode-recovery{width:34px;height:49px;}
+    .history-mark .muscle-figure.compact,.history-muscle .muscle-figure.compact{display:block;}
+    .history-mark .muscle-figure.compact.mode-legs-a,
+    .history-mark .muscle-figure.compact.mode-legs-b,
+    .history-mark .muscle-figure.compact.mode-recovery{width:36px;height:54px;}
+    @media(max-width:390px){
+      .brand-lockup{width:202px;height:37px;}
+      .reference-today-card>.muscle-figure.hero{width:168px;height:203px;}
+      .reference-today-card>.muscle-figure.hero.mode-legs-a,
+      .reference-today-card>.muscle-figure.hero.mode-legs-b,
+      .reference-today-card>.muscle-figure.hero.mode-recovery{width:136px;height:201px;}
+    }
 
   </style>
 </head>
@@ -1003,7 +1032,7 @@
   <header class="app-header" id="appHeader">
     <div class="shell header-inner">
       <div class="brand brand-lockup-wrap">
-        <img class="brand-lockup" src="nexset-lockup.svg" alt="NEXSET" />
+        <img class="brand-lockup" src="nexset-lockup-v315.svg" alt="NEXSET" />
         <span class="sr-only" id="headerSub">Progress Starts With Your Next Set.</span>
       </div>
       <button class="icon-btn header-alert" data-action="open-quick-menu" aria-label="Open quick actions">
@@ -1031,7 +1060,7 @@
 
     const STORAGE_KEY = 'pfWorkoutApp.v1';
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
-    const APP_VERSION = 'nexset-3.1.3';
+    const APP_VERSION = 'nexset-3.1.5';
 
     const PLAN = [
       {
@@ -1357,11 +1386,16 @@
 
 
     function figureModeForDay(day) {
-      const text=`${day?.title||''} ${day?.focus||''}`.toLowerCase();
-      if(text.includes('push')) return 'push';
-      if(text.includes('pull')) return 'pull';
-      if(text.includes('leg')) return 'legs';
-      if(text.includes('recover')||text.includes('rest')||text.includes('cardio')||text.includes('mobility')) return 'recovery';
+      const title=String(day?.title||'').toLowerCase();
+      const focus=String(day?.focus||'').toLowerCase();
+      const text=`${title} ${focus}`;
+      const hasAny=(...words)=>words.some(word=>text.includes(word));
+      if(hasAny('recover','rest','cardio','mobility','walk','deload')) return 'recovery';
+      if(title.includes('legs b') || (hasAny('hamstring','glute','posterior') && !focus.includes('quad'))) return 'legs-b';
+      if(hasAny('leg','quad','hamstring','glute','calf','lower body')) return 'legs-a';
+      if(hasAny('upper','definition') && hasAny('chest','back','shoulder','arm','bicep','tricep')) return 'upper';
+      if(hasAny('pull','back','lat','rear delt','bicep','row')) return 'pull';
+      if(hasAny('push','chest','shoulder','tricep','press')) return 'push';
       return 'push';
     }
 
@@ -1373,7 +1407,7 @@
 
     function renderMuscleFigure(day, compact=false) {
       const mode=figureModeForDay(day);
-      return `<span class="muscle-figure ${compact?'compact':'hero'}" aria-hidden="true"><img src="muscle-${mode}.png" alt=""></span>`;
+      return `<span class="muscle-figure ${compact?'compact':'hero'} mode-${mode}" aria-hidden="true"><img src="muscle-${mode}-v315.png" alt="" ${compact?'loading="lazy"':''}></span>`;
     }
 
     function renderHome() {
@@ -1799,7 +1833,7 @@
       $('#view').innerHTML=`<div class="stack program-screen">
         <div class="program-segment"><button class="active">Program</button><button data-action="open-history">History</button></div>
         <div class="program-heading"><div><span>7-Day Split <i class="program-info">i</i></span></div><strong>Week ${programWeekNumber()} of 6</strong></div>
-        <section class="program-list">${PLAN.map((day,i)=>`<button class="program-row ${i===state.settings.currentDayIndex?'selected':''} ${completed.has(i)?'completed':''}" data-action="select-plan-day" data-index="${i}"><span class="program-weekday">${weekdays[i]}</span><span class="program-copy"><b>${esc(day.title)}</b><small>${esc(day.focus)}</small></span><span class="program-state">${completed.has(i)?'✓':i===state.settings.currentDayIndex?'›':'○'}</span></button>`).join('')}</section>
+        <section class="program-list">${PLAN.map((day,i)=>`<button class="program-row ${i===state.settings.currentDayIndex?'selected':''} ${completed.has(i)?'completed':''}" data-action="select-plan-day" data-index="${i}"><span class="program-weekday">${weekdays[i]}</span><span class="program-muscle">${renderMuscleFigure(day,true)}</span><span class="program-copy"><b>${esc(day.title)}</b><small>${esc(day.focus)}</small></span><span class="program-state">${completed.has(i)?'✓':i===state.settings.currentDayIndex?'›':'○'}</span></button>`).join('')}</section>
         <div class="program-recent-head"><span>Recent workouts</span><button data-action="open-history">View all</button></div>
         <section class="program-recent-list">${sessions.length?sessions.map(renderProgramRecentCard).join(''):`<button class="program-empty-card" data-view="home"><span class="history-mark">${renderMuscleFigure(selected,true)}</span><span><b>No completed workouts yet</b><small>Start ${esc(selected.title)} from Home and it will appear here.</small></span><em>›</em></button>`}</section>
       </div>`;
@@ -1814,7 +1848,7 @@
       if(moreSection==='coach'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← Profile</button><section class="card"><div class="card-pad"><div class="eyebrow">Coach</div><h1 style="margin-top:8px">Check-in</h1><p class="muted">Share your workouts, body trends, and next-weight recommendations with ChatGPT.</p><button class="btn green block" data-action="share-coach">Share full check-in</button><button class="btn block" style="margin-top:10px" data-action="share-weekly">Share weekly review</button></div></section></div>`;return;}
       if(moreSection==='settings'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← Profile</button><div class="page-title-row"><div><div class="eyebrow">Preferences</div><h1>Settings</h1></div></div>${renderSettings()}</div>`;return;}
       if(moreSection==='backup'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← Profile</button><section class="card"><div class="card-pad"><div class="eyebrow">Your data</div><h1 style="margin-top:8px">Backup</h1><p class="muted">Workout data stays on this device. Export a backup before changing phones or clearing Safari data.</p><div class="button-row"><button class="btn primary" data-action="export-backup">Export</button><button class="btn" data-action="import-backup">Import</button></div><button class="btn block" style="margin-top:10px" data-action="refresh-cache">Refresh app cache</button><button class="btn danger block" style="margin-top:10px" data-action="reset-app">Reset app data</button></div></section></div>`;return;}
-      $('#view').innerHTML=`<div class="stack profile-screen"><section class="profile-hero"><span class="profile-avatar"><img src="nexset-mark.svg" alt=""></span><span><small>NEXSET athlete</small><h1>${esc(profileName)}</h1><p>Progress Starts With Your Next Set.</p></span></section><section class="card profile-menu-card"><div class="more-menu"><button data-view="progress"><span class="menu-icon">▥</span><div><strong>Progress</strong><small>Strength, volume, records, and body trends</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">N</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, and app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-nexset"><img src="nexset-mark.svg" alt=""><span>NEXSET 3.1.3</span><small>Progress Starts With Your Next Set.</small></div></div>`;
+      $('#view').innerHTML=`<div class="stack profile-screen"><section class="profile-hero"><span class="profile-avatar"><img src="nexset-mark.svg" alt=""></span><span><small>NEXSET athlete</small><h1>${esc(profileName)}</h1><p>Progress Starts With Your Next Set.</p></span></section><section class="card profile-menu-card"><div class="more-menu"><button data-view="progress"><span class="menu-icon">▥</span><div><strong>Progress</strong><small>Strength, volume, records, and body trends</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">N</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, and app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-nexset"><img src="nexset-mark.svg" alt=""><span>NEXSET 3.1.5</span><small>Progress Starts With Your Next Set.</small></div></div>`;
     }
 
     function renderHistoryCard(s){
@@ -1827,8 +1861,8 @@
 
     function saveSettings(){$$('[data-setting]').forEach(input=>{const key=input.dataset.setting;let value=input.value;if(['restSeconds','smithBarWeight'].includes(key))value=Number(value);state.settings[key]=value;});$$('[data-setting-check]').forEach(input=>state.settings[input.dataset.settingCheck]=input.checked);$$('[data-goal]').forEach(input=>{const n=Number(input.value);if(Number.isFinite(n))state.goals[input.dataset.goal]=n;});saveState();render();showToast('Settings saved.');}
 
-    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`NEXSET 3.1.3 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
-    function weeklyReportText(){const w=weeklyReview();return[`NEXSET 3.1.3 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
+    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`NEXSET 3.1.5 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
+    function weeklyReportText(){const w=weeklyReview();return[`NEXSET 3.1.5 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
     async function shareText(text,title){try{if(navigator.share){await navigator.share({title,text});return;}await navigator.clipboard.writeText(text);showToast('Copied. Paste it into ChatGPT.');}catch(err){if(err?.name!=='AbortError'){downloadBlob(`${title.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.txt`,text,'text/plain');showToast('Report downloaded.');}}}
 
     function openApp(kind){const url=kind==='music'?state.settings.musicAppUrl:state.settings.pfAppUrl,fallback=kind==='music'?state.settings.musicFallbackUrl:state.settings.pfFallbackUrl;if(!url){showToast('Add this app link in More → Settings.');return;}try{window.location.href=url;setTimeout(()=>{if(!document.hidden&&fallback&&!url.startsWith('shortcuts:'))window.open(fallback,'_blank','noopener');},1200);}catch(_){if(fallback)window.open(fallback,'_blank','noopener');}}
