@@ -1,108 +1,67 @@
-# NEXSET 3.2.0 — Workout Coach
+# NEXSET 3.2.1 — Reliability Update
 
-This is the release-hardening update. It preserves the 3.1.7 interface while adding protected local saves, safer backup/restore, diagnostics, offline resilience, and an in-app PWA update flow.
+NEXSET is an iPhone-first workout coach built as a static Progressive Web App for GitHub Pages. Version 3.2.1 strengthens data accuracy, correction tools, workout recovery, and offline updating while preserving the existing interface and saved-data keys.
 
-## 3.2.0 visual-polish update
+## Highlights
 
-- Compact NEXSET header lockup and a short branded startup animation.
-- Reference-inspired Home dashboard with the workout hero card, four quick actions, and a progress summary.
-- The flash-card workout logger remains intact, with a small NEXSET mark and refined electric-blue treatment.
-- Program page now uses a 7-day list, recent-workout cards, and an expandable exercise-detail drawer.
-- Existing storage keys, workout history, progression logic, and interaction behavior are preserved.
-- Body-metric and quick-action sheets now handle Close, Save, and internal action buttons reliably.
+- Real pounds/kilograms conversion backed by canonical pound storage
+- Safe migration of existing 3.2.0 workout, body, goal, Smith-machine, and active-session data
+- Separate strength-session, recovery-day, training-streak, and consistency statistics
+- Editable active and historical sets, body readings, and completed sessions
+- Undo after destructive set, session, and body-record actions
+- Rest timer recovery after refresh, closure, or relaunch
+- Workout-level notes plus reviewed setup guidance for every bundled exercise
+- Honest no-data coaching states
+- Scoped, fault-tolerant NEXSET service-worker cache management
+- Mobile accessibility improvements, including text zoom and reduced-motion support
 
-
-This release fixes the completed-set chip being clipped at the bottom in iPhone Safari. The working-set status now uses a small CSS indicator instead of an emoji, and the chip has explicit height and line spacing so the full **Set 1**, **Set 2**, and later labels remain visible.
-
-## Version 2.5.6
-
-- Prevented logged-set chips from shrinking inside the workout card.
-- Replaced the Apple emoji status dot with a stable CSS dot for **Easy**, **Just right**, and **Hard** sets.
-- Added explicit line height and bottom spacing so the set label is not cut off in Safari.
-- Preserved tap-to-delete behavior, set logging, the rest timer, progression suggestions, and all existing saved workout data.
-
-## Version 2.5.5
-
-- Replaced the always-visible **Next** button with **Log Set 1**, **Log Set 2**, and so on while the current exercise is incomplete.
-- Changes the bottom action to **Next Exercise** only after all programmed working sets are logged.
-- Keeps the set action visible above the iPhone safe area at all times.
-- Compacted the first-session and previous-session coaching card.
-- Removed duplicated previous-set/suggested-next information from the logging controls.
-- Allows the exercise card to scroll on unusually short viewports instead of clipping the lower controls.
-- Preserved the text-only cue-and-notes sheet, warm-up tracking, progression suggestions, and cancel-workout flow.
-
----
-
-# NEXSET 3.0.0 — Workout Coach
-
-NEXSET 3.0.0 is the branded, iPhone-first redesign of the workout app. It keeps the same saved-data keys as previous PF Workout Coach / NEXSET builds, so existing workout history should remain available when the files are uploaded to the same GitHub Pages address.
-
-## What changed
-
-### Professional NEXSET identity
-- New NEXSET geometric app mark and Home Screen icon.
-- New electric-blue performance gradient.
-- Deep navy, slate, muted gray, success, warning, and danger color system.
-- iPhone system typography and more consistent spacing.
-- App name, manifest, splash screens, coach reports, and backup filenames now use NEXSET.
-
-### Less scrolling
-- Home is a single focused dashboard on current iPhones.
-- Workout mode has no vertical scrolling: one exercise, one screen.
-- Exercise form cues, notes, plate calculator, and delete controls moved into a bottom sheet.
-- Progress uses Overview / Strength / Body / Review tabs.
-- More uses short menu pages instead of one long settings/history wall.
-- Workout Preview keeps the complete exercise list collapsed until needed.
-
-### Workout experience
-- One-thumb weight and rep steppers.
-- Quick `−10`, `−5`, `+5`, and `+10` weight controls.
-- Easy / Just right / Hard effort buttons.
-- Warm-up sets remain excluded from progression recommendations.
-- Swipe left or right between exercise cards.
-- Full-screen rest timer.
-- Compact Workout Complete screen with stats, PRs, and coach notes.
-
-### Included brand assets
-The repository root contains the NEXSET mark, compact header lockup, wordmark, app icons, workout-card artwork, and iPhone launch images.
-
-## Update the live GitHub Pages app
-
-1. In the current app, open **More → Backup & restore → Export** and save the JSON backup.
-2. Upload every file and folder from this package to the repository root, replacing the old files.
-3. Commit the changes.
-4. Open the site once with `?nexset=3.2.0` appended.
-5. Open **More → Backup & restore → Refresh app cache**.
-6. Fully close and reopen the Home Screen app.
-
-Example:
-
-```text
-https://bobbyginn09-sys.github.io/planet-fitness-workout-app/?nexset=3.2.0
-```
-
-## App icon note
-
-Safari may keep the old Home Screen icon after the website files change. If the old PF icon remains, remove the Home Screen app and add the GitHub Pages link to the Home Screen again. Export a backup first; removing the icon normally does not delete Safari website data, but the backup is the safest protection.
+Detailed changes are in `RELEASE_NOTES_3.2.1.md`. Test coverage is documented in `VALIDATION.md`.
 
 ## Data compatibility
 
-NEXSET 3.2.0 keeps:
+The update keeps the established browser-storage keys:
 
 ```text
 pfWorkoutApp.v1
 pfWorkoutApp.active.v1
 ```
 
-Those are the same local storage keys used by the prior builds.
+The state schema advances to version 4. Existing data is migrated in place. Strength and body-weight values are stored canonically in pounds and converted only for display and input.
 
+Export a backup before deployment or before clearing browser data.
 
-## Phase Two
-See `PHASE_2_POLISH.md` for the 2.3.0 interaction and visual-polish changes.
+## Deploy to GitHub Pages
 
-## Version 2.3.1
+1. Open the current app and use **Profile → Backup & restore → Export backup**.
+2. Replace the repository-root files with the contents of this package.
+3. Commit and push the changes to the GitHub Pages branch.
+4. Open the deployed app once at:
 
-- Added **Cancel workout** to the active workout exercise-details menu.
-- Empty workouts receive a simple discard warning.
-- Workouts containing sets or notes receive a stronger permanent-loss warning.
-- Canceled workouts are removed from the active draft and are not added to History or progress statistics.
+   ```text
+   https://bobbyginn09-sys.github.io/planet-fitness-workout-app/?nexset=3.2.1
+   ```
+
+5. In an already installed copy, use **Profile → Backup & restore → Check for update**, then fully close and reopen the app.
+6. Confirm that history, body readings, settings, and any unfinished workout are present.
+
+## Important behavior changes
+
+- Tapping a logged set opens an editor. Delete is now a secondary action.
+- Rest timers use a saved end timestamp, so remaining time is recalculated after relaunch.
+- Switching units changes display and input only; it does not reinterpret stored values.
+- Strength workouts and recovery days are reported separately.
+- The Review tab waits for actual training data before making progression claims.
+
+## Main files
+
+- `index.html` — complete application shell and UI
+- `service-worker.js` — offline cache and update behavior
+- `manifest.webmanifest` / `manifest.json` — install metadata
+- `extracted.js` — exact copy of the inline application script for syntax review
+- `RELEASE_NOTES_3.2.1.md` — release details
+- `RELEASE_CHECKLIST_3.2.1.md` — deployment verification
+- `VALIDATION.md` — completed automated and static checks
+
+## Browser support
+
+The app is optimized for current iPhone Safari as an installed Home Screen PWA. It also works in current Chromium-based mobile browsers. Local browser storage remains device- and browser-profile-specific, so periodic backup export is recommended.
