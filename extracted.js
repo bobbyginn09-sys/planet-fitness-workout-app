@@ -3,7 +3,7 @@
 
     const STORAGE_KEY = 'pfWorkoutApp.v1';
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
-    const APP_VERSION = 'nexset-3.1.6';
+    const APP_VERSION = 'nexset-3.1.7';
 
     const PLAN = [
       {
@@ -248,7 +248,7 @@
     function animateView() {
       const view=$('#view'); if(!view) return;
       view.classList.remove('view-enter');
-      if(currentView==='complete' || (active && currentView==='workout')) return;
+      if((active && currentView==='workout') || currentView==='complete') return;
       void view.offsetWidth; view.classList.add('view-enter');
     }
     function greeting() { const h=new Date().getHours(); return h<12?'Good morning':h<17?'Good afternoon':'Good evening'; }
@@ -362,7 +362,7 @@
       $('#view').innerHTML=`
         <div class="home-screen home-dashboard">
           <div class="home-welcome"><div><h1>Welcome back, ${esc(name)}.</h1><p>${isRest?'Recovery is part of the work.':'Let’s get stronger today.'}</p></div></div>
-          <section class="today-card reference-today-card">
+          <section class="today-card reference-today-card mode-${figureModeForDay(day)} ${isRest?'is-rest':''}">
             ${renderMuscleFigure(day)}
             <div class="today-card-content">
               <div class="section-kicker">${resume?'Workout in progress':'Today’s workout'}</div>
@@ -697,25 +697,21 @@
     }
 
     function markRest() {
-      const day=getDay(),now=new Date().toISOString();const session={id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),dayIndex:state.settings.currentDayIndex,day:day.day,title:day.title,type:'rest',focus:day.focus,startedAt:now,endedAt:now,completedAt:now,durationMs:0,exercises:[],prs:[]};state.history.push(session);state.settings.currentDayIndex=(state.settings.currentDayIndex+1)%PLAN.length;lastCompletedSession=session;saveState();currentView='complete';render();
+      const day=getDay(),now=new Date().toISOString();
+      const session={id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),dayIndex:state.settings.currentDayIndex,day:day.day,title:day.title,type:'rest',focus:day.focus,startedAt:now,endedAt:now,completedAt:now,durationMs:0,exercises:[],prs:[]};
+      state.history.push(session);
+      state.settings.currentDayIndex=(state.settings.currentDayIndex+1)%PLAN.length;
+      lastCompletedSession=null;
+      saveState();
+      currentView='home';
+      render();
+      showToast(`${day.title} logged. ${getDay().title} is next.`);
     }
 
     function renderCompletion() {
-      const s=lastCompletedSession || [...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt))[0];
-      if(!s){currentView='home';render();return;}
-      const working=sessionWorkingSets(s),volume=sessionVolume(s),cardio=sessionCardioMinutes(s);
-      const recs=(s.exercises||[]).map(e=>({ex:getExercise(e.id),p:state.exerciseProgress[e.id]})).filter(x=>x.ex&&x.p?.note).slice(0,2);
-      const isRest=s.type==='rest';
-      const nextDay=getDay();
-      const eyebrow=isRest?'Recovery logged':'Workout complete';
-      const subtitle=isRest?`${esc(s.title)} is saved. ${esc(nextDay.title)} is ready next.`:'Your session is saved.';
-      const stats=isRest
-        ? `<div><span>Status</span><strong>Saved</strong></div><div><span>Completed</span><strong>Day ${Number(s.day)||''}</strong></div><div><span>Next</span><strong>Day ${nextDay.day}</strong></div>`
-        : `<div><span>Duration</span><strong>${formatDuration(s.durationMs)}</strong></div><div><span>Working sets</span><strong>${working}</strong></div><div><span>Volume</span><strong>${volume.toLocaleString()}</strong><small>lb</small></div>${cardio?`<div><span>Cardio</span><strong>${cardio}</strong><small>min</small></div>`:''}`;
-      const notes=isRest
-        ? `<p><strong>Recovery counts.</strong> Take the win and come back ready for ${esc(nextDay.title)}.</p>`
-        : (recs.length?recs.map(x=>`<p><strong>${esc(x.ex.name)}</strong> · ${esc(x.p.note)}</p>`).join(''):'<p>Your workout is saved and your next session is ready.</p>');
-      $('#view').innerHTML=`<div class="completion-screen ${isRest?'rest-completion':''}"><div class="completion-panel"><div class="completion-brand"><div class="completion-mark completion-burst"><img src="nexset-mark.svg" alt=""></div><div class="eyebrow">${eyebrow}</div><h1>${esc(s.title)}</h1><p>${subtitle}</p></div><div class="completion-stats">${stats}</div>${s.prs?.length&&!isRest?`<div class="completion-pr"><span>🏆 New PR</span><strong>${esc(s.prs[0].name)}</strong><small>${esc(s.prs[0].value)}${s.prs.length>1?` · +${s.prs.length-1} more`:''}</small></div>`:''}<div class="completion-notes"><span class="section-kicker">${isRest?'Recovery note':'Coach notes'}</span>${notes}</div><button class="btn primary block completion-button" data-action="complete-done">Return home</button></div></div>`;
+      const s=lastCompletedSession || [...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt))[0];if(!s){currentView='home';render();return;}
+      const working=sessionWorkingSets(s),volume=sessionVolume(s),cardio=sessionCardioMinutes(s),recs=(s.exercises||[]).map(e=>({ex:getExercise(e.id),p:state.exerciseProgress[e.id]})).filter(x=>x.ex&&x.p?.note).slice(0,2);
+      $('#view').innerHTML=`<div class="completion-screen"><div class="completion-brand"><div class="completion-mark"><img src="nexset-mark.svg" alt=""></div><div class="eyebrow">Workout complete</div><h1>${esc(s.title)}</h1><p>Your session is saved.</p></div><div class="completion-stats"><div><span>Duration</span><strong>${formatDuration(s.durationMs)}</strong></div><div><span>Working sets</span><strong>${working}</strong></div><div><span>Volume</span><strong>${volume.toLocaleString()}</strong><small>lb</small></div>${cardio?`<div><span>Cardio</span><strong>${cardio}</strong><small>min</small></div>`:''}</div>${s.prs?.length?`<div class="completion-pr"><span>🏆 New PR</span><strong>${esc(s.prs[0].name)}</strong><small>${esc(s.prs[0].value)}${s.prs.length>1?` · +${s.prs.length-1} more`:''}</small></div>`:''}<div class="completion-notes"><span class="section-kicker">Coach notes</span>${recs.length?recs.map(x=>`<p><strong>${esc(x.ex.name)}</strong> · ${esc(x.p.note)}</p>`).join(''):(s.type==='rest'?'<p>Rest day logged. Your next workout is ready when you are.</p>':'<p>Workout saved. Your next session is ready when you are.</p>')}</div><button class="btn primary block completion-button" data-action="complete-done">Return home</button></div>`;
     }
 
     function analyzeExercise(ex, logs, previous={}) {
@@ -803,7 +799,7 @@
       if(moreSection==='coach'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← Profile</button><section class="card"><div class="card-pad"><div class="eyebrow">Coach</div><h1 style="margin-top:8px">Check-in</h1><p class="muted">Share your workouts, body trends, and next-weight recommendations with ChatGPT.</p><button class="btn green block" data-action="share-coach">Share full check-in</button><button class="btn block" style="margin-top:10px" data-action="share-weekly">Share weekly review</button></div></section></div>`;return;}
       if(moreSection==='settings'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← Profile</button><div class="page-title-row"><div><div class="eyebrow">Preferences</div><h1>Settings</h1></div></div>${renderSettings()}</div>`;return;}
       if(moreSection==='backup'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← Profile</button><section class="card"><div class="card-pad"><div class="eyebrow">Your data</div><h1 style="margin-top:8px">Backup</h1><p class="muted">Workout data stays on this device. Export a backup before changing phones or clearing Safari data.</p><div class="button-row"><button class="btn primary" data-action="export-backup">Export</button><button class="btn" data-action="import-backup">Import</button></div><button class="btn block" style="margin-top:10px" data-action="refresh-cache">Refresh app cache</button><button class="btn danger block" style="margin-top:10px" data-action="reset-app">Reset app data</button></div></section></div>`;return;}
-      $('#view').innerHTML=`<div class="stack profile-screen"><section class="profile-hero"><span class="profile-avatar"><img src="nexset-mark.svg" alt=""></span><span><small>NEXSET athlete</small><h1>${esc(profileName)}</h1><p>Progress Starts With Your Next Set.</p></span></section><section class="card profile-menu-card"><div class="more-menu"><button data-view="progress"><span class="menu-icon">▥</span><div><strong>Progress</strong><small>Strength, volume, records, and body trends</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">N</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, and app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-nexset"><img src="nexset-mark.svg" alt=""><span>NEXSET 3.1.6</span><small>Progress Starts With Your Next Set.</small></div></div>`;
+      $('#view').innerHTML=`<div class="stack profile-screen"><section class="profile-hero"><span class="profile-avatar"><img src="nexset-mark.svg" alt=""></span><span><small>NEXSET athlete</small><h1>${esc(profileName)}</h1><p>Progress Starts With Your Next Set.</p></span></section><section class="card profile-menu-card"><div class="more-menu"><button data-view="progress"><span class="menu-icon">▥</span><div><strong>Progress</strong><small>Strength, volume, records, and body trends</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">N</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, and app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-nexset"><img src="nexset-mark.svg" alt=""><span>NEXSET 3.1.7</span><small>Progress Starts With Your Next Set.</small></div></div>`;
     }
 
     function renderHistoryCard(s){
@@ -816,8 +812,8 @@
 
     function saveSettings(){$$('[data-setting]').forEach(input=>{const key=input.dataset.setting;let value=input.value;if(['restSeconds','smithBarWeight'].includes(key))value=Number(value);state.settings[key]=value;});$$('[data-setting-check]').forEach(input=>state.settings[input.dataset.settingCheck]=input.checked);$$('[data-goal]').forEach(input=>{const n=Number(input.value);if(Number.isFinite(n))state.goals[input.dataset.goal]=n;});saveState();render();showToast('Settings saved.');}
 
-    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`NEXSET 3.1.6 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
-    function weeklyReportText(){const w=weeklyReview();return[`NEXSET 3.1.6 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
+    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`NEXSET 3.1.7 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
+    function weeklyReportText(){const w=weeklyReview();return[`NEXSET 3.1.7 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
     async function shareText(text,title){try{if(navigator.share){await navigator.share({title,text});return;}await navigator.clipboard.writeText(text);showToast('Copied. Paste it into ChatGPT.');}catch(err){if(err?.name!=='AbortError'){downloadBlob(`${title.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.txt`,text,'text/plain');showToast('Report downloaded.');}}}
 
     function openApp(kind){const url=kind==='music'?state.settings.musicAppUrl:state.settings.pfAppUrl,fallback=kind==='music'?state.settings.musicFallbackUrl:state.settings.pfFallbackUrl;if(!url){showToast('Add this app link in More → Settings.');return;}try{window.location.href=url;setTimeout(()=>{if(!document.hidden&&fallback&&!url.startsWith('shortcuts:'))window.open(fallback,'_blank','noopener');},1200);}catch(_){if(fallback)window.open(fallback,'_blank','noopener');}}

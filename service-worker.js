@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nexset-workout-v3-1-6-actual-ui-completion-fix-20260715-1';
+const CACHE_NAME = 'nexset-workout-v3-1-7-tight-logo-20260715-1';
 const APP_SHELL = [
   './',
   './index.html',
@@ -8,7 +8,7 @@ const APP_SHELL = [
   './nexset-wordmark.svg',
   './nexset-icon.svg',
   './nexset-strength-figure.svg',
-  './nexset-lockup-v315.svg',
+  './nexset-lockup-v317.svg',
   './muscle-push-v316.png',
   './muscle-pull-v316.png',
   './muscle-upper-v316.png',

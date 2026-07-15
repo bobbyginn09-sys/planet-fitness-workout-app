@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 100" preserveAspectRatio="xMinYMid meet" role="img" aria-label="NEXSET">
+  <defs>
+    <linearGradient id="blue" x1="0" y1="0" x2=".9" y2="1">
+      <stop offset="0" stop-color="#35CCFF"/>
+      <stop offset=".42" stop-color="#0A8CFF"/>
+      <stop offset="1" stop-color="#0054E8"/>
+    </linearGradient>
+    <linearGradient id="silver" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset=".58" stop-color="#F2F6FB"/>
+      <stop offset="1" stop-color="#BBC5D2"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(-5,-10) scale(.22)">
+    <path d="M111 172 176 226v177h-65Z" fill="url(#blue)"/>
+    <path d="M338 109h65v195l-65-55Z" fill="url(#blue)"/>
+    <path d="M80 109h100l252 294H332Z" fill="url(#blue)"/>
+  </g>
+  <g fill="url(#silver)" transform="translate(-58 0)">
+    <path d="M173 22h48v11h-35v12h31v11h-31v13h36v11h-49Z"/>
+    <path d="M232 22h15l14 18 14-18h15l-22 28 23 30h-15l-15-20-15 20h-15l23-30Z"/>
+  </g>
+  <g fill="url(#blue)" transform="translate(-58 0)">
+    <path d="M306 22h48v11h-35c-4 0-6 2-6 5s2 5 6 5h22c10 0 16 6 16 16v5c0 10-6 16-16 16h-44V69h36c5 0 7-2 7-5s-2-5-7-5h-22c-10 0-16-6-16-16v-5c0-10 6-16 16-16Z"/>
+    <path d="M367 22h48v11h-35v12h31v11h-31v13h36v11h-49Z"/>
+    <path d="M422 22h70v12h-28v46h-14V34h-28Z"/>
+  </g>
+</svg>
