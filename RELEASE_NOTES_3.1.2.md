@@ -1,4 +1,4 @@
-# NEXSET 3.1.2 — Approved Reference Finish
+# NEXSET 3.1.3 — Approved Reference Finish
 
 - Rebuilt the home workout card to match the approved compact composition.
 - Added polished day-aware muscle maps: push, pull, legs, and recovery.
