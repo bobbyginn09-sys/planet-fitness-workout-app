@@ -3,7 +3,7 @@
 
     const STORAGE_KEY = 'pfWorkoutApp.v1';
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
-    const APP_VERSION = 'nexset-3.1.2';
+    const APP_VERSION = 'nexset-3.1.3';
 
     const PLAN = [
       {
@@ -254,17 +254,36 @@
     function greeting() { const h=new Date().getHours(); return h<12?'Good morning':h<17?'Good afternoon':'Good evening'; }
     function showToast(message) { const box=$('#toast'); if(!box) return; box.textContent=message; box.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>box.classList.remove('show'),2800); }
 
+    function headerActionMarkup(mode) {
+      if(mode==='calendar') return '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="2.4"/><path d="M8 3.5v4M16 3.5v4M4 10h16M8 13h2M12 13h2M16 13h1M8 16h2M12 16h2"/></svg>';
+      if(mode==='history') return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.2v5.1l3.5 2M5.5 5.7 3.8 8.8l3.4.2"/></svg>';
+      if(mode==='profile') return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="3.1"/><path d="M5.8 20c.7-4 2.7-6 6.2-6s5.5 2 6.2 6"/></svg>';
+      return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.8 9.6a5.2 5.2 0 0 1 10.4 0v3.1c0 1.5.5 2.8 1.5 3.9H5.3c1-1.1 1.5-2.4 1.5-3.9Z"/><path d="M9.7 19.1a2.6 2.6 0 0 0 4.6 0"/></svg><span class="header-alert-dot"></span>';
+    }
+    function syncHeaderAction() {
+      const btn=$('.header-alert'); if(!btn) return;
+      const historyOpen=currentView==='more'&&moreSection==='history';
+      const mode=currentView==='plan'?'calendar':historyOpen?'history':(currentView==='more'||currentView==='progress')?'profile':'bell';
+      btn.dataset.iconMode=mode;
+      btn.innerHTML=headerActionMarkup(mode);
+      btn.setAttribute('aria-label',mode==='calendar'?'Program calendar':mode==='history'?'Workout history':mode==='profile'?'Profile actions':'Open quick actions');
+    }
+
     function updateChrome() {
       document.documentElement.dataset.theme = state.settings.theme || 'dark';
       const day=getDay();
       const sub=$('#headerSub');
       if(sub) sub.textContent = active ? `${day.title} in progress` : 'Progress Starts With Your Next Set.';
-      const focus = Boolean(active && currentView==='workout');
-      document.body.classList.toggle('focus-running', focus);
-      document.body.dataset.screen = currentView;
-      $('#appHeader')?.classList.toggle('hidden', focus || currentView==='complete');
-      $('#bottomNav')?.classList.toggle('hidden', focus || currentView==='complete');
-      $$('.nav-btn').forEach(btn=>btn.classList.toggle('active', btn.dataset.view===currentView));
+      const focus=Boolean(active&&currentView==='workout');
+      const historyOpen=currentView==='more'&&moreSection==='history';
+      const activeNav=currentView==='home'?'home':(currentView==='plan'||currentView==='workout')?'workouts':historyOpen?'history':(currentView==='more'||currentView==='progress')?'profile':'';
+      document.body.classList.toggle('focus-running',focus);
+      document.body.dataset.screen=currentView;
+      document.body.dataset.section=currentView==='more'?moreSection:'';
+      $('#appHeader')?.classList.toggle('hidden',focus||currentView==='complete');
+      $('#bottomNav')?.classList.toggle('hidden',focus||currentView==='complete');
+      $$('.nav-btn').forEach(btn=>btn.classList.toggle('active',(btn.dataset.nav||btn.dataset.view)===activeNav));
+      syncHeaderAction();
     }
 
     function render() {
@@ -330,10 +349,11 @@
     }
 
     function renderHome() {
-      const day=getDay(), st=stats(), metric=latestBodyMetric(), trend=getWeightTrend();
-      const isRest=day.type==='rest', resume=Boolean(active), name=state.settings.profileName||'Athlete';
-      const weekPct=Math.max(0,Math.min(100,Math.round((st.thisWeek/7)*100)));
-      const totalVolume=st.totalVolume.toLocaleString();
+      const day=getDay(),st=stats(),metric=latestBodyMetric(),trend=getWeightTrend();
+      const isRest=day.type==='rest',resume=Boolean(active),name=state.settings.profileName||'Athlete';
+      const weeklyTarget=6,weekPct=Math.max(0,Math.min(100,Math.round((st.thisWeek/weeklyTarget)*100)));
+      const totalVolume=st.totalVolume.toLocaleString(),nextLabel=resume?'In progress':'Ready now';
+      const exerciseCount=day.exercises.length,setCount=day.exercises.reduce((sum,ex)=>sum+(Number(ex.sets)||0),0);
       $('#view').innerHTML=`
         <div class="home-screen home-dashboard">
           <div class="home-welcome"><div><h1>Welcome back, ${esc(name)}.</h1><p>${isRest?'Recovery is part of the work.':'Let’s get stronger today.'}</p></div></div>
@@ -344,8 +364,8 @@
               <h2>${esc(day.title)}</h2>
               <p class="today-focus">${esc(day.focus)}</p>
               <div class="today-detail-list">
-                <span><b>◌</b>${day.exercises.length} exercises · ${day.exercises.reduce((sum,ex)=>sum+(Number(ex.sets)||0),0)} sets</span>
-                <span><b>◷</b>Est. ${estimatedMinutes(day)} min</span>
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.4 14.6 14.6 9.4M7.1 17a3 3 0 0 1-4.2-4.2l3.2-3.2a3 3 0 0 1 4.2 0M16.9 7a3 3 0 0 1 4.2 4.2l-3.2 3.2a3 3 0 0 1-4.2 0"/></svg>${exerciseCount} exercises · ${setCount} sets</span>
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.2v5l3.4 2.1"/></svg>Est. ${estimatedMinutes(day)} min</span>
               </div>
             </div>
             <div class="today-actions ${isRest&&!resume?'two':''}">${isRest&&!resume?`<button class="btn subtle" data-action="mark-rest">Mark rest day</button>`:''}<button class="btn primary home-start" data-action="${resume?'resume-workout':'start-workout'}">${resume?'Resume workout':isRest?'Start optional recovery':'Start workout'}<span>›</span></button></div>
@@ -353,7 +373,7 @@
           <section class="home-section quick-actions-section">
             <div class="home-section-title">Quick actions</div>
             <div class="reference-quick-grid">
-              <button data-action="open-body-sheet"><span class="quick-action-icon body-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.6" r="2.2"/><path d="M8.2 10.2 5.3 13m10.5-2.8 2.9 2.8M12 7.4v7.2m0 0-3.2 5.1m3.2-5.1 3.2 5.1"/></svg></span><small>Body Weight</small></button>
+              <button data-action="open-body-sheet"><span class="quick-action-icon body-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.3" r="2.1"/><path d="M12 7v7.2M5.8 9.4 12 11l6.2-1.6M12 14.2 8.6 20M12 14.2l3.4 5.8"/></svg></span><small>Body Weight</small></button>
               <button data-action="open-history"><span class="quick-action-icon history-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.2v5.1l3.5 2"/></svg></span><small>History</small></button>
               <button data-action="open-app" data-app="pf"><span class="quick-action-icon pf-icon">pf</span><small>Planet Fitness</small></button>
               <button data-action="open-app" data-app="music"><span class="quick-action-icon music-icon">♫</span><small>Music</small></button>
@@ -362,9 +382,9 @@
           <section class="home-section progress-summary-section">
             <div class="home-section-title">Progress summary</div>
             <div class="reference-summary-card">
-              <button data-view="progress" class="summary-row"><span class="summary-icon">▣</span><span class="summary-copy"><b>This week</b><i><span style="width:${weekPct}%"></span></i></span><strong>${st.thisWeek} / 7 workouts</strong></button>
-              <button data-view="progress" class="summary-row"><span class="summary-icon">▥</span><span class="summary-copy"><b>Total volume</b></span><strong>${totalVolume} lb</strong></button>
-              <button data-view="workout" class="summary-row"><span class="summary-icon">◷</span><span class="summary-copy"><b>Next workout</b></span><strong>${resume?'In progress':`Day ${day.day} · ${esc(day.title)}`} <em>›</em></strong></button>
+              <button data-view="progress" class="summary-row"><span class="summary-icon"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14" rx="2.5"/><path d="M8 3.5v4M16 3.5v4M4 10h16"/></svg></span><span class="summary-copy"><b>This week</b><i><span style="width:${weekPct}%"></span></i></span><strong>${st.thisWeek} / ${weeklyTarget} workouts</strong></button>
+              <button data-view="progress" class="summary-row"><span class="summary-icon"><svg viewBox="0 0 24 24"><path d="M5 19v-6M10 19V8M15 19v-9M20 19V5"/></svg></span><span class="summary-copy"><b>Total volume</b></span><strong>${totalVolume} lb</strong></button>
+              <button data-view="plan" class="summary-row"><span class="summary-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.3v5l3.3 2"/></svg></span><span class="summary-copy"><b>Next workout</b></span><strong>${nextLabel} <em>›</em></strong></button>
             </div>
           </section>
         </div>`;
@@ -738,6 +758,10 @@
     function saveBody(){const fromHome=Boolean(document.querySelector('#bodySheet'));const weight=Number($('[data-body="weight"]')?.value);if(!Number.isFinite(weight)||weight<=0){showToast('Enter body weight.');return;}const value=name=>{const n=Number($(`[data-body="${name}"]`)?.value);return Number.isFinite(n)?n:null;};state.bodyMetrics.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),date:new Date().toISOString(),weight,bodyFat:value('bodyFat'),waist:value('waist'),muscleMass:value('muscleMass'),skeletalMuscle:value('skeletalMuscle'),visceralFat:value('visceralFat'),note:$('[data-body="note"]')?.value?.trim()||''});saveState();if(fromHome){closeBodySheet();renderHome();}else renderProgress();showToast('Today’s body reading saved.');}
     function renderPRs(){const items=[];for(const id of weightedExerciseIds()){const ex=getExercise(id),best=bestSet(id);if(best)items.push({ex,best});}items.sort((a,b)=>b.best.score-a.best.score);if(!items.length)return'<div class="empty">Complete workouts to build personal records.</div>';return`<div class="stack" style="gap:10px">${items.slice(0,12).map(({ex,best})=>`<div class="soft-card" style="display:flex;justify-content:space-between;gap:12px;align-items:center"><div><strong>${esc(ex.name)}</strong><div class="muted" style="font-size:12px;margin-top:3px">${fmtDate(best.date)}</div></div><span class="target-pill">🏆 ${esc(formatLogShort(ex,best.log))}</span></div>`).join('')}</div>`;}
 
+    function programWeekNumber(){return Math.max(1,Math.min(6,Math.floor(stats().liftSessions/5)+1));}
+    function sessionExerciseCount(session){return(session?.exercises||[]).filter(entry=>(entry.logs||[]).length).length;}
+    function renderProgramRecentCard(session){return`<button class="program-history-card" data-action="open-history"><span class="history-mark">${renderMuscleFigure(resolveSessionDay(session),true)}</span><span class="history-card-copy"><b>${esc(session.title||'Workout')}</b><small>${fmtDate(session.startedAt)} · ${formatDuration(session.durationMs)}</small><span class="recent-metrics"><i>Volume<strong>${sessionVolume(session).toLocaleString()} lb</strong></i><i>Exercises<strong>${sessionExerciseCount(session)}</strong></i><i>Sets<strong>${sessionWorkingSets(session)}</strong></i></span></span><em>✓</em></button>`;}
+
     function renderPlan(){
       const selected=getDay();
       const cutoff=new Date();cutoff.setDate(cutoff.getDate()-6);cutoff.setHours(0,0,0,0);
@@ -746,21 +770,23 @@
       const weekdays=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
       $('#view').innerHTML=`<div class="stack program-screen">
         <div class="program-segment"><button class="active">Program</button><button data-action="open-history">History</button></div>
-        <div class="program-heading"><div><span>7-Day Split</span><small>Tap a day to make it next</small></div><strong>Day ${selected.day} of 7</strong></div>
+        <div class="program-heading"><div><span>7-Day Split <i class="program-info">i</i></span></div><strong>Week ${programWeekNumber()} of 6</strong></div>
         <section class="program-list">${PLAN.map((day,i)=>`<button class="program-row ${i===state.settings.currentDayIndex?'selected':''} ${completed.has(i)?'completed':''}" data-action="select-plan-day" data-index="${i}"><span class="program-weekday">${weekdays[i]}</span><span class="program-copy"><b>${esc(day.title)}</b><small>${esc(day.focus)}</small></span><span class="program-state">${completed.has(i)?'✓':i===state.settings.currentDayIndex?'›':'○'}</span></button>`).join('')}</section>
-        <details class="program-detail-drawer"><summary><span><b>${esc(selected.title)}</b><small>${estimatedMinutes(selected)} min · ${selected.exercises.length} exercises</small></span><strong>View details⌄</strong></summary><div class="program-detail-body"><div class="program-focus-note"><span>Focus</span><p>${esc(selected.note)}</p></div><div class="compact-exercise-list">${selected.exercises.map((ex,i)=>`<div><span>${i+1}</span><p><strong>${esc(ex.name)}</strong><small>${esc(ex.equipment||'')}</small></p><b>${esc(targetLabel(ex))}</b></div>`).join('')}</div></div></details>
         <div class="program-recent-head"><span>Recent workouts</span><button data-action="open-history">View all</button></div>
-        <section class="program-recent-list">${sessions.length?sessions.map(s=>`<button class="program-history-card" data-action="open-history"><span class="history-mark">${renderMuscleFigure(resolveSessionDay(s), true)}</span><span class="history-card-copy"><b>${esc(s.title||'Workout')}</b><small>${fmtDate(s.startedAt)} · ${formatDuration(s.durationMs)}</small><span><i>Volume</i><strong>${sessionVolume(s).toLocaleString()} lb</strong><i>Sets</i><strong>${sessionWorkingSets(s)}</strong></span></span><em>✓</em></button>`).join(''):'<div class="program-empty">Your completed workouts will appear here.</div>'}</section>
+        <section class="program-recent-list">${sessions.length?sessions.map(renderProgramRecentCard).join(''):`<button class="program-empty-card" data-view="home"><span class="history-mark">${renderMuscleFigure(selected,true)}</span><span><b>No completed workouts yet</b><small>Start ${esc(selected.title)} from Home and it will appear here.</small></span><em>›</em></button>`}</section>
       </div>`;
     }
 
     function renderMore(){
       const sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt));
-      if(moreSection==='history'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><div class="page-title-row"><div><div class="eyebrow">Training log</div><h1>History</h1></div><span class="target-pill">${sessions.length}</span></div><div class="stack" style="gap:10px">${sessions.length?sessions.map(renderHistoryCard).join(''):'<div class="empty">Your completed workouts will appear here.</div>'}</div></div>`; return; }
-      if(moreSection==='coach'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><section class="card"><div class="card-pad"><div class="eyebrow">Coach</div><h1 style="margin-top:8px">Check-in</h1><p class="muted">Share your workouts, body trends, and next-weight recommendations with ChatGPT.</p><button class="btn green block" data-action="share-coach">Share full check-in</button><button class="btn block" style="margin-top:10px" data-action="share-weekly">Share weekly review</button></div></section></div>`; return; }
-      if(moreSection==='settings'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><div class="page-title-row"><div><div class="eyebrow">Preferences</div><h1>Settings</h1></div></div>${renderSettings()}</div>`; return; }
-      if(moreSection==='backup'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← More</button><section class="card"><div class="card-pad"><div class="eyebrow">Your data</div><h1 style="margin-top:8px">Backup</h1><p class="muted">Workout data stays on this device. Export a backup before changing phones or clearing Safari data.</p><div class="button-row"><button class="btn primary" data-action="export-backup">Export</button><button class="btn" data-action="import-backup">Import</button></div><button class="btn block" style="margin-top:10px" data-action="refresh-cache">Refresh app cache</button><button class="btn danger block" style="margin-top:10px" data-action="reset-app">Reset app data</button></div></section></div>`; return; }
-      $('#view').innerHTML=`<div class="stack"><div class="page-title-row"><div><div class="eyebrow">NEXSET</div><h1>More</h1></div></div><section class="card"><div class="more-menu"><button data-action="more-section" data-section="history"><span class="menu-icon">↺</span><div><strong>History</strong><small>${sessions.length} saved sessions</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">N</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-nexset"><img src="nexset-mark.svg" alt=""><span>NEXSET 3.1.2</span><small>Progress Starts With Your Next Set.</small></div></div>`;
+      const profileName=state.settings.profileName||'Athlete';
+      if(moreSection==='history'){
+        $('#view').innerHTML=`<div class="stack history-screen"><div class="program-segment"><button data-view="plan">Program</button><button class="active">History</button></div><div class="history-page-head"><div><span>Workout history</span><small>${sessions.length} saved session${sessions.length===1?'':'s'}</small></div></div><div class="history-list">${sessions.length?sessions.map(renderHistoryCard).join(''):`<button class="program-empty-card history-empty" data-view="home"><span class="history-mark">${renderMuscleFigure(getDay(),true)}</span><span><b>Your history starts here</b><small>Finish your first workout to build your training log.</small></span><em>›</em></button>`}</div></div>`;return;
+      }
+      if(moreSection==='coach'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← Profile</button><section class="card"><div class="card-pad"><div class="eyebrow">Coach</div><h1 style="margin-top:8px">Check-in</h1><p class="muted">Share your workouts, body trends, and next-weight recommendations with ChatGPT.</p><button class="btn green block" data-action="share-coach">Share full check-in</button><button class="btn block" style="margin-top:10px" data-action="share-weekly">Share weekly review</button></div></section></div>`;return;}
+      if(moreSection==='settings'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← Profile</button><div class="page-title-row"><div><div class="eyebrow">Preferences</div><h1>Settings</h1></div></div>${renderSettings()}</div>`;return;}
+      if(moreSection==='backup'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← Profile</button><section class="card"><div class="card-pad"><div class="eyebrow">Your data</div><h1 style="margin-top:8px">Backup</h1><p class="muted">Workout data stays on this device. Export a backup before changing phones or clearing Safari data.</p><div class="button-row"><button class="btn primary" data-action="export-backup">Export</button><button class="btn" data-action="import-backup">Import</button></div><button class="btn block" style="margin-top:10px" data-action="refresh-cache">Refresh app cache</button><button class="btn danger block" style="margin-top:10px" data-action="reset-app">Reset app data</button></div></section></div>`;return;}
+      $('#view').innerHTML=`<div class="stack profile-screen"><section class="profile-hero"><span class="profile-avatar"><img src="nexset-mark.svg" alt=""></span><span><small>NEXSET athlete</small><h1>${esc(profileName)}</h1><p>Progress Starts With Your Next Set.</p></span></section><section class="card profile-menu-card"><div class="more-menu"><button data-view="progress"><span class="menu-icon">▥</span><div><strong>Progress</strong><small>Strength, volume, records, and body trends</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">N</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, and app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-nexset"><img src="nexset-mark.svg" alt=""><span>NEXSET 3.1.3</span><small>Progress Starts With Your Next Set.</small></div></div>`;
     }
 
     function renderHistoryCard(s){
@@ -773,8 +799,8 @@
 
     function saveSettings(){$$('[data-setting]').forEach(input=>{const key=input.dataset.setting;let value=input.value;if(['restSeconds','smithBarWeight'].includes(key))value=Number(value);state.settings[key]=value;});$$('[data-setting-check]').forEach(input=>state.settings[input.dataset.settingCheck]=input.checked);$$('[data-goal]').forEach(input=>{const n=Number(input.value);if(Number.isFinite(n))state.goals[input.dataset.goal]=n;});saveState();render();showToast('Settings saved.');}
 
-    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`NEXSET 3.1.2 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
-    function weeklyReportText(){const w=weeklyReview();return[`NEXSET 3.1.2 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
+    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`NEXSET 3.1.3 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
+    function weeklyReportText(){const w=weeklyReview();return[`NEXSET 3.1.3 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
     async function shareText(text,title){try{if(navigator.share){await navigator.share({title,text});return;}await navigator.clipboard.writeText(text);showToast('Copied. Paste it into ChatGPT.');}catch(err){if(err?.name!=='AbortError'){downloadBlob(`${title.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.txt`,text,'text/plain');showToast('Report downloaded.');}}}
 
     function openApp(kind){const url=kind==='music'?state.settings.musicAppUrl:state.settings.pfAppUrl,fallback=kind==='music'?state.settings.musicFallbackUrl:state.settings.pfFallbackUrl;if(!url){showToast('Add this app link in More → Settings.');return;}try{window.location.href=url;setTimeout(()=>{if(!document.hidden&&fallback&&!url.startsWith('shortcuts:'))window.open(fallback,'_blank','noopener');},1200);}catch(_){if(fallback)window.open(fallback,'_blank','noopener');}}
@@ -794,7 +820,7 @@
     function resetApp(){if(!confirm('Delete all workouts, body metrics, and settings from this device?'))return;localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(ACTIVE_KEY);state=defaultState();active=null;currentView='home';render();showToast('App reset.');}
 
     document.addEventListener('click',event=>{
-      const viewBtn=event.target.closest('[data-view]');if(viewBtn){haptic('light');currentView=viewBtn.dataset.view;render();return;}
+      const viewBtn=event.target.closest('[data-view]');if(viewBtn){haptic('light');if(viewBtn.dataset.view==='more')moreSection='menu';currentView=viewBtn.dataset.view;render();return;}
       const btn=event.target.closest('[data-action]');if(!btn)return;if(btn.classList.contains('sheet-backdrop')&&event.target!==btn)return;const action=btn.dataset.action;
       haptic(['finish-workout','complete-done','mark-rest','save-body'].includes(action)?'success':['start-workout','resume-workout','log-set'].includes(action)?'medium':'light');
       if(action==='start-workout')startWorkout();

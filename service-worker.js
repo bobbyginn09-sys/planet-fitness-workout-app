@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nexset-workout-v3-1-2-reference-finish-20260714-1';
+const CACHE_NAME = 'nexset-workout-v3-1-3-mockup-match-20260714-1';
 const APP_SHELL = [
   './',
   './index.html',
