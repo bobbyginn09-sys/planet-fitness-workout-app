@@ -3,7 +3,12 @@
 
     const STORAGE_KEY = 'pfWorkoutApp.v1';
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
-    const APP_VERSION = 'nexset-3.1.7';
+    const RECOVERY_KEY = 'pfWorkoutApp.recovery.v1';
+    const META_KEY = 'pfWorkoutApp.meta.v1';
+    const APP_VERSION = 'nexset-3.2.0';
+    const APP_VERSION_LABEL = '3.2.0';
+    const DATA_SCHEMA_VERSION = 3;
+    const MAX_IMPORT_BYTES = 8 * 1024 * 1024;
 
     const PLAN = [
       {
@@ -133,6 +138,12 @@
     const cleanNumber = value => { const n=Number(value); if(!Number.isFinite(n)) return ''; const r=Math.round(n*100)/100; return Number.isInteger(r)?String(r):String(r); };
     const deepClone = value => JSON.parse(JSON.stringify(value));
 
+    let startupNotice = '';
+    let recoveryWriteAt = 0;
+    let pendingUpdateWorker = null;
+    let serviceWorkerRegistration = null;
+    let updateReloading = false;
+    let meta = loadMeta();
     let state = loadState();
     let active = loadActive();
     let currentView = active ? 'workout' : 'home';
@@ -148,7 +159,7 @@
 
     function defaultState() {
       return {
-        version: 2,
+        version: DATA_SCHEMA_VERSION,
         createdAt: new Date().toISOString(),
         settings: {
           currentDayIndex: 0,
@@ -176,21 +187,139 @@
       };
     }
 
+    function defaultMeta() {
+      return {
+        schemaVersion: DATA_SCHEMA_VERSION,
+        appVersion: APP_VERSION,
+        lastSavedAt: null,
+        lastBackupAt: null,
+        lastImportAt: null,
+        lastRestoreAt: null,
+        lastRecoveryAt: null,
+        lastError: null
+      };
+    }
+
+    function isPlainObject(value) { return Boolean(value) && typeof value === 'object' && !Array.isArray(value); }
+    function validDateOr(value, fallback = new Date().toISOString()) { const time = new Date(value).getTime(); return Number.isFinite(time) ? new Date(time).toISOString() : fallback; }
+    function appendStartupNotice(message) { startupNotice = startupNotice ? `${startupNotice} ${message}` : message; }
+
+    function loadMeta() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(META_KEY) || '{}');
+        return { ...defaultMeta(), ...(isPlainObject(parsed) ? parsed : {}), schemaVersion: DATA_SCHEMA_VERSION, appVersion: APP_VERSION };
+      } catch (_) { return defaultMeta(); }
+    }
+
+    function persistMeta(patch = {}) {
+      meta = { ...defaultMeta(), ...(meta || {}), ...patch, schemaVersion: DATA_SCHEMA_VERSION, appVersion: APP_VERSION };
+      try { localStorage.setItem(META_KEY, JSON.stringify(meta)); return true; }
+      catch (error) { console.warn('Metadata save unavailable', error); return false; }
+    }
+
+    function normalizeHistory(items) {
+      if(!Array.isArray(items)) return [];
+      return items.filter(isPlainObject).slice(-10000).map((session, index) => ({
+        ...session,
+        id: String(session.id || `session-${index}-${Date.now()}`),
+        startedAt: validDateOr(session.startedAt),
+        durationMs: Math.max(0, Number(session.durationMs) || 0),
+        sessionNote: String(session.sessionNote || ''),
+        exercises: Array.isArray(session.exercises) ? session.exercises.filter(isPlainObject).map(entry => ({
+          ...entry,
+          id: String(entry.id || ''),
+          notes: String(entry.notes || ''),
+          logs: Array.isArray(entry.logs) ? entry.logs.filter(isPlainObject) : []
+        })).filter(entry => entry.id) : [],
+        prs: Array.isArray(session.prs) ? session.prs.filter(isPlainObject) : []
+      }));
+    }
+
+    function normalizeState(incoming) {
+      if(!isPlainObject(incoming)) throw new Error('Invalid state object');
+      const base = defaultState();
+      const merged = { ...base, ...incoming };
+      merged.version = DATA_SCHEMA_VERSION;
+      merged.createdAt = validDateOr(incoming.createdAt, base.createdAt);
+      merged.settings = { ...base.settings, ...(isPlainObject(incoming.settings) ? incoming.settings : {}) };
+      merged.goals = { ...base.goals, ...(isPlainObject(incoming.goals) ? incoming.goals : {}) };
+      merged.history = normalizeHistory(incoming.history);
+      merged.bodyMetrics = Array.isArray(incoming.bodyMetrics) ? incoming.bodyMetrics.filter(isPlainObject).slice(-5000) : [];
+      merged.dailyCheckins = Array.isArray(incoming.dailyCheckins) ? incoming.dailyCheckins.filter(isPlainObject).slice(-5000) : [];
+      merged.exerciseProgress = isPlainObject(incoming.exerciseProgress) ? incoming.exerciseProgress : {};
+      merged.settings.currentDayIndex = clamp(Math.trunc(Number(merged.settings.currentDayIndex) || 0), 0, PLAN.length - 1);
+      merged.settings.restSeconds = clamp(Math.trunc(Number(merged.settings.restSeconds) || 90), 5, 900);
+      merged.settings.smithBarWeight = Math.max(0, Number(merged.settings.smithBarWeight) || 0);
+      merged.settings.theme = ['dark','light'].includes(merged.settings.theme) ? merged.settings.theme : 'dark';
+      merged.settings.units = ['lb','kg'].includes(merged.settings.units) ? merged.settings.units : 'lb';
+      return merged;
+    }
+
+    function normalizeActiveSession(session) {
+      if(!isPlainObject(session) || !Array.isArray(session.exercises) || !session.exercises.length) return null;
+      const dayIndex = clamp(Math.trunc(Number(session.dayIndex) || 0), 0, PLAN.length - 1);
+      const exercises = session.exercises.filter(isPlainObject).map(entry => ({
+        id: String(entry.id || ''),
+        logs: Array.isArray(entry.logs) ? entry.logs.filter(isPlainObject) : [],
+        notes: String(entry.notes || ''),
+        draftWeight: entry.draftWeight===null||entry.draftWeight==='' ? null : (Number.isFinite(Number(entry.draftWeight)) ? Number(entry.draftWeight) : null),
+        draftReps: entry.draftReps===null||entry.draftReps==='' ? null : (Number.isFinite(Number(entry.draftReps)) ? Number(entry.draftReps) : null),
+        draftFeel: ['easy','good','hard'].includes(entry.draftFeel) ? entry.draftFeel : 'good',
+        draftWarmup: Boolean(entry.draftWarmup)
+      })).filter(entry => entry.id);
+      if(!exercises.length) return null;
+      return {
+        ...session,
+        id: String(session.id || `active-${Date.now()}`),
+        dayIndex,
+        day: Number(session.day) || PLAN[dayIndex]?.day || dayIndex + 1,
+        title: String(session.title || PLAN[dayIndex]?.title || 'Workout'),
+        type: String(session.type || PLAN[dayIndex]?.type || 'lift'),
+        focus: String(session.focus || PLAN[dayIndex]?.focus || ''),
+        startedAt: validDateOr(session.startedAt),
+        sessionNote: String(session.sessionNote || ''),
+        currentExerciseIndex: clamp(Math.trunc(Number(session.currentExerciseIndex) || 0), 0, exercises.length - 1),
+        exercises
+      };
+    }
+
+    function readRecoverySnapshot() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(RECOVERY_KEY) || 'null');
+        return isPlainObject(parsed) ? parsed : null;
+      } catch (_) { return null; }
+    }
+
+    function writeRecoverySnapshot(reason = 'autosave', force = false) {
+      const now = Date.now();
+      if(!force && now - recoveryWriteAt < 3500) return false;
+      recoveryWriteAt = now;
+      try {
+        const savedAt = new Date(now).toISOString();
+        localStorage.setItem(RECOVERY_KEY, JSON.stringify({
+          format: 'nexset-recovery', schemaVersion: DATA_SCHEMA_VERSION, appVersion: APP_VERSION,
+          savedAt, reason, state, active
+        }));
+        persistMeta({ lastRecoveryAt: savedAt });
+        return true;
+      } catch (error) { console.warn('Recovery snapshot unavailable', error); return false; }
+    }
+
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        const parsed = raw ? JSON.parse(raw) : {};
-        const base = defaultState();
-        const merged = { ...base, ...parsed };
-        merged.settings = { ...base.settings, ...(parsed.settings || {}) };
-        merged.goals = { ...base.goals, ...(parsed.goals || {}) };
-        merged.history = Array.isArray(parsed.history) ? parsed.history : [];
-        merged.bodyMetrics = Array.isArray(parsed.bodyMetrics) ? parsed.bodyMetrics : [];
-        merged.dailyCheckins = Array.isArray(parsed.dailyCheckins) ? parsed.dailyCheckins : [];
-        merged.exerciseProgress = parsed.exerciseProgress || {};
-        return merged;
+        return raw ? normalizeState(JSON.parse(raw)) : defaultState();
       } catch (error) {
         console.warn('State load failed', error);
+        try {
+          const recovery = readRecoverySnapshot();
+          if(recovery?.state) {
+            appendStartupNotice('Your training data was restored from the local recovery copy.');
+            persistMeta({ lastRestoreAt: new Date().toISOString() });
+            return normalizeState(recovery.state);
+          }
+        } catch (recoveryError) { console.warn('Recovery load failed', recoveryError); }
+        appendStartupNotice('NEXSET could not read the saved data and opened a clean local profile.');
         return defaultState();
       }
     }
@@ -198,28 +327,42 @@
     function loadActive() {
       try {
         const raw = localStorage.getItem(ACTIVE_KEY);
-        if (!raw) return null;
-        const session = JSON.parse(raw);
-        session.currentExerciseIndex = Number.isFinite(Number(session.currentExerciseIndex)) ? Number(session.currentExerciseIndex) : 0;
-        session.sessionNote = session.sessionNote || '';
-        session.exercises = Array.isArray(session.exercises) ? session.exercises.map(entry => ({
-          id: entry.id,
-          logs: Array.isArray(entry.logs) ? entry.logs : [],
-          notes: entry.notes || '',
-          draftWeight: Number.isFinite(Number(entry.draftWeight)) ? Number(entry.draftWeight) : null,
-          draftReps: Number.isFinite(Number(entry.draftReps)) ? Number(entry.draftReps) : null,
-          draftFeel: ['easy','good','hard'].includes(entry.draftFeel) ? entry.draftFeel : 'good',
-          draftWarmup: Boolean(entry.draftWarmup)
-        })) : [];
-        return session;
-      } catch (error) {
-        console.warn('Active session load failed', error);
-        return null;
-      }
+        if(raw) return normalizeActiveSession(JSON.parse(raw));
+      } catch (error) { console.warn('Active session load failed', error); }
+      try {
+        const recovered = normalizeActiveSession(readRecoverySnapshot()?.active);
+        if(recovered) appendStartupNotice('Your unfinished workout was recovered.');
+        return recovered;
+      } catch (_) { return null; }
     }
 
-    function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (error) { console.warn('State save unavailable', error); } updateChrome(); }
-    function saveActive() { try { if(active) localStorage.setItem(ACTIVE_KEY, JSON.stringify(active)); else localStorage.removeItem(ACTIVE_KEY); } catch (error) { console.warn('Active session save unavailable', error); } }
+    function saveState(options = {}) {
+      try {
+        state = normalizeState(state);
+        const savedAt = new Date().toISOString();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        persistMeta({ lastSavedAt: savedAt });
+        if(options.snapshot !== false) writeRecoverySnapshot(options.reason || 'state-save');
+      } catch (error) {
+        console.warn('State save unavailable', error);
+        persistMeta({ lastError: { at:new Date().toISOString(), source:'state-save', message:String(error?.message || error) } });
+      }
+      updateChrome();
+    }
+
+    function saveActive(options = {}) {
+      try {
+        const normalized = active ? normalizeActiveSession(active) : null;
+        if(normalized) localStorage.setItem(ACTIVE_KEY, JSON.stringify(normalized));
+        else localStorage.removeItem(ACTIVE_KEY);
+        const savedAt = new Date().toISOString();
+        persistMeta({ lastSavedAt: savedAt });
+        if(options.snapshot !== false) writeRecoverySnapshot(options.reason || 'active-save', Boolean(options.forceSnapshot || !active));
+      } catch (error) {
+        console.warn('Active session save unavailable', error);
+        persistMeta({ lastError: { at:new Date().toISOString(), source:'active-save', message:String(error?.message || error) } });
+      }
+    }
     function getDay(index = state.settings.currentDayIndex) { return PLAN[((Number(index)||0)+PLAN.length)%PLAN.length]; }
     function getExercise(id) { for (const day of PLAN) { const ex = day.exercises.find(item => item.id===id); if(ex) return ex; } return null; }
     function targetLabel(ex) { return (ex.type==='cardio'||ex.type==='timed') ? `${ex.min}–${ex.max} ${ex.unit||'min'}` : `${ex.sets} × ${ex.min}–${ex.max}`; }
@@ -444,9 +587,10 @@
     }
 
     function startWorkout() {
+      if(active){ currentView='workout';render();showToast('Your unfinished workout was resumed.');return; }
       const day=getDay();
       active={id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),dayIndex:state.settings.currentDayIndex,day:day.day,title:day.title,type:day.type,focus:day.focus,startedAt:new Date().toISOString(),sessionNote:'',currentExerciseIndex:0,exercises:day.exercises.map(ex=>({id:ex.id,logs:[],notes:'',draftWeight:initialWeight(ex),draftReps:initialReps(ex),draftFeel:'good',draftWarmup:false}))};
-      saveActive();currentView='workout';render();showToast(day.type==='rest'?'Recovery session started.':'Workout started.');
+      saveActive({reason:'workout-start'});currentView='workout';render();showToast(day.type==='rest'?'Recovery session started.':'Workout started.');
     }
 
     function initialWeight(ex) { const p=state.exerciseProgress[ex.id]||exerciseAliases(ex.id).map(id=>state.exerciseProgress[id]).find(Boolean); if(ex.type==='weighted') return Number.isFinite(Number(p?.nextWeight))?Number(p.nextWeight):Number.isFinite(Number(p?.lastWeight))?Number(p.lastWeight):null; return null; }
@@ -790,6 +934,18 @@
       </div>`;
     }
 
+    function formatStatusTime(value) {
+      if(!value) return 'Not yet';
+      const date = new Date(value); if(!Number.isFinite(date.getTime())) return 'Unknown';
+      return date.toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+    }
+
+    function renderBackupPanel() {
+      const recovery = readRecoverySnapshot();
+      const swStatus = navigator.serviceWorker?.controller ? 'Active' : 'Browser mode';
+      return `<div class="stack"><button class="back-link" data-action="more-back">← Profile</button><section class="card"><div class="card-pad"><div class="eyebrow">Your data</div><h1 style="margin-top:8px">Backup & restore</h1><p class="muted">NEXSET now keeps a local recovery copy as you train. Export a file before changing phones or clearing Safari data.</p><div class="data-health-grid"><div class="data-health-row"><span class="data-health-icon">✓</span><span class="data-health-copy"><b>Last saved</b><small>Workout history and settings</small></span><span class="data-health-value">${esc(formatStatusTime(meta.lastSavedAt))}</span></div><div class="data-health-row"><span class="data-health-icon">⇩</span><span class="data-health-copy"><b>Last exported backup</b><small>Downloadable JSON file</small></span><span class="data-health-value">${esc(formatStatusTime(meta.lastBackupAt))}</span></div><div class="data-health-row"><span class="data-health-icon">↺</span><span class="data-health-copy"><b>Local recovery copy</b><small>${recovery?'Available on this device':'Created after the next save'}</small></span><span class="data-health-value">${esc(formatStatusTime(recovery?.savedAt || meta.lastRecoveryAt))}</span></div><div class="data-health-row"><span class="data-health-icon">N</span><span class="data-health-copy"><b>NEXSET ${APP_VERSION_LABEL}</b><small>Service worker</small></span><span class="data-health-value">${esc(swStatus)}</span></div></div><div class="button-row"><button class="btn primary" data-action="export-backup">Export backup</button><button class="btn" data-action="import-backup">Import backup</button></div><div class="backup-action-stack"><button class="btn block" data-action="restore-recovery" ${recovery?'':'disabled'}>Restore local recovery copy</button><div class="backup-secondary-grid"><button class="btn" data-action="check-update">Check for update</button><button class="btn" data-action="download-diagnostics">Download diagnostics</button></div><button class="btn block" data-action="refresh-cache">Refresh app cache</button><button class="btn danger block" data-action="reset-app">Reset app data</button></div><p class="data-note">Imports are validated before replacing your data. NEXSET also creates a recovery copy immediately before an import or reset-sensitive operation.</p></div></section></div>`;
+    }
+
     function renderMore(){
       const sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt));
       const profileName=state.settings.profileName||'Athlete';
@@ -798,8 +954,8 @@
       }
       if(moreSection==='coach'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← Profile</button><section class="card"><div class="card-pad"><div class="eyebrow">Coach</div><h1 style="margin-top:8px">Check-in</h1><p class="muted">Share your workouts, body trends, and next-weight recommendations with ChatGPT.</p><button class="btn green block" data-action="share-coach">Share full check-in</button><button class="btn block" style="margin-top:10px" data-action="share-weekly">Share weekly review</button></div></section></div>`;return;}
       if(moreSection==='settings'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← Profile</button><div class="page-title-row"><div><div class="eyebrow">Preferences</div><h1>Settings</h1></div></div>${renderSettings()}</div>`;return;}
-      if(moreSection==='backup'){ $('#view').innerHTML=`<div class="stack"><button class="back-link" data-action="more-back">← Profile</button><section class="card"><div class="card-pad"><div class="eyebrow">Your data</div><h1 style="margin-top:8px">Backup</h1><p class="muted">Workout data stays on this device. Export a backup before changing phones or clearing Safari data.</p><div class="button-row"><button class="btn primary" data-action="export-backup">Export</button><button class="btn" data-action="import-backup">Import</button></div><button class="btn block" style="margin-top:10px" data-action="refresh-cache">Refresh app cache</button><button class="btn danger block" style="margin-top:10px" data-action="reset-app">Reset app data</button></div></section></div>`;return;}
-      $('#view').innerHTML=`<div class="stack profile-screen"><section class="profile-hero"><span class="profile-avatar"><img src="nexset-mark.svg" alt=""></span><span><small>NEXSET athlete</small><h1>${esc(profileName)}</h1><p>Progress Starts With Your Next Set.</p></span></section><section class="card profile-menu-card"><div class="more-menu"><button data-view="progress"><span class="menu-icon">▥</span><div><strong>Progress</strong><small>Strength, volume, records, and body trends</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">N</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, and app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-nexset"><img src="nexset-mark.svg" alt=""><span>NEXSET 3.1.7</span><small>Progress Starts With Your Next Set.</small></div></div>`;
+      if(moreSection==='backup'){ $('#view').innerHTML=renderBackupPanel();return;}
+      $('#view').innerHTML=`<div class="stack profile-screen"><section class="profile-hero"><span class="profile-avatar"><img src="nexset-mark.svg" alt=""></span><span><small>NEXSET athlete</small><h1>${esc(profileName)}</h1><p>Progress Starts With Your Next Set.</p></span></section><section class="card profile-menu-card"><div class="more-menu"><button data-view="progress"><span class="menu-icon">▥</span><div><strong>Progress</strong><small>Strength, volume, records, and body trends</small></div><b>›</b></button><button data-action="more-section" data-section="coach"><span class="menu-icon coach">N</span><div><strong>Coach check-in</strong><small>Share progress and recommendations</small></div><b>›</b></button><button data-action="more-section" data-section="settings"><span class="menu-icon">⚙</span><div><strong>Settings</strong><small>Rest timer, units, and app links</small></div><b>›</b></button><button data-action="more-section" data-section="backup"><span class="menu-icon">⇩</span><div><strong>Backup & restore</strong><small>Protect your training history</small></div><b>›</b></button></div></section><section class="card"><div class="card-pad"><div class="eyebrow">Quick launch</div><div style="margin-top:12px">${renderQuickLaunch()}</div></div></section><div class="about-nexset"><img src="nexset-mark.svg" alt=""><span>NEXSET 3.2.0</span><small>Progress Starts With Your Next Set.</small></div></div>`;
     }
 
     function renderHistoryCard(s){
@@ -812,8 +968,8 @@
 
     function saveSettings(){$$('[data-setting]').forEach(input=>{const key=input.dataset.setting;let value=input.value;if(['restSeconds','smithBarWeight'].includes(key))value=Number(value);state.settings[key]=value;});$$('[data-setting-check]').forEach(input=>state.settings[input.dataset.settingCheck]=input.checked);$$('[data-goal]').forEach(input=>{const n=Number(input.value);if(Number.isFinite(n))state.goals[input.dataset.goal]=n;});saveState();render();showToast('Settings saved.');}
 
-    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`NEXSET 3.1.7 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
-    function weeklyReportText(){const w=weeklyReview();return[`NEXSET 3.1.7 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
+    function coachReport(){const st=stats(),metric=latestBodyMetric(),trend=getWeightTrend(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,5),day=getDay();const lines=[`NEXSET 3.2.0 — COACH CHECK-IN`,`Generated: ${new Date().toLocaleString()}`,`Next workout: Day ${day.day} — ${day.title} (${day.focus})`,`Stats: ${st.liftSessions} lift sessions, ${st.restDays} rest days, ${st.totalSets} working sets, ${st.totalVolume.toLocaleString()} total volume.`,metric?`Body metrics: latest ${metric.weight} lb${metric.bodyFat?`, body fat ${metric.bodyFat}%`:''}; 7-day average ${Number.isFinite(trend.avg7)?cleanNumber(trend.avg7)+' lb':'collecting'}.`:'Body metrics: none logged yet.','',`Recent sessions:`];for(const s of sessions){lines.push(`- ${fmtDate(s.startedAt)} — ${s.title} (${formatDuration(s.durationMs)}), ${sessionWorkingSets(s)} working sets, ${sessionVolume(s).toLocaleString()} lb volume`);for(const e of s.exercises||[]){const ex=getExercise(e.id),logs=e.logs||[];if(ex&&logs.length)lines.push(`  • ${ex.name}: ${logs.map(l=>`${formatLogShort(ex,l)}${l.feel?' '+feelEmoji(l.feel):''}`).join(', ')}`);}}lines.push('',`Next-time recommendations:`);for(const day of PLAN)for(const ex of day.exercises){const p=state.exerciseProgress[ex.id];if(p?.note)lines.push(`- ${ex.name}: ${p.note}`);}lines.push('',`Ask: Review my training for fat loss and muscle definition. Tell me what to adjust next, without adding nutrition tracking yet.`);return lines.join('\n');}
+    function weeklyReportText(){const w=weeklyReview();return[`NEXSET 3.2.0 — WEEKLY REVIEW`,w.title,`Lift days: ${w.lifts}/5`,`Working sets: ${w.sets}`,`Cardio: ${w.cardio} min`,`Hard sets: ${w.hardPct}%`,'','Wins:',...w.wins.map(x=>`- ${x}`),'','Next adjustments:',...w.adjustments.map(x=>`- ${x}`),'','Ask: Review this week and adjust my next week for fat loss and muscle definition. No nutrition tracking yet.'].join('\n');}
     async function shareText(text,title){try{if(navigator.share){await navigator.share({title,text});return;}await navigator.clipboard.writeText(text);showToast('Copied. Paste it into ChatGPT.');}catch(err){if(err?.name!=='AbortError'){downloadBlob(`${title.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.txt`,text,'text/plain');showToast('Report downloaded.');}}}
 
     function openApp(kind){const url=kind==='music'?state.settings.musicAppUrl:state.settings.pfAppUrl,fallback=kind==='music'?state.settings.musicFallbackUrl:state.settings.pfFallbackUrl;if(!url){showToast('Add this app link in More → Settings.');return;}try{window.location.href=url;setTimeout(()=>{if(!document.hidden&&fallback&&!url.startsWith('shortcuts:'))window.open(fallback,'_blank','noopener');},1200);}catch(_){if(fallback)window.open(fallback,'_blank','noopener');}}
@@ -823,14 +979,85 @@
     }
     function closeQuickMenu(){ $('#quickMenu')?.remove(); }
 
-    function exportBackup(){downloadBlob(`nexset-workout-backup-${dateKey()}.json`,JSON.stringify({appVersion:APP_VERSION,exportedAt:new Date().toISOString(),state,active},null,2),'application/json');showToast('Backup exported.');}
+    function exportBackup(){
+      const exportedAt=new Date().toISOString();
+      const payload={format:'nexset-backup',schemaVersion:DATA_SCHEMA_VERSION,appVersion:APP_VERSION,exportedAt,state,active};
+      downloadBlob(`nexset-workout-backup-${dateKey()}-${APP_VERSION_LABEL}.json`,JSON.stringify(payload,null,2),'application/json');
+      persistMeta({lastBackupAt:exportedAt});writeRecoverySnapshot('backup-export',true);
+      if(currentView==='more'&&moreSection==='backup')renderMore();
+      showToast('Backup exported.');
+    }
     function downloadBlob(name,text,type){const blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
-    function importBackup(file){const reader=new FileReader();reader.onload=()=>{try{const parsed=JSON.parse(reader.result),incoming=parsed.state||parsed;if(!incoming.history)throw new Error('Invalid backup');const base=defaultState();state={...base,...incoming,settings:{...base.settings,...(incoming.settings||{})},goals:{...base.goals,...(incoming.goals||{})},history:Array.isArray(incoming.history)?incoming.history:[],bodyMetrics:Array.isArray(incoming.bodyMetrics)?incoming.bodyMetrics:[],dailyCheckins:Array.isArray(incoming.dailyCheckins)?incoming.dailyCheckins:[]};active=parsed.active||null;rebuildProgress();saveState();saveActive();currentView=active?'workout':'home';render();showToast('Backup imported.');}catch(err){showToast('Could not import that backup.');}};reader.readAsText(file);}
-    async function refreshCache(){try{if('serviceWorker'in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(const r of regs)await r.update();}if('caches'in window){for(const key of await caches.keys())await caches.delete(key);}showToast('Cache refreshed. Reloading…');setTimeout(()=>location.reload(true),700);}catch(_){location.reload(true);}}
+    function validateBackup(parsed){
+      if(!isPlainObject(parsed))throw new Error('Backup is not an object');
+      const incoming=parsed.state||parsed;
+      if(!isPlainObject(incoming)||!Array.isArray(incoming.history))throw new Error('Backup history is missing');
+      const normalizedState=normalizeState(incoming);
+      if(normalizedState.history.length>10000)throw new Error('Backup contains too many sessions');
+      return{state:normalizedState,active:normalizeActiveSession(parsed.active)};
+    }
+    function importBackup(file){
+      if(!file)return;if(file.size>MAX_IMPORT_BYTES){showToast('That backup file is too large.');return;}
+      const reader=new FileReader();
+      reader.onerror=()=>showToast('Could not read that backup.');
+      reader.onload=()=>{try{
+        const validated=validateBackup(JSON.parse(reader.result));
+        const count=validated.state.history.length;
+        if(!confirm(`Import ${count} saved session${count===1?'':'s'}? Your current data will be kept in the local recovery copy.`))return;
+        writeRecoverySnapshot('before-import',true);
+        state=validated.state;active=validated.active;rebuildProgress();saveState({reason:'backup-import',snapshot:false});saveActive({reason:'backup-import',snapshot:false});
+        persistMeta({lastImportAt:new Date().toISOString()});currentView=active?'workout':'home';moreSection='menu';render();showToast('Backup imported and validated.');
+      }catch(error){console.warn('Backup import failed',error);showToast('Could not import that backup.');}};
+      reader.readAsText(file);
+    }
+    function restoreRecovery(){
+      try{
+        const recovery=readRecoverySnapshot();if(!recovery?.state){showToast('No local recovery copy is available.');return;}
+        const recoveredState=normalizeState(recovery.state),recoveredActive=normalizeActiveSession(recovery.active);
+        if(!confirm(`Restore the local copy from ${formatStatusTime(recovery.savedAt)}?`))return;
+        state=recoveredState;active=recoveredActive;rebuildProgress();saveState({reason:'recovery-restore'});saveActive({reason:'recovery-restore'});
+        persistMeta({lastRestoreAt:new Date().toISOString()});currentView=active?'workout':'home';moreSection='menu';render();showToast('Local recovery copy restored.');
+      }catch(error){console.warn('Recovery restore failed',error);showToast('The recovery copy could not be restored.');}
+    }
+    function diagnosticPayload(){
+      return{
+        appVersion:APP_VERSION,schemaVersion:DATA_SCHEMA_VERSION,generatedAt:new Date().toISOString(),online:navigator.onLine,
+        displayMode:matchMedia('(display-mode: standalone)').matches?'standalone':'browser',
+        platform:navigator.platform||'',userAgent:navigator.userAgent,
+        serviceWorker:{supported:'serviceWorker'in navigator,controlled:Boolean(navigator.serviceWorker?.controller)},
+        data:{historyCount:state.history.length,bodyMetricCount:state.bodyMetrics.length,hasActiveWorkout:Boolean(active),currentDayIndex:state.settings.currentDayIndex,lastSavedAt:meta.lastSavedAt,lastBackupAt:meta.lastBackupAt,lastImportAt:meta.lastImportAt,lastRestoreAt:meta.lastRestoreAt,lastRecoveryAt:meta.lastRecoveryAt},
+        lastError:meta.lastError||null
+      };
+    }
+    function downloadDiagnostics(){downloadBlob(`nexset-diagnostics-${dateKey()}.json`,JSON.stringify(diagnosticPayload(),null,2),'application/json');showToast('Diagnostics downloaded.');}
+    async function refreshCache(){try{writeRecoverySnapshot('before-cache-refresh',true);if('serviceWorker'in navigator){const regs=await navigator.serviceWorker.getRegistrations();for(const r of regs)await r.update();}if('caches'in window){for(const key of await caches.keys())await caches.delete(key);}showToast('Cache refreshed. Reloading…');setTimeout(()=>location.reload(),700);}catch(_){location.reload();}}
+
+    function showUpdateBanner(worker){pendingUpdateWorker=worker||serviceWorkerRegistration?.waiting||null;$('#appUpdateBanner')?.classList.add('show');}
+    function dismissUpdateBanner(){$('#appUpdateBanner')?.classList.remove('show');}
+    function watchInstallingWorker(worker){if(!worker)return;worker.addEventListener('statechange',()=>{if(worker.state==='installed'&&navigator.serviceWorker.controller)showUpdateBanner(worker);});}
+    async function registerServiceWorker(){
+      if(!('serviceWorker'in navigator))return null;
+      try{
+        const registration=await navigator.serviceWorker.register('./service-worker.js');serviceWorkerRegistration=registration;
+        if(registration.waiting&&navigator.serviceWorker.controller)showUpdateBanner(registration.waiting);
+        registration.addEventListener('updatefound',()=>watchInstallingWorker(registration.installing));
+        navigator.serviceWorker.addEventListener('controllerchange',()=>{if(updateReloading)return;updateReloading=true;location.reload();});
+        setInterval(()=>registration.update().catch(()=>{}),60*60*1000);
+        return registration;
+      }catch(error){console.warn('Service worker registration failed',error);persistMeta({lastError:{at:new Date().toISOString(),source:'service-worker',message:String(error?.message||error)}});return null;}
+    }
+    async function checkForAppUpdate(){
+      const registration=serviceWorkerRegistration||await registerServiceWorker();if(!registration){showToast('App updates are unavailable in this browser.');return;}
+      showToast('Checking for an update…');
+      try{await registration.update();await new Promise(resolve=>setTimeout(resolve,900));if(registration.waiting)showUpdateBanner(registration.waiting);else if(registration.installing){watchInstallingWorker(registration.installing);showToast('Update is downloading…');}else showToast('NEXSET is up to date.');}
+      catch(_){showToast(navigator.onLine?'Could not check for an update.':'You are offline.');}
+    }
+    function installAppUpdate(){const worker=pendingUpdateWorker||serviceWorkerRegistration?.waiting;if(!worker){checkForAppUpdate();return;}writeRecoverySnapshot('before-app-update',true);$('.update-now')?.setAttribute('disabled','');worker.postMessage({type:'SKIP_WAITING'});}
+
 
     function cancelActive(){if(!active)return;syncDraftFromInputs();const hasActivity=active.exercises.some(e=>(e.logs||[]).length||String(e.notes||'').trim())||String(active.sessionNote||'').trim();const message=hasActivity?'Cancel this workout? All logged sets, notes, and elapsed time from this active session will be permanently discarded.':'Discard this empty workout? It will not be added to your history.';if(!confirm(message))return;active=null;removeExerciseToolsOverlay();saveActive();stopRest();currentView='home';render();showToast('Workout canceled. Nothing was saved.');}
     function deleteSession(id){if(!confirm('Delete this completed session?'))return;state.history=state.history.filter(s=>s.id!==id);rebuildProgress();saveState();renderMore();showToast('Session deleted.');}
-    function resetApp(){if(!confirm('Delete all workouts, body metrics, and settings from this device?'))return;localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(ACTIVE_KEY);state=defaultState();active=null;currentView='home';render();showToast('App reset.');}
+    function resetApp(){if(!confirm('Delete all workouts, body metrics, settings, and the local recovery copy from this device?'))return;localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(ACTIVE_KEY);localStorage.removeItem(RECOVERY_KEY);localStorage.removeItem(META_KEY);meta=defaultMeta();state=defaultState();active=null;currentView='home';moreSection='menu';saveState({snapshot:false});render();showToast('App reset.');}
 
     document.addEventListener('click',event=>{
       const viewBtn=event.target.closest('[data-view]');if(viewBtn){haptic('light');if(viewBtn.dataset.view==='more')moreSection='menu';currentView=viewBtn.dataset.view;render();return;}
@@ -874,6 +1101,11 @@
       else if(action==='save-settings')saveSettings();
       else if(action==='export-backup')exportBackup();
       else if(action==='import-backup')$('#importFile').click();
+      else if(action==='restore-recovery')restoreRecovery();
+      else if(action==='download-diagnostics')downloadDiagnostics();
+      else if(action==='check-update')checkForAppUpdate();
+      else if(action==='install-update')installAppUpdate();
+      else if(action==='dismiss-update')dismissUpdateBanner();
       else if(action==='refresh-cache')refreshCache();
       else if(action==='delete-session')deleteSession(btn.dataset.id);
       else if(action==='reset-app')resetApp();
@@ -896,6 +1128,12 @@
     document.addEventListener('keydown',event=>{if(event.key==='Escape'&&$('#exerciseSheetOverlay'))closeExerciseTools();});
     document.addEventListener('visibilitychange',()=>{if(!document.hidden&&restState)updateRest();});
 
-    rebuildProgress();saveState();render();
-    if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
+    window.addEventListener('error',event=>persistMeta({lastError:{at:new Date().toISOString(),source:'runtime',message:String(event.message||'Unknown error')}}));
+    window.addEventListener('unhandledrejection',event=>persistMeta({lastError:{at:new Date().toISOString(),source:'promise',message:String(event.reason?.message||event.reason||'Unhandled promise rejection')}}));
+    window.addEventListener('offline',()=>showToast('You are offline. Saved workouts remain available.'));
+    window.addEventListener('online',()=>showToast('Back online.'));
+
+    rebuildProgress();saveState({reason:'app-start'});render();
+    if(startupNotice)setTimeout(()=>showToast(startupNotice),450);
+    window.addEventListener('load',registerServiceWorker);
   })();
