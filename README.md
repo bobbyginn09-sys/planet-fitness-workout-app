@@ -1,6 +1,6 @@
-# NEXSET 3.1.3 — Reference-Inspired Polish
+# NEXSET 3.1.5 — Reference-Inspired Polish
 
-## 3.1.3 visual-polish update
+## 3.1.5 visual-polish update
 
 - Compact NEXSET header lockup and a short branded startup animation.
 - Reference-inspired Home dashboard with the workout hero card, four quick actions, and a progress summary.
@@ -69,14 +69,14 @@ The repository root contains the NEXSET mark, compact header lockup, wordmark, a
 1. In the current app, open **More → Backup & restore → Export** and save the JSON backup.
 2. Upload every file and folder from this package to the repository root, replacing the old files.
 3. Commit the changes.
-4. Open the site once with `?nexset=3.1.3` appended.
+4. Open the site once with `?nexset=3.1.5` appended.
 5. Open **More → Backup & restore → Refresh app cache**.
 6. Fully close and reopen the Home Screen app.
 
 Example:
 
 ```text
-https://bobbyginn09-sys.github.io/planet-fitness-workout-app/?nexset=3.1.3
+https://bobbyginn09-sys.github.io/planet-fitness-workout-app/?nexset=3.1.5
 ```
 
 ## App icon note
@@ -85,7 +85,7 @@ Safari may keep the old Home Screen icon after the website files change. If the 
 
 ## Data compatibility
 
-NEXSET 3.1.3 keeps:
+NEXSET 3.1.5 keeps:
 
 ```text
 pfWorkoutApp.v1
