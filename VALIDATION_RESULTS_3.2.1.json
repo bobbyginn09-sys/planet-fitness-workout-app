@@ -1,0 +1,263 @@
+{
+  "passed": 49,
+  "failed": 0,
+  "tests": [
+    {
+      "name": "fresh state uses schema 4",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "fresh state stores canonical pounds",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "fresh display unit is pounds",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "viewport permits text zoom",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "home has no horizontal overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "empty review shows baseline guidance",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "empty review does not invent wins",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "logged lb set stays 100 in storage",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "logged reps saved",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "workout-level note saved",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "rest timer timestamp persisted",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "active set editor opens",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "active set edits persist",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "active set deletion works",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "active set deletion offers Undo",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "active set Undo restores exact set",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "rest timer keeps original end timestamp after reload",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "rest timer resumes with remaining time",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "finished workout saved once",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "completed workout keeps session note",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "active key cleared after finish",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "historical set edits persist",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "historical set deletion removes one set",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "historical set Undo restores set",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "completed session deletion works",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "completed session Undo restores session",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "body reading stored canonically in lb",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "blank optional body fields remain empty",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "body editor includes delete action",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "body edit persists",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "body deletion works",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "body deletion offers Undo",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "body Undo restores exact reading",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "kg preference saves",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "unit switch does not mutate canonical body value",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "body value displays converted kilograms",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy state migrates to schema 4 canonical storage",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy workout kg converts to canonical lb",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy active workout kg converts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy body/goal/Smith lb values retain meaning",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "legacy display preference retained",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "migration notice is shown",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "bundled program contains expected exercise coverage",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "service worker registers in app scope",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "NEXSET cache created",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "430px viewport has no horizontal overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "390px viewport has no horizontal overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "app metadata records no runtime error",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no uncaught JavaScript exceptions",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "runtimeErrors": [],
+  "consoleErrors": [],
+  "finalMeta": {
+    "schemaVersion": 4,
+    "appVersion": "nexset-3.2.1",
+    "lastSavedAt": "2026-07-15T12:57:19.565Z",
+    "lastBackupAt": null,
+    "lastImportAt": null,
+    "lastRestoreAt": null,
+    "lastRecoveryAt": "2026-07-15T12:57:19.563Z",
+    "lastError": null
+  }
+}
