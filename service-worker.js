@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nexset-workout-v3-1-5-real-logo-muscle-fix-20260715-1';
+const CACHE_NAME = 'nexset-workout-v3-1-6-actual-ui-completion-fix-20260715-1';
 const APP_SHELL = [
   './',
   './index.html',
@@ -9,12 +9,12 @@ const APP_SHELL = [
   './nexset-icon.svg',
   './nexset-strength-figure.svg',
   './nexset-lockup-v315.svg',
-  './muscle-push-v315.png',
-  './muscle-pull-v315.png',
-  './muscle-upper-v315.png',
-  './muscle-legs-a-v315.png',
-  './muscle-legs-b-v315.png',
-  './muscle-recovery-v315.png',
+  './muscle-push-v316.png',
+  './muscle-pull-v316.png',
+  './muscle-upper-v316.png',
+  './muscle-legs-a-v316.png',
+  './muscle-legs-b-v316.png',
+  './muscle-recovery-v316.png',
   './apple-touch-icon.png',
   './icon-192.png',
   './icon-512.png',
