@@ -1,8 +1,8 @@
 {
   "name": "NEXSET \u2014 Workout Coach",
   "short_name": "NEXSET",
-  "description": "An iPhone-first workout coach with focused exercise cards, progression, rest timing, body trends, and a repeatable Planet Fitness plan.",
-  "start_url": "./index.html?nexset=3.1.7",
+  "description": "NEXSET is an iPhone-first workout coach with focused exercise cards, protected local workout history, progression, recovery, and offline support.",
+  "start_url": "./index.html?nexset=3.2.0",
   "scope": "./",
   "display": "standalone",
   "background_color": "#02060B",
