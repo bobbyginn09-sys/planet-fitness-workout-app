@@ -1,0 +1,4 @@
+REVIEW
+static checks: UNKNOWN
+browser automation unavailable or incomplete
+missing feature evidence: Add or remove exercises, Exercise replacement, Quick workouts, Reorder exercises, Skip and revisit, Workout templates
