@@ -1,0 +1,303 @@
+{
+  "version": "3.4.2",
+  "passed": 59,
+  "total": 59,
+  "results": [
+    {
+      "name": "app version constant 3.4.2",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "signature home function present",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "signature workout screen present",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "next exercise preview present",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "old v341 assets not referenced",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "push anatomy asset exists",
+      "passed": true,
+      "detail": "833322"
+    },
+    {
+      "name": "pull anatomy asset exists",
+      "passed": true,
+      "detail": "795584"
+    },
+    {
+      "name": "legs-a anatomy asset exists",
+      "passed": true,
+      "detail": "685643"
+    },
+    {
+      "name": "legs-b anatomy asset exists",
+      "passed": true,
+      "detail": "659455"
+    },
+    {
+      "name": "upper anatomy asset exists",
+      "passed": true,
+      "detail": "856807"
+    },
+    {
+      "name": "recovery anatomy asset exists",
+      "passed": true,
+      "detail": "425919"
+    },
+    {
+      "name": "manifest.json versioned start URL",
+      "passed": true,
+      "detail": "./index.html?nexset=3.4.2"
+    },
+    {
+      "name": "manifest.webmanifest versioned start URL",
+      "passed": true,
+      "detail": "./index.html?nexset=3.4.2"
+    },
+    {
+      "name": "service worker version 3.4.2",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "service worker caches all v342 figures",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "375x812 home renders",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "375x812 home has no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "375x812 anatomy loads",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "375x812 four shortcuts visible",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "375x812 three insights visible",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 home renders",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 home has no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 anatomy loads",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 four shortcuts visible",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 three insights visible",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 home renders",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 home has no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 anatomy loads",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 four shortcuts visible",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 three insights visible",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "program screen renders",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "program has seven day selectors",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "program has no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Legs A can be selected",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Legs A figure loads",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "workout outline expands",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "routine editor opens",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "active workout renders",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "next exercise preview renders",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "active workout has no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "weight stepper changes value",
+      "passed": true,
+      "detail": "20.0"
+    },
+    {
+      "name": "rest overlay opens after set",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "logged set appears",
+      "passed": true,
+      "detail": "1"
+    },
+    {
+      "name": "progress updates after set",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "pause returns to home",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "home shows resume action",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "quick workout builder opens",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "quick builder has search",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "quick exercise can be added",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "start quick workout enables",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "quick workout starts",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Full Rest can be selected",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "history screen renders",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "rest day appears in history",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "history has summary metrics",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "profile screen renders",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "progress tabs render",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "progress has no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "no uncaught browser errors",
+      "passed": true,
+      "detail": ""
+    }
+  ],
+  "browser_errors": []
+}

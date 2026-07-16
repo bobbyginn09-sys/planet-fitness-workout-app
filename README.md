@@ -1,28 +1,28 @@
-# NEXSET 3.4.1 — Premium Polish Release
+# NEXSET 3.4.2 — Signature UI
 
-NEXSET 3.4.1 includes the complete 3.4.0 flexible-workout feature set with a more cohesive, premium iPhone interface. It can be installed directly over any earlier NEXSET build; the previous 3.3.1 or 3.4.0 package does not need to be installed first.
+This is a complete, directly installable NEXSET release. It includes the flexible-workout functionality from 3.4.0 plus the new 3.4.2 visual system and anatomical training maps.
 
-## Highlights
+## Included functionality
 
-- Restored high-quality anatomical workout figures with clearly highlighted target muscles.
-- Redesigned the Today card so the anatomy, workout information, and primary action feel like one composition.
-- Replaced the misleading notification-bell shortcut icon with a proper shortcuts grid.
-- Refined typography, spacing, surfaces, borders, shadows, gradients, and touch feedback across Home, Workouts, active training, builders, and sheets.
-- Preserved Quick Workouts, editable programs, exercise swaps, skipping/revisiting, templates, equipment setup notes, backup/restore, units, history editing, and offline support from 3.4.0.
-
-## Data compatibility
-
-NEXSET 3.4.1 keeps schema version 5 and the existing storage keys. Workout history, current progress, body readings, program edits, templates, settings, saved equipment setups, and unfinished workouts remain compatible.
+- Seven-day editable Planet Fitness routine
+- Quick Workouts and saved templates
+- Exercise skip, return, jump, reorder, add, and replace
+- Temporary or permanent exercise substitutions
+- Saved machine and bench setup notes
+- Editable set history and body readings
+- Pounds/kilograms display support
+- Persistent active workouts and rest timers
+- Personal records, progress charts, weekly review, and backups
+- Offline-capable PWA shell
 
 ## Install
 
 1. Export a backup from **Profile → Backup & restore**.
-2. Extract the release ZIP.
-3. Upload every file inside `planet-fitness-workout-app-3.4.1` to the repository root.
-4. Wait for GitHub Pages to publish.
-5. Open `https://bobbyginn09-sys.github.io/planet-fitness-workout-app/?nexset=3.4.1` once in Safari.
-6. In the installed app, use **Profile → Backup & restore → Check for update**.
-7. Fully close and reopen NEXSET.
-8. Confirm **NEXSET 3.4.1** appears in Profile.
+2. Upload every file in this directory to the GitHub repository root.
+3. Wait for GitHub Pages to publish.
+4. Open the live site once using `?nexset=3.4.2`.
+5. In the installed app, use **Check for update → Update now**.
+6. Fully close and reopen NEXSET.
+7. Confirm **NEXSET 3.4.2** in Profile.
 
-See `DEPLOY_CHECKLIST_3.4.1.md` for the full checklist and `VALIDATION_3.4.1.md` for tested coverage.
+See `RELEASE_NOTES_3.4.2.md`, `VALIDATION_3.4.2.md`, and `DEPLOY_CHECKLIST_3.4.2.md`.
