@@ -1,0 +1,717 @@
+{
+  "version": "3.4.0",
+  "generatedAt": "2026-07-15T22:31:36Z",
+  "passed": 118,
+  "failed": 0,
+  "checks": [
+    {
+      "section": "static",
+      "name": "service worker JavaScript parses",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "static",
+      "name": "application JavaScript parses",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "static",
+      "name": "no duplicate function declarations",
+      "passed": true,
+      "detail": "{}"
+    },
+    {
+      "section": "static",
+      "name": "manifest.json parses",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "static",
+      "name": "manifest.json points to 3.4.0",
+      "passed": true,
+      "detail": "./index.html?nexset=3.4.0"
+    },
+    {
+      "section": "static",
+      "name": "manifest.webmanifest parses",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "static",
+      "name": "manifest.webmanifest points to 3.4.0",
+      "passed": true,
+      "detail": "./index.html?nexset=3.4.0"
+    },
+    {
+      "section": "static",
+      "name": "service worker version is 3.4.0",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "static",
+      "name": "all core cache assets exist",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "static",
+      "name": "cache cleanup is NEXSET scoped",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "static",
+      "name": "3.4.0 version is consistent in app",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "static",
+      "name": "old anatomical PNGs are no longer referenced by app",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "static",
+      "name": "3.3.1 and 3.2.1 labels absent from runtime files",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "home renders at 375\u00d7667",
+      "passed": true,
+      "detail": "home"
+    },
+    {
+      "section": "browser",
+      "name": "focus map renders at 375\u00d7667",
+      "passed": true,
+      "detail": "1"
+    },
+    {
+      "section": "browser",
+      "name": "no horizontal overflow at 375\u00d7667",
+      "passed": true,
+      "detail": "{\"sw\": 375, \"cw\": 375, \"bw\": 375}"
+    },
+    {
+      "section": "browser",
+      "name": "quick workout launch visible at 375\u00d7667",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "home renders at 390\u00d7844",
+      "passed": true,
+      "detail": "home"
+    },
+    {
+      "section": "browser",
+      "name": "focus map renders at 390\u00d7844",
+      "passed": true,
+      "detail": "1"
+    },
+    {
+      "section": "browser",
+      "name": "no horizontal overflow at 390\u00d7844",
+      "passed": true,
+      "detail": "{\"sw\": 390, \"cw\": 390, \"bw\": 390}"
+    },
+    {
+      "section": "browser",
+      "name": "quick workout launch visible at 390\u00d7844",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "home renders at 430\u00d7932",
+      "passed": true,
+      "detail": "home"
+    },
+    {
+      "section": "browser",
+      "name": "focus map renders at 430\u00d7932",
+      "passed": true,
+      "detail": "1"
+    },
+    {
+      "section": "browser",
+      "name": "no horizontal overflow at 430\u00d7932",
+      "passed": true,
+      "detail": "{\"sw\": 430, \"cw\": 430, \"bw\": 430}"
+    },
+    {
+      "section": "browser",
+      "name": "quick workout launch visible at 430\u00d7932",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "fresh app starts on Home",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "empty volume uses baseline language",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "Quick Workout builder opens",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "exercise library has broad coverage",
+      "passed": true,
+      "detail": "60"
+    },
+    {
+      "section": "browser",
+      "name": "exercise search finds Smith bench",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "exercise search finds lat pulldown",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "quick builder has two selected exercises",
+      "passed": true,
+      "detail": "2"
+    },
+    {
+      "section": "browser",
+      "name": "quick exercises can be reordered",
+      "passed": true,
+      "detail": "Smith Machine Bench Press -> Lat Pulldown"
+    },
+    {
+      "section": "browser",
+      "name": "quick template saves",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "quick template deletes",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "deleted template can be undone",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "quick workout starts",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "custom quick title appears",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "quick workout starts with expected reordered exercise",
+      "passed": true,
+      "detail": "Smith Machine Bench Press"
+    },
+    {
+      "section": "browser",
+      "name": "weighted set logs",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "exercise-specific rest timer starts",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "rest end timestamp is persisted",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "active workout restores after relaunch",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "rest timer restores after relaunch",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "logged set survives relaunch",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "active set can be edited",
+      "passed": true,
+      "detail": "105\u00d79 lb"
+    },
+    {
+      "section": "browser",
+      "name": "equipment setup survives relaunch",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "replacement picker offers same-pattern options",
+      "passed": true,
+      "detail": "3"
+    },
+    {
+      "section": "browser",
+      "name": "replacement becomes current",
+      "passed": true,
+      "detail": "Assisted Dip / Assisted Dip"
+    },
+    {
+      "section": "browser",
+      "name": "logged original plus replacement are both retained",
+      "passed": true,
+      "detail": "3"
+    },
+    {
+      "section": "browser",
+      "name": "add-exercise picker opens",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "mid-workout search finds plank",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "exercise can be added mid-workout",
+      "passed": true,
+      "detail": "4"
+    },
+    {
+      "section": "browser",
+      "name": "skipped exercise remains visible",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "can jump back to skipped exercise",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "skipped exercise can return to workout",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "active exercise can be reordered",
+      "passed": true,
+      "detail": "EXERCISE 4 OF 4 -> EXERCISE 3 OF 4"
+    },
+    {
+      "section": "browser",
+      "name": "quick workout completion screen renders",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "quick workout saved to history",
+      "passed": true,
+      "detail": "[[\"Flexible Push & Pull\", \"quick\"]]"
+    },
+    {
+      "section": "browser",
+      "name": "quick workout does not advance scheduled day",
+      "passed": true,
+      "detail": "0"
+    },
+    {
+      "section": "browser",
+      "name": "template persists in app state",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "equipment setup persists in app state",
+      "passed": true,
+      "detail": "{\"smith_bench\": \"Bench notch 4 \\u00b7 safeties 6\"}"
+    },
+    {
+      "section": "browser",
+      "name": "Workouts screen renders",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "routine editor library search works",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "exercise can be added to routine",
+      "passed": true,
+      "detail": "9"
+    },
+    {
+      "section": "browser",
+      "name": "exercise can be removed from routine",
+      "passed": true,
+      "detail": "8"
+    },
+    {
+      "section": "browser",
+      "name": "custom workout title appears in program",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "routine target sets persist",
+      "passed": true,
+      "detail": "{'id': 'smith_bench', 'name': 'Smith Machine Bench Press', 'type': 'weighted', 'sets': 5, 'min': 6, 'max': 8, 'increment': 7.5, 'equipment': 'Smith machine', 'cues': 'Shoulder blades tucked; lower bar under control.', 'restSeconds': 0, 'unit': '', 'movement': 'horizontal_push'}"
+    },
+    {
+      "section": "browser",
+      "name": "routine target range persists",
+      "passed": true,
+      "detail": "{'id': 'smith_bench', 'name': 'Smith Machine Bench Press', 'type': 'weighted', 'sets': 5, 'min': 6, 'max': 8, 'increment': 7.5, 'equipment': 'Smith machine', 'cues': 'Shoulder blades tucked; lower bar under control.', 'restSeconds': 0, 'unit': '', 'movement': 'horizontal_push'}"
+    },
+    {
+      "section": "browser",
+      "name": "zero-second rest target persists",
+      "passed": true,
+      "detail": "0"
+    },
+    {
+      "section": "browser",
+      "name": "custom planned workout starts",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "custom set target shown",
+      "passed": true,
+      "detail": "5 \u00d7 6\u20138 \u00b7 Smith machine"
+    },
+    {
+      "section": "browser",
+      "name": "zero-second rest disables auto-rest for exercise",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "permanent replacement updates routine",
+      "passed": true,
+      "detail": "{\"id\": \"machine_chest_press\", \"name\": \"Machine Chest Press\", \"type\": \"weighted\", \"sets\": 3, \"min\": 10, \"max\": 12, \"increment\": 5, \"equipment\": \"Chest press\", \"cues\": \"Smooth reps; do not bounce.\", \"restSeconds\": 90, \"unit\": \"\", \"movement\": \"horizontal_push\"}"
+    },
+    {
+      "section": "browser",
+      "name": "logged original stays in active workout after permanent replacement",
+      "passed": true,
+      "detail": "9"
+    },
+    {
+      "section": "browser",
+      "name": "paused custom workout is shown on Home",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "Quick Workout is disabled while workout is active",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "planned workout can be canceled without history entry",
+      "passed": true,
+      "detail": "1"
+    },
+    {
+      "section": "browser",
+      "name": "History shows quick workout",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "history contains editable set",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "historical set can be edited",
+      "passed": true,
+      "detail": "110\u00d710 lb \ud83d\udd34"
+    },
+    {
+      "section": "browser",
+      "name": "historical set deletion changes storage",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "historical set deletion can be undone",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "completed session can be deleted",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "completed session deletion can be undone",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "kilogram setting applies",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "light theme applies",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "body weight stores canonically in pounds",
+      "passed": true,
+      "detail": "220.46226218"
+    },
+    {
+      "section": "browser",
+      "name": "muscle mass stores canonically in pounds",
+      "passed": true,
+      "detail": "88.184904872"
+    },
+    {
+      "section": "browser",
+      "name": "body tab displays kilograms",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "body reading can be edited",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "body reading can be deleted",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "body reading deletion can be undone",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "profile reports version 3.4.0",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "backup export format is valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "backup export schema is 5",
+      "passed": true,
+      "detail": "5"
+    },
+    {
+      "section": "browser",
+      "name": "backup includes custom program",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "backup includes quick templates",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "backup includes equipment setups",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "program customization survives app restart",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "permanent replacement survives app restart",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "quick template survives app restart",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "equipment setup survives app restart",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "history survives app restart",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "body reading survives app restart",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "unit and theme survive app restart",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "populated light-theme app has no horizontal overflow",
+      "passed": true,
+      "detail": "{\"sw\": 390, \"cw\": 390, \"bw\": 390}"
+    },
+    {
+      "section": "browser",
+      "name": "backup import restores history",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "backup import restores program edits",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "backup import restores templates",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "backup import restores body data",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "legacy state migrates to schema 5",
+      "passed": true,
+      "detail": "5"
+    },
+    {
+      "section": "browser",
+      "name": "legacy state receives editable 7-day program",
+      "passed": true,
+      "detail": "7"
+    },
+    {
+      "section": "browser",
+      "name": "legacy workout history is preserved",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "legacy active workout is restored",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "legacy active exercise receives snapshot",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "legacy rest timer is restored",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "section": "browser",
+      "name": "no uncaught browser errors",
+      "passed": true,
+      "detail": "[]"
+    }
+  ],
+  "errors": []
+}
