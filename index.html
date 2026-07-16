@@ -1340,6 +1340,199 @@
     .workout-list-finish-row{display:grid;grid-template-columns:1fr 1.2fr;gap:9px;margin-top:8px}.workout-list-finish-row .btn{margin:0}@media(max-width:360px){.workout-list-finish-row{grid-template-columns:1fr}}
 
     .quick-workout-launch:disabled{opacity:.62;cursor:not-allowed}.quick-workout-launch:disabled em{opacity:.35}
+
+    /* NEXSET 3.4.1 — premium visual refinement */
+    :root {
+      --premium-blue:#179DFF;
+      --premium-blue-deep:#0069F4;
+      --premium-navy:#0B1420;
+      --premium-red:#FF353F;
+      --premium-line:rgba(151,178,208,.15);
+    }
+    body {
+      background:
+        radial-gradient(circle at 50% -16%,rgba(25,157,255,.12),transparent 28rem),
+        radial-gradient(circle at 105% 22%,rgba(0,80,180,.09),transparent 22rem),
+        linear-gradient(180deg,#02070D 0%,#040A12 46%,#02060B 100%);
+    }
+    .shell{width:min(680px,calc(100% - 24px));}
+    .app-header{background:rgba(2,7,13,.86);border-bottom-color:rgba(145,174,205,.11);backdrop-filter:blur(28px) saturate(145%);}
+    .header-inner{min-height:68px;}
+    .brand-lockup{width:138px;height:auto;display:block;}
+    .header-alert{width:42px;height:42px;border-radius:14px;background:linear-gradient(155deg,#151F2C,#0B121B);border-color:rgba(150,179,209,.18);box-shadow:0 10px 28px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.035);}
+    .header-alert svg{width:20px;height:20px;fill:none;stroke:#E7EDF6;stroke-width:1.55;}
+    .header-alert-dot{display:none!important;}
+    .main{padding:14px 0 38px;}
+    .home-dashboard{gap:13px;}
+    .home-welcome{padding:3px 5px 0;}
+    .home-welcome h1{font-size:clamp(28px,7.7vw,35px);line-height:1;letter-spacing:-.052em;margin-bottom:4px;}
+    .home-welcome p{font-size:13px;color:#8391A4;}
+
+    .reference-today-card,
+    .reference-today-card.mode-legs-a,
+    .reference-today-card.mode-legs-b{
+      min-height:282px;padding:21px 18px 80px;border-radius:28px;
+      background:
+        linear-gradient(105deg,rgba(13,26,42,.98) 0%,rgba(11,23,39,.96) 49%,rgba(18,20,31,.94) 100%);
+      border:1px solid rgba(121,158,197,.24);
+      box-shadow:0 24px 60px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.045);
+      isolation:isolate;
+    }
+    .reference-today-card::before{
+      content:"";position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:inherit;
+      background:
+        radial-gradient(circle at 79% 41%,rgba(255,43,51,.105),transparent 8.5rem),
+        radial-gradient(circle at 18% 12%,rgba(25,157,255,.17),transparent 12rem),
+        linear-gradient(115deg,rgba(255,255,255,.025),transparent 38%);
+    }
+    .reference-today-card::after{
+      content:"";position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:inherit;opacity:.19;
+      background-image:linear-gradient(rgba(128,160,195,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(128,160,195,.055) 1px,transparent 1px);
+      background-size:27px 27px;mask-image:linear-gradient(90deg,transparent 28%,#000 100%);
+    }
+    .today-card-content,.reference-today-card.mode-legs-a .today-card-content,.reference-today-card.mode-legs-b .today-card-content,.reference-today-card.is-rest .today-card-content{max-width:61%;z-index:4;}
+    .today-kicker{display:flex;align-items:center;gap:7px;margin-bottom:10px;text-transform:uppercase;letter-spacing:.14em;font-size:10px;font-weight:900;color:#65BCFF;}
+    .today-kicker b{padding:4px 7px;border-radius:999px;background:rgba(23,157,255,.12);border:1px solid rgba(23,157,255,.22);font-size:8px;letter-spacing:.10em;color:#BFE5FF;}
+    .reference-today-card h2{font-size:clamp(38px,10vw,49px);line-height:.94;letter-spacing:-.06em;margin:0 0 9px;}
+    .today-focus{max-width:235px!important;color:#C8D2E0!important;font-size:13px!important;line-height:1.35;}
+    .today-detail-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;}
+    .today-detail-list span{min-height:29px;padding:6px 9px;border-radius:10px;background:rgba(4,10,17,.46);border:1px solid rgba(154,180,208,.13);font-size:9.5px;color:#C1CDDC;backdrop-filter:blur(8px);}
+    .today-detail-list svg{width:13px;height:13px;color:#6DBBFF;}
+    .reference-today-card .today-actions{left:14px;right:14px;bottom:14px;z-index:5;}
+    .home-start{min-height:58px;border-radius:16px;background:linear-gradient(135deg,#23A8FF 0%,#0879FA 52%,#0055DE 100%)!important;box-shadow:0 16px 34px rgba(0,94,230,.36),inset 0 1px rgba(255,255,255,.17);font-size:14px;letter-spacing:.02em;}
+    .home-start span{font-size:24px;font-weight:500;margin-left:auto;}
+
+    .anatomy-figure{display:grid;place-items:center;position:relative;isolation:isolate;pointer-events:none;}
+    .anatomy-figure img{position:relative;z-index:2;display:block;width:100%;height:100%;object-fit:contain;object-position:center top;filter:drop-shadow(0 18px 24px rgba(0,0,0,.55));}
+    .reference-today-card>.anatomy-figure.hero{position:absolute;right:-4px;top:7px;z-index:3;width:168px;height:218px;}
+    .reference-today-card>.anatomy-figure.hero.mode-legs-a,.reference-today-card>.anatomy-figure.hero.mode-legs-b{right:-1px;top:7px;width:160px;height:224px;}
+    .reference-today-card>.anatomy-figure.hero.mode-recovery{right:15px;top:12px;width:130px;height:210px;opacity:.92;}
+    .anatomy-glow{position:absolute;z-index:1;width:86%;height:72%;top:14%;left:8%;border-radius:50%;background:radial-gradient(circle,rgba(255,48,56,.20),rgba(255,48,56,.06) 46%,transparent 72%);filter:blur(15px);}
+    .mode-recovery .anatomy-glow{background:radial-gradient(circle,rgba(42,171,255,.22),rgba(42,171,255,.06) 48%,transparent 72%);}
+    .anatomy-label{display:none;position:absolute;z-index:4;right:8px;bottom:3px;max-width:138px;padding:5px 9px;border-radius:999px;background:rgba(2,7,13,.72);border:1px solid rgba(255,255,255,.12);color:#E8EEF7;font-size:7px;font-weight:900;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;backdrop-filter:blur(10px);}
+    .anatomy-figure.compact{width:44px!important;height:54px!important;border-radius:12px;background:linear-gradient(155deg,#111A25,#080D14);border:1px solid rgba(148,177,208,.15);overflow:hidden;}
+    .anatomy-figure.compact img{width:92%;height:96%;filter:drop-shadow(0 7px 10px rgba(0,0,0,.45));}
+    .anatomy-figure.compact.mode-legs-a img,.anatomy-figure.compact.mode-legs-b img,.anatomy-figure.compact.mode-recovery img{width:78%;}
+    .anatomy-figure.compact .anatomy-glow{filter:blur(7px);opacity:.75;}
+    .program-muscle,.history-mark,.history-muscle{background:transparent!important;border:0!important;overflow:visible!important;}
+
+    .quick-workout-launch{min-height:74px;padding:13px 15px;border-radius:20px;background:linear-gradient(135deg,rgba(12,35,58,.92),rgba(7,17,28,.96));border-color:rgba(52,166,255,.25);box-shadow:0 14px 34px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.035);}
+    .quick-workout-launch b{width:40px;height:40px;border-radius:13px;background:linear-gradient(145deg,rgba(23,157,255,.22),rgba(0,91,230,.15));box-shadow:inset 0 1px rgba(255,255,255,.05);}
+    .quick-workout-launch strong{font-size:15px;}
+    .quick-workout-launch small{font-size:11px;line-height:1.25;}
+    .home-section-title{margin-left:5px;color:#AAB5C5;font-size:9.5px;letter-spacing:.20em;}
+    .reference-quick-grid{gap:8px;}
+    .reference-quick-grid button{min-height:80px;border-radius:18px;background:linear-gradient(150deg,#121C27,#080E15);border-color:rgba(147,177,208,.15);box-shadow:0 13px 28px rgba(0,0,0,.18),inset 0 1px rgba(255,255,255,.03);}
+    .reference-quick-grid small{font-size:9.5px;color:#D6DEE9;}
+    .quick-action-icon{width:39px;height:39px;border-radius:13px;}
+    .reference-summary-card{border-radius:20px;background:linear-gradient(150deg,#101923,#080E15);border-color:rgba(145,176,208,.15);box-shadow:0 14px 34px rgba(0,0,0,.20),inset 0 1px rgba(255,255,255,.035);}
+    .summary-row{min-height:54px;padding:10px 13px;grid-template-columns:30px minmax(0,1fr) auto;}
+    .summary-icon{width:30px;height:30px;border-radius:10px;background:rgba(93,132,171,.10);}
+    .summary-copy b{font-size:10.5px;}
+    .summary-row>strong{font-size:10px;color:#D4DDEA;}
+
+    .program-segment{padding:3px;border-radius:15px;background:rgba(11,18,28,.86);border:1px solid rgba(147,177,208,.12);}
+    .program-segment button{border-radius:12px;}
+    .program-segment button.active{background:linear-gradient(145deg,rgba(23,157,255,.18),rgba(0,89,218,.12));color:#71C2FF;box-shadow:inset 0 0 0 1px rgba(23,157,255,.13);}
+    .program-heading{padding:3px 3px 0;}
+    .program-heading>div span{font-size:12px;letter-spacing:.08em;}
+    .program-heading>strong{font-size:10px;color:#64B9FF;}
+    .program-tools{gap:9px;}
+    .program-tools .btn{min-height:48px;border-radius:15px;font-size:12px;}
+    .program-list{gap:7px;background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible;}
+    .program-row{min-height:68px;border-radius:18px;background:linear-gradient(150deg,#121B26,#090F16);border:1px solid rgba(146,176,207,.14);box-shadow:0 10px 24px rgba(0,0,0,.16);}
+    .program-row.selected{background:linear-gradient(135deg,rgba(12,37,61,.98),rgba(8,20,33,.98));border-color:rgba(32,163,255,.53)!important;box-shadow:0 14px 30px rgba(0,0,0,.22),inset 3px 0 #1BA5FF;}
+    .program-weekday{font-size:8px;color:#8B9AAF;}
+    .program-copy b{font-size:13.5px;}
+    .program-copy small{font-size:10px;color:#8795A8;}
+    .program-edit-button{width:34px;height:34px;border-radius:11px;background:#0D151F;border-color:rgba(145,175,206,.14);color:#8AC9FF;}
+    .program-state{border-color:rgba(126,158,190,.28);}
+
+    .bottom-nav{padding:6px 10px calc(7px + var(--safe-bottom));background:rgba(2,6,11,.94);border-top-color:rgba(147,177,207,.10);backdrop-filter:blur(28px) saturate(145%);box-shadow:0 -18px 40px rgba(0,0,0,.36);}
+    .nav-inner{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;}
+    .nav-btn{position:relative;min-height:55px;border-radius:15px;font-size:10px;color:#7F8CA0;gap:3px;}
+    .nav-btn.active{background:transparent!important;border:0!important;color:#25A6FF;}
+    .nav-btn.active::before{content:"";position:absolute;top:1px;width:28px;height:3px;border-radius:99px;background:#1FA2FF;box-shadow:0 0 13px rgba(31,162,255,.65);}
+    .nav-icon{width:23px;height:23px;}
+    .nav-icon svg{width:23px;height:23px;stroke-width:1.85;}
+
+    .focus-shell{grid-template-rows:62px 34px minmax(0,1fr) calc(68px + var(--safe-bottom));background:radial-gradient(circle at 50% -12%,rgba(23,157,255,.16),transparent 21rem),linear-gradient(180deg,#030A12,#02060B 72%);}
+    .focus-header{min-height:62px;padding:8px 12px;}
+    .focus-close,.focus-menu{width:40px;height:40px;border-radius:14px;background:linear-gradient(155deg,#151F2B,#0B1119);border-color:rgba(151,181,211,.17);}
+    .focus-title strong{font-size:11px;letter-spacing:.04em;}
+    .focus-title span{font-size:8px;color:#7E8DA1;}
+    .focus-progress{padding:0 13px 6px;}
+    .focus-progress-top{font-size:8px;color:#8492A5;}
+    .progress-track{height:3px;background:#182332;}
+    .progress-fill{background:linear-gradient(90deg,#22A7FF,#0874F7);box-shadow:0 0 10px rgba(34,167,255,.38);}
+    .exercise-stage{padding:8px 12px 9px;}
+    .exercise-focus-card{border-radius:27px;background:linear-gradient(155deg,#111B27,#080F17);border-color:rgba(147,177,207,.17);box-shadow:0 24px 62px rgba(0,0,0,.38),inset 0 1px rgba(255,255,255,.035);}
+    .exercise-focus-card::before{left:28px;right:28px;background:linear-gradient(90deg,transparent,rgba(43,173,255,.52),transparent);}
+    .exercise-card-inner{padding:15px 14px 12px;gap:9px;}
+    .exercise-number{font-size:9px;letter-spacing:.13em;color:#5AB7FF;}
+    .exercise-title{font-size:clamp(24px,6.8vw,30px);line-height:1;letter-spacing:-.047em;margin:4px 0 5px;}
+    .exercise-target{font-size:10px;color:#8997A9;}
+    .exercise-info-button{min-height:52px;padding:9px 11px;border-radius:15px;background:linear-gradient(145deg,rgba(13,77,126,.28),rgba(8,34,57,.48));border-color:rgba(33,153,241,.27);}
+    .exercise-info-glyph{width:31px;height:31px;border-radius:10px;background:rgba(26,159,255,.20);}
+    .exercise-info-button strong{font-size:11px;}
+    .exercise-info-button small{font-size:8.5px;color:#8CA1B7;}
+    .previous-compact{padding:10px 11px;border-radius:17px;background:linear-gradient(150deg,rgba(12,19,29,.94),rgba(8,13,20,.94));border-color:rgba(145,176,207,.13);}
+    .previous-compact.first-session{grid-template-columns:35px 1fr;}
+    .first-session-icon{width:33px;height:33px;border-radius:11px;}
+    .previous-compact strong{font-size:12px;}
+    .previous-compact p{font-size:8.5px;line-height:1.35;}
+    .control-grid{gap:9px;}
+    .control-block{padding:10px;border-radius:18px;background:linear-gradient(150deg,rgba(10,16,25,.92),rgba(7,12,19,.92));border-color:rgba(145,176,207,.14);}
+    .control-label{font-size:9px;color:#B7C1CF;}
+    .compact-stepper{grid-template-columns:43px minmax(0,1fr) 43px;gap:6px;}
+    .compact-stepper button{height:44px;border-radius:13px;background:linear-gradient(155deg,#1B2634,#101720);border-color:rgba(148,178,209,.15);}
+    .compact-stepper input{height:45px;font-size:30px;}
+    .feel-btn{min-height:42px;border-radius:13px;background:#0A1119;border-color:rgba(148,178,209,.14);font-size:10px;}
+    .feel-btn.active{background:linear-gradient(145deg,rgba(19,113,191,.42),rgba(7,54,101,.55));border-color:#168EFF;color:#CDEAFF;}
+    .warm-compact{border-radius:15px;background:rgba(7,12,18,.62);border-color:rgba(145,176,207,.12);}
+    .focus-bottom{min-height:68px;padding:8px 11px calc(8px + var(--safe-bottom));background:rgba(2,6,11,.94);border-top-color:rgba(148,178,208,.11);backdrop-filter:blur(24px);}
+    .focus-nav-btn{min-height:51px;border-radius:15px;background:linear-gradient(155deg,#151E2A,#0B1119);border-color:rgba(148,178,208,.14);font-size:12px;}
+    .focus-nav-btn.primary{background:linear-gradient(135deg,#24A9FF,#0876F6 55%,#0054DF);box-shadow:0 14px 30px rgba(0,80,220,.34);}
+    .focus-elapsed{font-size:9px;color:#8290A3;}
+
+    .sheet-backdrop{background:rgba(0,3,7,.72);backdrop-filter:blur(13px);}
+    .bottom-sheet{border-radius:30px 30px 0 0;background:linear-gradient(180deg,#151E2A,#0A1018 100%);border-top-color:rgba(150,180,211,.19);box-shadow:0 -34px 90px rgba(0,0,0,.62);}
+    .sheet-handle{width:43px;height:4px;background:#566276;}
+    .sheet-head h2{letter-spacing:-.045em;}
+    .sheet-head>button{background:#202A38;border:1px solid rgba(150,180,211,.13);}
+    .builder-selected-row,.program-editor-row,.workout-list-row,.exercise-library-list>button{border-radius:16px;background:linear-gradient(150deg,#121B26,#0A1119);border-color:rgba(147,177,208,.14);}
+    .builder-footer{background:linear-gradient(transparent,#0A1018 22%);}
+
+    :root[data-theme="light"] body{background:linear-gradient(180deg,#F3F7FC,#EAF0F7);}
+    :root[data-theme="light"] .reference-today-card{background:linear-gradient(105deg,#0E1C2B,#101A29 55%,#1B1D29);}
+    :root[data-theme="light"] .quick-workout-launch,:root[data-theme="light"] .reference-quick-grid button,:root[data-theme="light"] .reference-summary-card,:root[data-theme="light"] .program-row{box-shadow:0 12px 28px rgba(35,54,78,.08);}
+
+    @media(max-width:390px){
+      .reference-today-card{min-height:270px;padding:19px 16px 76px;}
+      .reference-today-card>.anatomy-figure.hero{width:164px;height:212px;right:-4px;}
+      .reference-today-card>.anatomy-figure.hero.mode-legs-a,.reference-today-card>.anatomy-figure.hero.mode-legs-b{width:158px;height:213px;right:-2px;}
+      .today-card-content{max-width:60%;}
+      .reference-today-card h2{font-size:39px;}
+      .reference-quick-grid button{min-height:75px;}
+    }
+    @media(max-height:760px){
+      .home-dashboard{gap:9px;}
+      .reference-today-card{min-height:237px;padding-bottom:67px;}
+      .reference-today-card>.anatomy-figure.hero{width:145px;height:184px;}
+      .reference-today-card>.anatomy-figure.hero.mode-legs-a,.reference-today-card>.anatomy-figure.hero.mode-legs-b{width:118px;height:184px;}
+      .home-start{min-height:50px;}
+      .quick-workout-launch{min-height:65px;}
+      .reference-quick-grid button{min-height:66px;}
+      .summary-row{min-height:45px;}
+      .exercise-card-inner{padding:10px 11px 8px;gap:5px;}
+      .exercise-title{font-size:23px;}
+      .exercise-info-button{min-height:44px;}
+      .previous-compact{padding:8px 9px;}
+      .control-block{padding:7px;}
+      .compact-stepper button{height:37px;}.compact-stepper input{height:39px;font-size:24px;}
+      .feel-btn{min-height:34px;}.warm-compact{min-height:45px;}
+    }
+
 </style>
 </head>
 <body>
@@ -1350,8 +1543,8 @@
 <img alt="NEXSET" class="brand-lockup" src="nexset-lockup-v317.svg"/>
 <span class="sr-only" id="headerSub">Progress Starts With Your Next Set.</span>
 </div>
-<button aria-label="Open quick actions" class="icon-btn header-alert" data-action="open-quick-menu">
-<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M6.8 9.6a5.2 5.2 0 0 1 10.4 0v3.1c0 1.5.5 2.8 1.5 3.9H5.3c1-1.1 1.5-2.4 1.5-3.9Z"></path><path d="M9.7 19.1a2.6 2.6 0 0 0 4.6 0"></path></svg><span class="header-alert-dot"></span>
+<button aria-label="Open shortcuts" class="icon-btn header-alert" data-action="open-quick-menu">
+<svg aria-hidden="true" viewbox="0 0 24 24"><rect x="4" y="4" width="6.2" height="6.2" rx="1.7"></rect><rect x="13.8" y="4" width="6.2" height="6.2" rx="1.7"></rect><rect x="4" y="13.8" width="6.2" height="6.2" rx="1.7"></rect><rect x="13.8" y="13.8" width="6.2" height="6.2" rx="1.7"></rect></svg>
 </button>
 </div>
 </header>
@@ -1380,8 +1573,8 @@
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
     const RECOVERY_KEY = 'pfWorkoutApp.recovery.v1';
     const META_KEY = 'pfWorkoutApp.meta.v1';
-    const APP_VERSION = 'nexset-3.4.0';
-    const APP_VERSION_LABEL = '3.4.0';
+    const APP_VERSION = 'nexset-3.4.1';
+    const APP_VERSION_LABEL = '3.4.1';
     const DATA_SCHEMA_VERSION = 5;
     const STORAGE_WEIGHT_UNIT = 'lb';
     const LB_PER_KG = 2.2046226218;
@@ -1986,7 +2179,7 @@
       if(mode==='calendar') return '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="2.4"/><path d="M8 3.5v4M16 3.5v4M4 10h16M8 13h2M12 13h2M16 13h1M8 16h2M12 16h2"/></svg>';
       if(mode==='history') return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.2v5.1l3.5 2M5.5 5.7 3.8 8.8l3.4.2"/></svg>';
       if(mode==='profile') return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="3.1"/><path d="M5.8 20c.7-4 2.7-6 6.2-6s5.5 2 6.2 6"/></svg>';
-      return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.8 9.6a5.2 5.2 0 0 1 10.4 0v3.1c0 1.5.5 2.8 1.5 3.9H5.3c1-1.1 1.5-2.4 1.5-3.9Z"/><path d="M9.7 19.1a2.6 2.6 0 0 0 4.6 0"/></svg><span class="header-alert-dot"></span>';
+      return '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6.2" height="6.2" rx="1.7"/><rect x="13.8" y="4" width="6.2" height="6.2" rx="1.7"/><rect x="4" y="13.8" width="6.2" height="6.2" rx="1.7"/><rect x="13.8" y="13.8" width="6.2" height="6.2" rx="1.7"/></svg>';
     }
     function syncHeaderAction() {
       const btn=$('.header-alert'); if(!btn) return;
@@ -2071,8 +2264,9 @@
 
     function renderMuscleFigure(day, compact=false) {
       const mode=figureModeForDay(day);
-      const labels={push:'Push focus',pull:'Pull focus','legs-a':'Lower body','legs-b':'Posterior chain',upper:'Upper body',recovery:'Recovery'};
-      return `<span class="focus-map ${compact?'compact':'hero'} mode-${mode}" aria-hidden="true"><svg viewBox="0 0 140 190" focusable="false"><g class="map-guides"><path d="M20 48h100M14 95h112M22 142h96"/><path d="M70 6v178"/></g><g class="map-base"><circle class="map-body map-head" cx="70" cy="18" r="8"/><path class="map-body map-neck" d="M63 27h14l4 10H59Z"/><path class="map-body map-torso" d="M50 35Q70 28 90 35l10 22-8 37-11 14H59L48 94l-8-37Z"/><path class="map-body map-arm" d="M44 39Q32 42 27 57l-8 35 13 4 11-27 8-20Z"/><path class="map-body map-arm" d="M96 39q12 3 17 18l8 35-13 4-11-27-8-20Z"/><path class="map-body map-hips" d="M58 104h24l9 20-10 10H59l-10-10Z"/><path class="map-body map-leg" d="M53 127h17l-4 38H51l-5-26Z"/><path class="map-body map-leg" d="M70 127h17l7 12-5 26H74Z"/><path class="map-body map-calf" d="M51 163h15l-2 24H53l-6-17Z"/><path class="map-body map-calf" d="M74 163h15l4 7-6 17H76Z"/></g><g class="map-zones"><path class="map-zone zone-shoulders" d="M42 39q8-5 15-2l-3 15-12 3-6-8Zm56 0q-8-5-15-2l3 15 12 3 6-8Z"/><path class="map-zone zone-chest" d="M55 42q7-6 14-2v21q-10 3-17-5Zm30 0q-7-6-14-2v21q10 3 17-5Z"/><path class="map-zone zone-lats" d="M48 53l8 10-3 29-8-8-4-25Zm44 0-8 10 3 29 8-8 4-25Z"/><path class="map-zone zone-core" d="M61 65h18l5 28-8 11H64l-8-11Z"/><path class="map-zone zone-biceps" d="M36 50q6-4 10 1l-7 22-9-2Z"/><path class="map-zone zone-biceps" d="M104 50q-6-4-10 1l7 22 9-2Z"/><path class="map-zone zone-triceps" d="M28 59l8-7 6 4-8 30-10 1Z"/><path class="map-zone zone-triceps" d="M112 59l-8-7-6 4 8 30 10 1Z"/><path class="map-zone zone-glutes" d="M55 108q7-4 14 0v19H54l-4-7Zm30 0q-7-4-14 0v19h15l4-7Z"/><path class="map-zone zone-quads" d="M53 130h15l-4 32H52l-4-23Zm19 0h15l5 9-5 23H75Z"/><path class="map-zone zone-hamstrings" d="M48 133l8-4 7 2-4 29h-8l-5-21Zm44 0-8-4-7 2 4 29h8l5-21Z"/><path class="map-zone zone-calves" d="M52 165h13l-2 20h-9l-5-15Zm23 0h13l3 5-5 15h-9Z"/></g><g class="map-details"><path d="M70 38v68M54 65h32M52 84h36M59 108h22M70 127v58"/><circle cx="70" cy="18" r="3"/></g></svg>${compact?'':`<span class="focus-map-badge">${labels[mode]||'Training focus'}</span>`}</span>`;
+      const labels={push:'Chest, shoulders & triceps',pull:'Back & biceps','legs-a':'Quads, glutes & calves','legs-b':'Hamstrings, glutes & calves',upper:'Upper-body focus',recovery:'Recovery & mobility'};
+      const src=`muscle-${mode}-v341.png`;
+      return `<span class="anatomy-figure ${compact?'compact':'hero'} mode-${mode}" aria-hidden="true"><span class="anatomy-glow"></span><img src="${src}" alt="" loading="eager" decoding="async">${compact?'':`<span class="anatomy-label">${labels[mode]||'Training focus'}</span>`}</span>`;
     }
 
     function renderHome() {
@@ -2084,7 +2278,7 @@
           <div class="home-welcome"><div><h1>Welcome back, ${esc(name)}.</h1><p>${isRest?'Recovery is part of the work.':'Let’s get stronger today.'}</p></div></div>
           <section class="today-card reference-today-card mode-${figureModeForDay(day)} ${isRest?'is-rest':''}">
             ${renderMuscleFigure(day)}
-            <div class="today-card-content"><div class="section-kicker">${resume?'Workout in progress':'Today’s workout'}</div><h2>${esc(day.title)}</h2><p class="today-focus">${esc(day.focus)}</p><div class="today-detail-list"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.4 14.6 14.6 9.4M7.1 17a3 3 0 0 1-4.2-4.2l3.2-3.2a3 3 0 0 1 4.2 0M16.9 7a3 3 0 0 1 4.2 4.2l-3.2 3.2a3 3 0 0 1-4.2 0"/></svg>${exerciseCount} exercises · ${setCount} sets</span><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.2v5l3.4 2.1"/></svg>Est. ${estimatedMinutes(day)} min</span></div></div>
+            <div class="today-card-content"><div class="today-kicker"><span>${resume?'Workout in progress':isRest?'Recovery day':`Day ${day.day}`}</span><b>${resume?'Live':'Today'}</b></div><h2>${esc(day.title)}</h2><p class="today-focus">${esc(day.focus)}</p><div class="today-detail-list"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.4 14.6 14.6 9.4M7.1 17a3 3 0 0 1-4.2-4.2l3.2-3.2a3 3 0 0 1 4.2 0M16.9 7a3 3 0 0 1 4.2 4.2l-3.2 3.2a3 3 0 0 1-4.2 0"/></svg>${exerciseCount} exercises · ${setCount} sets</span><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.2v5l3.4 2.1"/></svg>Est. ${estimatedMinutes(day)} min</span></div></div>
             <div class="today-actions ${isRest&&!resume?'two':''}">${isRest&&!resume?`<button class="btn subtle" data-action="mark-rest">Mark rest day</button>`:''}<button class="btn primary home-start" data-action="${resume?'resume-workout':'start-workout'}">${resume?'Resume workout':isRest?'Start optional recovery':'Start workout'}<span>›</span></button></div>
           </section>
           <button class="quick-workout-launch" data-action="open-quick-builder" ${resume?'disabled':''}><span><b>＋</b><i><strong>Quick Workout</strong><small>${resume?'Finish or cancel the active workout first':'Build an unplanned session or use a saved template'}</small></i></span><em>›</em></button>

@@ -6,8 +6,8 @@
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
     const RECOVERY_KEY = 'pfWorkoutApp.recovery.v1';
     const META_KEY = 'pfWorkoutApp.meta.v1';
-    const APP_VERSION = 'nexset-3.4.0';
-    const APP_VERSION_LABEL = '3.4.0';
+    const APP_VERSION = 'nexset-3.4.1';
+    const APP_VERSION_LABEL = '3.4.1';
     const DATA_SCHEMA_VERSION = 5;
     const STORAGE_WEIGHT_UNIT = 'lb';
     const LB_PER_KG = 2.2046226218;
@@ -612,7 +612,7 @@
       if(mode==='calendar') return '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="2.4"/><path d="M8 3.5v4M16 3.5v4M4 10h16M8 13h2M12 13h2M16 13h1M8 16h2M12 16h2"/></svg>';
       if(mode==='history') return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.2v5.1l3.5 2M5.5 5.7 3.8 8.8l3.4.2"/></svg>';
       if(mode==='profile') return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="3.1"/><path d="M5.8 20c.7-4 2.7-6 6.2-6s5.5 2 6.2 6"/></svg>';
-      return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.8 9.6a5.2 5.2 0 0 1 10.4 0v3.1c0 1.5.5 2.8 1.5 3.9H5.3c1-1.1 1.5-2.4 1.5-3.9Z"/><path d="M9.7 19.1a2.6 2.6 0 0 0 4.6 0"/></svg><span class="header-alert-dot"></span>';
+      return '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6.2" height="6.2" rx="1.7"/><rect x="13.8" y="4" width="6.2" height="6.2" rx="1.7"/><rect x="4" y="13.8" width="6.2" height="6.2" rx="1.7"/><rect x="13.8" y="13.8" width="6.2" height="6.2" rx="1.7"/></svg>';
     }
     function syncHeaderAction() {
       const btn=$('.header-alert'); if(!btn) return;
@@ -697,8 +697,9 @@
 
     function renderMuscleFigure(day, compact=false) {
       const mode=figureModeForDay(day);
-      const labels={push:'Push focus',pull:'Pull focus','legs-a':'Lower body','legs-b':'Posterior chain',upper:'Upper body',recovery:'Recovery'};
-      return `<span class="focus-map ${compact?'compact':'hero'} mode-${mode}" aria-hidden="true"><svg viewBox="0 0 140 190" focusable="false"><g class="map-guides"><path d="M20 48h100M14 95h112M22 142h96"/><path d="M70 6v178"/></g><g class="map-base"><circle class="map-body map-head" cx="70" cy="18" r="8"/><path class="map-body map-neck" d="M63 27h14l4 10H59Z"/><path class="map-body map-torso" d="M50 35Q70 28 90 35l10 22-8 37-11 14H59L48 94l-8-37Z"/><path class="map-body map-arm" d="M44 39Q32 42 27 57l-8 35 13 4 11-27 8-20Z"/><path class="map-body map-arm" d="M96 39q12 3 17 18l8 35-13 4-11-27-8-20Z"/><path class="map-body map-hips" d="M58 104h24l9 20-10 10H59l-10-10Z"/><path class="map-body map-leg" d="M53 127h17l-4 38H51l-5-26Z"/><path class="map-body map-leg" d="M70 127h17l7 12-5 26H74Z"/><path class="map-body map-calf" d="M51 163h15l-2 24H53l-6-17Z"/><path class="map-body map-calf" d="M74 163h15l4 7-6 17H76Z"/></g><g class="map-zones"><path class="map-zone zone-shoulders" d="M42 39q8-5 15-2l-3 15-12 3-6-8Zm56 0q-8-5-15-2l3 15 12 3 6-8Z"/><path class="map-zone zone-chest" d="M55 42q7-6 14-2v21q-10 3-17-5Zm30 0q-7-6-14-2v21q10 3 17-5Z"/><path class="map-zone zone-lats" d="M48 53l8 10-3 29-8-8-4-25Zm44 0-8 10 3 29 8-8 4-25Z"/><path class="map-zone zone-core" d="M61 65h18l5 28-8 11H64l-8-11Z"/><path class="map-zone zone-biceps" d="M36 50q6-4 10 1l-7 22-9-2Z"/><path class="map-zone zone-biceps" d="M104 50q-6-4-10 1l7 22 9-2Z"/><path class="map-zone zone-triceps" d="M28 59l8-7 6 4-8 30-10 1Z"/><path class="map-zone zone-triceps" d="M112 59l-8-7-6 4 8 30 10 1Z"/><path class="map-zone zone-glutes" d="M55 108q7-4 14 0v19H54l-4-7Zm30 0q-7-4-14 0v19h15l4-7Z"/><path class="map-zone zone-quads" d="M53 130h15l-4 32H52l-4-23Zm19 0h15l5 9-5 23H75Z"/><path class="map-zone zone-hamstrings" d="M48 133l8-4 7 2-4 29h-8l-5-21Zm44 0-8-4-7 2 4 29h8l5-21Z"/><path class="map-zone zone-calves" d="M52 165h13l-2 20h-9l-5-15Zm23 0h13l3 5-5 15h-9Z"/></g><g class="map-details"><path d="M70 38v68M54 65h32M52 84h36M59 108h22M70 127v58"/><circle cx="70" cy="18" r="3"/></g></svg>${compact?'':`<span class="focus-map-badge">${labels[mode]||'Training focus'}</span>`}</span>`;
+      const labels={push:'Chest, shoulders & triceps',pull:'Back & biceps','legs-a':'Quads, glutes & calves','legs-b':'Hamstrings, glutes & calves',upper:'Upper-body focus',recovery:'Recovery & mobility'};
+      const src=`muscle-${mode}-v341.png`;
+      return `<span class="anatomy-figure ${compact?'compact':'hero'} mode-${mode}" aria-hidden="true"><span class="anatomy-glow"></span><img src="${src}" alt="" loading="eager" decoding="async">${compact?'':`<span class="anatomy-label">${labels[mode]||'Training focus'}</span>`}</span>`;
     }
 
     function renderHome() {
@@ -710,7 +711,7 @@
           <div class="home-welcome"><div><h1>Welcome back, ${esc(name)}.</h1><p>${isRest?'Recovery is part of the work.':'Let’s get stronger today.'}</p></div></div>
           <section class="today-card reference-today-card mode-${figureModeForDay(day)} ${isRest?'is-rest':''}">
             ${renderMuscleFigure(day)}
-            <div class="today-card-content"><div class="section-kicker">${resume?'Workout in progress':'Today’s workout'}</div><h2>${esc(day.title)}</h2><p class="today-focus">${esc(day.focus)}</p><div class="today-detail-list"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.4 14.6 14.6 9.4M7.1 17a3 3 0 0 1-4.2-4.2l3.2-3.2a3 3 0 0 1 4.2 0M16.9 7a3 3 0 0 1 4.2 4.2l-3.2 3.2a3 3 0 0 1-4.2 0"/></svg>${exerciseCount} exercises · ${setCount} sets</span><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.2v5l3.4 2.1"/></svg>Est. ${estimatedMinutes(day)} min</span></div></div>
+            <div class="today-card-content"><div class="today-kicker"><span>${resume?'Workout in progress':isRest?'Recovery day':`Day ${day.day}`}</span><b>${resume?'Live':'Today'}</b></div><h2>${esc(day.title)}</h2><p class="today-focus">${esc(day.focus)}</p><div class="today-detail-list"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.4 14.6 14.6 9.4M7.1 17a3 3 0 0 1-4.2-4.2l3.2-3.2a3 3 0 0 1 4.2 0M16.9 7a3 3 0 0 1 4.2 4.2l-3.2 3.2a3 3 0 0 1-4.2 0"/></svg>${exerciseCount} exercises · ${setCount} sets</span><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.2v5l3.4 2.1"/></svg>Est. ${estimatedMinutes(day)} min</span></div></div>
             <div class="today-actions ${isRest&&!resume?'two':''}">${isRest&&!resume?`<button class="btn subtle" data-action="mark-rest">Mark rest day</button>`:''}<button class="btn primary home-start" data-action="${resume?'resume-workout':'start-workout'}">${resume?'Resume workout':isRest?'Start optional recovery':'Start workout'}<span>›</span></button></div>
           </section>
           <button class="quick-workout-launch" data-action="open-quick-builder" ${resume?'disabled':''}><span><b>＋</b><i><strong>Quick Workout</strong><small>${resume?'Finish or cancel the active workout first':'Build an unplanned session or use a saved template'}</small></i></span><em>›</em></button>
