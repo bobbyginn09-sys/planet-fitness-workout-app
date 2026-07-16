@@ -1,8 +1,8 @@
-const APP_VERSION = '3.4.1';
+const APP_VERSION = '3.4.2';
 const CACHE_PREFIX = 'nexset-workout-';
-const CACHE_NAME = `${CACHE_PREFIX}v3-4-1-premium-20260716-1`;
+const CACHE_NAME = `${CACHE_PREFIX}v3-4-2-signature-20260716-1`;
 const CORE_ASSETS = ['./','./index.html','./manifest.webmanifest','./manifest.json','./nexset-mark.svg','./nexset-lockup-v317.svg','./icon-192.png','./icon-512.png','./icon-1024.png'];
-const OPTIONAL_ASSETS = ['./apple-touch-icon.png','./launch-1125x2436.png','./launch-1170x2532.png','./launch-1179x2556.png','./launch-1290x2796.png','./muscle-push-v341.png','./muscle-pull-v341.png','./muscle-legs-a-v341.png','./muscle-legs-b-v341.png','./muscle-upper-v341.png','./muscle-recovery-v341.png'];
+const OPTIONAL_ASSETS = ['./apple-touch-icon.png','./launch-1125x2436.png','./launch-1170x2532.png','./launch-1179x2556.png','./launch-1290x2796.png','./muscle-push-v342.png','./muscle-pull-v342.png','./muscle-legs-a-v342.png','./muscle-legs-b-v342.png','./muscle-upper-v342.png','./muscle-recovery-v342.png'];
 
 self.addEventListener('install', event => {
   event.waitUntil((async()=>{

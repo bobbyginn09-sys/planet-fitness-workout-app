@@ -1,18 +1,15 @@
-NEXSET 3.4.1 — PREMIUM POLISH RELEASE
+NEXSET 3.4.2 — SIGNATURE UI
 
-This is a complete all-in-one update. You do not need to install 3.3.1 or 3.4.0 first.
-
-MAIN CHANGES
-- Premium anatomical workout figures with red target-muscle highlights.
-- Rebuilt Today-card composition and visual hierarchy.
-- Refined Home, Workouts, active workout, builders, sheets, and navigation.
-- Correct shortcuts-grid header icon.
-- All NEXSET 3.4.0 flexible-workout features retained.
+This is a complete all-in-one release. You do not need to install 3.4.1 first.
 
 INSTALL
 1. Export a backup from Profile → Backup & restore.
 2. Extract the ZIP.
-3. Upload all files inside planet-fitness-workout-app-3.4.1 to the GitHub repository root.
-4. Open the site once with ?nexset=3.4.1.
-5. Check for update in the installed app, close it fully, and reopen it.
-6. Confirm version 3.4.1 and existing data.
+3. Upload all files inside planet-fitness-workout-app-3.4.2 to the repository root.
+4. Wait for GitHub Pages to publish.
+5. Open the site once with ?nexset=3.4.2.
+6. Use Check for update → Update now.
+7. Fully close and reopen NEXSET.
+8. Confirm version 3.4.2 and existing data.
+
+Read DEPLOY_CHECKLIST_3.4.2.md before deployment.
