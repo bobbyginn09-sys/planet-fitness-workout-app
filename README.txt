@@ -1,40 +1,41 @@
-NEXSET 3.2.1 — RELIABILITY UPDATE
+NEXSET 3.4.0 — ALL-IN-ONE FLEXIBLE WORKOUTS RELEASE
 Released: July 15, 2026
 
+This package includes the complete 3.3.1 visual-polish work and the actual flexible-workout phase. No earlier package needs to be installed first.
+
 WHAT CHANGED
-- Real lb/kg conversion with canonical pound storage and legacy migration.
-- Separate strength, recovery, training-streak, and consistency statistics.
-- Editable active and historical sets, body readings, and completed sessions.
-- Undo after set, session, and body-record deletion.
-- Rest timers recover after refresh, app closure, or relaunch.
-- Workout-level notes and exercise-specific setup guidance.
-- Honest empty coaching states.
-- Safer NEXSET-only offline-cache cleanup.
-- Text zoom and reduced-motion accessibility improvements.
+- Quick Workout builder and reusable templates.
+- Editable seven-day routine.
+- Add, remove, reorder, and customize exercises.
+- Skip, revisit, jump to, and reorder exercises during a workout.
+- Movement-compatible exercise replacement for one session or future sessions.
+- Mid-workout exercise additions.
+- Saved machine and equipment setup notes.
+- Per-exercise rest durations, including zero seconds to disable auto-rest.
+- Geometric workout focus maps and polished Home, Progress, History, and active-workout screens.
+- Visible, editable recent body readings.
+- Existing unit conversion, editing, Undo, timer recovery, backup, and migration reliability retained.
 
 DATA COMPATIBILITY
-The update preserves these existing browser-storage keys:
-  pfWorkoutApp.v1
-  pfWorkoutApp.active.v1
-
-The state schema moves to version 4. Existing data is migrated in place.
-Export a backup before deployment or before clearing browser data.
-
-DEPLOYMENT
-1. Export a backup from Profile > Backup & restore.
-2. Replace the GitHub Pages repository-root files with this package.
-3. Commit and push the changes.
-4. Open:
-   https://bobbyginn09-sys.github.io/planet-fitness-workout-app/?nexset=3.2.1
-5. In an installed copy, use Profile > Backup & restore > Check for update.
-6. Fully close and reopen the app, then verify existing history and any unfinished workout.
+- State schema: 5
+- Existing local-storage keys are preserved.
+- Existing history, body data, settings, progression, unfinished workouts, and rest timers migrate in place.
+- Custom routines, templates, setup notes, and exercise snapshots are included in backups.
 
 VALIDATION
-- 49 of 49 automated mobile checks passed.
-- No uncaught JavaScript exceptions were recorded.
-- Tested at 390 x 844 and 430 x 932 without horizontal overflow.
-- JavaScript syntax, manifests, service-worker assets, migration, editing,
-  Undo, timer recovery, units, body records, history, and PWA registration passed.
+- 118 of 118 checks passed.
+- 13 static checks and 105 browser workflow checks.
+- Zero uncaught browser errors.
+- Responsive checks passed at 375 x 667, 390 x 844, and 430 x 932.
 
-See README.md, RELEASE_NOTES_3.2.1.md, RELEASE_CHECKLIST_3.2.1.md,
-and VALIDATION.md for full details.
+INSTALLATION
+1. Export a backup from Profile > Backup & restore.
+2. Extract the ZIP and open planet-fitness-workout-app-3.4.0.
+3. Replace the GitHub Pages repository-root runtime files in one commit.
+4. Push and wait for Pages to publish.
+5. Open:
+   https://bobbyginn09-sys.github.io/planet-fitness-workout-app/?nexset=3.4.0
+6. In the installed app, check for an update, choose Update now, fully close, and reopen.
+7. Verify version 3.4.0 and existing data.
+
+See README.md, RELEASE_NOTES_3.4.0.md, VALIDATION_3.4.0.md, and DEPLOY_CHECKLIST_3.4.0.md.

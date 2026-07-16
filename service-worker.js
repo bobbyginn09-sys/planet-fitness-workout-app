@@ -1,8 +1,8 @@
-const APP_VERSION = '3.2.1';
+const APP_VERSION = '3.4.0';
 const CACHE_PREFIX = 'nexset-workout-';
-const CACHE_NAME = `${CACHE_PREFIX}v3-2-1-reliability-20260715-1`;
-const CORE_ASSETS = ['./','./index.html','./manifest.webmanifest','./manifest.json','./nexset-mark.svg','./nexset-lockup-v317.svg','./icon-192.png','./icon-512.png'];
-const OPTIONAL_ASSETS = ['./apple-touch-icon.png','./muscle-push-v316.png','./muscle-pull-v316.png','./muscle-legs-a-v316.png','./muscle-legs-b-v316.png','./muscle-upper-v316.png','./muscle-recovery-v316.png'];
+const CACHE_NAME = `${CACHE_PREFIX}v3-4-0-flex-20260715-1`;
+const CORE_ASSETS = ['./','./index.html','./manifest.webmanifest','./manifest.json','./nexset-mark.svg','./nexset-lockup-v317.svg','./icon-192.png','./icon-512.png','./icon-1024.png'];
+const OPTIONAL_ASSETS = ['./apple-touch-icon.png','./launch-1125x2436.png','./launch-1170x2532.png','./launch-1179x2556.png','./launch-1290x2796.png'];
 
 self.addEventListener('install', event => {
   event.waitUntil((async()=>{
