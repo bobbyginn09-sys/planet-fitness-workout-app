@@ -1,0 +1,318 @@
+{
+  "version": "3.4.1",
+  "generated_at": "2026-07-16T09:46:45.951729+00:00",
+  "passed": 62,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "required asset index.html",
+      "passed": true,
+      "detail": "358816"
+    },
+    {
+      "name": "required asset service-worker.js",
+      "passed": true,
+      "detail": "2059"
+    },
+    {
+      "name": "required asset manifest.json",
+      "passed": true,
+      "detail": "823"
+    },
+    {
+      "name": "required asset manifest.webmanifest",
+      "passed": true,
+      "detail": "823"
+    },
+    {
+      "name": "required asset nexset-mark.svg",
+      "passed": true,
+      "detail": "1165"
+    },
+    {
+      "name": "required asset nexset-lockup-v317.svg",
+      "passed": true,
+      "detail": "1371"
+    },
+    {
+      "name": "required asset icon-192.png",
+      "passed": true,
+      "detail": "16806"
+    },
+    {
+      "name": "required asset icon-512.png",
+      "passed": true,
+      "detail": "58847"
+    },
+    {
+      "name": "required asset icon-1024.png",
+      "passed": true,
+      "detail": "140997"
+    },
+    {
+      "name": "required asset muscle-push-v341.png",
+      "passed": true,
+      "detail": "237550"
+    },
+    {
+      "name": "required asset muscle-pull-v341.png",
+      "passed": true,
+      "detail": "231050"
+    },
+    {
+      "name": "required asset muscle-legs-a-v341.png",
+      "passed": true,
+      "detail": "193359"
+    },
+    {
+      "name": "required asset muscle-legs-b-v341.png",
+      "passed": true,
+      "detail": "189445"
+    },
+    {
+      "name": "required asset muscle-upper-v341.png",
+      "passed": true,
+      "detail": "241547"
+    },
+    {
+      "name": "required asset muscle-recovery-v341.png",
+      "passed": true,
+      "detail": "117686"
+    },
+    {
+      "name": "app version 3.4.1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "anatomical renderer active",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "shortcut grid replaces notification bell",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "manifest.json versioned start URL",
+      "passed": true,
+      "detail": "./index.html?nexset=3.4.1"
+    },
+    {
+      "name": "manifest.webmanifest versioned start URL",
+      "passed": true,
+      "detail": "./index.html?nexset=3.4.1"
+    },
+    {
+      "name": "service worker version 3.4.1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "service worker caches push anatomy asset",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "service worker caches pull anatomy asset",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "service worker caches legs-a anatomy asset",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "service worker caches legs-b anatomy asset",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "service worker caches upper anatomy asset",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "service worker caches recovery anatomy asset",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "JavaScript syntax extracted.js",
+      "passed": true,
+      "detail": "ok"
+    },
+    {
+      "name": "JavaScript syntax service-worker.js",
+      "passed": true,
+      "detail": "ok"
+    },
+    {
+      "name": "375x812 home renders",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "375x812 no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "375x812 anatomy asset loaded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "375x812 today card contained",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "375x812 shortcut icon is grid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "375x812 no page errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "375x812 no console errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "390x844 home renders",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 anatomy asset loaded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 today card contained",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 shortcut icon is grid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "quick workout builder opens",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "quick builder contained",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "seven program days render",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "program anatomy thumbnails load",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Legs A selection reaches Home",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Legs A uses lower-body anatomy",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "active workout opens",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "active workout no overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "active controls visible",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "set logs successfully",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "paused workout returns home",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "profile reports 3.4.1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "390x844 no page errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "390x844 no console errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "430x932 home renders",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 anatomy asset loaded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 today card contained",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 shortcut icon is grid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "430x932 no page errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "name": "430x932 no console errors",
+      "passed": true,
+      "detail": "[]"
+    }
+  ]
+}
