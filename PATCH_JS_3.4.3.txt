@@ -1,0 +1,348 @@
+/* NEXSET_343_TRANSFORMED */
+function nexset343Number(value, fallback) {
+  const number = Number(value);
+  return Number.isFinite(number) ? number : fallback;
+}
+function nexset343Round(value, step) {
+  const increment = Math.max(.01, Number(step) || 1);
+  return Math.round((Number(value) || 0) / increment) * increment;
+}
+function nexset343CardioConfig(ex) {
+  const id = String(ex?.id || '');
+  const treadmill = {
+    incline_treadmill_push: { mode:'treadmill', speedMin:2.8, speedMax:3.5, speedStep:.1, inclineMin:6, inclineMax:10, inclineStep:1 },
+    easy_walk_recovery: { mode:'treadmill', speedMin:2.5, speedMax:3.2, speedStep:.1, inclineMin:0, inclineMax:4, inclineStep:1 },
+    bike_or_walk_legs_a: { mode:'treadmill', speedMin:2.7, speedMax:3.4, speedStep:.1, inclineMin:4, inclineMax:9, inclineStep:1 },
+    treadmill_intervals_upper: { mode:'treadmill', speedMin:2.8, speedMax:3.6, speedStep:.1, inclineMin:4, inclineMax:8, inclineStep:1 },
+    bike_legs_b: { mode:'treadmill', speedMin:2.6, speedMax:3.3, speedStep:.1, inclineMin:3, inclineMax:8, inclineStep:1 },
+    treadmill_finisher: { mode:'treadmill', speedMin:2.8, speedMax:3.6, speedStep:.1, inclineMin:4, inclineMax:10, inclineStep:1 }
+  };
+  if (treadmill[id]) return treadmill[id];
+  if (id === 'stair_or_bike_pull') return { mode:'stair', levelMin:3, levelMax:8, levelStep:1 };
+  const name = String(ex?.name || '').toLowerCase();
+  if (name.includes('stair')) return { mode:'stair', levelMin:3, levelMax:8, levelStep:1 };
+  if (name.includes('treadmill') || name.includes('incline walk')) return { mode:'treadmill', speedMin:2.7, speedMax:3.5, speedStep:.1, inclineMin:3, inclineMax:9, inclineStep:1 };
+  return { mode:'duration' };
+}
+function nexset343PatchExercise(day, id, patch) {
+  const exercise = day?.exercises?.find(item => item.id === id);
+  if (exercise) Object.assign(exercise, patch);
+  return exercise;
+}
+function nexset343PatchPlan(plan) {
+  if (!Array.isArray(plan)) return plan;
+  const day1 = plan.find(day => Number(day.day) === 1) || plan[0];
+  const day2 = plan.find(day => Number(day.day) === 2) || plan[1];
+  const day3 = plan.find(day => Number(day.day) === 3) || plan[2];
+  const day4 = plan.find(day => Number(day.day) === 4) || plan[3];
+  const day5 = plan.find(day => Number(day.day) === 5) || plan[4];
+  const day6 = plan.find(day => Number(day.day) === 6) || plan[5];
+  const day7 = plan.find(day => Number(day.day) === 7) || plan[6];
+
+  nexset343PatchExercise(day1, 'incline_treadmill_push', {
+    name:'Incline Treadmill Walk', equipment:'Treadmill', min:15, max:20, increment:2,
+    cues:'Track time, speed, and incline. Increase only one variable after a controlled finish.'
+  });
+
+  nexset343PatchExercise(day2, 'stair_or_bike_pull', {
+    name:'Stair Climber', equipment:'Stair climber', min:12, max:18, increment:2,
+    cues:'Track time and machine level. Keep posture tall and progress one variable at a time.'
+  });
+
+  nexset343PatchExercise(day3, 'easy_walk_recovery', {
+    name:'Easy Treadmill Walk', equipment:'Treadmill', min:20, max:30, increment:5,
+    cues:'Keep the pace conversational. Track time, speed, and incline without turning recovery into a hard workout.'
+  });
+
+  if (day4) {
+    day4.warmup = '5 minutes easy treadmill walking + 1–2 light ramp-up sets before Smith squats.';
+    day4.note = 'No lunges. Keep most sets controlled with 1–3 clean reps left; do not chase red effort on every set.';
+    nexset343PatchExercise(day4, 'smith_squat', { sets:4, min:8, max:10, increment:10, cues:'Repeat 130 lb cleanly before increasing. Brace hard and stop before form changes.' });
+    nexset343PatchExercise(day4, 'romanian_deadlift', { sets:3, min:8, max:10, increment:10, cues:'Use 135–140 lb with a controlled hinge. Stop when hamstring or back position changes.' });
+    nexset343PatchExercise(day4, 'leg_press_45', { sets:3, min:12, max:15, increment:10, cues:'Use a full foot and controlled depth. Keep 120 lb until all sets are clean.' });
+    nexset343PatchExercise(day4, 'leg_extension', { sets:2, min:12, max:15, increment:5 });
+    nexset343PatchExercise(day4, 'seated_leg_curl_a', { sets:2, min:12, max:15, increment:5 });
+    nexset343PatchExercise(day4, 'standing_calf_raise', { name:'Calf Raise Machine', sets:3, min:12, max:18, increment:5, cues:'Use a full stretch and pause at the top. Keep the reps smooth instead of forcing failure.' });
+    nexset343PatchExercise(day4, 'bike_or_walk_legs_a', {
+      name:'Incline Treadmill Walk', equipment:'Treadmill', min:12, max:20, increment:2,
+      cues:'Track time, speed, and incline. Finish at a repeatable effort that does not interfere with leg recovery.'
+    });
+  }
+
+  if (day5) {
+    day5.warmup = '5 minutes easy treadmill walking + light upper-body ramp-up sets.';
+    day5.note = '15 focused lifting sets. Keep compound work controlled; only an occasional final arm set should feel hard.';
+    nexset343PatchExercise(day5, 'machine_chest_press', { sets:3, min:10, max:12 });
+    nexset343PatchExercise(day5, 'neutral_lat_pulldown', { sets:3, min:10, max:12 });
+    nexset343PatchExercise(day5, 'seated_cable_row_def', { sets:3, min:10, max:12 });
+    nexset343PatchExercise(day5, 'machine_shoulder_press', { sets:2, min:10, max:12 });
+    nexset343PatchExercise(day5, 'rope_pushdown_upper', { sets:2, min:12, max:15 });
+    nexset343PatchExercise(day5, 'cable_curl_upper', { sets:2, min:12, max:15 });
+    nexset343PatchExercise(day5, 'treadmill_intervals_upper', {
+      name:'Incline Treadmill Walk', equipment:'Treadmill', sets:1, min:10, max:15, increment:2,
+      cues:'Track time, speed, and incline. Keep this controlled after the 15 lifting sets.'
+    });
+    const order = ['machine_chest_press','neutral_lat_pulldown','seated_cable_row_def','machine_shoulder_press','rope_pushdown_upper','cable_curl_upper','treadmill_intervals_upper'];
+    const byId = new Map((day5.exercises || []).map(exercise => [exercise.id, exercise]));
+    day5.exercises = order.map(id => byId.get(id)).filter(Boolean);
+  }
+
+  if (day6) {
+    day6.warmup = '5 minutes easy treadmill walking + a light Romanian-deadlift pattern.';
+    nexset343PatchExercise(day6, 'bike_legs_b', {
+      name:'Incline Treadmill Walk', equipment:'Treadmill', min:12, max:20, increment:2,
+      cues:'Track time, speed, and incline. Use a controlled finish after posterior-chain work.'
+    });
+  }
+
+  if (day7) {
+    const optional = nexset343PatchExercise(day7, 'optional_steps_rest', {
+      name:'Optional Easy Walk', type:'timed', equipment:'Walk', min:15, max:25, increment:5,
+      cues:'Optional recovery movement only. Keep it easy and stop refreshed.'
+    });
+    if (optional) delete optional.cardioMode;
+  }
+  return plan;
+}
+function nexset343ApplyPlanMigration() {
+  try {
+    nexset343PatchPlan(PLAN);
+    state.settings = state.settings || {};
+    if (state.settings.nexsetCoachPlanVersion !== '3.4.3') {
+      state.programPlan = nexset343PatchPlan(Array.isArray(state.programPlan) ? state.programPlan : JSON.parse(JSON.stringify(PLAN)));
+      state.settings.nexsetCoachPlanVersion = '3.4.3';
+      rebuildProgress();
+      saveState({ reason:'3.4.3-coach-plan' });
+      if (!active && currentView !== 'complete') render();
+      showToast('Workouts and progressive cardio updated.');
+    }
+  } catch (error) {
+    console.warn('NEXSET 3.4.3 plan migration skipped', error);
+  }
+}
+
+function normalizeActiveSession(session, ...args) {
+  const normalized = normalizeActiveSessionBase343(session, ...args);
+  if (!normalized || !Array.isArray(normalized.exercises)) return normalized;
+  const raw = Array.isArray(session?.exercises) ? session.exercises : [];
+  normalized.exercises.forEach((entry, index) => {
+    const source = raw.find(item => item?.id === entry.id) || raw[index] || {};
+    for (const key of ['draftSpeed','draftIncline','draftLevel']) {
+      const value = Number(source[key]);
+      if (Number.isFinite(value)) entry[key] = value;
+    }
+  });
+  return normalized;
+}
+function initialReps(ex) {
+  if (ex?.type === 'cardio') {
+    const progress = state.exerciseProgress?.[ex.id];
+    if (Number.isFinite(Number(progress?.nextDuration))) return Math.max(1, Number(progress.nextDuration));
+  }
+  return initialRepsBase343(ex);
+}
+function makeActiveEntry(ex, ...args) {
+  const entry = makeActiveEntryBase343(ex, ...args);
+  if (ex?.type !== 'cardio') return entry;
+  const config = nexset343CardioConfig(ex);
+  const progress = state.exerciseProgress?.[ex.id] || {};
+  const previous = getPreviousExercise(ex.id);
+  const last = previous ? workingLogs(previous.entry.logs || []).at(-1) : null;
+  if (config.mode === 'treadmill') {
+    entry.draftSpeed = nexset343Number(progress.nextSpeed, nexset343Number(last?.speed, config.speedMin));
+    entry.draftIncline = nexset343Number(progress.nextIncline, nexset343Number(last?.incline, config.inclineMin));
+  } else if (config.mode === 'stair') {
+    entry.draftLevel = nexset343Number(progress.nextLevel, nexset343Number(last?.level, config.levelMin));
+  }
+  return entry;
+}
+function formatLogShort(ex, log) {
+  if (ex?.type !== 'cardio') return formatLogShortBase343(ex, log);
+  const duration = `${cleanNumber(log?.duration)} ${ex.unit || 'min'}`;
+  const config = nexset343CardioConfig(ex);
+  if (config.mode === 'treadmill') {
+    const speed = Number(log?.speed), incline = Number(log?.incline);
+    return `${duration}${Number.isFinite(speed) ? ` · ${cleanNumber(speed)} mph` : ''}${Number.isFinite(incline) ? ` · ${cleanNumber(incline)}%` : ''}`;
+  }
+  if (config.mode === 'stair') {
+    const level = Number(log?.level);
+    return `${duration}${Number.isFinite(level) ? ` · level ${cleanNumber(level)}` : ''}`;
+  }
+  return duration;
+}
+function nextTargetLabel(ex, progress) {
+  if (ex?.type !== 'cardio') return nextTargetLabelBase343(ex, progress);
+  if (!progress) return 'Build a cardio baseline';
+  const duration = Number.isFinite(Number(progress.nextDuration)) ? Number(progress.nextDuration) : Number(progress.lastDuration) || ex.min;
+  const config = nexset343CardioConfig(ex);
+  if (config.mode === 'treadmill') {
+    const speed = nexset343Number(progress.nextSpeed, config.speedMin);
+    const incline = nexset343Number(progress.nextIncline, config.inclineMin);
+    return `${cleanNumber(duration)} min · ${cleanNumber(speed)} mph · ${cleanNumber(incline)}%`;
+  }
+  if (config.mode === 'stair') {
+    const level = nexset343Number(progress.nextLevel, config.levelMin);
+    return `${cleanNumber(duration)} min · level ${cleanNumber(level)}`;
+  }
+  return `${cleanNumber(duration)} ${ex.unit || 'min'}`;
+}
+function nexset343Metric(label, unit, input, value, step, action) {
+  const decrease = action === 'adjust-duration'
+    ? `<button data-action="adjust-duration" data-delta="-${step}" aria-label="Decrease ${label}">−</button>`
+    : `<button data-cardio-adjust="${input}" data-delta="-${step}" aria-label="Decrease ${label}">−</button>`;
+  const increase = action === 'adjust-duration'
+    ? `<button data-action="adjust-duration" data-delta="${step}" aria-label="Increase ${label}">+</button>`
+    : `<button data-cardio-adjust="${input}" data-delta="${step}" aria-label="Increase ${label}">+</button>`;
+  return `<div class="cardio-metric"><div class="cardio-metric-label"><span>${label}</span><small>${unit}</small></div><div class="cardio-stepper">${decrease}<input inputmode="decimal" data-input="${input}" value="${cleanNumber(value)}" aria-label="${label}">${increase}</div></div>`;
+}
+function renderFocusLogPanel(ex, entry, index, weight, reps) {
+  if (ex?.type !== 'cardio') return renderFocusLogPanelBase343(ex, entry, index, weight, reps);
+  const config = nexset343CardioConfig(ex);
+  const duration = nexset343Number(entry.draftReps, ex.min);
+  const durationStep = Math.max(.25, Number(ex.increment) || 1);
+  const feel = entry.draftFeel || 'good';
+  const progress = state.exerciseProgress?.[ex.id];
+  const target = nextTargetLabel(ex, progress);
+  let metrics = nexset343Metric('Time', ex.unit || 'min', 'duration', duration, durationStep, 'adjust-duration');
+  if (config.mode === 'treadmill') {
+    const speed = nexset343Number(entry.draftSpeed, config.speedMin);
+    const incline = nexset343Number(entry.draftIncline, config.inclineMin);
+    metrics += nexset343Metric('Speed', 'mph', 'cardio-speed', speed, config.speedStep, 'cardio');
+    metrics += nexset343Metric('Incline', '%', 'cardio-incline', incline, config.inclineStep, 'cardio');
+  } else if (config.mode === 'stair') {
+    const level = nexset343Number(entry.draftLevel, config.levelMin);
+    metrics += nexset343Metric('Level', 'machine', 'cardio-level', level, config.levelStep, 'cardio');
+  }
+  return `<div class="cardio-workout-panel"><div class="cardio-workout-head"><div><span>Progressive cardio</span><strong>Beat one variable—not all three.</strong></div><small>${config.mode === 'stair' ? 'Time + level' : config.mode === 'treadmill' ? 'Time + speed + incline' : 'Time target'}</small></div><div class="cardio-metric-grid ${config.mode}">${metrics}</div><div class="cardio-progress-line"><strong>Coach target:</strong> ${esc(target)}. Add only time, incline, speed, or level after a controlled finish.</div><div class="cardio-feel-row"><button class="easy ${feel==='easy'?'active':''}" data-action="set-feel" data-feel="easy">Easy</button><button class="right ${feel==='good'?'active':''}" data-action="set-feel" data-feel="good">Just right</button><button class="hard ${feel==='hard'?'active':''}" data-action="set-feel" data-feel="hard">Hard</button></div></div>`;
+}
+function syncDraftFromInputs() {
+  syncDraftFromInputsBase343();
+  if (!active) return;
+  const entry = active.exercises?.[active.currentExerciseIndex];
+  const ex = entryExercise(entry);
+  if (!entry || ex?.type !== 'cardio') return;
+  const speed = Number(document.querySelector('[data-input="cardio-speed"]')?.value);
+  const incline = Number(document.querySelector('[data-input="cardio-incline"]')?.value);
+  const level = Number(document.querySelector('[data-input="cardio-level"]')?.value);
+  if (Number.isFinite(speed)) entry.draftSpeed = speed;
+  if (Number.isFinite(incline)) entry.draftIncline = incline;
+  if (Number.isFinite(level)) entry.draftLevel = level;
+  saveActive({ reason:'cardio-draft' });
+}
+function nexset343AdjustCardio(kind, delta) {
+  if (!active) return;
+  syncDraftFromInputs();
+  const entry = active.exercises?.[active.currentExerciseIndex];
+  const ex = entryExercise(entry);
+  if (!entry || ex?.type !== 'cardio') return;
+  const config = nexset343CardioConfig(ex);
+  if (kind === 'cardio-speed') {
+    entry.draftSpeed = Math.max(0, nexset343Round(nexset343Number(entry.draftSpeed, config.speedMin) + Number(delta), config.speedStep));
+  } else if (kind === 'cardio-incline') {
+    entry.draftIncline = Math.max(0, nexset343Round(nexset343Number(entry.draftIncline, config.inclineMin) + Number(delta), config.inclineStep));
+  } else if (kind === 'cardio-level') {
+    entry.draftLevel = Math.max(1, nexset343Round(nexset343Number(entry.draftLevel, config.levelMin) + Number(delta), config.levelStep));
+  }
+  saveActive({ reason:'cardio-adjust' });
+  renderFocusWorkout();
+}
+function logSet() {
+  if (!active) return;
+  const entry = active.exercises?.[active.currentExerciseIndex];
+  const ex = entryExercise(entry);
+  if (ex?.type !== 'cardio') return logSetBase343();
+  syncDraftFromInputs();
+  const duration = Number(entry.draftReps);
+  if (!Number.isFinite(duration) || duration <= 0) { showToast('Enter cardio time.'); return; }
+  const config = nexset343CardioConfig(ex);
+  const log = { duration, feel:entry.draftFeel || 'good', at:new Date().toISOString() };
+  if (config.mode === 'treadmill') {
+    const speed = Number(entry.draftSpeed), incline = Number(entry.draftIncline);
+    if (!Number.isFinite(speed) || speed <= 0 || !Number.isFinite(incline) || incline < 0) { showToast('Enter treadmill speed and incline.'); return; }
+    log.speed = speed;
+    log.incline = incline;
+    log.distance = Math.round((duration * speed / 60) * 100) / 100;
+  } else if (config.mode === 'stair') {
+    const level = Number(entry.draftLevel);
+    if (!Number.isFinite(level) || level < 1) { showToast('Enter a stair-climber level.'); return; }
+    log.level = level;
+  }
+  entry.logs.push(log);
+  entry.draftFeel = 'good';
+  saveActive({ reason:'cardio-log' });
+  renderFocusWorkout();
+  showToast(`${ex.name} logged.`);
+}
+function analyzeExercise(ex, logs, previous={}) {
+  const clean = logs || [];
+  const base = {
+    lastDate:new Date().toISOString(),
+    completedCount:(previous.completedCount || 0) + 1,
+    lastSummary:clean.map(log => formatLogShort(ex, log)).join(', ')
+  };
+  if (ex?.type === 'cardio') {
+    const source = clean.filter(log => Number.isFinite(Number(log.duration)));
+    const last = source.at(-1);
+    if (!last) return { ...previous, ...base };
+    const config = nexset343CardioConfig(ex);
+    const hard = last.feel === 'hard';
+    let nextDuration = Number(last.duration) || ex.min;
+    let nextSpeed = nexset343Number(last.speed, config.speedMin);
+    let nextIncline = nexset343Number(last.incline, config.inclineMin);
+    let nextLevel = nexset343Number(last.level, config.levelMin);
+    if (!hard) {
+      if (nextDuration < ex.max) nextDuration = Math.min(ex.max, nextDuration + (Number(ex.increment) || 2));
+      else if (config.mode === 'treadmill' && nextIncline < config.inclineMax) nextIncline = Math.min(config.inclineMax, nexset343Round(nextIncline + config.inclineStep, config.inclineStep));
+      else if (config.mode === 'treadmill' && nextSpeed < config.speedMax) nextSpeed = Math.min(config.speedMax, nexset343Round(nextSpeed + config.speedStep, config.speedStep));
+      else if (config.mode === 'stair' && nextLevel < config.levelMax) nextLevel = Math.min(config.levelMax, nexset343Round(nextLevel + config.levelStep, config.levelStep));
+    }
+    const target = config.mode === 'treadmill'
+      ? `${cleanNumber(nextDuration)} min at ${cleanNumber(nextSpeed)} mph and ${cleanNumber(nextIncline)}% incline`
+      : config.mode === 'stair'
+        ? `${cleanNumber(nextDuration)} min at level ${cleanNumber(nextLevel)}`
+        : `${cleanNumber(nextDuration)} ${ex.unit || 'min'}`;
+    const note = hard ? `Repeat ${target} until it feels controlled.` : `Next cardio target: ${target}. Increase only one variable.`;
+    return { ...previous, ...base, lastDuration:Number(last.duration), nextDuration, lastSpeed:last.speed, nextSpeed, lastIncline:last.incline, nextIncline, lastLevel:last.level, nextLevel, note };
+  }
+  if (ex?.type === 'weighted') {
+    const working = clean.filter(log => !log.warmup && Number.isFinite(Number(log.weight)) && Number.isFinite(Number(log.reps)));
+    const source = working.slice(-Math.max(1, Number(ex.sets) || 1));
+    if (!source.length) return { ...previous, ...base };
+    const weights = source.map(log => Number(log.weight));
+    const reps = source.map(log => Number(log.reps));
+    const lastWeight = weights.at(-1);
+    const same = weights.every(weight => Math.abs(weight - lastWeight) < .01);
+    const hard = source.filter(log => log.feel === 'hard').length;
+    const step = displayIncrement(ex);
+    const shifted = direction => toStorageWeight(Math.max(0, roundTo(fromStorageWeight(lastWeight) + direction * step, step)));
+    let nextWeight = lastWeight;
+    let note = `Repeat ${formatWeightValue(lastWeight)} and add clean reps.`;
+    if (!same) note = `Use ${formatWeightValue(lastWeight)} as the consistent working weight next time.`;
+    else if (source.length < Number(ex.sets || 1)) note = `Repeat ${formatWeightValue(lastWeight)} and complete all ${ex.sets} working sets.`;
+    else if (reps.some(rep => rep < ex.min)) { nextWeight = shifted(-1); note = `Use ${formatWeightValue(nextWeight)} so every set stays inside the target range.`; }
+    else if (hard > 0) note = `Repeat ${formatWeightValue(lastWeight)} until every set is controlled without a hard rating.`;
+    else if (reps.every(rep => rep >= ex.max)) { nextWeight = shifted(1); note = `Increase to ${formatWeightValue(nextWeight)}. Every working set reached the top cleanly.`; }
+    return { ...previous, ...base, lastWeight, nextWeight, note };
+  }
+  return analyzeExerciseBase343(ex, logs, previous);
+}
+
+document.addEventListener('click', event => {
+  const button = event.target.closest('[data-cardio-adjust]');
+  if (!button) return;
+  event.preventDefault();
+  event.stopPropagation();
+  nexset343AdjustCardio(button.dataset.cardioAdjust, Number(button.dataset.delta));
+});
+document.addEventListener('input', event => {
+  if (!active || !event.target.matches('[data-input="cardio-speed"],[data-input="cardio-incline"],[data-input="cardio-level"]')) return;
+  const entry = active.exercises?.[active.currentExerciseIndex];
+  if (!entry) return;
+  const value = Number(event.target.value);
+  if (!Number.isFinite(value)) return;
+  if (event.target.matches('[data-input="cardio-speed"]')) entry.draftSpeed = value;
+  if (event.target.matches('[data-input="cardio-incline"]')) entry.draftIncline = value;
+  if (event.target.matches('[data-input="cardio-level"]')) entry.draftLevel = value;
+  saveActive({ reason:'cardio-input' });
+});
+queueMicrotask(nexset343ApplyPlanMigration);
