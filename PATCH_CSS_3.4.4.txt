@@ -1,0 +1,195 @@
+/* NEXSET 3.4.4 — active-control fit + progressive cardio + treadmill overflow hotfix */
+[data-input="weight"] {
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-inline: 2px !important;
+  font-size: clamp(28px, 8.5vw, 46px) !important;
+  line-height: 1 !important;
+  letter-spacing: -.065em !important;
+  font-variant-numeric: tabular-nums !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+.control-grid,
+.active-control-grid,
+.focus-control-grid {
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr) !important;
+}
+.compact-stepper,
+.active-stepper,
+.focus-stepper {
+  grid-template-columns: minmax(38px, 48px) minmax(0, 1fr) minmax(38px, 48px) !important;
+}
+.compact-stepper > *,
+.active-stepper > *,
+.focus-stepper > * { min-width: 0 !important; }
+
+.cardio-workout-panel {
+  display: grid;
+  gap: 11px;
+  padding: 14px;
+  border-radius: 22px;
+  background: linear-gradient(155deg, rgba(8,17,29,.84), rgba(4,10,18,.72));
+  border: 1px solid rgba(74,174,255,.19);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
+}
+.cardio-workout-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.cardio-workout-head span {
+  display: block;
+  color: #62B8FF;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.cardio-workout-head strong {
+  display: block;
+  margin-top: 4px;
+  color: #F5F9FF;
+  font-size: 13px;
+  line-height: 1.25;
+}
+.cardio-workout-head small {
+  max-width: 120px;
+  color: #8495AB;
+  font-size: 9px;
+  line-height: 1.3;
+  text-align: right;
+}
+.cardio-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+.cardio-metric-grid.stair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.cardio-metric {
+  min-width: 0;
+  padding: 9px 7px 8px;
+  border-radius: 15px;
+  background: rgba(255,255,255,.045);
+  border: 1px solid rgba(255,255,255,.075);
+}
+.cardio-metric-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 5px;
+  margin-bottom: 7px;
+  color: #DDE7F5;
+  font-size: 10px;
+  font-weight: 850;
+}
+.cardio-metric-label small { color: #74859B; font-size: 8px; font-weight: 800; }
+.cardio-stepper {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 28px;
+  gap: 4px;
+  align-items: center;
+}
+.cardio-stepper button {
+  width: 28px;
+  height: 38px;
+  padding: 0;
+  border-radius: 10px;
+  background: linear-gradient(155deg, #202B39, #111924);
+  border: 1px solid rgba(255,255,255,.09);
+  color: #F4F8FF;
+  font-size: 19px;
+  font-weight: 850;
+}
+.cardio-stepper input {
+  min-width: 0;
+  width: 100%;
+  height: 40px;
+  padding: 2px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: clamp(19px, 5.5vw, 25px) !important;
+  font-weight: 950;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.045em;
+}
+.cardio-progress-line {
+  padding: 9px 10px;
+  border-radius: 13px;
+  background: rgba(13,125,255,.09);
+  border: 1px solid rgba(31,162,255,.16);
+  color: #AFC9E8;
+  font-size: 10px;
+  line-height: 1.38;
+}
+.cardio-progress-line strong { color: #EAF5FF; }
+.cardio-feel-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+.cardio-feel-row button {
+  min-height: 39px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.045);
+  border: 1px solid rgba(255,255,255,.09);
+  font-size: 10px;
+  font-weight: 900;
+}
+.cardio-feel-row .easy { color: #43D477; }
+.cardio-feel-row .right { color: #8CB8FF; }
+.cardio-feel-row .hard { color: #FF7070; }
+.cardio-feel-row .easy.active { background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.55); }
+.cardio-feel-row .right.active { background: rgba(37,99,255,.18); border-color: rgba(37,99,255,.66); }
+.cardio-feel-row .hard.active { background: rgba(239,68,68,.12); border-color: rgba(239,68,68,.55); }
+
+@media (max-width: 380px) {
+  [data-input="weight"] { font-size: clamp(27px, 8vw, 40px) !important; }
+  .control-grid,.active-control-grid,.focus-control-grid { gap: 7px !important; }
+  .compact-stepper,.active-stepper,.focus-stepper {
+    grid-template-columns: 38px minmax(0,1fr) 38px !important;
+  }
+  .cardio-workout-panel { padding: 11px; gap: 9px; }
+  .cardio-metric-grid { gap: 5px; }
+  .cardio-metric { padding-inline: 5px; }
+  .cardio-stepper { grid-template-columns: 25px minmax(0,1fr) 25px; gap: 2px; }
+  .cardio-stepper button { width: 25px; height: 36px; }
+}
+
+@media (max-width: 430px) {
+  .cardio-workout-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .cardio-workout-head small {
+    max-width: none;
+    text-align: left;
+  }
+  .cardio-metric-grid.treadmill {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .cardio-metric-grid.treadmill .cardio-metric:last-child {
+    grid-column: 1 / -1;
+  }
+  .cardio-progress-line {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 380px) {
+  .cardio-metric-grid.treadmill {
+    grid-template-columns: 1fr;
+  }
+  .cardio-metric-grid.treadmill .cardio-metric:last-child {
+    grid-column: auto;
+  }
+  .cardio-feel-row {
+    gap: 6px;
+  }
+}
