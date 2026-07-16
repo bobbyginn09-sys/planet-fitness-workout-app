@@ -1,0 +1,134 @@
+{
+  "version": "3.4.3",
+  "generatedAt": "2026-07-16T18:40:00Z",
+  "passed": 24,
+  "failed": 0,
+  "checks": [
+    {
+      "section": "static",
+      "name": "service worker JavaScript parses",
+      "passed": true
+    },
+    {
+      "section": "static",
+      "name": "manifest.json parses",
+      "passed": true
+    },
+    {
+      "section": "static",
+      "name": "manifest.webmanifest parses",
+      "passed": true
+    },
+    {
+      "section": "static",
+      "name": "manifest start URLs use 3.4.3",
+      "passed": true
+    },
+    {
+      "section": "static",
+      "name": "cache identifier uses 3.4.3",
+      "passed": true
+    },
+    {
+      "section": "transform",
+      "name": "all nine base functions renamed",
+      "passed": true
+    },
+    {
+      "section": "transform",
+      "name": "progressive-cardio JavaScript injected",
+      "passed": true
+    },
+    {
+      "section": "transform",
+      "name": "responsive-control CSS injected",
+      "passed": true
+    },
+    {
+      "section": "transform",
+      "name": "transformed inline script parses",
+      "passed": true
+    },
+    {
+      "section": "transform",
+      "name": "safe unmodified fallback retained",
+      "passed": true
+    },
+    {
+      "section": "program",
+      "name": "Legs A has 17 lifting sets",
+      "passed": true,
+      "detail": "17"
+    },
+    {
+      "section": "program",
+      "name": "Upper Definition has 15 lifting sets",
+      "passed": true,
+      "detail": "15"
+    },
+    {
+      "section": "program",
+      "name": "Upper Definition has seven exercises",
+      "passed": true,
+      "detail": "Machine Chest Press; Neutral-Grip Lat Pulldown; Seated Cable Row; Machine Shoulder Press; Rope Pushdown; Cable Curl; Incline Treadmill Walk"
+    },
+    {
+      "section": "program",
+      "name": "reverse pec deck removed from Upper Definition",
+      "passed": true
+    },
+    {
+      "section": "program",
+      "name": "dumbbell lateral raise removed from Upper Definition",
+      "passed": true
+    },
+    {
+      "section": "program",
+      "name": "scheduled bike names and equipment removed",
+      "passed": true
+    },
+    {
+      "section": "strength",
+      "name": "hard 130 lb squat repeats 130 lb",
+      "passed": true
+    },
+    {
+      "section": "strength",
+      "name": "clean 70 lb row progresses to 75 lb",
+      "passed": true
+    },
+    {
+      "section": "cardio",
+      "name": "duration progresses before intensity",
+      "passed": true
+    },
+    {
+      "section": "cardio",
+      "name": "incline progresses after duration cap",
+      "passed": true
+    },
+    {
+      "section": "cardio",
+      "name": "speed progresses after incline cap",
+      "passed": true
+    },
+    {
+      "section": "cardio",
+      "name": "hard cardio repeats target",
+      "passed": true
+    },
+    {
+      "section": "persistence",
+      "name": "cardio draft fields preserved by matching exercise id",
+      "passed": true
+    },
+    {
+      "section": "package",
+      "name": "patch keeps schema 5 and existing storage keys",
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Installed-iPhone service-worker upgrade and airplane-mode relaunch require post-deployment testing."
+  ]
+}
