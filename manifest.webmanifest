@@ -2,7 +2,7 @@
   "name": "NEXSET \u2014 Workout Coach",
   "short_name": "NEXSET",
   "description": "NEXSET is a premium iPhone-first workout coach with progressive cardio, flexible routines, quick workouts, smart exercise swaps, anatomical training maps, local progress tracking, and offline support.",
-  "start_url": "./index.html?nexset=3.4.6",
+  "start_url": "./index.html?nexset=3.4.7",
   "scope": "./",
   "display": "standalone",
   "background_color": "#02060B",
