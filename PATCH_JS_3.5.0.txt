@@ -1,0 +1,522 @@
+/* NEXSET_350_TRANSFORMED */
+function nexset343Number(value, fallback) {
+  const number = Number(value);
+  return Number.isFinite(number) ? number : fallback;
+}
+function nexset343Round(value, step) {
+  const increment = Math.max(.01, Number(step) || 1);
+  return Math.round((Number(value) || 0) / increment) * increment;
+}
+function nexset343CardioConfig(ex) {
+  const id = String(ex?.id || '');
+  const treadmill = {
+    incline_treadmill_push: { mode:'treadmill', speedMin:2.8, speedMax:3.5, speedStep:.1, inclineMin:6, inclineMax:10, inclineStep:1 },
+    bike_or_walk_legs_a: { mode:'treadmill', speedMin:2.7, speedMax:3.4, speedStep:.1, inclineMin:5, inclineMax:9, inclineStep:1 },
+    treadmill_finisher: { mode:'treadmill', speedMin:2.8, speedMax:3.6, speedStep:.1, inclineMin:6, inclineMax:10, inclineStep:1 },
+    easy_walk_recovery: { mode:'treadmill', speedMin:2.5, speedMax:3.2, speedStep:.1, inclineMin:0, inclineMax:4, inclineStep:1 }
+  };
+  if (treadmill[id]) return treadmill[id];
+  if (id === 'stair_or_bike_pull') return { mode:'stair', levelMin:3, levelMax:8, levelStep:1 };
+  if (id === 'walk_jog_intervals') return { mode:'duration' };
+  const name = String(ex?.name || '').toLowerCase();
+  if (name.includes('stair')) return { mode:'stair', levelMin:3, levelMax:8, levelStep:1 };
+  if (name.includes('treadmill') || name.includes('incline walk')) return { mode:'treadmill', speedMin:2.7, speedMax:3.5, speedStep:.1, inclineMin:3, inclineMax:9, inclineStep:1 };
+  return { mode:'duration' };
+}
+function nexset350CoachPlan() {
+  return [
+    {
+      day:1, type:'lift', title:'Upper Strength', focus:'Chest and back strength',
+      warmup:'5 minutes easy cardio, then 2 ramp-up sets for Smith bench and 1 light pulldown set.',
+      note:'12 focused working sets. Keep 1–2 clean reps in reserve; no forced reps or sloppy grinders.',
+      exercises:[
+        { id:'smith_bench', name:'Smith Machine Bench Press', type:'weighted', sets:3, min:8, max:10, increment:10, coachWeight:135, equipment:'Smith machine', cues:'Start at 135 lb. Shoulder blades tucked; controlled touch; stop before form breaks.' },
+        { id:'lat_pulldown', name:'Lat Pulldown', type:'weighted', sets:3, min:8, max:10, increment:5, coachWeight:85, equipment:'Cable pulldown', cues:'Start at 85 lb. Drive elbows down without swinging.' },
+        { id:'incline_db_press', name:'Incline Dumbbell Press', type:'weighted', sets:3, min:10, max:12, increment:5, coachWeight:30, equipment:'Dumbbells', cues:'Start with 30 lb per dumbbell. Moderate incline and a controlled bottom position.' },
+        { id:'seated_cable_row', name:'Seated Cable Row', type:'weighted', sets:3, min:10, max:12, increment:5, coachWeight:75, equipment:'Cable row', cues:'Start at 75 lb. Pause with shoulder blades together; no torso swing.' },
+        { id:'incline_treadmill_push', name:'Incline Treadmill Walk', type:'cardio', sets:1, min:17, max:25, increment:2, unit:'min', equipment:'Treadmill', coachCardio:{duration:17,speed:2.8,incline:6}, cues:'Begin with 17 minutes at 2.8 mph and 6% incline. Increase only one variable after a controlled finish.' }
+      ]
+    },
+    {
+      day:2, type:'lift', title:'Lower Body', focus:'Quads, hamstrings, glutes, calves',
+      warmup:'5 minutes easy treadmill walking, then 2 light squat sets and 1 light Romanian-deadlift set.',
+      note:'Your only dedicated leg day. Fifteen working sets are enough; avoid turning every set red.',
+      exercises:[
+        { id:'smith_squat', name:'Smith Machine Squat', type:'weighted', sets:3, min:8, max:10, increment:10, coachWeight:130, equipment:'Smith machine', cues:'Repeat 130 lb. Brace hard and finish every rep with the same depth and control.' },
+        { id:'smith_rdl', name:'Smith Machine Romanian Deadlift', type:'weighted', sets:3, min:8, max:10, increment:10, coachWeight:140, equipment:'Smith machine', cues:'Repeat 140 lb for three sets. Hips back, neutral spine, and stop before grip or back position changes.' },
+        { id:'leg_press_45', name:'45° Leg Press', type:'weighted', sets:3, min:12, max:15, increment:10, coachWeight:120, equipment:'45-degree leg press', cues:'Repeat 120 lb. Controlled depth, full foot pressure, and no bouncing.' },
+        { id:'seated_leg_curl_b', name:'Seated Leg Curl', type:'weighted', sets:2, min:10, max:12, increment:5, coachWeight:50, equipment:'Leg curl machine', cues:'Repeat 50 lb and add clean reps with a slow return.' },
+        { id:'leg_extension_b', name:'Leg Extension', type:'weighted', sets:2, min:12, max:15, increment:5, coachWeight:35, equipment:'Leg extension machine', cues:'Repeat 35 lb. Smooth reps with a brief squeeze; stop before knee discomfort.' },
+        { id:'standing_calf_raise', name:'Calf Raise Machine', type:'weighted', sets:2, min:12, max:15, increment:5, coachWeight:60, equipment:'Calf raise machine', cues:'Repeat 60 lb. Full stretch and pause at the top.' },
+        { id:'bike_or_walk_legs_a', name:'Incline Treadmill Walk', type:'cardio', sets:1, min:12, max:20, increment:2, unit:'min', equipment:'Treadmill', coachCardio:{duration:12,speed:2.7,incline:5}, cues:'Start with 12 minutes at 2.7 mph and 5% incline. Keep it restorative after legs.' }
+      ]
+    },
+    {
+      day:3, type:'rest', title:'Active Recovery', focus:'Recovery, steps, mobility',
+      warmup:'No warm-up required.',
+      note:'This should leave you feeling better than when you started.',
+      exercises:[
+        { id:'easy_walk_recovery', name:'Easy Treadmill Walk', type:'cardio', sets:1, min:25, max:35, increment:5, unit:'min', equipment:'Treadmill', coachCardio:{duration:25,speed:2.5,incline:0}, cues:'Start with 25 minutes at 2.5 mph and 0% incline. Conversational pace only.' },
+        { id:'mobility_flow', name:'Mobility Flow', type:'timed', sets:1, min:8, max:10, increment:2, unit:'min', equipment:'Mat', cues:'Hips, hamstrings, chest, shoulders, and upper back.' },
+        { id:'stretch_recovery', name:'Stretching / Foam Rolling', type:'timed', sets:1, min:5, max:10, increment:2, unit:'min', equipment:'Mat or foam roller', cues:'Focus on sore areas without forcing range.' }
+      ]
+    },
+    {
+      day:4, type:'lift', title:'Push Build', focus:'Chest, shoulders, triceps',
+      warmup:'5 minutes easy cardio and 1–2 light chest-press sets.',
+      note:'Fourteen working sets. Build the upper body without taking every isolation set to failure.',
+      exercises:[
+        { id:'machine_chest_press', name:'Machine Chest Press', type:'weighted', sets:3, min:10, max:12, increment:5, coachWeight:85, equipment:'Chest press machine', cues:'Increase to 85 lb. Controlled lower and strong press without bouncing.' },
+        { id:'machine_shoulder_press', name:'Machine Shoulder Press', type:'weighted', sets:3, min:10, max:12, increment:5, coachWeight:55, equipment:'Shoulder press machine', cues:'Increase to 55 lb. Keep ribs down and do not bounce from the bottom.' },
+        { id:'machine_chest_fly', name:'Machine Chest Fly', type:'weighted', sets:2, min:12, max:15, increment:5, coachWeight:60, equipment:'Pec deck', cues:'Use 60 lb. Soft elbows and a controlled chest squeeze.' },
+        { id:'cable_lateral_raise', name:'Cable Lateral Raise', type:'weighted', sets:2, min:12, max:15, increment:2.5, coachWeight:2.5, equipment:'Cable station', cues:'Use 2.5 lb until every rep stays strict and inside the target range.' },
+        { id:'rope_pushdown_upper', name:'Rope Triceps Pushdown', type:'weighted', sets:2, min:12, max:15, increment:5, coachWeight:25, equipment:'Cable station', cues:'Increase to 25 lb. Keep elbows fixed and finish with control.' },
+        { id:'overhead_cable_triceps', name:'Overhead Cable Triceps Extension', type:'weighted', sets:2, min:12, max:15, increment:5, coachWeight:10, equipment:'Cable station', cues:'Use 10 lb. Full stretch and smooth lockout.' },
+        { id:'treadmill_finisher', name:'Incline Treadmill Walk', type:'cardio', sets:1, min:17, max:25, increment:2, unit:'min', equipment:'Treadmill', coachCardio:{duration:17,speed:2.8,incline:6}, cues:'Begin with 17 minutes at 2.8 mph and 6% incline. Increase one variable only.' }
+      ]
+    },
+    {
+      day:5, type:'lift', title:'Pull + Arms', focus:'Back width, upper back, biceps',
+      warmup:'5 minutes easy cardio and one light row or pulldown set.',
+      note:'Thirteen working sets. Use clean contractions instead of adding momentum.',
+      exercises:[
+        { id:'chest_supported_row', name:'Chest-Supported Row Machine', type:'weighted', sets:3, min:10, max:12, increment:5, coachWeight:65, equipment:'Chest-supported row machine', cues:'Increase to 65 lb. Keep chest on the pad and pause each rep.' },
+        { id:'neutral_lat_pulldown', name:'Neutral-Grip Lat Pulldown', type:'weighted', sets:3, min:10, max:12, increment:5, coachWeight:75, equipment:'Cable pulldown', cues:'Increase to 75 lb. Pull elbows toward ribs without leaning back.' },
+        { id:'cable_face_pull', name:'Cable Face Pull', type:'weighted', sets:2, min:12, max:15, increment:5, coachWeight:15, equipment:'Cable station', cues:'Use 15 lb. Pull toward the face with elbows high and shoulders down.' },
+        { id:'db_hammer_curl', name:'Dumbbell Hammer Curl', type:'weighted', sets:3, min:10, max:12, increment:5, coachWeight:20, equipment:'Dumbbells', cues:'Repeat 20 lb per dumbbell. No torso swing.' },
+        { id:'cable_curl', name:'Cable Curl', type:'weighted', sets:2, min:12, max:15, increment:5, coachWeight:20, equipment:'Cable station', cues:'Use 20 lb consistently and squeeze without moving the elbows.' },
+        { id:'stair_or_bike_pull', name:'Stair Climber', type:'cardio', sets:1, min:15, max:22, increment:2, unit:'min', equipment:'Stair climber', coachCardio:{duration:15,level:3}, cues:'Start with 15 minutes at level 3. Add time or level, never both at once.' }
+      ]
+    },
+    {
+      day:6, type:'lift', title:'Upper Definition', focus:'Chest, back, shoulders, arms',
+      warmup:'5 minutes easy cardio and one light upper-body circuit.',
+      note:'Fifteen working sets, moderate effort, short rests, and clean form. Finish with beginner walk/jog intervals.',
+      exercises:[
+        { id:'seated_cable_row_def', name:'Seated Cable Row', type:'weighted', sets:3, min:10, max:12, increment:5, coachWeight:90, equipment:'Cable row', cues:'Increase to 90 lb. Pause at the body without rocking.' },
+        { id:'neutral_lat_pulldown_def', name:'Neutral-Grip Lat Pulldown', type:'weighted', sets:3, min:10, max:12, increment:5, coachWeight:75, equipment:'Cable pulldown', cues:'Use 75 lb. Keep the torso controlled and drive elbows down.' },
+        { id:'incline_db_press_def', name:'Incline Dumbbell Press', type:'weighted', sets:3, min:10, max:12, increment:5, coachWeight:30, equipment:'Dumbbells', cues:'Use 30 lb per dumbbell with the same controlled setup as Monday.' },
+        { id:'seated_db_shoulder_press', name:'Seated Dumbbell Shoulder Press', type:'weighted', sets:2, min:8, max:12, increment:5, coachWeight:25, equipment:'Dumbbells', cues:'Repeat 25 lb per dumbbell. Keep the back supported and ribs down.' },
+        { id:'cable_curl_upper', name:'Cable Curl', type:'weighted', sets:2, min:12, max:15, increment:5, coachWeight:35, equipment:'Cable station', cues:'Increase to 35 lb only with strict elbow position.' },
+        { id:'rope_tricep_pushdown', name:'Rope Triceps Pushdown', type:'weighted', sets:2, min:12, max:15, increment:5, coachWeight:20, equipment:'Cable station', cues:'Use 20 lb consistently and finish each rep without shoulder movement.' },
+        { id:'walk_jog_intervals', name:'Walk/Jog Intervals', type:'cardio', sets:1, min:12, max:20, increment:2, unit:'min', equipment:'Treadmill', coachCardio:{duration:12}, cues:'Start with four rounds: walk 2 minutes at 2.8 mph, then jog 1 minute at a comfortable pace. Stop if form or joints feel poor.' }
+      ]
+    },
+    {
+      day:7, type:'rest', title:'Full Rest', focus:'Recovery, steps, sleep',
+      warmup:'None.',
+      note:'No weight training. Prioritize sleep, normal daily movement, hydration, and readiness for Monday.',
+      exercises:[
+        { id:'optional_steps_rest', name:'Optional Easy Walk', type:'timed', sets:1, min:15, max:25, increment:5, unit:'min', equipment:'Walk', cues:'Optional only. Keep it easy and stop refreshed.' },
+        { id:'light_stretch_rest', name:'Light Stretching', type:'timed', sets:1, min:5, max:10, increment:2, unit:'min', equipment:'Mat', cues:'Easy recovery work only.' }
+      ]
+    }
+  ];
+}
+function nexset350Clone(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+function nexset350InstallPlan(target, source) {
+  if (!Array.isArray(target)) return source;
+  target.splice(0, target.length, ...nexset350Clone(source));
+  return target;
+}
+function nexset350SeedRecommendations(plan, onlyMissing=false) {
+  state.exerciseProgress = state.exerciseProgress || {};
+  for (const day of plan) {
+    for (const ex of day.exercises || []) {
+      const existing = state.exerciseProgress[ex.id];
+      if (onlyMissing && existing && Object.keys(existing).length) continue;
+      const progress = existing || {};
+      if (ex.type === 'weighted' && Number.isFinite(Number(ex.coachWeight))) {
+        const weight = Number(ex.coachWeight);
+        progress.nextWeight = weight;
+        progress.note = `Start at ${formatWeightValue(weight)}. Add weight only after every working set reaches the top of the rep range without a hard rating.`;
+      }
+      if (ex.type === 'cardio' && ex.coachCardio) {
+        const target = ex.coachCardio;
+        if (Number.isFinite(Number(target.duration))) progress.nextDuration = Number(target.duration);
+        if (Number.isFinite(Number(target.speed))) progress.nextSpeed = Number(target.speed);
+        if (Number.isFinite(Number(target.incline))) progress.nextIncline = Number(target.incline);
+        if (Number.isFinite(Number(target.level))) progress.nextLevel = Number(target.level);
+        const config = nexset343CardioConfig(ex);
+        progress.note = config.mode === 'treadmill'
+          ? `Next cardio target: ${cleanNumber(progress.nextDuration)} min at ${cleanNumber(progress.nextSpeed)} mph and ${cleanNumber(progress.nextIncline)}% incline. Increase only one variable.`
+          : config.mode === 'stair'
+            ? `Next cardio target: ${cleanNumber(progress.nextDuration)} min at level ${cleanNumber(progress.nextLevel)}. Increase only one variable.`
+            : `Next cardio target: ${cleanNumber(progress.nextDuration)} ${ex.unit || 'min'}.`;
+      }
+      state.exerciseProgress[ex.id] = progress;
+    }
+  }
+}
+function nexset350ApplyPlanMigration() {
+  try {
+    const coachPlan = nexset350CoachPlan();
+    nexset350InstallPlan(PLAN, coachPlan);
+    state.settings = state.settings || {};
+    if (state.settings.nexsetCoachPlanVersion !== '3.5.0') {
+      state.programPlan = nexset350Clone(coachPlan);
+      state.settings.nexsetCoachPlanVersion = '3.5.0';
+      rebuildProgress();
+      saveState({ reason:'3.5.0-five-day-upper-priority-plan' });
+      if (!active && currentView !== 'complete') render();
+      showToast('New 5-day upper-priority plan installed.');
+    }
+  } catch (error) {
+    console.warn('NEXSET 3.5.0 plan migration skipped', error);
+  }
+}
+
+function rebuildProgress(...args) {
+  rebuildProgressBase343(...args);
+  nexset350SeedRecommendations(PLAN, true);
+}
+function initialWeight(ex) {
+  const suggested = initialWeightBase343(ex);
+  if (suggested !== null && suggested !== undefined && suggested !== '' && Number.isFinite(Number(suggested))) return Number(suggested);
+  if (ex?.type === 'weighted' && Number.isFinite(Number(ex.coachWeight))) return Number(ex.coachWeight);
+  return suggested;
+}
+
+function normalizeActiveSession(session, ...args) {
+  const normalized = normalizeActiveSessionBase343(session, ...args);
+  if (!normalized || !Array.isArray(normalized.exercises)) return normalized;
+  const raw = Array.isArray(session?.exercises) ? session.exercises : [];
+  normalized.exercises.forEach((entry, index) => {
+    const source = raw.find(item => item?.id === entry.id) || raw[index] || {};
+    for (const key of ['draftSpeed','draftIncline','draftLevel']) {
+      const value = Number(source[key]);
+      if (Number.isFinite(value)) entry[key] = value;
+    }
+  });
+  return normalized;
+}
+function initialReps(ex) {
+  if (ex?.type === 'cardio') {
+    const progress = state.exerciseProgress?.[ex.id];
+    if (Number.isFinite(Number(progress?.nextDuration))) return Math.max(1, Number(progress.nextDuration));
+    if (Number.isFinite(Number(ex?.coachCardio?.duration))) return Math.max(1, Number(ex.coachCardio.duration));
+  }
+  return initialRepsBase343(ex);
+}
+function makeActiveEntry(ex, ...args) {
+  const entry = makeActiveEntryBase343(ex, ...args);
+  if (ex?.type !== 'cardio') return entry;
+  const config = nexset343CardioConfig(ex);
+  const progress = state.exerciseProgress?.[ex.id] || {};
+  const previous = getPreviousExercise(ex.id);
+  const last = previous ? workingLogs(previous.entry.logs || []).at(-1) : null;
+  if (config.mode === 'treadmill') {
+    entry.draftSpeed = nexset343Number(progress.nextSpeed, nexset343Number(last?.speed, nexset343Number(ex.coachCardio?.speed, config.speedMin)));
+    entry.draftIncline = nexset343Number(progress.nextIncline, nexset343Number(last?.incline, nexset343Number(ex.coachCardio?.incline, config.inclineMin)));
+  } else if (config.mode === 'stair') {
+    entry.draftLevel = nexset343Number(progress.nextLevel, nexset343Number(last?.level, nexset343Number(ex.coachCardio?.level, config.levelMin)));
+  }
+  return entry;
+}
+function formatLogShort(ex, log) {
+  if (ex?.type !== 'cardio') return formatLogShortBase343(ex, log);
+  const duration = `${cleanNumber(log?.duration)} ${ex.unit || 'min'}`;
+  const config = nexset343CardioConfig(ex);
+  if (config.mode === 'treadmill') {
+    const speed = Number(log?.speed), incline = Number(log?.incline);
+    return `${duration}${Number.isFinite(speed) ? ` · ${cleanNumber(speed)} mph` : ''}${Number.isFinite(incline) ? ` · ${cleanNumber(incline)}%` : ''}`;
+  }
+  if (config.mode === 'stair') {
+    const level = Number(log?.level);
+    return `${duration}${Number.isFinite(level) ? ` · level ${cleanNumber(level)}` : ''}`;
+  }
+  return duration;
+}
+function nextTargetLabel(ex, progress) {
+  if (ex?.type !== 'cardio') return nextTargetLabelBase343(ex, progress);
+  if (!progress) return 'Build a cardio baseline';
+  const duration = Number.isFinite(Number(progress.nextDuration)) ? Number(progress.nextDuration) : Number(progress.lastDuration) || ex.min;
+  const config = nexset343CardioConfig(ex);
+  if (config.mode === 'treadmill') {
+    const speed = nexset343Number(progress.nextSpeed, config.speedMin);
+    const incline = nexset343Number(progress.nextIncline, config.inclineMin);
+    return `${cleanNumber(duration)} min · ${cleanNumber(speed)} mph · ${cleanNumber(incline)}%`;
+  }
+  if (config.mode === 'stair') {
+    const level = nexset343Number(progress.nextLevel, config.levelMin);
+    return `${cleanNumber(duration)} min · level ${cleanNumber(level)}`;
+  }
+  return `${cleanNumber(duration)} ${ex.unit || 'min'}`;
+}
+function nexset343Metric(label, unit, input, value, step, action) {
+  const decrease = action === 'adjust-duration'
+    ? `<button data-action="adjust-duration" data-delta="-${step}" aria-label="Decrease ${label}">−</button>`
+    : `<button data-cardio-adjust="${input}" data-delta="-${step}" aria-label="Decrease ${label}">−</button>`;
+  const increase = action === 'adjust-duration'
+    ? `<button data-action="adjust-duration" data-delta="${step}" aria-label="Increase ${label}">+</button>`
+    : `<button data-cardio-adjust="${input}" data-delta="${step}" aria-label="Increase ${label}">+</button>`;
+  return `<div class="cardio-metric"><div class="cardio-metric-label"><span>${label}</span><small>${unit}</small></div><div class="cardio-stepper">${decrease}<input inputmode="decimal" data-input="${input}" value="${cleanNumber(value)}" aria-label="${label}">${increase}</div></div>`;
+}
+function nexset347StepperCard({ kind, label, unit, value, delta, target, prefill=false }) {
+  const inputMode = kind === 'weight' ? 'decimal' : 'numeric';
+  const action = kind === 'weight' ? 'adjust-weight' : 'adjust-reps';
+  const inputName = kind === 'weight' ? 'weight' : 'reps';
+  const safeValue = value === '' || value === null || value === undefined ? '' : cleanNumber(value);
+  return `<div class="nexset347-control-card ${kind}"><div class="nexset347-control-label"><span>${label}</span><small>${unit}</small></div><div class="nexset347-stepper"><button type="button" data-action="${action}" data-delta="-${delta}" aria-label="Decrease ${label}">−</button><input type="text" inputmode="${inputMode}" autocomplete="off" data-input="${inputName}" value="${safeValue}" aria-label="${label}"><button type="button" data-action="${action}" data-delta="${delta}" aria-label="Increase ${label}">+</button></div>${target ? `<div class="nexset347-control-target">${target}</div>` : ''}${prefill ? '<div class="nexset347-prefill-note">Suggested weight prefilled</div>' : ''}</div>`;
+}
+function renderFocusLogPanel(ex, entry, index, weight, reps) {
+  const feel = entry.draftFeel || 'good';
+  const workingCount = workingLogs(entry.logs || []).length;
+  const targetHit = workingCount >= ex.sets;
+  const extraSet = targetHit && ex.type !== 'cardio' && ex.type !== 'timed' ? `<button class="btn secondary" data-action="log-set">+ Log Extra Set</button>` : '';
+  if (ex?.type === 'weighted') {
+    const shown = Number.isFinite(Number(weight)) ? roundedDisplayWeight(weight) : '';
+    const step = displayIncrement(ex);
+    const weightCard = nexset347StepperCard({
+      kind:'weight', label:'Weight', unit:displayWeightUnit(), value:shown, delta:step,
+      prefill:Number.isFinite(Number(state.exerciseProgress?.[ex.id]?.nextWeight))
+    });
+    const repsCard = nexset347StepperCard({
+      kind:'reps', label:'Reps', unit:`${ex.min}–${ex.max}`, value:reps, delta:1,
+      target:`Target ${ex.min}–${ex.max}`
+    });
+    return `<div class="nexset347-lift-control-grid">${weightCard}${repsCard}</div>${renderFeelOnly(entry, feel)}${extraSet}`;
+  }
+  if (ex?.type === 'bodyweight') {
+    const repsCard = nexset347StepperCard({
+      kind:'reps', label:'Reps', unit:`${ex.min}–${ex.max}`, value:reps, delta:1,
+      target:`Target ${ex.min}–${ex.max}`
+    });
+    return `<div class="nexset347-lift-control-grid bodyweight">${repsCard}</div>${renderFeelOnly(entry, feel)}${extraSet}`;
+  }
+  if (ex?.type !== 'cardio') return renderFocusLogPanelBase343(ex, entry, index, weight, reps);
+  const config = nexset343CardioConfig(ex);
+  const duration = nexset343Number(entry.draftReps, ex.min);
+  const durationStep = Math.max(.25, Number(ex.increment) || 1);
+  const progress = state.exerciseProgress?.[ex.id];
+  const target = nextTargetLabel(ex, progress);
+  let metrics = nexset343Metric('Time', ex.unit || 'min', 'duration', duration, durationStep, 'adjust-duration');
+  if (config.mode === 'treadmill') {
+    const speed = nexset343Number(entry.draftSpeed, config.speedMin);
+    const incline = nexset343Number(entry.draftIncline, config.inclineMin);
+    metrics += nexset343Metric('Speed', 'mph', 'cardio-speed', speed, config.speedStep, 'cardio');
+    metrics += nexset343Metric('Incline', '%', 'cardio-incline', incline, config.inclineStep, 'cardio');
+  } else if (config.mode === 'stair') {
+    const level = nexset343Number(entry.draftLevel, config.levelMin);
+    metrics += nexset343Metric('Level', 'machine', 'cardio-level', level, config.levelStep, 'cardio');
+  }
+  return `<div class="cardio-workout-panel"><div class="cardio-workout-head"><div><span>Progressive cardio</span><strong>Beat one variable—not all three.</strong></div><small>${config.mode === 'stair' ? 'Time + level' : config.mode === 'treadmill' ? 'Time + speed + incline' : 'Time target'}</small></div><div class="cardio-metric-grid ${config.mode}">${metrics}</div><div class="cardio-progress-line"><strong>Coach target:</strong> ${esc(target)}. Add only time, incline, speed, or level after a controlled finish.</div><div class="cardio-feel-row"><button class="easy ${feel==='easy'?'active':''}" data-action="set-feel" data-feel="easy">Easy</button><button class="right ${feel==='good'?'active':''}" data-action="set-feel" data-feel="good">Just right</button><button class="hard ${feel==='hard'?'active':''}" data-action="set-feel" data-feel="hard">Hard</button></div></div>`;
+}
+function syncDraftFromInputs() {
+  syncDraftFromInputsBase343();
+  if (!active) return;
+  const entry = active.exercises?.[active.currentExerciseIndex];
+  const ex = entryExercise(entry);
+  if (!entry || ex?.type !== 'cardio') return;
+  const speed = Number(document.querySelector('[data-input="cardio-speed"]')?.value);
+  const incline = Number(document.querySelector('[data-input="cardio-incline"]')?.value);
+  const level = Number(document.querySelector('[data-input="cardio-level"]')?.value);
+  if (Number.isFinite(speed)) entry.draftSpeed = speed;
+  if (Number.isFinite(incline)) entry.draftIncline = incline;
+  if (Number.isFinite(level)) entry.draftLevel = level;
+  saveActive({ reason:'cardio-draft' });
+}
+function nexset343AdjustCardio(kind, delta) {
+  if (!active) return;
+  syncDraftFromInputs();
+  const entry = active.exercises?.[active.currentExerciseIndex];
+  const ex = entryExercise(entry);
+  if (!entry || ex?.type !== 'cardio') return;
+  const config = nexset343CardioConfig(ex);
+  if (kind === 'cardio-speed') {
+    entry.draftSpeed = Math.max(0, nexset343Round(nexset343Number(entry.draftSpeed, config.speedMin) + Number(delta), config.speedStep));
+  } else if (kind === 'cardio-incline') {
+    entry.draftIncline = Math.max(0, nexset343Round(nexset343Number(entry.draftIncline, config.inclineMin) + Number(delta), config.inclineStep));
+  } else if (kind === 'cardio-level') {
+    entry.draftLevel = Math.max(1, nexset343Round(nexset343Number(entry.draftLevel, config.levelMin) + Number(delta), config.levelStep));
+  }
+  saveActive({ reason:'cardio-adjust' });
+  renderFocusWorkout();
+}
+function nexset350CanAutoFinishCardio(index, entry, ex) {
+  if (!active || !entry || !ex) return false;
+  const target = Math.max(1, Number(ex.sets) || 1);
+  const currentDone = workingLogs(entry.logs || []).length >= target;
+  if (!currentDone) return false;
+  return active.exercises.every((item, itemIndex) => {
+    if (itemIndex === index) return true;
+    if (item?.status === 'skipped') return true;
+    return activeEntryStatus(item) === 'done';
+  });
+}
+function logSet() {
+  if (!active) return;
+  const index = active.currentExerciseIndex;
+  const entry = active.exercises?.[index];
+  const ex = entryExercise(entry);
+  if (ex?.type !== 'cardio') return logSetBase343();
+  syncDraftFromInputs();
+  const duration = Number(entry.draftReps);
+  if (!Number.isFinite(duration) || duration <= 0) { showToast('Enter cardio time.'); return; }
+  const config = nexset343CardioConfig(ex);
+  const log = { duration, feel:entry.draftFeel || 'good', at:new Date().toISOString() };
+  if (config.mode === 'treadmill') {
+    const speed = Number(entry.draftSpeed), incline = Number(entry.draftIncline);
+    if (!Number.isFinite(speed) || speed <= 0 || !Number.isFinite(incline) || incline < 0) {
+      showToast('Enter treadmill speed and incline.');
+      return;
+    }
+    log.speed = speed;
+    log.incline = incline;
+    log.distance = Math.round((duration * speed / 60) * 100) / 100;
+  } else if (config.mode === 'stair') {
+    const level = Number(entry.draftLevel);
+    if (!Number.isFinite(level) || level < 1) { showToast('Enter a stair-climber level.'); return; }
+    log.level = level;
+  }
+  entry.logs.push(log);
+  entry.draftFeel = 'good';
+  saveActive({ reason:'cardio-log' });
+  if (nexset350CanAutoFinishCardio(index, entry, ex)) {
+    const finishingSessionId = active.id;
+    entry.status = 'done';
+    saveActive({ reason:'final-cardio-ready' });
+    queueMicrotask(() => {
+      if (!active || active.id !== finishingSessionId) return;
+      try {
+        finishWorkout();
+      } catch (error) {
+        console.error('NEXSET 3.5.0 final cardio completion failed', error);
+        try { persistMeta({ lastError:{ at:new Date().toISOString(), source:'final-cardio', message:String(error?.message || error) } }); } catch (_) {}
+        renderFocusWorkout();
+        showToast('Cardio saved. Tap Finish Workout to complete.');
+      }
+    });
+    return;
+  }
+  renderFocusWorkout();
+  showToast(`${ex.name} logged.`);
+}
+function analyzeExercise(ex, logs, previous={}) {
+  const clean = logs || [];
+  const base = {
+    lastDate:new Date().toISOString(),
+    completedCount:(previous.completedCount || 0) + 1,
+    lastSummary:clean.map(log => formatLogShort(ex, log)).join(', ')
+  };
+  if (ex?.type === 'cardio') {
+    const source = clean.filter(log => Number.isFinite(Number(log.duration)));
+    const last = source.at(-1);
+    if (!last) return { ...previous, ...base };
+    const config = nexset343CardioConfig(ex);
+    const hard = last.feel === 'hard';
+    let nextDuration = Number(last.duration) || ex.min;
+    let nextSpeed = nexset343Number(last.speed, config.speedMin);
+    let nextIncline = nexset343Number(last.incline, config.inclineMin);
+    let nextLevel = nexset343Number(last.level, config.levelMin);
+    if (!hard) {
+      if (nextDuration < ex.max) nextDuration = Math.min(ex.max, nextDuration + (Number(ex.increment) || 2));
+      else if (config.mode === 'treadmill' && nextIncline < config.inclineMax) nextIncline = Math.min(config.inclineMax, nexset343Round(nextIncline + config.inclineStep, config.inclineStep));
+      else if (config.mode === 'treadmill' && nextSpeed < config.speedMax) nextSpeed = Math.min(config.speedMax, nexset343Round(nextSpeed + config.speedStep, config.speedStep));
+      else if (config.mode === 'stair' && nextLevel < config.levelMax) nextLevel = Math.min(config.levelMax, nexset343Round(nextLevel + config.levelStep, config.levelStep));
+    }
+    const target = config.mode === 'treadmill'
+      ? `${cleanNumber(nextDuration)} min at ${cleanNumber(nextSpeed)} mph and ${cleanNumber(nextIncline)}% incline`
+      : config.mode === 'stair'
+        ? `${cleanNumber(nextDuration)} min at level ${cleanNumber(nextLevel)}`
+        : `${cleanNumber(nextDuration)} ${ex.unit || 'min'}`;
+    const note = hard ? `Repeat ${target} until it feels controlled.` : `Next cardio target: ${target}. Increase only one variable.`;
+    return { ...previous, ...base, lastDuration:Number(last.duration), nextDuration, lastSpeed:last.speed, nextSpeed, lastIncline:last.incline, nextIncline, lastLevel:last.level, nextLevel, note };
+  }
+  if (ex?.type === 'weighted') {
+    const working = clean.filter(log => !log.warmup && Number.isFinite(Number(log.weight)) && Number.isFinite(Number(log.reps)));
+    const source = working.slice(-Math.max(1, Number(ex.sets) || 1));
+    if (!source.length) return { ...previous, ...base };
+    const weights = source.map(log => Number(log.weight));
+    const reps = source.map(log => Number(log.reps));
+    const lastWeight = weights.at(-1);
+    const same = weights.every(weight => Math.abs(weight - lastWeight) < .01);
+    const hard = source.filter(log => log.feel === 'hard').length;
+    const step = displayIncrement(ex);
+    const shifted = direction => toStorageWeight(Math.max(0, roundTo(fromStorageWeight(lastWeight) + direction * step, step)));
+    let nextWeight = lastWeight;
+    let note = `Repeat ${formatWeightValue(lastWeight)} and add clean reps.`;
+    if (!same) note = `Use ${formatWeightValue(lastWeight)} as the consistent working weight next time.`;
+    else if (source.length < Number(ex.sets || 1)) note = `Repeat ${formatWeightValue(lastWeight)} and complete all ${ex.sets} working sets.`;
+    else if (reps.some(rep => rep < ex.min)) { nextWeight = shifted(-1); note = `Use ${formatWeightValue(nextWeight)} so every set stays inside the target range.`; }
+    else if (hard > 0) note = `Repeat ${formatWeightValue(lastWeight)} until every set is controlled without a hard rating.`;
+    else if (reps.every(rep => rep >= ex.max)) { nextWeight = shifted(1); note = `Increase to ${formatWeightValue(nextWeight)}. Every working set reached the top cleanly.`; }
+    return { ...previous, ...base, lastWeight, nextWeight, note };
+  }
+  return analyzeExerciseBase343(ex, logs, previous);
+}
+
+document.addEventListener('click', event => {
+  const button = event.target.closest('[data-cardio-adjust]');
+  if (!button) return;
+  event.preventDefault();
+  event.stopPropagation();
+  nexset343AdjustCardio(button.dataset.cardioAdjust, Number(button.dataset.delta));
+});
+document.addEventListener('input', event => {
+  if (!active || !event.target.matches('[data-input="cardio-speed"],[data-input="cardio-incline"],[data-input="cardio-level"]')) return;
+  const entry = active.exercises?.[active.currentExerciseIndex];
+  if (!entry) return;
+  const value = Number(event.target.value);
+  if (!Number.isFinite(value)) return;
+  if (event.target.matches('[data-input="cardio-speed"]')) entry.draftSpeed = value;
+  if (event.target.matches('[data-input="cardio-incline"]')) entry.draftIncline = value;
+  if (event.target.matches('[data-input="cardio-level"]')) entry.draftLevel = value;
+  saveActive({ reason:'cardio-input' });
+});
+queueMicrotask(nexset350ApplyPlanMigration);
+
+
+/* NEXSET 3.4.6 — post-workout results sharing */
+function nexset346CompletionSession() {
+  return lastCompletedSession || [...state.history]
+    .sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt))[0] || null;
+}
+function nexset346EnhanceCompletion() {
+  const screen = document.querySelector('.completion-screen');
+  const done = screen?.querySelector('.completion-button[data-action="complete-done"]');
+  if (!screen || !done || screen.querySelector('[data-nexset-completion-share="true"]')) return;
+  const panel = document.createElement('div');
+  panel.className = 'completion-share-card';
+  panel.dataset.nexsetCompletionShare = 'true';
+  panel.innerHTML = '<span>Coach check-in ready</span><strong>Share this workout with Atlas</strong><small>Your completed session, body trend, recent training, and next-time recommendations are included automatically.</small>';
+  const actions = document.createElement('div');
+  actions.className = 'completion-share-actions';
+  actions.innerHTML = '<button class="btn share-atlas" data-action="share-completed-workout">Share with Atlas</button><button class="btn copy-checkin" data-action="copy-completed-workout">Copy</button>';
+  done.before(panel, actions);
+  done.classList.remove('primary');
+  done.textContent = 'Return home';
+}
+function renderCompletion(...args) {
+  renderCompletionBase343(...args);
+  nexset346EnhanceCompletion();
+}
+async function nexset346ShareCompletedWorkout(copyOnly = false) {
+  const session = nexset346CompletionSession();
+  if (!session) {
+    showToast('No completed workout is available to share.');
+    return;
+  }
+  const text = coachReport();
+  const title = `NEXSET ${session.title || 'Workout'} Coach Check-In`;
+  if (!copyOnly) {
+    await shareText(text, title);
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast('Coach Check-In copied. Paste it into this ChatGPT chat.');
+  } catch (_) {
+    await shareText(text, title);
+  }
+}
+document.addEventListener('click', event => {
+  const button = event.target.closest('[data-action="share-completed-workout"],[data-action="copy-completed-workout"]');
+  if (!button) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  haptic('medium');
+  nexset346ShareCompletedWorkout(button.dataset.action === 'copy-completed-workout');
+});

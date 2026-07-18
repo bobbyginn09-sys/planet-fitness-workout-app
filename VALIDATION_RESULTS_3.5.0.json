@@ -1,0 +1,98 @@
+{
+  "version": "3.5.0",
+  "generated_at": "2026-07-18",
+  "summary": {
+    "passed": 17,
+    "failed": 0,
+    "total": 17
+  },
+  "checks": [
+    {
+      "name": "runtime transform injects 3.5.0 marker",
+      "status": "pass"
+    },
+    {
+      "name": "runtime transform renames all base targets",
+      "status": "pass"
+    },
+    {
+      "name": "transformed inline JavaScript parses",
+      "status": "pass"
+    },
+    {
+      "name": "transform keeps click listener",
+      "status": "pass"
+    },
+    {
+      "name": "coach plan contains seven days",
+      "status": "pass"
+    },
+    {
+      "name": "coach plan contains five strength days",
+      "status": "pass"
+    },
+    {
+      "name": "coach plan contains one dedicated lower-body day",
+      "status": "pass"
+    },
+    {
+      "name": "coach plan totals 69 strength working sets",
+      "status": "pass"
+    },
+    {
+      "name": "coach plan exercise IDs are unique",
+      "status": "pass"
+    },
+    {
+      "name": "Monday Smith bench recommendation is 135 lb",
+      "status": "pass"
+    },
+    {
+      "name": "Tuesday Smith squat recommendation is 130 lb",
+      "status": "pass"
+    },
+    {
+      "name": "Tuesday Smith RDL recommendation is 140 lb",
+      "status": "pass"
+    },
+    {
+      "name": "coach weights survive a progress rebuild",
+      "status": "pass"
+    },
+    {
+      "name": "initial weight falls back to coach recommendation",
+      "status": "pass"
+    },
+    {
+      "name": "cardio duration falls back to coach recommendation",
+      "status": "pass"
+    },
+    {
+      "name": "final cardio may finish when a prior exercise was intentionally skipped",
+      "status": "pass"
+    },
+    {
+      "name": "final cardio does not finish while another exercise is unresolved",
+      "status": "pass"
+    }
+  ],
+  "additional_static_checks": [
+    {
+      "name": "service-worker.js parses with node --check",
+      "status": "pass"
+    },
+    {
+      "name": "PATCH_JS_3.5.0.txt parses with node --check",
+      "status": "pass"
+    },
+    {
+      "name": "manifest.json parses as JSON",
+      "status": "pass"
+    },
+    {
+      "name": "manifest.webmanifest parses as JSON",
+      "status": "pass"
+    }
+  ],
+  "device_test_required": true
+}
