@@ -1,9 +1,9 @@
 'use strict';
 
-const APP_VERSION = '4.0.3';
+const APP_VERSION = '4.0.4';
 const CACHE_PREFIX = 'nexset-workout-';
-const CACHE_NAME = `${CACHE_PREFIX}v4-0-3-personal-20260728`;
-const INDEX_CACHE_KEY = './index.html?nexset=4.0.3';
+const CACHE_NAME = `${CACHE_PREFIX}v4-0-4-personal-20260728`;
+const INDEX_CACHE_KEY = './index.html?nexset=4.0.4';
 const APP_SHELL = [
   './',
   INDEX_CACHE_KEY,

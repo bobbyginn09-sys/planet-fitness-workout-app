@@ -10,8 +10,8 @@
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
 <meta content="NEXSET" name="apple-mobile-web-app-title"/>
 <meta content="noindex,nofollow,noarchive" name="robots"/>
-<meta content="Private iPhone-first workout coach with a rolling five-day strength plan, detailed cardio, readiness, recovery, reports, and offline support." name="description"/>
-<title>NEXSET 4.0.3 · Personal Workout Coach</title>
+<meta content="Private iPhone-first workout coach with a calendar-aware rolling five-day strength plan, detailed cardio, readiness, recovery, reports, and offline support." name="description"/>
+<title>NEXSET 4.0.4 · Personal Workout Coach</title>
 <link href="manifest.webmanifest" rel="manifest"/>
 <link href="apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
 <link href="nexset-mark.svg" rel="icon" type="image/svg+xml"/>
@@ -3409,6 +3409,261 @@ html {
 }
 </style>
 
+
+<style data-nexset-patch="4.0.4">
+/* NEXSET 4.0.4 — real calendar dates mapped onto the rolling workout rotation. */
+.n4-week-schedule {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  padding: 13px;
+  border-radius: 22px;
+  background: linear-gradient(150deg,#0C151F,#060D14);
+  border: 1px solid rgba(255,255,255,.075);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
+  overflow: hidden;
+}
+.n4-week-schedule-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  margin-bottom: 10px;
+}
+.n4-week-schedule-head > span {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.n4-week-schedule-head b {
+  color: #F4F8FF;
+  font-size: 12px;
+  font-weight: 930;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.n4-week-schedule-head small {
+  color: #718398;
+  font-size: 9px;
+  line-height: 1.3;
+}
+.n4-week-schedule-head button {
+  flex: 0 0 auto;
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: 11px;
+  border: 1px solid rgba(61,174,255,.22);
+  background: rgba(22,143,255,.08);
+  color: #6BC7FF;
+  font-size: 9px;
+  font-weight: 900;
+}
+.n4-calendar-rail {
+  display: grid;
+  grid-template-columns: repeat(7,minmax(0,1fr));
+  gap: 5px;
+  width: 100%;
+  min-width: 0;
+}
+.n4-calendar-day {
+  position: relative;
+  min-width: 0;
+  min-height: 66px;
+  padding: 8px 3px 7px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 3px;
+  background: rgba(255,255,255,.018);
+  border: 1px solid transparent;
+  color: #708195;
+}
+.n4-calendar-day .n4-calendar-weekday {
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: .05em;
+}
+.n4-calendar-day strong {
+  font-size: 17px;
+  line-height: 1;
+}
+.n4-calendar-day small {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #73879D;
+  font-size: 6.5px;
+  font-weight: 900;
+  letter-spacing: .04em;
+}
+.n4-calendar-day i {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  width: 13px;
+  height: 13px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: #78D8FF;
+  font-size: 7px;
+  font-style: normal;
+  font-weight: 950;
+}
+.n4-calendar-day.queued,
+.n4-calendar-day.active-session {
+  color: #F2F8FF;
+  background: linear-gradient(145deg,rgba(24,158,255,.23),rgba(5,91,209,.12));
+  border-color: rgba(48,171,255,.35);
+  box-shadow: 0 8px 18px rgba(0,91,218,.15),inset 0 1px 0 rgba(255,255,255,.055);
+}
+.n4-calendar-day.queued small,
+.n4-calendar-day.active-session small { color: #8ED3FF; }
+.n4-calendar-day.complete,
+.n4-calendar-day.complete-recovery {
+  color: #A8B9C8;
+  background: rgba(33,197,111,.035);
+  border-color: rgba(61,218,139,.11);
+}
+.n4-calendar-day.complete i,
+.n4-calendar-day.complete-recovery i { color: #65E9A1; }
+.n4-calendar-day.missed {
+  color: #F7C873;
+  background: rgba(245,158,11,.065);
+  border-color: rgba(245,174,48,.20);
+}
+.n4-calendar-day.missed small,
+.n4-calendar-day.missed i { color: #FFC46C; }
+.n4-calendar-day.today:not(.queued):not(.active-session) {
+  box-shadow: inset 0 0 0 1px rgba(85,185,255,.08);
+}
+.n4-calendar-day.today::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 3px;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 999px;
+  background: #53B9FF;
+}
+.n4-calendar-day.empty-past { opacity: .46; }
+.n4-week-schedule-note {
+  margin: 10px 1px 0;
+  color: #8C9BAD;
+  font-size: 9.5px;
+  line-height: 1.45;
+}
+.n4-week-schedule-note strong { color: #DCE8F5; }
+.n4-week-schedule-note span { color: #62BDF6; }
+.n4-roll-date {
+  min-height: 20px;
+  line-height: 1.2 !important;
+}
+.n4-roll-program {
+  line-height: 1.3 !important;
+}
+.signature-plan-copy > span {
+  display: block;
+  max-width: 100%;
+  white-space: normal;
+  line-height: 1.28;
+}
+.signature-home .signature-greeting > b {
+  min-width: 58px;
+  text-align: center;
+  white-space: nowrap;
+}
+.n4-plan-picker-sheet { max-height: 88dvh; }
+.n4-plan-picker-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+.n4-plan-picker-list button {
+  width: 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 38px minmax(0,1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 11px;
+  border-radius: 15px;
+  text-align: left;
+  color: #EAF3FC;
+  background: rgba(255,255,255,.035);
+  border: 1px solid rgba(255,255,255,.075);
+}
+.n4-plan-picker-list button.current {
+  border-color: rgba(43,171,255,.42);
+  background: rgba(20,144,255,.09);
+}
+.n4-plan-picker-list button > span:first-child {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  color: #6CC9FF;
+  background: rgba(36,153,255,.10);
+  font-size: 10px;
+  font-weight: 950;
+}
+.n4-plan-picker-list button > span:nth-child(2) {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+.n4-plan-picker-list strong { font-size: 12px; }
+.n4-plan-picker-list small {
+  color: #7F91A7;
+  font-size: 8.5px;
+  line-height: 1.3;
+  white-space: normal;
+}
+.n4-plan-picker-list em {
+  color: #5FBCF6;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 900;
+  white-space: nowrap;
+}
+@media (max-width:430px) {
+  .n4-week-schedule { padding: 12px 10px; }
+  .n4-week-schedule-head small { font-size: 8.5px; }
+  .n4-calendar-rail { gap: 4px; }
+  .n4-calendar-day { min-height: 63px; padding-inline: 2px; border-radius: 12px; }
+  .n4-calendar-day strong { font-size: 16px; }
+  .n4-calendar-day small { font-size: 6px; }
+  .n4-week-schedule-note { font-size: 9px; }
+  .n4-roll-date { font-size: 7.5px !important; }
+  .n4-roll-program { font-size: 8px !important; }
+  .signature-plan-copy > span { font-size: 7.1px; letter-spacing: .115em; }
+}
+@media (max-width:370px) {
+  .n4-week-schedule { padding: 10px 8px; }
+  .n4-week-schedule-head { gap: 7px; }
+  .n4-week-schedule-head b { font-size: 10.5px; }
+  .n4-week-schedule-head small { font-size: 7.5px; }
+  .n4-week-schedule-head button { min-height: 29px; padding-inline: 8px; font-size: 8px; }
+  .n4-calendar-rail { gap: 3px; }
+  .n4-calendar-day { min-height: 58px; border-radius: 10px; }
+  .n4-calendar-day .n4-calendar-weekday { font-size: 6px; }
+  .n4-calendar-day strong { font-size: 14.5px; }
+  .n4-calendar-day small { font-size: 5.5px; }
+  .n4-calendar-day i { right: 2px; top: 2px; }
+  .n4-week-schedule-note { font-size: 8.3px; }
+  .n4-roll-date { min-height: 18px; font-size: 6.8px !important; }
+  .n4-roll-program { font-size: 7.3px !important; }
+  .n4-plan-picker-list button { grid-template-columns: 34px minmax(0,1fr); }
+  .n4-plan-picker-list em { grid-column: 2; justify-self: start; }
+}
+</style>
+
 </head>
 <body>
 <div aria-hidden="true" class="app-boot"><div class="app-boot-inner"><img alt="NEXSET" class="boot-lockup" src="nexset-lockup-v317.svg"/><small>Progress Starts With Your Next Set.</small></div></div>
@@ -3449,8 +3704,8 @@ html {
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
     const RECOVERY_KEY = 'pfWorkoutApp.recovery.v1';
     const META_KEY = 'pfWorkoutApp.meta.v1';
-    const APP_VERSION = 'nexset-4.0.3';
-    const APP_VERSION_LABEL = '4.0.3';
+    const APP_VERSION = 'nexset-4.0.4';
+    const APP_VERSION_LABEL = '4.0.4';
     const DATA_SCHEMA_VERSION = 6;
     const STORAGE_WEIGHT_UNIT = 'lb';
     const LB_PER_KG = 2.2046226218;
@@ -6446,7 +6701,7 @@ document.addEventListener('click',event=>{
     window.addEventListener('online',()=>showToast('Back online.'));
 
 /* NEXSET 4.0.0 — personal intelligence, recovery, records, reports, guided cardio, and photo tracking */
-const NEXSET_400_VERSION = '4.0.3';
+const NEXSET_400_VERSION = '4.0.4';
 const NEXSET_400_PHOTO_DB = 'nexset-progress-photos-v1';
 const NEXSET_400_PHOTO_STORE = 'photos';
 const NEXSET_400_MAX_PHOTOS = 40;
@@ -6520,7 +6775,7 @@ function nexset400Migrate() {
   const coachPlan = nexset360CoachPlan();
   nexset350InstallPlan(PLAN, coachPlan);
   const hasSavedPlan = Array.isArray(state.programPlan) && state.programPlan.length >= 7;
-  if (!hasSavedPlan || !['3.6.1', '4.0.0', '4.0.1', '4.0.2', NEXSET_400_VERSION].includes(priorCoachPlanVersion)) {
+  if (!hasSavedPlan || !['3.6.1', '4.0.0', '4.0.1', '4.0.2', '4.0.3', NEXSET_400_VERSION].includes(priorCoachPlanVersion)) {
     state.programPlan = deepClone(coachPlan);
     state.settings.currentDayIndex = clamp(Math.trunc(Number(state.settings.currentDayIndex)||0),0,coachPlan.length-1);
   }
@@ -7118,6 +7373,183 @@ document.addEventListener('click',nexset400HandleAction,true);
 document.addEventListener('input',event=>{if(event.target.matches('[data-readiness-range]')&&nexset400ReadinessDraft){const kind=event.target.dataset.readinessRange;nexset400ReadinessDraft[kind]=Number(event.target.value);const label=$(`[data-readiness-label="${kind}"]`);if(label)label.textContent=nexset400RangeLabel(kind,event.target.value);nexset400UpdateReadinessPreview();}else if(event.target.matches('[data-readiness-note]')&&nexset400ReadinessDraft)nexset400ReadinessDraft.note=event.target.value;});
 document.addEventListener('change',async event=>{if(event.target.matches('[data-readiness-check]')&&nexset400ReadinessDraft){nexset400ReadinessDraft[event.target.dataset.readinessCheck]=event.target.checked;nexset400UpdateReadinessPreview();}if(event.target.id==='n4PhotoInput'&&event.target.files?.[0]){try{await nexset400AddPhoto(event.target.files[0]);}catch(error){console.warn('Photo save failed',error);showToast('Could not save that photo.');}event.target.value='';}});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)nexset400UpdateCardioTimerDom();});
+
+/* ---------- NEXSET 4.0.4 calendar-aware rolling workout dates ---------- */
+const nexset404RenderPlanBase = renderPlan;
+const nexset404RenderHomeBase = renderHome;
+const nexset404RenderWorkoutPreviewBase = renderWorkoutPreview;
+const nexset404OpenMissedDayBase = openMissedDaySheet;
+
+function nexset404Midnight(value=new Date()) {
+  const date=new Date(value);date.setHours(0,0,0,0);return date;
+}
+function nexset404AddDays(value,amount) {
+  const date=nexset404Midnight(value);date.setDate(date.getDate()+Number(amount||0));return date;
+}
+function nexset404StartOfWeek(value=new Date()) {
+  const date=nexset404Midnight(value);return nexset404AddDays(date,-((date.getDay()+6)%7));
+}
+function nexset404RelativeDate(date,value=new Date()) {
+  const diff=Math.round((nexset404Midnight(date)-nexset404Midnight(value))/86400000);
+  if(diff===0)return 'Today';
+  if(diff===1)return 'Tomorrow';
+  return new Date(date).toLocaleDateString(undefined,{weekday:'short'});
+}
+function nexset404DateLabel(date,value=new Date(),activeNow=false) {
+  const target=nexset404Midnight(date),weekday=target.toLocaleDateString(undefined,{weekday:'short'}).toUpperCase(),month=target.toLocaleDateString(undefined,{month:'short'}).toUpperCase(),day=target.getDate(),diff=Math.round((target-nexset404Midnight(value))/86400000);
+  if(activeNow)return `IN PROGRESS · ${weekday} ${day}`;
+  if(diff===0)return `TODAY · ${weekday} ${day}`;
+  if(diff===1)return `TOMORROW · ${weekday} ${day}`;
+  return `${weekday} · ${month} ${day}`;
+}
+function nexset404PlannedSessionForDate(value) {
+  const key=dateKey(value);
+  const sessions=state.history.filter(session=>Number.isFinite(Number(session?.dayIndex))&&Number(session.dayIndex)>=0&&dateKey(session.startedAt)===key).sort((a,b)=>new Date(a.completedAt||a.endedAt||a.startedAt)-new Date(b.completedAt||b.endedAt||b.startedAt));
+  return sessions.filter(session=>!nexset360IsMissedSession(session)).at(-1)||sessions.filter(nexset360IsMissedSession).at(-1)||null;
+}
+function nexset404SessionStatus(session) {
+  if(!session)return '';
+  if(nexset360IsMissedSession(session))return 'missed';
+  if(nexset360IsRecoverySession(session))return 'complete-recovery';
+  return 'complete';
+}
+function nexset404Schedule(value=new Date()) {
+  const plan=getPlan(),today=nexset404Midnight(value),todayKey=dateKey(today),todaySession=nexset404PlannedSessionForDate(today);
+  const activeSlot=active?{
+    date:today,
+    status:'active-session',
+    planIndex:Number.isFinite(Number(active.dayIndex))&&Number(active.dayIndex)>=0?Number(active.dayIndex):null,
+    day:Number.isFinite(Number(active.day))?Number(active.day):null,
+    title:active.title||'Workout in progress',
+    focus:active.focus||'',
+    type:active.isQuick?'quick':active.type==='rest'?'rest':'lift',
+    active:true
+  }:null;
+  let startDate=today,startIndex=state.settings.currentDayIndex;
+  if(activeSlot){
+    startDate=nexset404AddDays(today,1);
+    if(activeSlot.planIndex!==null&&!active?.isQuick)startIndex=(activeSlot.planIndex+1)%plan.length;
+  }else if(todaySession){
+    startDate=nexset404AddDays(today,1);
+  }
+  const scheduled=[];let index=((Number(startIndex)||0)+plan.length)%plan.length;
+  for(let offset=0;offset<21;offset++){
+    const date=nexset404AddDays(startDate,offset),day=plan[index];
+    scheduled.push({date,status:offset===0?'queued':'future',planIndex:index,day:day.day,title:day.title,focus:day.focus,type:day.type,planDay:day});
+    index=(index+1)%plan.length;
+  }
+  const upcoming=activeSlot?[activeSlot,...scheduled]:scheduled;
+  const weekStart=nexset404StartOfWeek(today),week=[];
+  for(let offset=0;offset<7;offset++){
+    const date=nexset404AddDays(weekStart,offset),key=dateKey(date),isToday=key===todayKey,isPast=date<today;
+    let item=null;
+    if(isToday&&activeSlot)item={...activeSlot};
+    else {
+      const actual=nexset404PlannedSessionForDate(date);
+      if(actual){const planIndex=Number(actual.dayIndex),day=plan[planIndex]||null;item={date,status:nexset404SessionStatus(actual),planIndex,day:Number(actual.day)||day?.day||null,title:actual.plannedTitle||actual.title||day?.title||'Workout',focus:actual.focus||day?.focus||'',type:nexset360IsRecoverySession(actual)?'rest':nexset360IsMissedSession(actual)?'missed':'lift',reason:actual.missedReasonLabel||nexset360ReasonLabel(actual.missedReason),actual};}
+    }
+    if(!item&&!isPast){const projected=scheduled.find(slot=>dateKey(slot.date)===key);if(projected)item={...projected};}
+    week.push(item?{...item,date,isToday,isPast}:{date,status:isPast?'empty-past':'empty',isToday,isPast});
+  }
+  return{plan,today,todaySession,activeSlot,scheduled,upcoming,first:upcoming[0],week};
+}
+function nexset404Rotation(slot,schedule) {
+  if(Number.isFinite(Number(slot?.day)))return Number(slot.day);
+  if(Number.isFinite(Number(slot?.planIndex)))return Number(slot.planIndex)+1;
+  return null;
+}
+function nexset404PlanTag(slot) {
+  if(slot?.type==='quick')return 'QUICK';
+  if(slot?.type==='rest')return 'REST';
+  const rotation=Number.isFinite(Number(slot?.day))?Number(slot.day):Number.isFinite(Number(slot?.planIndex))?Number(slot.planIndex)+1:null;
+  return rotation?`D${rotation}`:'—';
+}
+function nexset404CalendarMarkup(schedule) {
+  const firstKey=dateKey(schedule.first.date);
+  const cells=schedule.week.map(slot=>{
+    const weekday=slot.date.toLocaleDateString(undefined,{weekday:'short'}).slice(0,1).toUpperCase(),isNext=dateKey(slot.date)===firstKey&&(slot.status==='queued'||slot.status==='active-session');
+    const status=isNext&&slot.status==='future'?'queued':slot.status;
+    const icon=status==='active-session'?'▶':status==='complete'||status==='complete-recovery'?'✓':status==='missed'?'!':status==='queued'?'•':'';
+    const title=slot.title?`${slot.date.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'})}: ${slot.title}`:`${slot.date.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'})}: no entry`;
+    return `<div class="n4-calendar-day ${status} ${slot.isToday?'today':''}" role="listitem" ${slot.isToday?'aria-current="date"':''} aria-label="${esc(title)}"><span class="n4-calendar-weekday">${weekday}</span><strong>${slot.date.getDate()}</strong><small>${esc(nexset404PlanTag(slot))}</small>${icon?`<i>${icon}</i>`:''}</div>`;
+  }).join('');
+  const first=schedule.first,relative=nexset404RelativeDate(first.date),rotation=nexset404Rotation(first,schedule),lead=first.status==='active-session'?'In progress':relative;
+  const note=first.type==='quick'?`${first.title} is active. The scheduled rotation continues tomorrow.`:`Rotation ${rotation} · ${first.title} is ${relative==='Today'?'next today':`next ${relative.toLowerCase()}`}.`;
+  return `<section class="n4-week-schedule" aria-label="Calendar-aware rolling schedule"><div class="n4-week-schedule-head"><span><b>This week</b><small>Real dates · missed days move the queue forward</small></span><button data-action="n4-open-plan-picker">Change next</button></div><div class="n4-calendar-rail" role="list">${cells}</div><p class="n4-week-schedule-note"><strong>${esc(lead)}:</strong> ${esc(note)} <span>Rotation numbers are not weekdays.</span></p></section>`;
+}
+function nexset404SmartMarkup(schedule) {
+  const status=nexset400CurrentTrainingStatus(),slots=schedule.upcoming.slice(0,3);
+  let sentence;
+  if(schedule.activeSlot)sentence=`${schedule.activeSlot.title} is in progress today. The remaining rotation continues tomorrow.`;
+  else if(schedule.todaySession&&nexset360IsMissedSession(schedule.todaySession))sentence=`Today’s missed day is saved. ${schedule.scheduled[0].title} moves to tomorrow and stays next.`;
+  else if(schedule.todaySession)sentence=`Today’s training is recorded. ${schedule.scheduled[0].title} is now scheduled for tomorrow.`;
+  else sentence=`${schedule.scheduled[0].title} is assigned to today. Missing today shifts the dates without changing the order.`;
+  return `<section class="n4-smart-plan"><div class="n4-smart-plan-head"><div><span class="n4-section-kicker">Smart rolling calendar</span><h3>Dates move. Your workout order does not.</h3><p>${esc(sentence)}${status?` ${esc(status.label)} is ready for the next strength session.`:''}</p></div></div><div class="n4-rolling-row">${slots.map((slot,offset)=>{const rotation=nexset404Rotation(slot,schedule),type=slot.status==='active-session'?'In progress':slot.type==='rest'?'Recovery':slot.type==='quick'?'Quick workout':'Strength';return`<div class="n4-roll-day ${offset===0?'current':''}"><span class="n4-roll-date">${esc(nexset404DateLabel(slot.date,schedule.today,slot.status==='active-session'))}</span><strong>${esc(slot.title)}</strong><small class="n4-roll-program">${rotation?`Rotation ${rotation} of ${schedule.plan.length} · `:''}${type}</small></div>`;}).join('')}</div></section>`;
+}
+function nexset404HeroLabel(schedule) {
+  const slot=schedule.first,rotation=nexset404Rotation(slot,schedule),relative=nexset404RelativeDate(slot.date).toUpperCase();
+  return slot.status==='active-session'?`${relative} · WORKOUT IN PROGRESS${rotation?` · ROTATION ${rotation} OF ${schedule.plan.length}`:''}`:`${relative} · ROTATION ${rotation} OF ${schedule.plan.length}`;
+}
+function nexset404OpenPlanPicker() {
+  document.getElementById('n4PlanPicker')?.remove();
+  const plan=getPlan(),current=state.settings.currentDayIndex;
+  document.body.insertAdjacentHTML('beforeend',`<div class="sheet-backdrop" id="n4PlanPicker" data-action="n4-close-plan-picker"><section class="bottom-sheet n4-plan-picker-sheet" role="dialog" aria-modal="true" aria-label="Change next workout"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">Rolling rotation</span><h2>Change the next workout</h2></div><button data-action="n4-close-plan-picker" aria-label="Close">×</button></div><p class="muted" style="margin:0">Missing a day already carries the same workout forward. Use this only when you intentionally want a different workout next.</p><div class="n4-plan-picker-list">${plan.map((day,index)=>`<button class="${index===current?'current':''}" data-action="n4-set-next-plan" data-index="${index}" ${active?'disabled':''}><span>D${day.day}</span><span><strong>${esc(day.title)}</strong><small>${esc(day.focus)} · ${day.type==='rest'?'Recovery':'Strength'}</small></span><em>${index===current?'Current next':'Set next'}</em></button>`).join('')}</div>${active?'<p class="muted" style="font-size:11px;margin:10px 0 0">Finish or cancel the active workout before changing the queue.</p>':''}</section></div>`);
+}
+function nexset404ClosePlanPicker(){document.getElementById('n4PlanPicker')?.remove();}
+function nexset404SetNextPlan(index){
+  if(active){showToast('Finish or cancel the active workout first.');return;}
+  const plan=getPlan(),nextIndex=clamp(Number(index)||0,0,plan.length-1);
+  state.settings.currentDayIndex=nextIndex;saveState({reason:'calendar-aware-reschedule'});nexset404ClosePlanPicker();renderPlan();showToast(`Rotation ${plan[nextIndex].day} · ${plan[nextIndex].title} is now next.`);
+}
+
+renderPlan=function(){
+  nexset404RenderPlanBase();
+  const screen=document.querySelector('.signature-program-screen');if(!screen)return;
+  const schedule=nexset404Schedule(),head=screen.querySelector('.signature-page-head'),oldSmart=screen.querySelector('.n4-smart-plan'),oldRail=screen.querySelector('.signature-day-rail');
+  const paragraph=head?.querySelector('p');if(paragraph)paragraph.textContent='Five strength days in a rolling seven-workout rotation.';
+  oldSmart?.remove();head?.insertAdjacentHTML('afterend',nexset404SmartMarkup(schedule));
+  if(oldRail)oldRail.outerHTML=nexset404CalendarMarkup(schedule);
+  const kicker=screen.querySelector('.signature-plan-copy > span');if(kicker)kicker.textContent=nexset404HeroLabel(schedule);
+  const hero=screen.querySelector('.signature-plan-hero');if(hero)hero.setAttribute('aria-label',`${schedule.first.title}, scheduled ${nexset404RelativeDate(schedule.first.date).toLowerCase()}`);
+};
+
+renderHome=function(){
+  nexset404RenderHomeBase();
+  const screen=document.querySelector('.signature-home');if(!screen)return;
+  const schedule=nexset404Schedule(),slot=schedule.first,relative=nexset404RelativeDate(slot.date),rotation=nexset404Rotation(slot,schedule),activeNow=slot.status==='active-session';
+  const lead=screen.querySelector('.signature-greeting > div > span'),copy=screen.querySelector('.signature-greeting > div > p'),badge=screen.querySelector('.signature-greeting > b');
+  if(lead)lead.textContent=activeNow?'WORKOUT IN PROGRESS':relative==='Today'?'TODAY’S TRAINING':'NEXT WORKOUT';
+  if(copy)copy.textContent=activeNow?'Keep going—your remaining rotation is already mapped forward.':relative==='Today'?'Your next queued workout is assigned to today.':`${slot.title} is scheduled for ${relative.toLowerCase()}.`;
+  if(badge)badge.textContent=activeNow?'LIVE':`${slot.date.toLocaleDateString(undefined,{weekday:'short'}).toUpperCase()} ${slot.date.getDate()}`;
+  const kicker=screen.querySelector('.signature-kicker');if(kicker){const label=kicker.querySelector('span'),date=kicker.querySelector('i');if(label)label.textContent=activeNow?'WORKOUT IN PROGRESS':`ROTATION ${rotation} OF ${schedule.plan.length}`;if(date)date.textContent=relative.toUpperCase();}
+  const nextInsight=[...screen.querySelectorAll('.signature-insight')].find(card=>card.querySelector('span')?.textContent?.trim()==='NEXT UP');if(nextInsight){const strong=nextInsight.querySelector('strong');if(strong)strong.textContent=activeNow?'In progress':relative==='Today'?'Ready today':`${slot.date.toLocaleDateString(undefined,{weekday:'short'}).toUpperCase()} ${slot.date.getDate()}`;}
+};
+
+renderWorkoutPreview=function(){
+  nexset404RenderWorkoutPreviewBase();
+  const schedule=nexset404Schedule(),slot=schedule.first,day=getDay(),plan=getPlan();
+  const eyebrow=document.querySelector('.workout-brief-top .eyebrow');if(eyebrow)eyebrow.textContent=`${nexset404RelativeDate(slot.date)} · Rotation ${day.day} of ${plan.length}`;
+  const label=document.querySelector('.day-selector-row label');if(label)label.textContent='Choose rotation workout';
+  document.querySelectorAll('.day-selector-row option').forEach((option,index)=>{const item=plan[index];option.textContent=`Rotation ${item.day} · ${item.title}`;});
+};
+
+openMissedDaySheet=function(){
+  nexset404OpenMissedDayBase();
+  const day=getDay(),kicker=document.querySelector('#missedDayOverlay .sheet-head .section-kicker');if(kicker)kicker.textContent=`Rotation ${day.day} of ${getPlan().length} · ${day.title}`;
+};
+
+function nexset404HandleAction(event){
+  const button=event.target.closest('[data-action]');if(!button)return;const action=button.dataset.action;
+  if(!['n4-open-plan-picker','n4-close-plan-picker','n4-set-next-plan'].includes(action))return;
+  if(button.classList.contains('sheet-backdrop')&&event.target!==button)return;
+  event.preventDefault();event.stopImmediatePropagation();haptic('light');
+  if(action==='n4-open-plan-picker')nexset404OpenPlanPicker();
+  else if(action==='n4-close-plan-picker')nexset404ClosePlanPicker();
+  else if(action==='n4-set-next-plan')nexset404SetNextPlan(button.dataset.index);
+}
+document.addEventListener('click',nexset404HandleAction,true);
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.getElementById('n4PlanPicker'))nexset404ClosePlanPicker();});
+
 
 nexset400Migrate();
 
