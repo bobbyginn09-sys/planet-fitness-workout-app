@@ -1,0 +1,19 @@
+NEXSET 4.0.4 — SMART CALENDAR UPDATE
+
+WHAT CHANGED
+- The Workouts page now uses your real calendar week and actual date numbers.
+- Rotation 6 is no longer displayed as though it means Saturday.
+- The next queued workout is automatically assigned to today when no workout is logged.
+- Completing or logging a missed day moves the queued workout to tomorrow.
+- Future dates re-project automatically without skipping the workout order or forcing double sessions.
+- Home and Workouts now say “Rotation X of 7” alongside Today/Tomorrow.
+- “Change next” remains available as an intentional manual override.
+
+INSTALL
+1. Open NEXSET > Profile > Backup & restore > Export full backup.
+2. Upload every file in this folder to the root of the existing GitHub repository.
+3. Replace matching files and wait for GitHub Pages to deploy.
+4. Open NEXSET while online and use Profile > Backup & restore > Refresh app cache.
+5. Confirm Profile shows NEXSET 4.0.4 Personal.
+
+If an older screen remains, open force-update.html once from the same GitHub Pages address. It clears cached app files but leaves local workout data in place.
