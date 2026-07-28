@@ -1,9 +1,9 @@
 'use strict';
 
-const APP_VERSION = '4.0.0';
+const APP_VERSION = '4.0.2';
 const CACHE_PREFIX = 'nexset-workout-';
-const CACHE_NAME = `${CACHE_PREFIX}v4-0-0-personal-20260728`;
-const INDEX_CACHE_KEY = './index.html?nexset=4.0.0';
+const CACHE_NAME = `${CACHE_PREFIX}v4-0-2-personal-20260728`;
+const INDEX_CACHE_KEY = './index.html?nexset=4.0.2';
 const APP_SHELL = [
   './',
   INDEX_CACHE_KEY,
@@ -22,10 +22,18 @@ const APP_SHELL = [
   './muscle-recovery-v400.webp'
 ];
 
+async function precacheFresh() {
+  const cache = await caches.open(CACHE_NAME);
+  await Promise.allSettled(APP_SHELL.map(async asset => {
+    const response = await fetch(asset, { cache: 'reload' });
+    if (response && response.ok) await cache.put(asset, response.clone());
+  }));
+}
+
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
-    const cache = await caches.open(CACHE_NAME);
-    await Promise.allSettled(APP_SHELL.map(asset => cache.add(asset)));
+    await precacheFresh();
+    await self.skipWaiting();
   })());
 });
 
@@ -46,7 +54,7 @@ self.addEventListener('message', event => {
 async function networkFirstNavigation(request) {
   const cache = await caches.open(CACHE_NAME);
   try {
-    const response = await fetch(request, { cache:'no-store' });
+    const response = await fetch(request, { cache: 'no-store' });
     if (response?.ok) {
       await cache.put(INDEX_CACHE_KEY, response.clone());
       return response;
@@ -55,20 +63,18 @@ async function networkFirstNavigation(request) {
   return (await cache.match(INDEX_CACHE_KEY))
     || (await cache.match('./'))
     || new Response('NEXSET is offline and has not finished caching yet.', {
-      status:503,
-      headers:{'Content-Type':'text/plain; charset=utf-8'}
+      status: 503,
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' }
     });
 }
 
 async function cacheFirstAsset(request) {
-  const cached = await caches.match(request, { ignoreSearch:true });
+  const cache = await caches.open(CACHE_NAME);
+  const cached = await cache.match(request, { ignoreSearch: true });
   if (cached) return cached;
   try {
-    const response = await fetch(request);
-    if (response?.ok) {
-      const cache = await caches.open(CACHE_NAME);
-      cache.put(request, response.clone());
-    }
+    const response = await fetch(request, { cache: 'no-cache' });
+    if (response?.ok) await cache.put(request, response.clone());
     return response;
   } catch (_) {
     return Response.error();

@@ -1,0 +1,24 @@
+NEXSET 4.0.2 — PERSONAL UPDATE
+
+WHAT THIS FIXES
+- The Workouts screen no longer grows wider than the iPhone screen.
+- The rolling schedule shows three complete cards instead of a clipped horizontal carousel.
+- Lower Build + Core, the anatomy figure, workout button, day rail, and outline card stay inside the viewport.
+- The same containment was checked on strength and cardio workout screens.
+- The service worker is now versioned 4.0.2 and force-activates, so the old 4.0.0 layout should not remain stuck in cache.
+
+INSTALL
+1. In the current app, export a backup from Profile > Backup & restore.
+2. Upload every file in this folder to the ROOT of the existing GitHub repository, replacing files with the same names.
+3. Wait for GitHub Pages to finish deploying.
+4. Open the live site in Safari once, then reopen the Home Screen app.
+5. Confirm Profile shows NEXSET 4.0.2.
+
+IF THE OLD WIDE LAYOUT STILL APPEARS
+Open this address in Safari after the repository deploys:
+  your-live-app-address/force-update.html
+
+That helper removes only old NEXSET caches and the prior service worker. It does not erase workout history or settings from local storage. It then opens NEXSET 4.0.2.
+
+TESTED VIEWPORT WIDTHS
+360, 375, 390, 393, 402, 416, and 430 CSS pixels.
