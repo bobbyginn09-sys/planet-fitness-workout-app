@@ -1,0 +1,16 @@
+NEXSET 4.0.3 — IPHONE CARDIO FIT UPDATE
+
+WHAT THIS FIXES
+- Fixes the active cardio screen expanding wider than the iPhone when a previous cardio workout and long coach recommendation are present.
+- Keeps the previous-workout card, full cardio prescription, minus/value/plus controls, notes, effort buttons, and guided timer inside the screen.
+- Adds strict width containment to the active exercise card and prevents iOS text autosizing from changing the layout.
+- Preserves your workout history, progression, settings, body metrics, goals, and photos.
+
+INSTALL
+1. In NEXSET, open Profile → Backup & restore → Export backup.
+2. Upload every file from this folder to the root of the same GitHub repository, replacing matching files.
+3. Wait for GitHub Pages to finish deploying.
+4. Open NEXSET while online and use Profile → Backup & restore → Refresh app cache.
+5. Confirm Profile shows NEXSET 4.0.3.
+
+If the old layout remains, open force-update.html once from the same GitHub Pages address. It clears only NEXSET service-worker caches and does not erase local workout data.

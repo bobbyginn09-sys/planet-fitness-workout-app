@@ -11,7 +11,7 @@
 <meta content="NEXSET" name="apple-mobile-web-app-title"/>
 <meta content="noindex,nofollow,noarchive" name="robots"/>
 <meta content="Private iPhone-first workout coach with a rolling five-day strength plan, detailed cardio, readiness, recovery, reports, and offline support." name="description"/>
-<title>NEXSET 4.0.2 · Personal Workout Coach</title>
+<title>NEXSET 4.0.3 · Personal Workout Coach</title>
 <link href="manifest.webmanifest" rel="manifest"/>
 <link href="apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
 <link href="nexset-mark.svg" rel="icon" type="image/svg+xml"/>
@@ -3165,6 +3165,250 @@ body { position: relative; }
   .signature-plan-copy > div { gap: 9px; }
 }
 </style>
+
+<style data-nexset-patch="4.0.3">
+/* NEXSET 4.0.3 — real-device cardio containment for saved workout history. */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+.focus-shell,
+.exercise-stage,
+.exercise-stage-stack,
+.exercise-focus-card,
+.exercise-card-inner,
+.exercise-card-head,
+.exercise-card-copy,
+.exercise-info-button,
+.previous-compact,
+.previous-summary-row,
+.focus-log-wrap,
+.cardio-workout-panel,
+.cardio-workout-head,
+.cardio-prescription,
+.cardio-metric-grid,
+.cardio-metric,
+.cardio-progress-line,
+.cardio-note-field,
+.cardio-feel-row,
+.n4-cardio-guide,
+.n4-cardio-guide-head,
+.n4-cardio-live,
+.n4-cardio-live-top {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+.exercise-stage-stack {
+  width: 100% !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+.exercise-stage-stack > * {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+.exercise-focus-card {
+  width: 100% !important;
+  justify-self: stretch !important;
+}
+.exercise-card-inner {
+  width: 100% !important;
+  overflow-x: hidden !important;
+}
+.exercise-card-head,
+.exercise-card-copy,
+.exercise-title,
+.exercise-target,
+.exercise-info-button,
+.previous-compact,
+.focus-log-wrap,
+.cardio-workout-panel,
+.n4-cardio-guide {
+  width: 100% !important;
+}
+.exercise-title,
+.exercise-target,
+.exercise-info-button strong,
+.exercise-info-button small {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+.previous-summary-row {
+  width: 100% !important;
+  grid-template-columns: minmax(0, 1fr) minmax(104px, 40%) !important;
+  gap: 8px !important;
+}
+.previous-summary-row > div:first-child,
+.previous-set-row,
+.next-target {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+.previous-set-row {
+  width: 100%;
+}
+.previous-set-row b {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.next-target {
+  width: 100% !important;
+}
+.next-target strong {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  overflow-wrap: anywhere;
+  line-height: 1.22;
+}
+.previous-compact p {
+  width: 100%;
+  max-width: 100%;
+}
+.previous-compact:not(.first-session) p {
+  white-space: normal !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.cardio-workout-head {
+  width: 100%;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(92px, 35%) !important;
+  align-items: start !important;
+}
+.cardio-workout-head > div,
+.cardio-workout-head small,
+.cardio-prescription-title > *,
+.cardio-phase > *,
+.cardio-metric > *,
+.n4-cardio-guide-head > *,
+.n4-cardio-live-top > * {
+  min-width: 0 !important;
+}
+.cardio-workout-head small {
+  width: auto !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+}
+.cardio-prescription-title {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+.cardio-prescription-title strong {
+  min-width: 0 !important;
+  max-width: 50%;
+  white-space: normal;
+}
+.cardio-phase strong,
+.cardio-progress-line,
+.cardio-progress-line span {
+  overflow-wrap: anywhere;
+}
+.cardio-metric-grid,
+.cardio-metric,
+.cardio-stepper {
+  width: 100% !important;
+}
+.cardio-stepper > * {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+.n4-cardio-guide-head {
+  width: 100%;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(94px, 34%) !important;
+  align-items: start !important;
+}
+.n4-cardio-guide-head strong,
+.n4-cardio-guide-head small,
+.n4-cardio-instruction,
+.n4-cardio-next {
+  overflow-wrap: anywhere;
+}
+.n4-cardio-live-top {
+  grid-template-columns: minmax(0, 1fr) auto !important;
+}
+@media (max-width: 430px) {
+  .previous-compact {
+    padding-inline: 10px !important;
+  }
+  .next-target {
+    padding: 8px !important;
+  }
+  .next-target strong {
+    font-size: 10px !important;
+  }
+  .cardio-workout-panel {
+    padding: 11px !important;
+  }
+  .cardio-workout-head strong {
+    font-size: 13px !important;
+    line-height: 1.2;
+  }
+  .cardio-workout-head small {
+    font-size: 8.5px !important;
+    line-height: 1.25;
+  }
+  .cardio-prescription {
+    padding: 9px !important;
+  }
+  .cardio-prescription-title {
+    align-items: start !important;
+  }
+  .cardio-phase {
+    grid-template-columns: 68px minmax(0, 1fr) !important;
+  }
+  .cardio-metric {
+    grid-template-columns: 72px minmax(0, 1fr) !important;
+  }
+  .n4-cardio-guide {
+    padding: 11px !important;
+  }
+  .n4-cardio-guide-head strong {
+    font-size: 13px !important;
+    line-height: 1.25;
+  }
+  .n4-cardio-guide-head small {
+    font-size: 8.5px !important;
+    line-height: 1.25;
+  }
+}
+@media (max-width: 370px) {
+  .previous-summary-row {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .next-target {
+    text-align: left !important;
+  }
+  .cardio-workout-head,
+  .n4-cardio-guide-head {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .cardio-workout-head small,
+  .n4-cardio-guide-head small {
+    text-align: left !important;
+    margin-top: 3px;
+  }
+  .cardio-prescription-title {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .cardio-prescription-title strong {
+    max-width: 100%;
+    text-align: left !important;
+  }
+  .cardio-metric {
+    grid-template-columns: 64px minmax(0, 1fr) !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div aria-hidden="true" class="app-boot"><div class="app-boot-inner"><img alt="NEXSET" class="boot-lockup" src="nexset-lockup-v317.svg"/><small>Progress Starts With Your Next Set.</small></div></div>
@@ -3205,8 +3449,8 @@ body { position: relative; }
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
     const RECOVERY_KEY = 'pfWorkoutApp.recovery.v1';
     const META_KEY = 'pfWorkoutApp.meta.v1';
-    const APP_VERSION = 'nexset-4.0.2';
-    const APP_VERSION_LABEL = '4.0.2';
+    const APP_VERSION = 'nexset-4.0.3';
+    const APP_VERSION_LABEL = '4.0.3';
     const DATA_SCHEMA_VERSION = 6;
     const STORAGE_WEIGHT_UNIT = 'lb';
     const LB_PER_KG = 2.2046226218;
@@ -6202,7 +6446,7 @@ document.addEventListener('click',event=>{
     window.addEventListener('online',()=>showToast('Back online.'));
 
 /* NEXSET 4.0.0 — personal intelligence, recovery, records, reports, guided cardio, and photo tracking */
-const NEXSET_400_VERSION = '4.0.2';
+const NEXSET_400_VERSION = '4.0.3';
 const NEXSET_400_PHOTO_DB = 'nexset-progress-photos-v1';
 const NEXSET_400_PHOTO_STORE = 'photos';
 const NEXSET_400_MAX_PHOTOS = 40;
@@ -6276,7 +6520,7 @@ function nexset400Migrate() {
   const coachPlan = nexset360CoachPlan();
   nexset350InstallPlan(PLAN, coachPlan);
   const hasSavedPlan = Array.isArray(state.programPlan) && state.programPlan.length >= 7;
-  if (!hasSavedPlan || !['3.6.1', '4.0.0', '4.0.1', NEXSET_400_VERSION].includes(priorCoachPlanVersion)) {
+  if (!hasSavedPlan || !['3.6.1', '4.0.0', '4.0.1', '4.0.2', NEXSET_400_VERSION].includes(priorCoachPlanVersion)) {
     state.programPlan = deepClone(coachPlan);
     state.settings.currentDayIndex = clamp(Math.trunc(Number(state.settings.currentDayIndex)||0),0,coachPlan.length-1);
   }
@@ -6305,7 +6549,7 @@ function nexset400Migrate() {
   }
   state.version = DATA_SCHEMA_VERSION;
   nexset400RefreshAchievements(false);
-  saveState({reason:'4.0.2-migration',snapshot:false});
+  saveState({reason:'4.0.3-migration',snapshot:false});
 }
 
 /* ---------- Readiness ---------- */
