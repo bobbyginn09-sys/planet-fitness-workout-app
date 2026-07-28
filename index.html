@@ -11,7 +11,7 @@
 <meta content="NEXSET" name="apple-mobile-web-app-title"/>
 <meta content="noindex,nofollow,noarchive" name="robots"/>
 <meta content="Private iPhone-first workout coach with a rolling five-day strength plan, detailed cardio, readiness, recovery, reports, and offline support." name="description"/>
-<title>NEXSET 4.0 · Personal Workout Coach</title>
+<title>NEXSET 4.0.2 · Personal Workout Coach</title>
 <link href="manifest.webmanifest" rel="manifest"/>
 <link href="apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
 <link href="nexset-mark.svg" rel="icon" type="image/svg+xml"/>
@@ -2942,6 +2942,229 @@ body, #view, .focus-shell, .exercise-stage { overflow-x:hidden; }
   .n4-cardio-actions { grid-template-columns:1fr; }
 }
 </style>
+
+<style data-nexset-patch="4.0.2">
+/* NEXSET 4.0.2 — strict iPhone containment and a fully visible rolling schedule. */
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+body { position: relative; }
+.main {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+#view {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+.shell, #view.shell {
+  width: min(680px, calc(100% - 24px));
+  max-width: calc(100% - 24px);
+  min-width: 0;
+  margin-inline: auto;
+}
+#view,
+#view > *,
+.stack,
+.stack > * {
+  min-width: 0;
+  max-width: 100%;
+}
+.stack {
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr);
+}
+.signature-program-screen,
+.signature-history-screen,
+.profile-screen {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  grid-template-columns: minmax(0, 1fr);
+}
+.signature-program-screen > *,
+.signature-history-screen > *,
+.profile-screen > *,
+.signature-page-head,
+.signature-day-rail,
+.signature-plan-hero,
+.signature-exercise-drawer,
+.signature-program-quick,
+.signature-list-section,
+.n4-smart-plan {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+.signature-page-head > div,
+.n4-smart-plan-head,
+.n4-smart-plan-head > div,
+.signature-plan-copy,
+.signature-exercise-drawer summary > span,
+.signature-plan-actions,
+.signature-plan-actions > * {
+  min-width: 0;
+}
+.signature-page-head p,
+.n4-smart-plan p,
+.n4-roll-day strong,
+.signature-plan-copy h2,
+.signature-plan-copy p {
+  overflow-wrap: anywhere;
+}
+.n4-smart-plan {
+  overflow: hidden;
+}
+.n4-smart-plan > .n4-rolling-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  gap: 8px;
+  padding: 13px 0 2px;
+  overflow: visible;
+}
+.n4-roll-day {
+  width: auto;
+  min-width: 0;
+  min-height: 104px;
+  padding: 11px 10px;
+  display: flex;
+  flex-direction: column;
+}
+.n4-roll-day strong {
+  font-size: 12px;
+  line-height: 1.16;
+}
+.n4-roll-day small {
+  margin-top: auto;
+  padding-top: 7px;
+  font-size: 9px;
+  line-height: 1.2;
+  white-space: normal;
+}
+.signature-day-rail {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+.signature-day-rail button,
+.signature-outline-row,
+.signature-quick-workout,
+.signature-recent-list {
+  min-width: 0;
+}
+.signature-plan-hero {
+  overflow: hidden;
+}
+.signature-plan-copy {
+  width: 67%;
+  max-width: 67%;
+}
+.signature-plan-actions {
+  max-width: calc(100% - 24px);
+}
+.signature-plan-actions > .btn {
+  min-width: 0;
+  white-space: normal;
+  line-height: 1.15;
+}
+@media (max-width: 430px) {
+  .n4-smart-plan {
+    padding: 14px;
+    border-radius: 21px;
+  }
+  .n4-smart-plan h3 {
+    font-size: 18px;
+    line-height: 1.08;
+  }
+  .n4-smart-plan p {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  .n4-roll-day {
+    min-height: 101px;
+    padding: 10px 9px;
+  }
+  .n4-roll-day span { font-size: 8px; }
+  .n4-roll-day strong { font-size: 11.5px; }
+  .n4-roll-day small { font-size: 8.5px; }
+  .signature-page-head { gap: 10px; }
+  .signature-page-head > div { min-width: 0; }
+  .signature-page-head > b { flex: 0 0 auto; }
+  .signature-plan-hero { min-height: 262px; }
+  .signature-plan-copy {
+    width: 67%;
+    max-width: 67%;
+    padding: 18px 14px 76px;
+  }
+  .signature-plan-copy h2 {
+    font-size: clamp(29px, 7.8vw, 32px);
+    line-height: .98;
+  }
+  .signature-plan-copy > p {
+    font-size: 10.5px;
+    line-height: 1.32;
+  }
+  .signature-plan-copy > div {
+    gap: 12px;
+    margin-top: 14px;
+  }
+  .signature-plan-hero > .anatomy-figure.hero {
+    right: -2px;
+    width: 43%;
+    max-width: 43%;
+  }
+  .signature-plan-hero.mode-legs-a > .anatomy-figure.hero,
+  .signature-plan-hero.mode-legs-b > .anatomy-figure.hero,
+  .signature-plan-hero.mode-recovery > .anatomy-figure.hero {
+    right: 5px;
+    width: 37%;
+    max-width: 37%;
+  }
+  .signature-plan-actions {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    max-width: calc(100% - 20px);
+  }
+  .signature-plan-actions > .btn {
+    padding-inline: 10px;
+    font-size: 10px;
+  }
+  .signature-edit-day {
+    width: 48px;
+    flex: 0 0 48px;
+  }
+}
+@media (max-width: 370px) {
+  .shell, #view.shell {
+    width: min(680px, calc(100% - 20px));
+    max-width: calc(100% - 20px);
+  }
+  .n4-smart-plan { padding: 12px; }
+  .n4-smart-plan > .n4-rolling-row { gap: 6px; }
+  .n4-roll-day {
+    min-height: 98px;
+    padding: 9px 7px;
+  }
+  .n4-roll-day strong { font-size: 10.5px; }
+  .n4-roll-day small { font-size: 8px; }
+  .signature-day-rail { gap: 4px; padding: 6px; }
+  .signature-day-rail button { min-height: 48px; }
+  .signature-plan-copy {
+    width: 69%;
+    max-width: 69%;
+    padding-left: 12px;
+  }
+  .signature-plan-copy h2 { font-size: 28px; }
+  .signature-plan-copy > div { gap: 9px; }
+}
+</style>
 </head>
 <body>
 <div aria-hidden="true" class="app-boot"><div class="app-boot-inner"><img alt="NEXSET" class="boot-lockup" src="nexset-lockup-v317.svg"/><small>Progress Starts With Your Next Set.</small></div></div>
@@ -2982,8 +3205,8 @@ body, #view, .focus-shell, .exercise-stage { overflow-x:hidden; }
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
     const RECOVERY_KEY = 'pfWorkoutApp.recovery.v1';
     const META_KEY = 'pfWorkoutApp.meta.v1';
-    const APP_VERSION = 'nexset-4.0.0';
-    const APP_VERSION_LABEL = '4.0.0';
+    const APP_VERSION = 'nexset-4.0.2';
+    const APP_VERSION_LABEL = '4.0.2';
     const DATA_SCHEMA_VERSION = 6;
     const STORAGE_WEIGHT_UNIT = 'lb';
     const LB_PER_KG = 2.2046226218;
@@ -4509,7 +4732,7 @@ body, #view, .focus-shell, .exercise-stage { overflow-x:hidden; }
     async function registerServiceWorker(){
       if(!('serviceWorker'in navigator))return null;
       try{
-        const registration=await navigator.serviceWorker.register('./service-worker.js');serviceWorkerRegistration=registration;
+        let registration;try{registration=await navigator.serviceWorker.register(`./service-worker.js?v=${APP_VERSION_LABEL}`,{updateViaCache:'none'});}catch(_){registration=await navigator.serviceWorker.register('./service-worker.js');}serviceWorkerRegistration=registration;
         if(registration.waiting&&navigator.serviceWorker.controller)showUpdateBanner(registration.waiting);
         registration.addEventListener('updatefound',()=>watchInstallingWorker(registration.installing));
         navigator.serviceWorker.addEventListener('controllerchange',()=>{if(updateReloading)return;updateReloading=true;location.reload();});
@@ -5979,7 +6202,7 @@ document.addEventListener('click',event=>{
     window.addEventListener('online',()=>showToast('Back online.'));
 
 /* NEXSET 4.0.0 — personal intelligence, recovery, records, reports, guided cardio, and photo tracking */
-const NEXSET_400_VERSION = '4.0.0';
+const NEXSET_400_VERSION = '4.0.2';
 const NEXSET_400_PHOTO_DB = 'nexset-progress-photos-v1';
 const NEXSET_400_PHOTO_STORE = 'photos';
 const NEXSET_400_MAX_PHOTOS = 40;
@@ -6053,7 +6276,7 @@ function nexset400Migrate() {
   const coachPlan = nexset360CoachPlan();
   nexset350InstallPlan(PLAN, coachPlan);
   const hasSavedPlan = Array.isArray(state.programPlan) && state.programPlan.length >= 7;
-  if (!hasSavedPlan || !['3.6.1', NEXSET_400_VERSION].includes(priorCoachPlanVersion)) {
+  if (!hasSavedPlan || !['3.6.1', '4.0.0', '4.0.1', NEXSET_400_VERSION].includes(priorCoachPlanVersion)) {
     state.programPlan = deepClone(coachPlan);
     state.settings.currentDayIndex = clamp(Math.trunc(Number(state.settings.currentDayIndex)||0),0,coachPlan.length-1);
   }
@@ -6082,7 +6305,7 @@ function nexset400Migrate() {
   }
   state.version = DATA_SCHEMA_VERSION;
   nexset400RefreshAchievements(false);
-  saveState({reason:'4.0.0-migration',snapshot:false});
+  saveState({reason:'4.0.2-migration',snapshot:false});
 }
 
 /* ---------- Readiness ---------- */
@@ -6597,7 +6820,7 @@ renderFocusLogPanel = function(ex,entry,index,weight,reps){const html=nexset400R
 renderFocusWorkout = function(){nexset400RenderFocusWorkoutBase();if(active?.trainingModifier){const stage=document.querySelector('.exercise-stage-stack')||document.querySelector('.exercise-stage');if(stage&&!stage.querySelector('.n4-workout-mode'))stage.insertAdjacentHTML('afterbegin',`<div class="n4-workout-mode"><span><strong>${esc(active.trainingModifier.label)}</strong> · reduced loads and sets</span><span>Progression protected</span></div>`);}nexset400EnsureCardioTimer();};
 renderExerciseSheet = function(ex,entry,index){let html=nexset400RenderExerciseSheetBase(ex,entry,index),guide=nexset400GuideData(ex),visual=`<div class="sheet-section"><strong class="sheet-section-title">Movement guide</strong><div class="n4-form-visual">${nexset400MovementSvg(movementGroup(ex))}<div><strong>${esc(ex.name)}</strong><div class="n4-muscle-tags">${guide.muscles.map(m=>`<span>${esc(m)}</span>`).join('')}</div></div></div><div class="n4-mistakes">${guide.mistakes.map(m=>`<p>Watch for: ${esc(m)}</p>`).join('')}</div></div>`;return html.replace('<div class="sheet-section"><strong class="sheet-section-title">How to do it</strong>',`${visual}<div class="sheet-section"><strong class="sheet-section-title">How to do it</strong>`);};
 renderHome = function(){nexset400RenderHomeBase();const screen=document.querySelector('.signature-home');if(!screen)return;const greeting=screen.querySelector('.signature-greeting'),hero=screen.querySelector('.signature-hero'),ready=nexset400ReadinessSnapshot(),status=nexset400CurrentTrainingStatus();if(greeting&&!screen.querySelector('.n4-readiness-strip'))greeting.insertAdjacentHTML('afterend',`<button class="n4-readiness-strip" data-action="n4-open-readiness"><span class="n4-readiness-ring" style="--score:${ready.score}"><span>${ready.score}</span></span><span class="n4-readiness-copy"><strong>${esc(ready.label)} · readiness</strong><small>${ready.checkin?'Today’s check-in saved':'Tap for a 30-second check-in'} · ${esc(ready.source)}</small></span><b>›</b></button>${status?`<div class="n4-return-banner"><span>${status.mode==='caution'?'🩹':'↘'}</span><span><strong>${esc(status.label)}</strong><small>${esc(status.note)}</small></span><button data-action="more-section" data-section="readiness">Review</button></div>`:''}`);if(hero&&!screen.querySelector('.n4-recovery-compact'))hero.insertAdjacentHTML('afterend',nexset400RecoveryCompactMarkup());};
-renderPlan = function(){nexset400RenderPlanBase();const head=document.querySelector('.signature-program-screen .signature-page-head');if(!head)return;const plan=getPlan(),start=state.settings.currentDayIndex,status=nexset400CurrentTrainingStatus();head.insertAdjacentHTML('afterend',`<section class="n4-smart-plan"><div class="n4-smart-plan-head"><div><span class="n4-section-kicker">Smart rolling schedule</span><h3>Missed days do not skip workouts.</h3><p>${status?`${esc(status.label)} is ready for the next strength day. `:''}Continue from the next queued day instead of doubling up.</p></div></div><div class="n4-rolling-row">${Array.from({length:Math.min(5,plan.length)},(_,offset)=>{const index=(start+offset)%plan.length,day=plan[index];return`<div class="n4-roll-day ${offset===0?'current':''}"><span>${offset===0?'Next':'Then'}</span><strong>${esc(day.title)}</strong><small>${day.type==='rest'?'Recovery':'Strength day'}</small></div>`;}).join('')}</div></section>`);};
+renderPlan = function(){nexset400RenderPlanBase();const head=document.querySelector('.signature-program-screen .signature-page-head');if(!head)return;const plan=getPlan(),start=state.settings.currentDayIndex,status=nexset400CurrentTrainingStatus();head.insertAdjacentHTML('afterend',`<section class="n4-smart-plan"><div class="n4-smart-plan-head"><div><span class="n4-section-kicker">Smart rolling schedule</span><h3>Missed days do not skip workouts.</h3><p>${status?`${esc(status.label)} is ready for the next strength day. `:''}Continue from the next queued day instead of doubling up.</p></div></div><div class="n4-rolling-row">${Array.from({length:Math.min(3,plan.length)},(_,offset)=>{const index=(start+offset)%plan.length,day=plan[index];return`<div class="n4-roll-day ${offset===0?'current':''}"><span>${offset===0?'Next':'Then'}</span><strong>${esc(day.title)}</strong><small>${day.type==='rest'?'Recovery':'Strength day'}</small></div>`;}).join('')}</div></section>`);};
 renderProgress = function(){if(progressTab==='recovery'){nexset400RenderProgressRecovery();return;}if(progressTab==='achievements'){nexset400RenderProgressAchievements();return;}nexset400RenderProgressBase();const tabs=document.querySelector('.segmented-tabs');if(tabs&&!tabs.querySelector('[data-tab="recovery"]')){const review=tabs.querySelector('[data-tab="review"]');review?.insertAdjacentHTML('beforebegin','<button data-action="progress-tab" data-tab="recovery">Recovery</button><button data-action="progress-tab" data-tab="achievements">Achievements</button>');}};
 renderMore = function(){
   if(moreSection==='readiness'){$('#view').innerHTML=nexset400RenderReadinessPage();return;}

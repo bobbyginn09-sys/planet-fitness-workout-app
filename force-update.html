@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#02060B">
+<title>Update NEXSET</title>
+<style>
+:root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+*{box-sizing:border-box}body{margin:0;min-height:100dvh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 50% 0,rgba(20,158,255,.16),transparent 22rem),#02060b;color:#f5f8fc}.card{width:min(430px,100%);padding:28px;border-radius:26px;background:#09121c;border:1px solid rgba(255,255,255,.1);box-shadow:0 24px 60px rgba(0,0,0,.45);text-align:center}.mark{width:64px;height:64px;margin:0 auto 18px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(145deg,#18a5ff,#075bff);font-size:28px;font-weight:950}.eyebrow{color:#64c7ff;font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}h1{margin:8px 0 10px;font-size:30px;letter-spacing:-.045em}p{margin:0;color:#9aa9bb;line-height:1.5}.status{margin-top:20px;padding:13px 14px;border-radius:16px;background:rgba(255,255,255,.05);font-weight:800}.status.error{color:#ffb5be}button{width:100%;min-height:52px;margin-top:14px;border:0;border-radius:16px;background:linear-gradient(135deg,#20a8ff,#087eff 58%,#0056e8);color:white;font:inherit;font-weight:900}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="mark">N</div>
+  <div class="eyebrow">NEXSET 4.0.2</div>
+  <h1>Refreshing the app</h1>
+  <p>This removes only old NEXSET cache files and the previous service worker. Your workout history and settings stay in local storage.</p>
+  <div class="status" id="status">Clearing the old app shell…</div>
+  <button id="retry" hidden>Try again</button>
+</main>
+<script>
+(async()=>{
+  const status=document.getElementById('status');
+  const retry=document.getElementById('retry');
+  retry.addEventListener('click',()=>location.reload());
+  try{
+    if('serviceWorker' in navigator){
+      const regs=await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(reg=>reg.unregister()));
+    }
+    if('caches' in window){
+      const keys=await caches.keys();
+      await Promise.all(keys.filter(key=>key.startsWith('nexset-workout-')).map(key=>caches.delete(key)));
+    }
+    status.textContent='Old cache cleared. Opening NEXSET 4.0.2…';
+    setTimeout(()=>location.replace(`./index.html?nexset=4.0.2&fresh=${Date.now()}`),650);
+  }catch(error){
+    status.textContent='The automatic refresh did not finish. Reload this page and try again.';
+    status.classList.add('error');
+    retry.hidden=false;
+  }
+})();
+</script>
+</body>
+</html>
