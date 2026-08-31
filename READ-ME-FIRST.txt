@@ -1,0 +1,26 @@
+NEXSET 4.0.4 — JACKED + LEAN UPDATE
+
+THIS PACKAGE UPDATES THE WORKOUT PROGRAM INSIDE YOUR CURRENT APP BACKUP.
+It preserves all 21 history entries, body readings, achievements, goals, settings, and photos. It resets the rolling position to Day 1 so the new program starts cleanly.
+
+INSTALL ON IPHONE
+1. Keep your original 8/31/2026 backup somewhere safe.
+2. Save NEXSET-4.0.4-Jacked-PF-Import.json to the Files app.
+3. Open NEXSET.
+4. Go to Profile → Backup & restore → Import backup.
+5. Choose NEXSET-4.0.4-Jacked-PF-Import.json and approve the import.
+6. Return Home and confirm the next workout is “Upper Strength + Arms.”
+
+WHAT CHANGED
+• The goal is now fat loss plus hypertrophy—not fat loss alone.
+• Arms receive dedicated work on the strength day and a separate high-volume push/pull exposure.
+• Abs are trained three times per rotation with cable crunches, Pallof presses, and controlled knee raises.
+• Chest, back, shoulders, and legs still receive balanced growth volume.
+• Every exercise remains compatible with Planet Fitness: Smith machine, selectorized machines, cables, dumbbells, treadmill, stair climber, and bodyweight stations.
+• There are no lunges, barbell-only lifts, hip thrusts, or bike prescriptions.
+• The import includes a two-strength-workout return ramp because the most recent logged strength workout was August 13 and the August 31 readiness check was 65/100.
+• Full-plan volume is 10 direct biceps sets, 10 direct triceps sets, and 12 direct core sets per rolling rotation.
+• Your old progression history stays active. After the return ramp, NEXSET may recommend one increment above the printable starting weight when your previous performance already earned it.
+
+IMPORTANT
+This file changes the saved workout plan and rolling position. It does not replace the NEXSET website/PWA code, visual layout, service worker, or app version. Keep the original backup until you have opened the new plan and verified your old history is present.
