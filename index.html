@@ -10,8 +10,8 @@
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
 <meta content="NEXSET" name="apple-mobile-web-app-title"/>
 <meta content="noindex,nofollow,noarchive" name="robots"/>
-<meta content="Private iPhone-first workout coach with a calendar-aware rolling five-day strength plan, detailed cardio, readiness, recovery, reports, and offline support." name="description"/>
-<title>NEXSET 4.0.4 · Personal Workout Coach</title>
+<meta content="Private iPhone-first Planet Fitness workout coach with five lifting days, two recovery days, arm and ab specialization, optional evening running, reports, and offline support." name="description"/>
+<title>NEXSET 4.1.0 · Jacked + Lean</title>
 <link href="manifest.webmanifest" rel="manifest"/>
 <link href="apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
 <link href="nexset-mark.svg" rel="icon" type="image/svg+xml"/>
@@ -3664,6 +3664,24 @@ html {
 }
 </style>
 
+
+<style id="nexset410Styles">
+  .n41-evening-card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;margin:13px 0;padding:15px;border:1px solid rgba(97,199,255,.24);border-radius:18px;background:linear-gradient(145deg,rgba(8,26,44,.96),rgba(4,12,22,.98));box-shadow:0 14px 34px rgba(0,0,0,.22)}
+  .n41-evening-card.rest{border-color:rgba(255,255,255,.10);background:rgba(8,14,22,.94)}
+  .n41-evening-card .n41-kicker{display:block;font-size:9px;font-weight:900;letter-spacing:.16em;color:#61c7ff;margin-bottom:5px}
+  .n41-evening-card.rest .n41-kicker{color:#9aa8b7}
+  .n41-evening-card h3{font-size:17px;margin:0 0 4px;line-height:1.1}
+  .n41-evening-card p{font-size:11px;line-height:1.45;color:#aab8c6;margin:0}
+  .n41-evening-card button{min-width:78px;border:0;border-radius:13px;padding:11px 12px;background:#0d7dff;color:#fff;font-weight:900}
+  .n41-evening-card.rest button{background:rgba(255,255,255,.08);color:#d9e2ea}
+  .n41-program-card{margin-top:14px;padding:15px;border:1px solid rgba(97,199,255,.18);border-radius:20px;background:rgba(5,14,24,.95)}
+  .n41-program-card header{margin-bottom:11px}.n41-program-card header span{font-size:9px;font-weight:900;letter-spacing:.15em;color:#61c7ff}.n41-program-card header h3{margin:5px 0 3px}.n41-program-card header p{margin:0;color:#9facb9;font-size:11px;line-height:1.4}
+  .n41-evening-list{display:grid;gap:7px}.n41-evening-row{display:grid;grid-template-columns:34px minmax(0,1fr);gap:9px;align-items:center;padding:9px 10px;border-radius:13px;background:rgba(255,255,255,.035)}
+  .n41-evening-row>span{display:grid;place-items:center;width:31px;height:31px;border-radius:10px;background:rgba(13,125,255,.13);font-size:10px;font-weight:900;color:#73c8ff}.n41-evening-row strong{display:block;font-size:11px}.n41-evening-row small{display:block;margin-top:2px;color:#8f9cab;font-size:9px;line-height:1.35}
+  .n41-plan-summary{font-size:11px;color:#a8b5c1;margin:0 0 8px}
+  @media(max-width:390px){.n41-evening-card{grid-template-columns:1fr}.n41-evening-card button{width:100%}}
+</style>
+
 </head>
 <body>
 <div aria-hidden="true" class="app-boot"><div class="app-boot-inner"><img alt="NEXSET" class="boot-lockup" src="nexset-lockup-v317.svg"/><small>Progress Starts With Your Next Set.</small></div></div>
@@ -3704,8 +3722,8 @@ html {
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
     const RECOVERY_KEY = 'pfWorkoutApp.recovery.v1';
     const META_KEY = 'pfWorkoutApp.meta.v1';
-    const APP_VERSION = 'nexset-4.0.4';
-    const APP_VERSION_LABEL = '4.0.4';
+    const APP_VERSION = 'nexset-4.1.0';
+    const APP_VERSION_LABEL = '4.1.0';
     const DATA_SCHEMA_VERSION = 6;
     const STORAGE_WEIGHT_UNIT = 'lb';
     const LB_PER_KG = 2.2046226218;
@@ -3831,6 +3849,10 @@ html {
     ];
 
     const EXTRA_EXERCISES = [
+
+      { id:'evening_easy_run', name:'Evening Easy Run', type:'cardio', movement:'cardio', sets:1, min:20, max:35, increment:5, unit:'min', equipment:'Treadmill / outdoors', coachCardio:{duration:25,speed:4.5,incline:1}, cardioConfig:{mode:'treadmill',speedMin:4,speedMax:5.5,speedStep:.1,inclineMin:0,inclineMax:2,inclineStep:1,warmupMinutes:5,cooldownMinutes:5}, cardioPlan:{warmupSpeed:3,warmupIncline:0,cooldownSpeed:2.8,cooldownIncline:0}, cues:'Keep a conversational pace. Walk whenever needed and finish with enough energy to repeat the session later in the week.' },
+      { id:'evening_run_intervals', name:'Evening Run Intervals', type:'cardio', movement:'cardio', sets:1, min:20, max:32, increment:3, unit:'min', equipment:'Treadmill / outdoors', coachCardio:{duration:23,rounds:5,jogSpeed:6.5,walkSpeed:3.3,incline:1}, cardioConfig:{mode:'interval',roundsMin:4,roundsMax:8,roundsStep:1,jogSpeedMin:5,jogSpeedMax:7,jogSpeedStep:.1,walkSpeedMin:2.8,walkSpeedMax:3.5,walkSpeedStep:.1,inclineMin:0,inclineMax:2,inclineStep:1,warmupMinutes:4,runMinutes:1,walkMinutes:2,cooldownMinutes:4}, cues:'Run one minute, walk two minutes. Keep the run controlled and stop for joint pain, dizziness, chest pain, or a major loss of form.' },
+      { id:'pallof_press', name:'Cable Pallof Press', type:'weighted', movement:'core', sets:2, min:10, max:12, increment:5, equipment:'Cable station', cues:'Log weight per side. Stand square, brace, press straight out, and resist rotation.', steps:['Set the cable around lower-chest height and stand sideways to the stack.','Hold the handle at the chest, brace, and press straight forward.','Pause without rotating, then return slowly and repeat on the other side.'] },
       { id:'cable_chest_press', name:'Standing Cable Chest Press', type:'weighted', movement:'horizontal_push', sets:3, min:10, max:15, increment:5, equipment:'Cable station', cues:'Split stance, ribs down, and press without letting the shoulders roll forward.', steps:['Set both handles around mid-chest and take a stable split stance.','Brace your torso and press the handles forward without shrugging.','Pause briefly, then return under control while keeping cable tension.'] },
       { id:'smith_incline_press', name:'Smith Machine Incline Press', type:'weighted', movement:'incline_push', sets:3, min:8, max:12, increment:10, equipment:'Smith machine + incline bench', cues:'Use a low-to-moderate incline and lower the bar toward the upper chest.', steps:['Set a low-to-moderate incline so the bar reaches upper chest.','Retract your shoulder blades and lower the bar smoothly.','Press without bouncing or letting your shoulders glide forward.'] },
       { id:'assisted_dip', name:'Assisted Dip', type:'bodyweight', movement:'horizontal_push', sets:3, min:8, max:12, increment:5, equipment:'Assisted dip machine', cues:'Keep shoulders down and use assistance that allows a smooth, pain-free range.', steps:['Choose enough assistance to keep every rep controlled.','Lower with your chest slightly forward and shoulders away from your ears.','Press through the handles without bouncing out of the bottom.'] },
@@ -6701,7 +6723,7 @@ document.addEventListener('click',event=>{
     window.addEventListener('online',()=>showToast('Back online.'));
 
 /* NEXSET 4.0.0 — personal intelligence, recovery, records, reports, guided cardio, and photo tracking */
-const NEXSET_400_VERSION = '4.0.4';
+const NEXSET_400_VERSION = '4.1.0';
 const NEXSET_400_PHOTO_DB = 'nexset-progress-photos-v1';
 const NEXSET_400_PHOTO_STORE = 'photos';
 const NEXSET_400_MAX_PHOTOS = 40;
@@ -7549,6 +7571,144 @@ function nexset404HandleAction(event){
 }
 document.addEventListener('click',nexset404HandleAction,true);
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.getElementById('n4PlanPicker'))nexset404ClosePlanPicker();});
+
+
+/* NEXSET 4.1.0 — five lifting days, two recovery days, arm/ab specialization, and optional evening cardio */
+const NEXSET_410_PLAN = [{"day":1,"type":"lift","title":"Upper Strength + Arms","focus":"Chest, back, shoulders, biceps, triceps","warmup":"5–7 minutes easy treadmill, shoulder circles, then one light bench set and one light pulldown set.","note":"Eighteen working sets. This is the heavier upper-body day. Leave 1–2 clean reps in reserve on compounds and 1–3 on arm work.","evening":{"mode":"easy-run","title":"Optional Evening Easy Run","target":"25 minutes at a conversational pace","detail":"Separate it from lifting by about 6 hours when practical. Keep this easy enough to speak in full sentences.","templateId":"n41-evening-easy"},"exercises":[{"id":"smith_bench","name":"Smith Machine Bench Press","type":"weighted","sets":3,"min":6,"max":10,"increment":10,"restSeconds":150,"coachWeight":145,"equipment":"Smith machine","cues":"Lower under control, keep shoulder blades set, and stop before bar speed or form breaks.","movement":"horizontal_push"},{"id":"lat_pulldown","name":"Lat Pulldown","type":"weighted","sets":3,"min":8,"max":10,"increment":5,"restSeconds":120,"coachWeight":90,"equipment":"Lat pulldown","cues":"Drive elbows down without swinging the torso.","movement":"vertical_pull"},{"id":"incline_db_press","name":"Incline Dumbbell Press","type":"weighted","sets":2,"min":8,"max":12,"increment":5,"restSeconds":105,"coachWeight":30,"equipment":"Dumbbells","cues":"Use a moderate incline and keep every rep controlled at the bottom.","movement":"incline_push"},{"id":"seated_cable_row","name":"Seated Cable Row","type":"weighted","sets":2,"min":8,"max":12,"increment":5,"restSeconds":105,"coachWeight":80,"equipment":"Cable row","cues":"Pause at the torso and avoid rocking backward.","movement":"horizontal_pull"},{"id":"machine_shoulder_press_strength","name":"Machine Shoulder Press","type":"weighted","sets":2,"min":8,"max":12,"increment":5,"restSeconds":90,"coachWeight":55,"equipment":"Shoulder press machine","cues":"Keep ribs down and finish before the rep turns into a grind.","movement":"vertical_push"},{"id":"cable_lateral_raise_strength","name":"Cable Lateral Raise","type":"weighted","sets":2,"min":12,"max":20,"increment":2.5,"restSeconds":60,"coachWeight":7.5,"equipment":"Cable station","cues":"Lead with the elbows and keep the upper traps quiet.","movement":"lateral_raise"},{"id":"cable_curl","name":"Cable Curl","type":"weighted","sets":2,"min":10,"max":15,"increment":5,"restSeconds":75,"coachWeight":25,"equipment":"Cable station","cues":"Keep the upper arms still and squeeze without leaning back.","movement":"biceps"},{"id":"rope_pushdown_upper","name":"Rope Triceps Pushdown","type":"weighted","sets":2,"min":10,"max":15,"increment":5,"restSeconds":75,"coachWeight":30,"equipment":"Cable station","cues":"Keep elbows fixed and separate the rope at the bottom.","movement":"triceps"}]},{"day":2,"type":"lift","title":"Lower Strength + Core","focus":"Quads, hamstrings, glutes, calves, abs","warmup":"5–7 minutes easy treadmill, bodyweight squats, hip hinges, then one light Smith squat set.","note":"Sixteen working sets. Use pain-free depth and clean bracing. No running tonight so the lower body can recover.","evening":{"mode":"rest","title":"No Run Tonight","target":"Recover from lower-body strength work","detail":"Normal walking is fine. Save running quality for the next scheduled run.","templateId":null},"exercises":[{"id":"smith_squat","name":"Smith Machine Squat","type":"weighted","sets":3,"min":6,"max":10,"increment":10,"restSeconds":180,"coachWeight":135,"equipment":"Smith machine","cues":"Brace hard, use a pain-free depth, and drive through the whole foot.","movement":"squat"},{"id":"smith_rdl","name":"Smith Machine Romanian Deadlift","type":"weighted","sets":3,"min":8,"max":10,"increment":10,"restSeconds":150,"coachWeight":145,"equipment":"Smith machine","cues":"Keep the bar close and end the range before the lower back takes over.","movement":"hinge"},{"id":"leg_press_45","name":"45° Leg Press","type":"weighted","sets":2,"min":10,"max":15,"increment":10,"restSeconds":120,"coachWeight":120,"equipment":"45-degree leg press","cues":"Keep hips supported, control depth, and do not bounce or hard-lock the knees.","movement":"leg_press"},{"id":"seated_leg_curl_a","name":"Seated Leg Curl","type":"weighted","sets":2,"min":10,"max":15,"increment":5,"restSeconds":90,"coachWeight":50,"equipment":"Seated leg curl","cues":"Keep hips down and control the return.","movement":"knee_flexion"},{"id":"standing_calf_raise","name":"Calf Raise Machine","type":"weighted","sets":2,"min":12,"max":20,"increment":5,"restSeconds":75,"coachWeight":70,"equipment":"Calf raise machine","cues":"Use a full stretch and pause at the top.","movement":"calves"},{"id":"cable_crunch","name":"Kneeling Cable Crunch","type":"weighted","sets":2,"min":10,"max":15,"increment":5,"restSeconds":60,"coachWeight":30,"equipment":"Cable station + rope","cues":"Keep hips mostly fixed and curl the ribs toward the pelvis.","movement":"core"},{"id":"pallof_press","name":"Cable Pallof Press","type":"weighted","sets":2,"min":10,"max":12,"increment":5,"restSeconds":60,"coachWeight":10,"equipment":"Cable station","cues":"Log weight per side. Resist rotation and pause with the arms extended.","movement":"core"}]},{"day":3,"type":"rest","title":"Active Recovery","focus":"Easy cardio, mobility, recovery","warmup":"Start slowly and let your breathing settle.","note":"No lifting. This is one of the two recovery days. Keep the effort easy and finish fresher than you started.","evening":{"mode":"recovery","title":"Easy-Run Make-Up (Optional)","target":"20–25 minutes conversational","detail":"Use this only if you skipped the Day 1 easy run and your legs feel normal. Do not stack all three run options during the first month.","templateId":"n41-evening-easy"},"exercises":[{"id":"easy_walk_recovery","name":"Easy Treadmill Walk","type":"cardio","sets":1,"min":25,"max":40,"increment":5,"unit":"min","equipment":"Treadmill / outdoors","coachCardio":{"duration":30,"speed":2.7,"incline":0},"cardioConfig":{"mode":"treadmill","speedMin":2.4,"speedMax":3.4,"speedStep":0.1,"inclineMin":0,"inclineMax":4,"inclineStep":1,"warmupMinutes":3,"cooldownMinutes":3},"cues":"Easy conversational pace. This should improve recovery, not create leg fatigue.","restSeconds":0,"movement":"cardio"},{"id":"mobility_flow","name":"Mobility Flow","type":"timed","sets":1,"min":8,"max":12,"increment":2,"unit":"min","equipment":"Mat","cues":"Use pain-free hip, ankle, thoracic, and shoulder ranges.","restSeconds":0,"movement":"mobility"},{"id":"stretch_recovery","name":"Stretching / Foam Rolling","type":"timed","sets":1,"min":5,"max":10,"increment":2,"unit":"min","equipment":"Mat / roller","cues":"Gentle pressure only. Finish feeling looser, not sore.","restSeconds":0,"movement":"mobility"}]},{"day":4,"type":"lift","title":"Push Hypertrophy","focus":"Chest, shoulders, triceps","warmup":"5 minutes easy treadmill, shoulder circles, then one light chest-press set.","note":"Seventeen working sets for chest, shoulder width, and triceps. Keep the lifting session separate from the harder evening run.","evening":{"mode":"intervals","title":"Evening Run Intervals","target":"5 rounds · 23 minutes total","detail":"Four-minute warm-up, then 1 minute run / 2 minutes walk for five rounds, followed by a four-minute cooldown.","templateId":"n41-evening-intervals"},"exercises":[{"id":"machine_chest_press","name":"Machine Chest Press","type":"weighted","sets":3,"min":8,"max":12,"increment":5,"restSeconds":105,"coachWeight":90,"equipment":"Chest press machine","cues":"Keep shoulder blades set and control the bottom.","movement":"horizontal_push"},{"id":"machine_chest_fly","name":"Machine Chest Fly","type":"weighted","sets":2,"min":12,"max":15,"increment":5,"restSeconds":75,"coachWeight":65,"equipment":"Pec deck","cues":"Use a soft elbow and control the stretch.","movement":"chest_isolation"},{"id":"machine_shoulder_press","name":"Machine Shoulder Press","type":"weighted","sets":3,"min":8,"max":12,"increment":5,"restSeconds":105,"coachWeight":55,"equipment":"Shoulder press machine","cues":"Keep ribs down and stop before form changes.","movement":"vertical_push"},{"id":"cable_lateral_raise","name":"Cable Lateral Raise","type":"weighted","sets":3,"min":12,"max":20,"increment":2.5,"restSeconds":60,"coachWeight":7.5,"equipment":"Cable station","cues":"Raise with the side delts; do not shrug the weight up.","movement":"lateral_raise"},{"id":"rope_pushdown_upper","name":"Rope Triceps Pushdown","type":"weighted","sets":3,"min":10,"max":15,"increment":5,"restSeconds":75,"coachWeight":30,"equipment":"Cable station","cues":"Keep elbows fixed and finish every rep cleanly.","movement":"triceps"},{"id":"overhead_cable_triceps","name":"Overhead Cable Triceps Extension","type":"weighted","sets":3,"min":10,"max":15,"increment":5,"restSeconds":75,"coachWeight":20,"equipment":"Cable station","cues":"Use a full comfortable stretch without flaring the ribs.","movement":"triceps"}]},{"day":5,"type":"lift","title":"Pull Hypertrophy + Biceps + Abs","focus":"Back width, upper back, rear delts, biceps, abs","warmup":"5 minutes easy cardio and one light row or pulldown set.","note":"Seventeen working sets. This is the main biceps-growth day. No required run tonight because lower body is next.","evening":{"mode":"rest","title":"No Required Run Tonight","target":"Optional 15–20 minute easy walk","detail":"Protect tomorrow’s lower-body session. A casual walk is fine; skip hard running.","templateId":"n41-recovery-walk"},"exercises":[{"id":"chest_supported_row","name":"Chest-Supported Row Machine","type":"weighted","sets":3,"min":8,"max":12,"increment":5,"restSeconds":105,"coachWeight":70,"equipment":"Chest-supported row machine","cues":"Keep the chest on the pad and pause each rep.","movement":"horizontal_pull"},{"id":"neutral_lat_pulldown","name":"Neutral-Grip Lat Pulldown","type":"weighted","sets":3,"min":8,"max":12,"increment":5,"restSeconds":105,"coachWeight":75,"equipment":"Cable pulldown","cues":"Pull elbows toward the ribs without leaning back.","movement":"vertical_pull"},{"id":"cable_face_pull","name":"Cable Face Pull","type":"weighted","sets":2,"min":12,"max":20,"increment":5,"restSeconds":60,"coachWeight":15,"equipment":"Cable station","cues":"Pull toward the face with shoulders down and elbows high.","movement":"rear_delts"},{"id":"db_hammer_curl","name":"Dumbbell Hammer Curl","type":"weighted","sets":3,"min":8,"max":12,"increment":5,"restSeconds":75,"coachWeight":25,"equipment":"Dumbbells","cues":"Keep the torso still and control the lower.","movement":"biceps"},{"id":"incline_db_curl","name":"Incline Dumbbell Curl","type":"weighted","sets":2,"min":10,"max":15,"increment":5,"restSeconds":75,"coachWeight":15,"equipment":"Dumbbells + incline bench","cues":"Let the arms hang and curl without bringing the elbows forward.","movement":"biceps"},{"id":"cable_curl","name":"Cable Curl","type":"weighted","sets":2,"min":10,"max":15,"increment":5,"restSeconds":75,"coachWeight":25,"equipment":"Cable station","cues":"Keep elbows still and squeeze at the top.","movement":"biceps"},{"id":"captains_chair_knee_raise","name":"Captain’s Chair Knee Raise","type":"bodyweight","sets":2,"min":10,"max":15,"increment":0,"restSeconds":60,"equipment":"Captain’s chair","cues":"Curl the pelvis upward and avoid swinging.","movement":"core"}]},{"day":6,"type":"lift","title":"Lower Hypertrophy + Abs","focus":"Quads, hamstrings, glutes, calves, abs","warmup":"5–7 minutes easy treadmill, bodyweight squats, then one light leg-press set.","note":"Seventeen working sets. Moderate loads and controlled reps. No running tonight after lower-body volume.","evening":{"mode":"rest","title":"No Run Tonight","target":"Lower-body recovery","detail":"Normal daily movement is enough. Do not turn this into a second leg workout.","templateId":null},"exercises":[{"id":"high_foot_leg_press","name":"High-Foot 45° Leg Press","type":"weighted","sets":3,"min":10,"max":15,"increment":10,"restSeconds":120,"coachWeight":170,"equipment":"45-degree leg press","cues":"Keep the lower back supported and control depth.","movement":"leg_press"},{"id":"seated_leg_curl_b","name":"Seated Leg Curl","type":"weighted","sets":3,"min":10,"max":15,"increment":5,"restSeconds":90,"coachWeight":55,"equipment":"Seated leg curl","cues":"Keep hips down and use a slow return.","movement":"knee_flexion"},{"id":"leg_extension_b","name":"Leg Extension","type":"weighted","sets":3,"min":12,"max":15,"increment":5,"restSeconds":75,"coachWeight":40,"equipment":"Leg extension","cues":"Smooth reps with a brief squeeze; do not snap into lockout.","movement":"knee_extension"},{"id":"hip_abductor","name":"Hip Abductor Machine","type":"weighted","sets":2,"min":12,"max":20,"increment":5,"restSeconds":75,"coachWeight":80,"equipment":"Hip abductor machine","cues":"Pause wide and control the return.","movement":"hip_abduction"},{"id":"standing_calf_raise","name":"Calf Raise Machine","type":"weighted","sets":2,"min":12,"max":20,"increment":5,"restSeconds":75,"coachWeight":70,"equipment":"Calf raise machine","cues":"Use a full stretch and pause at the top.","movement":"calves"},{"id":"ab_crunch_machine","name":"Ab Crunch Machine","type":"weighted","sets":2,"min":10,"max":15,"increment":5,"restSeconds":60,"coachWeight":40,"equipment":"Ab crunch machine","cues":"Curl ribs toward the pelvis instead of pulling only with the arms.","movement":"core"},{"id":"captains_chair_knee_raise","name":"Captain’s Chair Knee Raise","type":"bodyweight","sets":2,"min":10,"max":15,"increment":0,"restSeconds":60,"equipment":"Captain’s chair","cues":"Curl the pelvis upward and avoid swinging.","movement":"core"}]},{"day":7,"type":"rest","title":"Full Rest","focus":"Recovery, sleep, normal daily movement","warmup":"None.","note":"No required lifting or running. This is the second recovery day and should remain genuinely easy.","evening":{"mode":"rest","title":"Full Rest","target":"No structured run","detail":"An easy walk and light stretching are optional, but you do not need to earn this rest day.","templateId":null},"exercises":[{"id":"optional_steps_rest","name":"Optional Easy Walk","type":"cardio","sets":1,"min":15,"max":30,"increment":5,"unit":"min","equipment":"Treadmill / outdoors","coachCardio":{"duration":20,"speed":2.5,"incline":0},"cardioConfig":{"mode":"treadmill","speedMin":2.3,"speedMax":3.2,"speedStep":0.1,"inclineMin":0,"inclineMax":3,"inclineStep":1,"warmupMinutes":2,"cooldownMinutes":2},"cues":"Optional only. Keep it conversational and finish refreshed.","restSeconds":0,"movement":"cardio"},{"id":"light_stretch_rest","name":"Light Stretching","type":"timed","sets":1,"min":5,"max":10,"increment":2,"unit":"min","equipment":"Mat","cues":"Gentle, pain-free ranges only.","restSeconds":0,"movement":"mobility"}]}];
+
+function nexset410SeedTemplates() {
+  state.quickTemplates = Array.isArray(state.quickTemplates) ? state.quickTemplates : [];
+  const defaults = [
+    {id:'n41-evening-easy',name:'Night Easy Run',exerciseIds:['evening_easy_run'],createdAt:'2026-08-31T18:00:00.000Z'},
+    {id:'n41-evening-intervals',name:'Night Run Intervals',exerciseIds:['evening_run_intervals'],createdAt:'2026-08-31T18:00:00.000Z'},
+    {id:'n41-recovery-walk',name:'Recovery Walk',exerciseIds:['easy_walk_recovery'],createdAt:'2026-08-31T18:00:00.000Z'}
+  ];
+  for (const template of defaults) {
+    const existing = state.quickTemplates.find(item=>item.id===template.id);
+    if (existing) Object.assign(existing,template);
+    else state.quickTemplates.push(deepClone(template));
+  }
+  state.quickTemplates = state.quickTemplates.slice(-50);
+}
+
+function nexset410SeedCardioProgress() {
+  state.exerciseProgress = state.exerciseProgress || {};
+  const easy = state.exerciseProgress.evening_easy_run || {};
+  if (!Number.isFinite(Number(easy.nextDuration))) easy.nextDuration=25;
+  if (!Number.isFinite(Number(easy.nextSpeed))) easy.nextSpeed=4.5;
+  if (!Number.isFinite(Number(easy.nextIncline))) easy.nextIncline=1;
+  if (!easy.note) easy.note='Begin with 25 conversational minutes. Add five minutes only after two controlled completions.';
+  state.exerciseProgress.evening_easy_run=easy;
+  const intervals = {...(state.exerciseProgress.evening_run_intervals || state.exerciseProgress.walk_jog_intervals || {})};
+  if (!Number.isFinite(Number(intervals.nextDuration))) intervals.nextDuration=23;
+  if (!Number.isFinite(Number(intervals.nextRounds))) intervals.nextRounds=5;
+  if (!Number.isFinite(Number(intervals.nextJogSpeed))) intervals.nextJogSpeed=6.5;
+  if (!Number.isFinite(Number(intervals.nextWalkSpeed))) intervals.nextWalkSpeed=3.3;
+  if (!Number.isFinite(Number(intervals.nextIncline))) intervals.nextIncline=1;
+  if (!intervals.note) intervals.note='Repeat five controlled rounds before adding speed or another round.';
+  state.exerciseProgress.evening_run_intervals=intervals;
+}
+
+function nexset410Migrate() {
+  const firstInstall = state.settings?.nexsetPlanRelease !== '4.1.0';
+  state.settings = state.settings || {};
+  state.goals = state.goals || {};
+  nexset350InstallPlan(PLAN,NEXSET_410_PLAN);
+  if (firstInstall || !Array.isArray(state.programPlan) || state.programPlan.length !== 7) {
+    state.programPlan = deepClone(NEXSET_410_PLAN);
+    state.settings.currentDayIndex = 0;
+    state.trainingStatus = null;
+    state.dailyCheckins = [];
+  } else {
+    state.programPlan = normalizeProgramPlan(state.programPlan);
+  }
+  state.settings.readinessEnabled = false;
+  state.settings.weeklyStrengthTarget = 5;
+  state.settings.weeklyCardioTarget = 120;
+  state.settings.programStyle = 'five-day-jacked-evening-cardio';
+  state.settings.nexsetCoachPlanVersion = '4.1.0';
+  state.settings.nexsetPlanRelease = '4.1.0';
+  state.goals.weeklyStrengthDays = 5;
+  state.goals.weeklyCardioMinutes = 120;
+  state.goals.targetRunMinutes = Math.max(25,Number(state.goals.targetRunMinutes)||25);
+  nexset410SeedTemplates();
+  nexset410SeedCardioProgress();
+  saveState({reason:'4.1.0-jacked-clean-migration',snapshot:false});
+}
+
+function nexset410EveningMarkup(day=getDay()) {
+  const evening = day?.evening || {mode:'rest',title:'No Night Session',target:'Recover',detail:'Follow the main workout and recover.',templateId:null};
+  const canOpen = Boolean(evening.templateId);
+  return `<section class="n41-evening-card ${evening.mode==='rest'?'rest':''}"><div><span class="n41-kicker">${evening.mode==='rest'?'RECOVERY TONIGHT':'OPTIONAL NIGHT SESSION'}</span><h3>${esc(evening.title)}</h3><p><strong>${esc(evening.target)}</strong> · ${esc(evening.detail)}</p></div>${canOpen?`<button data-action="load-quick-template" data-id="${esc(evening.templateId)}">Open</button>`:''}</section>`;
+}
+
+function nexset410ProgramCard() {
+  const rows=getPlan().map(day=>{const e=day.evening||{title:'No run',target:'Recovery'};return `<div class="n41-evening-row"><span>D${day.day}</span><div><strong>${esc(e.title)}</strong><small>${esc(e.target)}</small></div></div>`;}).join('');
+  return `<section class="n41-program-card"><header><span>EVENING CARDIO</span><h3>Two planned runs, not seven</h3><p>The hard run stays away from lower-body days. Easy walking can fill the rest of the weekly cardio target without turning every night into another workout.</p></header><div class="n41-evening-list">${rows}</div></section>`;
+}
+
+function nexset410CoachReport(options={}) {
+  const st=stats(),weekly=weeklyReview(),monthly=nexset400MonthlyReview(),metric=latestBodyMetric(),trend=getWeightTrend(),next=getDay(),sessions=[...state.history].sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt)).slice(0,12),records=nexset400AllRecords().slice(0,12),status=nexset400CurrentTrainingStatus();
+  const lines=[`NEXSET ${APP_VERSION_LABEL} — PERSONAL COACH PACKET`,`Generated: ${new Date().toLocaleString()}`,`Format: nexset-coach-packet-v3`,'',`PRIMARY GOAL`,`Lose fat while building visible muscle, with extra emphasis on arms, shoulders, and abs. Improve running without sacrificing lower-body recovery.`,'',`CURRENT STATUS`,`Next workout: Day ${next.day} — ${next.title} (${next.focus})`,status?`Temporary training mode: ${status.label} — ${status.note}`:'Temporary training mode: Normal',metric?`Latest body reading: ${formatWeightValue(metric.weight)}${Number.isFinite(Number(metric.bodyFat))?`, ${metric.bodyFat}% body fat`:''}. 7-day average: ${Number.isFinite(trend.avg7)?`${cleanNumber(trend.avg7)} ${displayWeightUnit()}`:'collecting'}.`:'Latest body reading: none logged.',`Lifetime: ${st.strengthSessions} strength sessions, ${st.recoverySessions} recovery days, ${st.missedDays} missed days, ${st.totalSets} working sets, ${formatVolumeValue(st.totalVolume)} ${displayWeightUnit()} volume.`,'',`LAST 7 DAYS`,`Strength: ${weekly.lifts}/5 | Recovery: ${weekly.recovery} | Missed: ${weekly.missed||0} | Sets: ${weekly.sets} | Cardio: ${weekly.cardio}/120 min | Hard sets: ${weekly.hardPct}%`,'',`LAST 30 DAYS`,`Strength: ${monthly.current.strength} | Recovery: ${monthly.current.recovery} | Missed: ${monthly.current.missed} | Sets: ${monthly.current.sets} | Volume: ${formatVolumeValue(monthly.current.volume)} ${displayWeightUnit()} | Cardio: ${Math.round(monthly.current.cardio)} min | Records: ${monthly.current.records}`,'',`RECENT TRAINING`];
+  if(!sessions.length)lines.push('- No sessions logged yet.');else for(const session of sessions){lines.push(nexset400ReportSessionLine(session));if(session.coachSummary?.headline)lines.push(`  Coach: ${session.coachSummary.headline}`);for(const entry of session.exercises||[]){const ex=entryExercise(entry);if(ex&&(entry.logs||[]).length)lines.push(`  • ${ex.name}: ${(entry.logs||[]).map(log=>formatLogShort(ex,log)+(log.feel?` ${feelEmoji(log.feel)}`:'')).join(', ')}`);}}
+  lines.push('',`CURRENT PLAN`);for(const day of getPlan()){lines.push(`Day ${day.day} — ${day.title} [${day.type==='rest'?'RECOVERY':'STRENGTH'}]`);for(const ex of day.exercises||[])lines.push(`  • ${ex.name}: ${nexset360PlanTargetLine(ex)}`);if(day.evening)lines.push(`  Evening: ${day.evening.title} — ${day.evening.target}`);}
+  const recommendations=[];const seen=new Set();for(const day of getPlan())for(const ex of day.exercises||[]){if(seen.has(ex.id))continue;seen.add(ex.id);const note=state.exerciseProgress?.[ex.id]?.note;if(note)recommendations.push(`${ex.name}: ${note}`);}
+  lines.push('',`RECENT RECORDS`,...(records.length?records.map(record=>`- ${fmtDate(record.date)} — ${record.name}: ${record.type} (${record.value})`):['- No performance records yet.']),'',`NEXT-TIME RECOMMENDATIONS`,...(recommendations.length?recommendations.map(item=>`- ${item}`):['- Complete the next workout to create recommendations.']),'',`COACHING REQUEST`,`Review this packet for fat loss, muscle growth, arm and ab development, strength progression, running improvement, recovery, and missed-day patterns. Keep five lifting days and two recovery days.`);
+  const payload={schema:'nexset-coach-packet-v3',appVersion:APP_VERSION_LABEL,generatedAt:new Date().toISOString(),highlightSessionId:options.highlightSessionId||null,stats:st,trainingStatus:status,weekly,monthly:monthly.current,goals:state.goals,bodyMetric:metric||null,weightTrend:trend,nextWorkout:{index:state.settings.currentDayIndex,day:next.day,title:next.title,focus:next.focus},recentSessions:sessions.map(nexset360SessionPayload),records,achievements:state.achievements,plan:nexset360PlanPayload(),recommendations};
+  lines.push('',`--- NEXSET_DATA_JSON ---`,JSON.stringify(payload,null,2),`--- END_NEXSET_DATA_JSON ---`);return lines.join('\n');
+}
+
+function nexset410WeeklyReportText() {
+  const review=weeklyReview(),sessions=[...state.history].filter(s=>nexset400DaysAgo(s.startedAt)<=6.99).sort((a,b)=>new Date(b.startedAt)-new Date(a.startedAt));
+  return [`NEXSET ${APP_VERSION_LABEL} — 7-DAY REVIEW`,`Generated: ${new Date().toLocaleString()}`,'',`SUMMARY`,`Strength days: ${review.lifts}/5`,`Recovery days: ${review.recovery}/2`,`Missed days: ${review.missed||0}`,`Working sets: ${review.sets}`,`Structured cardio: ${review.cardio}/120 min`,`Hard sets: ${review.hardPct}%`,'',`SESSIONS`,...(sessions.length?sessions.map(nexset400ReportSessionLine):['- No entries.']),'',`WINS`,...review.wins.map(item=>`- ${item}`),'',`NEXT ADJUSTMENTS`,...review.adjustments.map(item=>`- ${item}`),'',`Ask: Review this week for fat loss, muscle growth, arm and ab development, recovery, and running progress. Keep five lifting days and two recovery days.`].join('\n');
+}
+
+const nexset410MigrateBase = nexset400Migrate;
+nexset400Migrate = function() { nexset410MigrateBase(); nexset410Migrate(); };
+
+const nexset410RebuildProgressBase = rebuildProgress;
+rebuildProgress = function(...args) { nexset410RebuildProgressBase(...args); nexset410SeedCardioProgress(); };
+
+const nexset410RenderHomeBase = renderHome;
+renderHome = function() {
+  nexset410RenderHomeBase();
+  document.querySelectorAll('.n4-readiness-strip,.n4-recovery-compact').forEach(node=>node.remove());
+  const screen=document.querySelector('.signature-home');if(!screen)return;
+  if(!screen.querySelector('.n41-evening-card')){const hero=screen.querySelector('.signature-hero');(hero||screen.querySelector('.signature-greeting'))?.insertAdjacentHTML('afterend',nexset410EveningMarkup());}
+};
+
+const nexset410RenderPlanBase = renderPlan;
+renderPlan = function() {
+  nexset410RenderPlanBase();
+  const screen=document.querySelector('.signature-program-screen');if(!screen)return;
+  const paragraph=screen.querySelector('.signature-page-head p');if(paragraph)paragraph.textContent='Five lifting days, one active-recovery day, and one full-rest day in a rolling rotation.';
+  if(!screen.querySelector('.n41-program-card'))screen.insertAdjacentHTML('beforeend',nexset410ProgramCard());
+};
+
+const nexset410RenderProgressBase = renderProgress;
+renderProgress = function() {
+  if(progressTab==='recovery')progressTab='overview';
+  nexset410RenderProgressBase();
+  document.querySelector('[data-tab="recovery"]')?.remove();
+};
+
+const nexset410RenderMoreBase = renderMore;
+renderMore = function() {
+  if(moreSection==='readiness')moreSection='menu';
+  nexset410RenderMoreBase();
+  document.querySelector('[data-section="readiness"]')?.remove();
+  const version=document.querySelector('.about-nexset span');if(version)version.textContent=`NEXSET ${APP_VERSION_LABEL} · Jacked + Lean`;
+};
+
+const nexset410OpenQuickMenuBase = openQuickMenu;
+openQuickMenu = function() {
+  nexset410OpenQuickMenuBase();
+  document.querySelector('[data-action="n4-open-readiness"]')?.remove();
+};
+
+nexset400SuggestedModifier = function() { return nexset400CurrentTrainingStatus(); };
+coachReport = nexset410CoachReport;
+weeklyReportText = nexset410WeeklyReportText;
 
 
 nexset400Migrate();
