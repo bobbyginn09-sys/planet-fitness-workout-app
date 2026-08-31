@@ -1,0 +1,31 @@
+NEXSET 4.0.4 — JACKED + LEAN IMPORT VALIDATION
+Generated: 2026-08-31T17:40:08.546062+00:00
+
+PASS — Backup format preserved
+PASS — Schema preserved
+PASS — App version preserved
+PASS — History count preserved — 21 entries
+PASS — Body metrics preserved — 5 readings
+PASS — Daily check-ins preserved
+PASS — Goals preserved
+PASS — Achievements preserved
+PASS — Photos preserved
+PASS — No active workout introduced
+PASS — Rolling plan reset to Day 1
+PASS — Two-strength-workout return ramp included
+PASS — Seven program days
+PASS — Five lifting days
+PASS — Two recovery/rest days
+PASS — Unique exercise IDs within each day
+PASS — Exercise IDs unique across the revised program
+PASS — No lunges prescribed
+PASS — No hip thrusts prescribed
+PASS — No bike prescribed
+PASS — All weighted targets positive
+PASS — Biceps direct sets = 10
+PASS — Triceps direct sets = 10
+PASS — Core direct sets = 12
+PASS — Daily lifting volume controlled — D1=18, D2=17, D4=18, D5=18, D6=17
+
+RESULT: PASS (25/25 checks passed)
+Real-device boundary: the JSON structure and preservation checks passed here. After import, confirm the exact machine increments available at your Planet Fitness and keep the original backup until the first workout opens correctly.
