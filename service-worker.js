@@ -1,14 +1,13 @@
 'use strict';
 
-const APP_VERSION = '4.0.4';
+const APP_VERSION = '4.1.0';
 const CACHE_PREFIX = 'nexset-workout-';
-const CACHE_NAME = `${CACHE_PREFIX}v4-0-4-personal-20260728`;
-const INDEX_CACHE_KEY = './index.html?nexset=4.0.4';
+const CACHE_NAME = `${CACHE_PREFIX}v4-1-0-jacked-clean-20260831`;
+const INDEX_CACHE_KEY = './index.html?nexset=4.1.0';
 const APP_SHELL = [
   './',
   INDEX_CACHE_KEY,
   './manifest.webmanifest',
-  './manifest.json',
   './nexset-mark.svg',
   './nexset-lockup-v317.svg',
   './icon-192.png',

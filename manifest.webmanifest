@@ -1,8 +1,8 @@
 {
-  "name": "NEXSET 4.0.4 \u2014 Personal Workout Coach",
+  "name": "NEXSET 4.1.0 — Jacked + Lean",
   "short_name": "NEXSET",
-  "description": "A private iPhone-first workout coach with a calendar-aware rolling five-day strength plan, detailed cardio, readiness and recovery guidance, missed-day protection, progress photos, records, goals, reports, backups, and offline support.",
-  "start_url": "./index.html?nexset=4.0.4",
+  "description": "A private iPhone-first Planet Fitness workout coach with five lifting days, two recovery days, arm and ab specialization, optional evening running, records, reports, backups, and offline support.",
+  "start_url": "./index.html?nexset=4.1.0",
   "scope": "./",
   "display": "standalone",
   "background_color": "#02060B",
