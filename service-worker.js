@@ -1,9 +1,9 @@
 'use strict';
 
-const APP_VERSION = '4.1.0';
+const APP_VERSION = '4.2.0';
 const CACHE_PREFIX = 'nexset-workout-';
-const CACHE_NAME = `${CACHE_PREFIX}v4-1-0-jacked-clean-20260831`;
-const INDEX_CACHE_KEY = './index.html?nexset=4.1.0';
+const CACHE_NAME = `${CACHE_PREFIX}v4-2-0-jacked-nutrition-20260831`;
+const INDEX_CACHE_KEY = './index.html?nexset=4.2.0';
 const APP_SHELL = [
   './',
   INDEX_CACHE_KEY,

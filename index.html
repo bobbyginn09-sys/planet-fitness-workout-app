@@ -10,8 +10,8 @@
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
 <meta content="NEXSET" name="apple-mobile-web-app-title"/>
 <meta content="noindex,nofollow,noarchive" name="robots"/>
-<meta content="Private iPhone-first Planet Fitness workout coach with five lifting days, two recovery days, arm and ab specialization, optional evening running, reports, and offline support." name="description"/>
-<title>NEXSET 4.1.0 · Jacked + Lean</title>
+<meta content="Private iPhone-first Planet Fitness workout and nutrition coach with five lifting days, two recovery days, post-lift cardio, optional evening running, calorie and macro tracking, reports, backups, and offline support." name="description"/>
+<title>NEXSET 4.2.0 · Jacked + Lean + Nutrition</title>
 <link href="manifest.webmanifest" rel="manifest"/>
 <link href="apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
 <link href="nexset-mark.svg" rel="icon" type="image/svg+xml"/>
@@ -3682,6 +3682,86 @@ html {
   @media(max-width:390px){.n41-evening-card{grid-template-columns:1fr}.n41-evening-card button{width:100%}}
 </style>
 
+
+<style id="nexset420NutritionStyles">
+  /* NEXSET 4.2.0 — nutrition tracker and five-tab mobile navigation */
+  .bottom-nav .nav-inner{grid-template-columns:repeat(5,minmax(0,1fr));gap:2px}
+  .bottom-nav .nav-btn{min-width:0;padding-left:3px;padding-right:3px}
+  .bottom-nav .nav-btn>span:last-child{font-size:10.5px;letter-spacing:-.02em}
+  .n42-nutrition-screen{padding-bottom:18px}
+  .n42-nutrition-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:2px}
+  .n42-nutrition-head h1{margin:5px 0 4px;font-size:32px;line-height:1.02;letter-spacing:-.045em}
+  .n42-nutrition-head p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+  .n42-date-nav{display:grid;grid-template-columns:42px minmax(0,1fr) 42px;gap:8px;align-items:center;margin-top:14px}
+  .n42-date-nav button{height:42px;border-radius:15px;border:1px solid var(--line);background:var(--surface2);color:var(--text);font-size:22px;font-weight:800}
+  .n42-date-label{height:42px;border:1px solid var(--line);background:var(--surface);border-radius:15px;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 8px;font-weight:800;font-size:13px;letter-spacing:-.01em}
+  .n42-calorie-card{position:relative;overflow:hidden;border:1px solid rgba(79,179,255,.18);background:linear-gradient(145deg,rgba(13,125,255,.17),rgba(16,23,34,.96) 54%,rgba(34,197,94,.06));border-radius:27px;padding:18px;box-shadow:var(--shadow)}
+  .n42-calorie-card:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;right:-96px;top:-105px;background:radial-gradient(circle,rgba(79,179,255,.20),transparent 66%);pointer-events:none}
+  .n42-calorie-grid{display:grid;grid-template-columns:116px minmax(0,1fr);gap:17px;align-items:center}
+  .n42-ring{--pct:0;position:relative;width:116px;height:116px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#1fa2ff calc(var(--pct)*1%),rgba(255,255,255,.08) 0);box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)}
+  .n42-ring:before{content:"";position:absolute;inset:10px;border-radius:50%;background:#0b121d;border:1px solid rgba(255,255,255,.07)}
+  .n42-ring-copy{position:relative;z-index:1;text-align:center}
+  .n42-ring-copy strong{display:block;font-size:24px;line-height:1;letter-spacing:-.05em}
+  .n42-ring-copy small{display:block;color:var(--muted);font-size:10px;margin-top:6px;text-transform:uppercase;letter-spacing:.12em;font-weight:800}
+  .n42-calorie-copy>span{display:block;color:#8bc9ff;font-size:10px;font-weight:900;letter-spacing:.15em;text-transform:uppercase}
+  .n42-calorie-copy h2{font-size:27px;letter-spacing:-.045em;line-height:1.02;margin:6px 0 7px}
+  .n42-calorie-copy p{margin:0;color:var(--muted);font-size:12px;line-height:1.42}
+  .n42-macro-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:11px}
+  .n42-macro{border-radius:18px;padding:12px 9px;background:rgba(255,255,255,.045);border:1px solid var(--line);min-width:0}
+  .n42-macro span{font-size:9px;color:var(--muted);font-weight:900;letter-spacing:.1em;text-transform:uppercase;display:block}
+  .n42-macro strong{display:block;font-size:18px;line-height:1.05;margin-top:5px;letter-spacing:-.035em;white-space:nowrap}
+  .n42-macro small{display:block;font-size:9px;color:var(--muted);margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .n42-progress{height:5px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:8px}
+  .n42-progress i{display:block;height:100%;width:calc(min(100,var(--pct))*1%);border-radius:inherit;background:linear-gradient(90deg,#0d7dff,#4fb3ff)}
+  .n42-action-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:8px;margin-top:11px}
+  .n42-action-grid button{min-height:45px;border-radius:15px;border:1px solid var(--line);background:var(--surface2);color:var(--text);font-weight:850;font-size:12px;padding:8px}
+  .n42-action-grid button.primary{border-color:rgba(31,162,255,.45);background:linear-gradient(135deg,#0d7dff,#075fc4);color:white;box-shadow:0 10px 28px rgba(13,125,255,.22)}
+  .n42-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:19px 2px 9px}
+  .n42-section-head span{display:block;font-size:10px;color:#8bc9ff;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+  .n42-section-head h2{margin:4px 0 0;font-size:21px;letter-spacing:-.035em}
+  .n42-section-head small{color:var(--muted);font-size:10px;text-align:right;line-height:1.3}
+  .n42-preset-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .n42-preset{display:flex;flex-direction:column;min-height:142px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(150deg,var(--surface),var(--surface2));padding:13px;text-align:left;color:var(--text);position:relative;overflow:hidden}
+  .n42-preset:after{content:"";position:absolute;width:75px;height:75px;border-radius:50%;right:-28px;bottom:-33px;background:rgba(31,162,255,.07)}
+  .n42-preset>span{font-size:9px;color:#8bc9ff;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+  .n42-preset strong{display:block;font-size:14px;line-height:1.18;margin:7px 0 8px;letter-spacing:-.02em;min-height:34px}
+  .n42-preset small{display:block;color:var(--muted);font-size:10px;line-height:1.35}
+  .n42-preset b{margin-top:auto;display:inline-flex;align-self:flex-start;align-items:center;justify-content:center;min-height:28px;border-radius:10px;background:rgba(13,125,255,.18);color:#a9d8ff;padding:0 9px;font-size:10px}
+  .n42-meal-card{border:1px solid var(--line);background:var(--surface);border-radius:22px;overflow:hidden;margin-bottom:10px}
+  .n42-meal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 14px;border-bottom:1px solid var(--line)}
+  .n42-meal-head div{display:flex;align-items:center;gap:9px;min-width:0}
+  .n42-meal-head i{width:29px;height:29px;border-radius:10px;display:grid;place-items:center;background:rgba(31,162,255,.12);font-style:normal;font-size:14px}
+  .n42-meal-head strong{font-size:14px}
+  .n42-meal-head span{font-size:11px;color:var(--muted);font-weight:800;white-space:nowrap}
+  .n42-food-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:13px 14px;border-bottom:1px solid rgba(255,255,255,.055)}
+  .n42-food-row:last-child{border-bottom:0}
+  .n42-food-main{min-width:0}
+  .n42-food-main strong{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .n42-food-main small{display:block;color:var(--muted);font-size:10px;margin-top:5px;line-height:1.3}
+  .n42-food-actions{display:flex;gap:5px}
+  .n42-food-actions button{width:34px;height:34px;border-radius:11px;border:1px solid var(--line);background:var(--surface2);color:var(--text);font-weight:900}
+  .n42-empty{padding:18px 14px;text-align:center;color:var(--muted);font-size:12px;line-height:1.45}
+  .n42-disclaimer{border:1px solid rgba(245,158,11,.18);background:rgba(245,158,11,.055);border-radius:18px;padding:12px 13px;color:#d7c5a5;font-size:10.5px;line-height:1.45;margin-top:12px}
+  .n42-home-card{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:14px;border:1px solid rgba(79,179,255,.17);background:linear-gradient(145deg,rgba(13,125,255,.09),var(--surface));border-radius:22px;padding:15px;margin-top:11px;color:var(--text);width:100%;text-align:left}
+  .n42-home-card span{display:block;font-size:9px;color:#8bc9ff;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
+  .n42-home-card strong{display:block;font-size:16px;margin-top:5px;letter-spacing:-.025em}
+  .n42-home-card small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+  .n42-home-card b{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:rgba(13,125,255,.17);color:#a9d8ff;font-size:19px}
+  .n42-sheet .bottom-sheet{max-height:min(88vh,760px);overflow:auto}
+  .n42-sheet-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .n42-sheet-grid .wide{grid-column:1/-1}
+  .n42-field{display:grid;gap:6px}
+  .n42-field label{font-size:10px;color:var(--muted);font-weight:850;letter-spacing:.06em;text-transform:uppercase}
+  .n42-field input,.n42-field select{width:100%;min-width:0;height:47px;border-radius:14px;border:1px solid var(--line);background:var(--surface2);color:var(--text);padding:0 12px;font:inherit;font-weight:750;font-size:14px}
+  .n42-sheet-total{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:12px 0}
+  .n42-sheet-total span{padding:9px 4px;border-radius:12px;background:rgba(255,255,255,.045);border:1px solid var(--line);text-align:center;font-size:9px;color:var(--muted)}
+  .n42-sheet-total b{display:block;color:var(--text);font-size:12px;margin-bottom:3px}
+  .n42-target-note{margin:10px 0 0;color:var(--muted);font-size:10.5px;line-height:1.45}
+  @media(max-width:370px){
+    .bottom-nav .nav-btn>span:last-child{font-size:9.5px}.n42-calorie-grid{grid-template-columns:102px minmax(0,1fr);gap:13px}.n42-ring{width:102px;height:102px}.n42-macro strong{font-size:16px}.n42-action-grid{grid-template-columns:1fr 1fr}.n42-action-grid .primary{grid-column:1/-1}.n42-preset-grid{grid-template-columns:1fr}.n42-preset{min-height:118px}.n42-sheet-grid{grid-template-columns:1fr}.n42-sheet-grid .wide{grid-column:auto}
+  }
+</style>
+
 </head>
 <body>
 <div aria-hidden="true" class="app-boot"><div class="app-boot-inner"><img alt="NEXSET" class="boot-lockup" src="nexset-lockup-v317.svg"/><small>Progress Starts With Your Next Set.</small></div></div>
@@ -3701,6 +3781,7 @@ html {
 <div class="nav-inner">
 <button aria-label="Home" class="nav-btn active" data-nav="home" data-view="home"><span class="nav-icon"><svg viewbox="0 0 24 24"><path d="M3.5 10.4 12 3l8.5 7.4v9.1a1.5 1.5 0 0 1-1.5 1.5h-4.6v-6.4H9.6V21H5a1.5 1.5 0 0 1-1.5-1.5Z"></path></svg></span><span>Home</span></button>
 <button aria-label="Workouts" class="nav-btn" data-nav="workouts" data-view="plan"><span class="nav-icon"><svg viewbox="0 0 24 24"><path d="M2.5 9v6M5.5 6.5v11M8.5 10.2h7M15.5 6.5v11M18.5 9v6M21.5 10.5v3"></path></svg></span><span>Workouts</span></button>
+<button aria-label="Nutrition" class="nav-btn" data-nav="nutrition" data-view="nutrition"><span class="nav-icon"><svg viewbox="0 0 24 24"><path d="M7 3v7.2a3 3 0 0 0 3 3V21M4.5 3v5.5M9.5 3v5.5M16 3v18M16 3c3 1.2 4.5 3.5 4.5 6.5S19 14.8 16 16"></path></svg></span><span>Nutrition</span></button>
 <button aria-label="History" class="nav-btn" data-action="open-history" data-nav="history"><span class="nav-icon"><svg viewbox="0 0 24 24"><circle cx="12" cy="12" r="8.4"></circle><path d="M12 7.2v5.2l3.5 2.1"></path></svg></span><span>History</span></button>
 <button aria-label="Profile" class="nav-btn" data-nav="profile" data-view="more"><span class="nav-icon"><svg viewbox="0 0 24 24"><circle cx="12" cy="7.6" r="3.2"></circle><path d="M5.7 20c.6-4 2.7-6 6.3-6s5.7 2 6.3 6"></path></svg></span><span>Profile</span></button>
 </div>
@@ -3722,8 +3803,8 @@ html {
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
     const RECOVERY_KEY = 'pfWorkoutApp.recovery.v1';
     const META_KEY = 'pfWorkoutApp.meta.v1';
-    const APP_VERSION = 'nexset-4.1.0';
-    const APP_VERSION_LABEL = '4.1.0';
+    const APP_VERSION = 'nexset-4.2.0';
+    const APP_VERSION_LABEL = '4.2.0';
     const DATA_SCHEMA_VERSION = 6;
     const STORAGE_WEIGHT_UNIT = 'lb';
     const LB_PER_KG = 2.2046226218;
@@ -7610,7 +7691,7 @@ function nexset410SeedCardioProgress() {
 }
 
 function nexset410Migrate() {
-  const firstInstall = state.settings?.nexsetPlanRelease !== '4.1.0';
+  const firstInstall = !['4.1.0','4.2.0'].includes(state.settings?.nexsetPlanRelease);
   state.settings = state.settings || {};
   state.goals = state.goals || {};
   nexset350InstallPlan(PLAN,NEXSET_410_PLAN);
@@ -7709,6 +7790,157 @@ openQuickMenu = function() {
 nexset400SuggestedModifier = function() { return nexset400CurrentTrainingStatus(); };
 coachReport = nexset410CoachReport;
 weeklyReportText = nexset410WeeklyReportText;
+
+
+
+/* NEXSET 4.2.0 — nutrition tracker, updated macro targets, and post-lift cardio finishers */
+const NEXSET_420_RECIPES = [
+  {id:'whey-protein-water',name:'Whey Protein Shake (Water)',meal:'snack',calories:120,protein:24,carbs:3,fat:1.5,source:'supplement'},
+  {id:'breakfast-casserole',name:'Breakfast Casserole',meal:'breakfast',calories:222,protein:22,carbs:4,fat:13,page:50},
+  {id:'berry-overnight-oats',name:'Classic Berry Overnight Oats',meal:'breakfast',calories:337,protein:19,carbs:50,fat:9,page:39},
+  {id:'buffalo-chicken-potato',name:'Buffalo Chicken & Potato Bowl',meal:'lunch',calories:434,protein:39,carbs:38,fat:14,page:59},
+  {id:'shredz-crockpot-chili',name:'Shredz Crockpot Chili',meal:'lunch',calories:340,protein:33,carbs:41,fat:6,page:166},
+  {id:'chicken-fried-rice',name:'Chicken Fried Rice',meal:'dinner',calories:515,protein:44,carbs:51,fat:15,page:187},
+  {id:'simple-teriyaki-chicken',name:'Simple Teriyaki Chicken',meal:'dinner',calories:536,protein:60,carbs:62,fat:6,page:169}
+];
+
+const NEXSET_420_FINISHERS = {
+  1:{id:'n42-upper-incline-finish',name:'Post-Lift Incline Walk',type:'cardio',sets:1,min:12,max:20,increment:2,unit:'min',equipment:'Treadmill',coachCardio:{duration:12,speed:2.8,incline:6},cardioConfig:{mode:'treadmill',speedMin:2.6,speedMax:3.5,speedStep:.1,inclineMin:4,inclineMax:10,inclineStep:1,warmupMinutes:2,cooldownMinutes:2},cardioPlan:{warmupSpeed:2.4,warmupIncline:2,cooldownSpeed:2.2,cooldownIncline:0},cues:'Easy to moderate finish. Save the optional evening run for later and stop with energy left.',restSeconds:0,movement:'cardio'},
+  2:{id:'n42-lower-strength-finish',name:'Easy Post-Leg Walk',type:'cardio',sets:1,min:10,max:18,increment:2,unit:'min',equipment:'Treadmill',coachCardio:{duration:10,speed:2.6,incline:3},cardioConfig:{mode:'treadmill',speedMin:2.4,speedMax:3.1,speedStep:.1,inclineMin:1,inclineMax:5,inclineStep:1,warmupMinutes:2,cooldownMinutes:2},cardioPlan:{warmupSpeed:2.3,warmupIncline:1,cooldownSpeed:2.2,cooldownIncline:0},cues:'Recovery-paced cardio only. Do not turn this into another hard leg session.',restSeconds:0,movement:'cardio'},
+  4:{id:'n42-push-finish',name:'Easy Treadmill Cooldown',type:'cardio',sets:1,min:8,max:15,increment:1,unit:'min',equipment:'Treadmill',coachCardio:{duration:8,speed:2.7,incline:4},cardioConfig:{mode:'treadmill',speedMin:2.4,speedMax:3.2,speedStep:.1,inclineMin:2,inclineMax:6,inclineStep:1,warmupMinutes:1,cooldownMinutes:2},cardioPlan:{warmupSpeed:2.4,warmupIncline:1,cooldownSpeed:2.2,cooldownIncline:0},cues:'Keep this short because the planned run/walk intervals can be done later tonight.',restSeconds:0,movement:'cardio'},
+  5:{id:'n42-pull-stairs-finish',name:'Post-Lift Stair Climber',type:'cardio',sets:1,min:12,max:20,increment:2,unit:'min',equipment:'Stair climber',coachCardio:{duration:12,level:6},cardioConfig:{mode:'stair',levelMin:3,levelMax:10,levelStep:1,warmupMinutes:2,cooldownMinutes:2},cues:'Moderate and controlled. Add time or level only after two comfortable completions.',restSeconds:0,movement:'cardio'},
+  6:{id:'n42-lower-hypertrophy-finish',name:'Easy Recovery Treadmill',type:'cardio',sets:1,min:10,max:18,increment:2,unit:'min',equipment:'Treadmill',coachCardio:{duration:10,speed:2.5,incline:2},cardioConfig:{mode:'treadmill',speedMin:2.3,speedMax:3,speedStep:.1,inclineMin:0,inclineMax:4,inclineStep:1,warmupMinutes:2,cooldownMinutes:2},cardioPlan:{warmupSpeed:2.2,warmupIncline:0,cooldownSpeed:2.1,cooldownIncline:0},cues:'Flush the legs, do not chase calories. Finish feeling better than when you started.',restSeconds:0,movement:'cardio'}
+};
+
+const NEXSET_420_PLAN = deepClone(NEXSET_410_PLAN).map(day => {
+  const finisher=NEXSET_420_FINISHERS[day.day];
+  if(finisher&&!day.exercises.some(ex=>ex.id===finisher.id))day.exercises.push(deepClone(finisher));
+  if(finisher)day.note=`${day.note} Finish with the prescribed easy cardio; the goal is weekly conditioning, not exhausting the next workout.`;
+  return day;
+});
+
+function nexset420Number(value,fallback=0){const number=Number(value);return Number.isFinite(number)?number:fallback;}
+function nexset420Round(value,digits=0){const factor=10**digits;return Math.round(nexset420Number(value)*factor)/factor;}
+function nexset420NutritionDefault(){return{selectedDate:dateKey(),entries:[]};}
+function nexset420NormalizeNutrition(input){
+  const source=isPlainObject(input)?input:{};
+  const entries=Array.isArray(source.entries)?source.entries.filter(isPlainObject).slice(-10000).map((entry,index)=>({
+    id:String(entry.id||`nutrition-${Date.now()}-${index}`),date:/^\d{4}-\d{2}-\d{2}$/.test(String(entry.date||''))?String(entry.date):dateKey(entry.createdAt||new Date()),meal:['breakfast','lunch','dinner','snack'].includes(entry.meal)?entry.meal:'snack',name:String(entry.name||'Food').slice(0,120),servings:Math.max(.05,Math.min(50,nexset420Number(entry.servings,1))),calories:Math.max(0,Math.min(10000,nexset420Number(entry.calories,0))),protein:Math.max(0,Math.min(1000,nexset420Number(entry.protein,0))),carbs:Math.max(0,Math.min(2000,nexset420Number(entry.carbs,0))),fat:Math.max(0,Math.min(1000,nexset420Number(entry.fat,0))),createdAt:validDateOr(entry.createdAt)
+  })):[];
+  return{selectedDate:/^\d{4}-\d{2}-\d{2}$/.test(String(source.selectedDate||''))?String(source.selectedDate):dateKey(),entries};
+}
+
+const nexset420NormalizeStateBase=normalizeState;
+normalizeState=function(incoming){const next=nexset420NormalizeStateBase(incoming);next.nutrition=nexset420NormalizeNutrition(incoming?.nutrition||next.nutrition);return next;};
+
+function nexset420Migrate(){
+  const firstNutritionInstall=state.settings?.nexsetNutritionRelease!=='4.2.0';
+  const currentIndex=clamp(Math.trunc(Number(state.settings?.currentDayIndex)||0),0,6);
+  state.settings=state.settings||{};state.goals=state.goals||{};state.nutrition=nexset420NormalizeNutrition(state.nutrition);
+  nexset350InstallPlan(PLAN,NEXSET_420_PLAN);
+  const hasFinishers=Array.isArray(state.programPlan)&&Object.values(NEXSET_420_FINISHERS).every(item=>state.programPlan.some(day=>(day.exercises||[]).some(ex=>ex.id===item.id)));
+  if(firstNutritionInstall||!hasFinishers){state.programPlan=deepClone(NEXSET_420_PLAN);state.settings.currentDayIndex=currentIndex;}else state.programPlan=normalizeProgramPlan(state.programPlan);
+  if(firstNutritionInstall){state.goals.dailyCalories=2400;state.goals.dailyProtein=200;state.goals.dailyCarbs=230;state.goals.dailyFat=75;}
+  state.goals.dailyCalories=Math.max(1000,Math.round(nexset420Number(state.goals.dailyCalories,2400)));
+  state.goals.dailyProtein=Math.max(0,Math.round(nexset420Number(state.goals.dailyProtein,200)));
+  state.goals.dailyCarbs=Math.max(0,Math.round(nexset420Number(state.goals.dailyCarbs,230)));
+  state.goals.dailyFat=Math.max(0,Math.round(nexset420Number(state.goals.dailyFat,75)));
+  state.settings.weeklyCardioTarget=120;state.goals.weeklyCardioMinutes=120;
+  state.settings.programStyle='five-day-jacked-nutrition-cardio-finishers';
+  state.settings.nexsetCoachPlanVersion='4.2.0';state.settings.nexsetPlanRelease='4.2.0';state.settings.nexsetNutritionRelease='4.2.0';
+  saveState({reason:'4.2.0-nutrition-cardio-migration',snapshot:false});
+}
+
+function nexset420SelectedDate(){if(!isPlainObject(state.nutrition)||!Array.isArray(state.nutrition.entries))state.nutrition=nexset420NormalizeNutrition(state.nutrition);return state.nutrition.selectedDate||dateKey();}
+function nexset420EntriesFor(key=nexset420SelectedDate()){return state.nutrition.entries.filter(entry=>entry.date===key);}
+function nexset420EntryTotals(entry){const servings=Math.max(.05,nexset420Number(entry.servings,1));return{calories:nexset420Number(entry.calories)*servings,protein:nexset420Number(entry.protein)*servings,carbs:nexset420Number(entry.carbs)*servings,fat:nexset420Number(entry.fat)*servings};}
+function nexset420Totals(key=nexset420SelectedDate()){
+  return nexset420EntriesFor(key).reduce((sum,entry)=>{const item=nexset420EntryTotals(entry);sum.calories+=item.calories;sum.protein+=item.protein;sum.carbs+=item.carbs;sum.fat+=item.fat;return sum;},{calories:0,protein:0,carbs:0,fat:0});
+}
+function nexset420Targets(){return{calories:Math.max(1,nexset420Number(state.goals.dailyCalories,2400)),protein:Math.max(1,nexset420Number(state.goals.dailyProtein,200)),carbs:Math.max(1,nexset420Number(state.goals.dailyCarbs,230)),fat:Math.max(1,nexset420Number(state.goals.dailyFat,75))};}
+function nexset420DateFromKey(key){const [year,month,day]=String(key).split('-').map(Number);const date=new Date(year,month-1,day);date.setHours(12,0,0,0);return date;}
+function nexset420DateLabel(key){const date=nexset420DateFromKey(key),today=dateKey(),yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);const prefix=key===today?'Today':key===dateKey(yesterday)?'Yesterday':date.toLocaleDateString(undefined,{weekday:'short'});return`${prefix} · ${date.toLocaleDateString(undefined,{month:'short',day:'numeric'})}`;}
+function nexset420FormatMacro(value){const number=nexset420Round(value,1);return Number.isInteger(number)?String(number):String(number.toFixed(1));}
+function nexset420Percent(value,target){return Math.max(0,Math.min(100,Math.round(nexset420Number(value)/Math.max(1,nexset420Number(target,1))*100)));}
+function nexset420RemainingLabel(value,target,unit='g'){const remaining=nexset420Round(target-value,unit==='cal'?0:1);return remaining>=0?`${nexset420FormatMacro(remaining)} ${unit==='cal'?'left':`${unit} left`}`:`${nexset420FormatMacro(Math.abs(remaining))} ${unit==='cal'?'over':`${unit} over`}`;}
+function nexset420MealIcon(meal){return({breakfast:'☀',lunch:'◐',dinner:'●',snack:'◆'})[meal]||'•';}
+function nexset420MealLabel(meal){return meal.charAt(0).toUpperCase()+meal.slice(1);}
+
+function nexset420MacroMarkup(label,value,target){const pct=nexset420Percent(value,target);return`<div class="n42-macro"><span>${esc(label)}</span><strong>${nexset420FormatMacro(value)} / ${nexset420FormatMacro(target)}g</strong><small>${esc(nexset420RemainingLabel(value,target,'g'))}</small><div class="n42-progress" style="--pct:${pct}"><i></i></div></div>`;}
+function nexset420MealMarkup(meal,entries){
+  const mealTotals=entries.reduce((sum,entry)=>{const item=nexset420EntryTotals(entry);sum.calories+=item.calories;sum.protein+=item.protein;return sum;},{calories:0,protein:0});
+  const rows=entries.length?entries.map(entry=>{const totals=nexset420EntryTotals(entry);return`<div class="n42-food-row"><div class="n42-food-main"><strong>${esc(entry.name)}</strong><small>${nexset420FormatMacro(entry.servings)} serving${entry.servings===1?'':'s'} · ${Math.round(totals.calories)} cal · ${nexset420FormatMacro(totals.protein)}P / ${nexset420FormatMacro(totals.carbs)}C / ${nexset420FormatMacro(totals.fat)}F</small></div><div class="n42-food-actions"><button aria-label="Edit ${esc(entry.name)}" data-action="n42-edit-food" data-id="${esc(entry.id)}">✎</button><button aria-label="Delete ${esc(entry.name)}" data-action="n42-delete-food" data-id="${esc(entry.id)}">×</button></div></div>`;}).join(''):`<div class="n42-empty">Nothing logged here yet.</div>`;
+  return`<section class="n42-meal-card"><header class="n42-meal-head"><div><i>${nexset420MealIcon(meal)}</i><strong>${nexset420MealLabel(meal)}</strong></div><span>${Math.round(mealTotals.calories)} cal · ${nexset420FormatMacro(mealTotals.protein)}g P</span></header>${rows}</section>`;
+}
+function nexset420PresetMarkup(recipe){const source=recipe.page?`Cookbook · p. ${recipe.page}`:'Supplement preset';return`<button class="n42-preset" data-action="n42-quick-add" data-id="${esc(recipe.id)}"><span>${source}</span><strong>${esc(recipe.name)}</strong><small>${recipe.calories} cal · ${recipe.protein}P / ${recipe.carbs}C / ${recipe.fat}F</small><b>+ Add one serving</b></button>`;}
+
+function renderNutrition(){
+  state.nutrition=nexset420NormalizeNutrition(state.nutrition);const key=nexset420SelectedDate(),entries=nexset420EntriesFor(key),totals=nexset420Totals(key),targets=nexset420Targets(),calPct=nexset420Percent(totals.calories,targets.calories),calLeft=nexset420Round(targets.calories-totals.calories);
+  const grouped={breakfast:[],lunch:[],dinner:[],snack:[]};entries.forEach(entry=>(grouped[entry.meal]||grouped.snack).push(entry));
+  $('#view').innerHTML=`<div class="stack n42-nutrition-screen"><section class="n42-nutrition-head"><div><div class="eyebrow">Jacked + Lean</div><h1>Nutrition</h1><p>Track calories and macros without turning the app into a complicated food database.</p></div></section><div class="n42-date-nav"><button data-action="n42-date" data-delta="-1" aria-label="Previous day">‹</button><div class="n42-date-label">${esc(nexset420DateLabel(key))}</div><button data-action="n42-date" data-delta="1" aria-label="Next day">›</button></div><section class="n42-calorie-card"><div class="n42-calorie-grid"><div class="n42-ring" style="--pct:${calPct}"><div class="n42-ring-copy"><strong>${Math.round(totals.calories)}</strong><small>of ${targets.calories} cal</small></div></div><div class="n42-calorie-copy"><span>Daily target</span><h2>${calLeft>=0?`${Math.abs(Math.round(calLeft))} calories left`:`${Math.abs(Math.round(calLeft))} over target`}</h2><p>Starting goal: fat loss with enough fuel for five lifting days and cardio.</p></div></div><div class="n42-macro-grid">${nexset420MacroMarkup('Protein',totals.protein,targets.protein)}${nexset420MacroMarkup('Carbs',totals.carbs,targets.carbs)}${nexset420MacroMarkup('Fat',totals.fat,targets.fat)}</div><div class="n42-action-grid"><button class="primary" data-action="n42-add-food">+ Add food</button><button data-action="n42-copy-yesterday">Copy yesterday</button><button data-action="n42-targets">Targets</button></div></section><div class="n42-section-head"><div><span>Fast logging</span><h2>Quick foods & cookbook meals</h2></div><small>Per serving<br>editable</small></div><div class="n42-preset-grid">${NEXSET_420_RECIPES.map(nexset420PresetMarkup).join('')}</div><div class="n42-section-head"><div><span>Food log</span><h2>${entries.length} item${entries.length===1?'':'s'}</h2></div><small>${Math.round(totals.calories)} total calories</small></div>${['breakfast','lunch','dinner','snack'].map(meal=>nexset420MealMarkup(meal,grouped[meal])).join('')}<div class="n42-disclaimer"><strong>Tracking note:</strong> cookbook presets use the macros printed in the PDF. Product labels, ingredient brands, and your weighed finished portions can change the real totals, so edit an entry whenever your package labels differ.</div></div>`;
+}
+
+function nexset420CloseSheet(){document.querySelector('.n42-sheet')?.remove();}
+function nexset420FoodSheetTotal(){
+  const sheet=document.querySelector('.n42-sheet');if(!sheet)return;const servings=Math.max(.05,nexset420Number(sheet.querySelector('[name="servings"]')?.value,1));const fields=['calories','protein','carbs','fat'];const values=Object.fromEntries(fields.map(field=>[field,nexset420Number(sheet.querySelector(`[name="${field}"]`)?.value,0)*servings]));const target=sheet.querySelector('#n42SheetTotals');if(target)target.innerHTML=`<span><b>${Math.round(values.calories)}</b>cal</span><span><b>${nexset420FormatMacro(values.protein)}</b>protein</span><span><b>${nexset420FormatMacro(values.carbs)}</b>carbs</span><span><b>${nexset420FormatMacro(values.fat)}</b>fat</span>`;
+}
+function nexset420OpenFoodSheet(entry=null,preset=null){
+  nexset420CloseSheet();const source=entry||preset||{meal:'snack',name:'',servings:1,calories:0,protein:0,carbs:0,fat:0};document.body.insertAdjacentHTML('beforeend',`<div class="sheet-backdrop n42-sheet" data-action="n42-close-sheet"><section class="bottom-sheet" role="dialog" aria-modal="true" aria-label="${entry?'Edit':'Add'} food"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">Nutrition log</span><h2>${entry?'Edit food':'Add food'}</h2><p class="muted">Enter values per serving. NEXSET multiplies them by your serving amount.</p></div><button class="sheet-close" data-action="n42-close-sheet">×</button></div><div class="n42-sheet-grid"><div class="n42-field wide"><label>Food or meal</label><input name="name" maxlength="120" value="${esc(source.name||'')}" placeholder="Chicken, rice, smoothie…"></div><div class="n42-field"><label>Meal</label><select name="meal">${['breakfast','lunch','dinner','snack'].map(meal=>`<option value="${meal}" ${source.meal===meal?'selected':''}>${nexset420MealLabel(meal)}</option>`).join('')}</select></div><div class="n42-field"><label>Servings</label><input name="servings" type="number" min="0.05" max="50" step="0.25" inputmode="decimal" value="${nexset420FormatMacro(source.servings||1)}"></div><div class="n42-field"><label>Calories / serving</label><input name="calories" type="number" min="0" max="10000" step="1" inputmode="decimal" value="${nexset420FormatMacro(source.calories||0)}"></div><div class="n42-field"><label>Protein (g)</label><input name="protein" type="number" min="0" max="1000" step="0.1" inputmode="decimal" value="${nexset420FormatMacro(source.protein||0)}"></div><div class="n42-field"><label>Carbs (g)</label><input name="carbs" type="number" min="0" max="2000" step="0.1" inputmode="decimal" value="${nexset420FormatMacro(source.carbs||0)}"></div><div class="n42-field"><label>Fat (g)</label><input name="fat" type="number" min="0" max="1000" step="0.1" inputmode="decimal" value="${nexset420FormatMacro(source.fat||0)}"></div></div><div class="n42-sheet-total" id="n42SheetTotals"></div><button class="btn primary block" data-action="n42-save-food" data-id="${entry?esc(entry.id):''}">${entry?'Save changes':'Add to day'}</button></section></div>`);nexset420FoodSheetTotal();setTimeout(()=>document.querySelector('.n42-sheet [name="name"]')?.focus(),60);
+}
+function nexset420SaveFood(id=''){
+  const sheet=document.querySelector('.n42-sheet');if(!sheet)return;const name=String(sheet.querySelector('[name="name"]')?.value||'').trim();if(!name){showToast('Enter a food or meal name.');return;}
+  const data={date:nexset420SelectedDate(),meal:String(sheet.querySelector('[name="meal"]')?.value||'snack'),name,servings:Math.max(.05,nexset420Number(sheet.querySelector('[name="servings"]')?.value,1)),calories:Math.max(0,nexset420Number(sheet.querySelector('[name="calories"]')?.value,0)),protein:Math.max(0,nexset420Number(sheet.querySelector('[name="protein"]')?.value,0)),carbs:Math.max(0,nexset420Number(sheet.querySelector('[name="carbs"]')?.value,0)),fat:Math.max(0,nexset420Number(sheet.querySelector('[name="fat"]')?.value,0))};
+  const index=state.nutrition.entries.findIndex(entry=>entry.id===id);if(index>=0)state.nutrition.entries[index]={...state.nutrition.entries[index],...data};else state.nutrition.entries.push({id:crypto.randomUUID?.()||`nutrition-${Date.now()}-${Math.random().toString(16).slice(2)}`,...data,createdAt:new Date().toISOString()});
+  saveState({reason:index>=0?'nutrition-edit':'nutrition-add'});nexset420CloseSheet();render();showToast(index>=0?'Food updated.':'Food added.');
+}
+function nexset420QuickAdd(id){const recipe=NEXSET_420_RECIPES.find(item=>item.id===id);if(!recipe)return;state.nutrition.entries.push({id:crypto.randomUUID?.()||`nutrition-${Date.now()}-${Math.random().toString(16).slice(2)}`,date:nexset420SelectedDate(),meal:recipe.meal,name:recipe.name,servings:1,calories:recipe.calories,protein:recipe.protein,carbs:recipe.carbs,fat:recipe.fat,createdAt:new Date().toISOString()});saveState({reason:'nutrition-quick-add'});render();showToast(`${recipe.name} added.`);}
+function nexset420DeleteFood(id){const entry=state.nutrition.entries.find(item=>item.id===id);if(!entry)return;if(!confirm(`Delete ${entry.name}?`))return;state.nutrition.entries=state.nutrition.entries.filter(item=>item.id!==id);saveState({reason:'nutrition-delete'});render();showToast('Food deleted.');}
+function nexset420ChangeDate(delta){const date=nexset420DateFromKey(nexset420SelectedDate());date.setDate(date.getDate()+Number(delta||0));state.nutrition.selectedDate=dateKey(date);saveState({reason:'nutrition-date',snapshot:false});render();}
+function nexset420CopyYesterday(){
+  const current=nexset420DateFromKey(nexset420SelectedDate()),prior=new Date(current);prior.setDate(prior.getDate()-1);const source=nexset420EntriesFor(dateKey(prior));if(!source.length){showToast('No food was logged yesterday.');return;}if(nexset420EntriesFor(nexset420SelectedDate()).length&&!confirm('Add yesterday’s entries to the food already logged today?'))return;for(const item of source)state.nutrition.entries.push({...deepClone(item),id:crypto.randomUUID?.()||`nutrition-${Date.now()}-${Math.random().toString(16).slice(2)}`,date:nexset420SelectedDate(),createdAt:new Date().toISOString()});saveState({reason:'nutrition-copy-yesterday'});render();showToast(`${source.length} item${source.length===1?'':'s'} copied.`);
+}
+function nexset420OpenTargets(){const target=nexset420Targets();nexset420CloseSheet();document.body.insertAdjacentHTML('beforeend',`<div class="sheet-backdrop n42-sheet" data-action="n42-close-sheet"><section class="bottom-sheet" role="dialog" aria-modal="true" aria-label="Nutrition targets"><div class="sheet-handle"></div><div class="sheet-head"><div><span class="section-kicker">Daily goals</span><h2>Macro targets</h2><p class="muted">Starting targets calculated for your current cut and muscle-building plan.</p></div><button class="sheet-close" data-action="n42-close-sheet">×</button></div><div class="n42-sheet-grid"><div class="n42-field wide"><label>Calories</label><input name="targetCalories" type="number" min="1000" max="6000" step="25" inputmode="numeric" value="${target.calories}"></div><div class="n42-field"><label>Protein (g)</label><input name="targetProtein" type="number" min="0" max="500" step="5" inputmode="numeric" value="${target.protein}"></div><div class="n42-field"><label>Carbs (g)</label><input name="targetCarbs" type="number" min="0" max="1000" step="5" inputmode="numeric" value="${target.carbs}"></div><div class="n42-field wide"><label>Fat (g)</label><input name="targetFat" type="number" min="0" max="300" step="5" inputmode="numeric" value="${target.fat}"></div></div><p class="n42-target-note">Macro calories do not always equal the calorie target exactly because labels round values. Use the calorie target as the main ceiling and protein as the first macro to hit.</p><button class="btn primary block" data-action="n42-save-targets">Save targets</button></section></div>`);}
+function nexset420SaveTargets(){const sheet=document.querySelector('.n42-sheet');if(!sheet)return;state.goals.dailyCalories=Math.max(1000,Math.round(nexset420Number(sheet.querySelector('[name="targetCalories"]')?.value,2400)));state.goals.dailyProtein=Math.max(0,Math.round(nexset420Number(sheet.querySelector('[name="targetProtein"]')?.value,200)));state.goals.dailyCarbs=Math.max(0,Math.round(nexset420Number(sheet.querySelector('[name="targetCarbs"]')?.value,230)));state.goals.dailyFat=Math.max(0,Math.round(nexset420Number(sheet.querySelector('[name="targetFat"]')?.value,75)));saveState({reason:'nutrition-targets'});nexset420CloseSheet();render();showToast('Nutrition targets saved.');}
+
+function nexset420WeeklyNutrition(){
+  const today=new Date();today.setHours(12,0,0,0);const days=[];for(let i=6;i>=0;i--){const date=new Date(today);date.setDate(today.getDate()-i);const key=dateKey(date),totals=nexset420Totals(key);if(nexset420EntriesFor(key).length)days.push({key,...totals});}
+  if(!days.length)return{loggedDays:0,averages:null};const sums=days.reduce((sum,day)=>{sum.calories+=day.calories;sum.protein+=day.protein;sum.carbs+=day.carbs;sum.fat+=day.fat;return sum;},{calories:0,protein:0,carbs:0,fat:0});return{loggedDays:days.length,averages:Object.fromEntries(Object.entries(sums).map(([key,value])=>[key,value/days.length]))};
+}
+function nexset420NutritionReportSection(){const today=nexset420Totals(dateKey()),targets=nexset420Targets(),week=nexset420WeeklyNutrition();return['',`NUTRITION`,`Targets: ${targets.calories} calories | ${targets.protein}g protein | ${targets.carbs}g carbs | ${targets.fat}g fat`,`Today: ${Math.round(today.calories)} calories | ${nexset420FormatMacro(today.protein)}g protein | ${nexset420FormatMacro(today.carbs)}g carbs | ${nexset420FormatMacro(today.fat)}g fat`,week.averages?`7-day logged average (${week.loggedDays} day${week.loggedDays===1?'':'s'}): ${Math.round(week.averages.calories)} calories | ${nexset420FormatMacro(week.averages.protein)}g protein | ${nexset420FormatMacro(week.averages.carbs)}g carbs | ${nexset420FormatMacro(week.averages.fat)}g fat`:'7-day logged average: no nutrition days logged yet.'].join('\n');}
+
+const nexset420MigrateBase=nexset400Migrate;
+nexset400Migrate=function(){nexset420MigrateBase();nexset420Migrate();};
+
+const nexset420RenderBase=render;
+render=function(){if(currentView!=='nutrition'){nexset420RenderBase();return;}updateChrome();document.body.dataset.screen='nutrition';$$('.nav-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.nav==='nutrition'));$('#appHeader')?.classList.remove('hidden');$('#bottomNav')?.classList.remove('hidden');renderNutrition();animateView();window.scrollTo({top:0,behavior:'instant'});};
+
+const nexset420RenderHomeBase=renderHome;
+renderHome=function(){nexset420RenderHomeBase();const screen=document.querySelector('.signature-home');if(!screen||screen.querySelector('.n42-home-card'))return;const totals=nexset420Totals(dateKey()),targets=nexset420Targets();const card=`<button class="n42-home-card" data-view="nutrition"><div><span>Today’s nutrition</span><strong>${Math.round(totals.calories)} / ${targets.calories} calories</strong><small>${nexset420FormatMacro(totals.protein)} / ${targets.protein}g protein logged</small></div><b>›</b></button>`;(screen.querySelector('.n41-evening-card')||screen.querySelector('.signature-hero'))?.insertAdjacentHTML('afterend',card);};
+
+const nexset420RenderMoreBase=renderMore;
+renderMore=function(){nexset420RenderMoreBase();const version=document.querySelector('.about-nexset span');if(version)version.textContent=`NEXSET ${APP_VERSION_LABEL} · Jacked + Lean + Nutrition`;};
+
+const nexset420CoachReportBase=coachReport;
+coachReport=function(options={}){const text=nexset420CoachReportBase(options),section=nexset420NutritionReportSection();return text.includes('\n--- NEXSET_DATA_JSON ---')?text.replace('\n--- NEXSET_DATA_JSON ---',`${section}\n\n--- NEXSET_DATA_JSON ---`):`${text}${section}`;};
+const nexset420WeeklyReportBase=weeklyReportText;
+weeklyReportText=function(){return`${nexset420WeeklyReportBase()}${nexset420NutritionReportSection()}`;};
+
+function nexset420HandleAction(event){
+  const button=event.target.closest('[data-action]');if(!button)return;const action=button.dataset.action;if(!String(action).startsWith('n42-'))return;if(button.classList.contains('sheet-backdrop')&&event.target!==button)return;event.preventDefault();event.stopImmediatePropagation();haptic('light');
+  if(action==='n42-date')nexset420ChangeDate(button.dataset.delta);
+  else if(action==='n42-add-food')nexset420OpenFoodSheet();
+  else if(action==='n42-edit-food')nexset420OpenFoodSheet(state.nutrition.entries.find(entry=>entry.id===button.dataset.id)||null);
+  else if(action==='n42-save-food')nexset420SaveFood(button.dataset.id||'');
+  else if(action==='n42-delete-food')nexset420DeleteFood(button.dataset.id);
+  else if(action==='n42-quick-add')nexset420QuickAdd(button.dataset.id);
+  else if(action==='n42-copy-yesterday')nexset420CopyYesterday();
+  else if(action==='n42-targets')nexset420OpenTargets();
+  else if(action==='n42-save-targets')nexset420SaveTargets();
+  else if(action==='n42-close-sheet')nexset420CloseSheet();
+}
+document.addEventListener('click',nexset420HandleAction,true);
+document.addEventListener('input',event=>{if(event.target.closest('.n42-sheet')&&['servings','calories','protein','carbs','fat'].includes(event.target.name))nexset420FoodSheetTotal();},true);
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.querySelector('.n42-sheet'))nexset420CloseSheet();});
 
 
 nexset400Migrate();
