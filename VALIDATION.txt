@@ -1,31 +1,37 @@
-NEXSET 4.0.4 — JACKED + LEAN IMPORT VALIDATION
-Generated: 2026-08-31T17:40:08.546062+00:00
+NEXSET 4.2.0 — VALIDATION REPORT
 
-PASS — Backup format preserved
-PASS — Schema preserved
-PASS — App version preserved
-PASS — History count preserved — 21 entries
-PASS — Body metrics preserved — 5 readings
-PASS — Daily check-ins preserved
-PASS — Goals preserved
-PASS — Achievements preserved
-PASS — Photos preserved
-PASS — No active workout introduced
-PASS — Rolling plan reset to Day 1
-PASS — Two-strength-workout return ramp included
-PASS — Seven program days
-PASS — Five lifting days
-PASS — Two recovery/rest days
-PASS — Unique exercise IDs within each day
-PASS — Exercise IDs unique across the revised program
-PASS — No lunges prescribed
-PASS — No hip thrusts prescribed
-PASS — No bike prescribed
-PASS — All weighted targets positive
-PASS — Biceps direct sets = 10
-PASS — Triceps direct sets = 10
-PASS — Core direct sets = 12
-PASS — Daily lifting volume controlled — D1=18, D2=17, D4=18, D5=18, D6=17
+RESULT
+PASS — static checks, mobile browser workflows, nutrition interactions, cardio-finisher checks, and backup migration tests completed successfully.
 
-RESULT: PASS (25/25 checks passed)
-Real-device boundary: the JSON structure and preservation checks passed here. After import, confirm the exact machine increments available at your Planet Fitness and keep the original backup until the first workout opens correctly.
+STATIC VALIDATION
+- Inline application JavaScript passed node --check.
+- service-worker.js passed node --check.
+- manifest.webmanifest parsed as valid JSON and points to index.html?nexset=4.2.0.
+- Every file listed in the service-worker application shell exists.
+- The deployment ZIP passed archive integrity testing and contains exactly the 15 deployment-root files.
+
+MOBILE BROWSER VALIDATION
+Chromium mobile harnesses were run at:
+- 390 × 844
+- 360 × 800
+
+Verified:
+- No horizontal document overflow.
+- Nutrition appears as a fifth bottom-navigation tab.
+- Starting targets display as 2,400 calories, 200 g protein, 230 g carbohydrates, and 75 g fat.
+- Whey and cookbook one-tap presets save correctly.
+- Custom food creation works.
+- Daily totals and remaining macros recalculate correctly.
+- Target editing works and persists in active state.
+- The Day 1 workout starts successfully and contains its post-lift incline-walk finisher.
+- All five post-lift finisher IDs are present in the seven-day program.
+
+BACKUP AND MIGRATION VALIDATION
+- The supplied NEXSET 4.0.4 backup imported through the app interface.
+- All 21 workout-history entries and all five body readings were preserved.
+- The accidental readiness check-in was removed and readiness remains disabled.
+- The imported state received the 4.2.0 nutrition targets, nutrition storage, updated plan, and all five cardio finishers.
+- The generated optional 4.2.0 history-import file was imported again and validated successfully.
+
+LIMITATIONS
+A live GitHub Pages HTTPS deployment, actual iPhone home-screen installation, Safari rendering, and service-worker replacement cannot be reproduced in this container. Complete the short device update check after GitHub publishes the files.
