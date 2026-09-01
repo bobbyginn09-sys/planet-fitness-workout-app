@@ -1,0 +1,27 @@
+# Personal NEXSET data and private source material
+*nexset*backup*.json
+*NEXSET*Coach*Packet*.txt
+*coach-packet*.txt
+*coach-file*.txt
+*history-import*.json
+*OPTIONAL-HISTORY-IMPORT*.json
+*progress-photo*
+*.pdf
+
+# Generated packages, screenshots, and reports
+*.zip
+validation-screens/
+playwright-report/
+test-results/
+coverage/
+*.log
+
+# Dependencies and local tooling
+node_modules/
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
