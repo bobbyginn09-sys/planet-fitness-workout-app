@@ -11,7 +11,7 @@
 <meta content="NEXSET" name="apple-mobile-web-app-title"/>
 <meta content="noindex,nofollow,noarchive" name="robots"/>
 <meta content="Private iPhone-first Planet Fitness workout and nutrition coach with five lifting days, two recovery days, post-lift cardio, optional evening running, calorie and macro tracking, reports, backups, and offline support." name="description"/>
-<title>NEXSET 4.2.0 · Jacked + Lean + Nutrition</title>
+<title>NEXSET 4.2.1 · Jacked + Lean + Nutrition</title>
 <link href="manifest.webmanifest" rel="manifest"/>
 <link href="apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
 <link href="nexset-mark.svg" rel="icon" type="image/svg+xml"/>
@@ -3684,7 +3684,7 @@ html {
 
 
 <style id="nexset420NutritionStyles">
-  /* NEXSET 4.2.0 — nutrition tracker and five-tab mobile navigation */
+  /* NEXSET 4.2.1 — nutrition tracker and five-tab mobile navigation */
   .bottom-nav .nav-inner{grid-template-columns:repeat(5,minmax(0,1fr));gap:2px}
   .bottom-nav .nav-btn{min-width:0;padding-left:3px;padding-right:3px}
   .bottom-nav .nav-btn>span:last-child{font-size:10.5px;letter-spacing:-.02em}
@@ -3803,8 +3803,8 @@ html {
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
     const RECOVERY_KEY = 'pfWorkoutApp.recovery.v1';
     const META_KEY = 'pfWorkoutApp.meta.v1';
-    const APP_VERSION = 'nexset-4.2.0';
-    const APP_VERSION_LABEL = '4.2.0';
+    const APP_VERSION = 'nexset-4.2.1';
+    const APP_VERSION_LABEL = '4.2.1';
     const DATA_SCHEMA_VERSION = 6;
     const STORAGE_WEIGHT_UNIT = 'lb';
     const LB_PER_KG = 2.2046226218;
@@ -5354,7 +5354,7 @@ html {
     function cancelActive(){if(!active)return;syncDraftFromInputs();const hasActivity=active.exercises.some(e=>(e.logs||[]).length||String(e.notes||'').trim())||String(active.sessionNote||'').trim();const message=hasActivity?'Cancel this workout? All logged sets, notes, and elapsed time from this active session will be permanently discarded.':'Discard this empty workout? It will not be added to your history.';if(!confirm(message))return;active=null;removeExerciseToolsOverlay();saveActive();stopRest();currentView='home';render();showToast('Workout canceled. Nothing was saved.');}
     function deleteSession(id){if(!confirm('Delete this completed session?'))return;const index=state.history.findIndex(s=>s.id===id);if(index<0)return;const removed=deepClone(state.history[index]);state.history.splice(index,1);rebuildProgress();saveState({reason:'session-delete'});renderMore();showToast('Session deleted.',{label:'Undo',run:()=>{state.history.splice(index,0,removed);rebuildProgress();saveState({reason:'undo-session-delete'});moreSection='history';currentView='more';render();showToast('Session restored.');}});}
 
-    function resetApp(){if(!confirm('Delete all workouts, body metrics, settings, and the local recovery copy from this device?'))return;localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(ACTIVE_KEY);localStorage.removeItem(RECOVERY_KEY);localStorage.removeItem(META_KEY);meta=defaultMeta();state=defaultState();active=null;currentView='home';moreSection='menu';saveState({snapshot:false});render();showToast('App reset.');}
+    async function resetApp(){if(!confirm('Delete all workouts, body metrics, progress photos, settings, and the local recovery copy from this device?'))return;try{await nexset400PhotoClear();}catch(error){console.warn('Progress photo reset failed',error);showToast('Could not reset app data. Try again.');return;}localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(ACTIVE_KEY);localStorage.removeItem(RECOVERY_KEY);localStorage.removeItem(META_KEY);meta=defaultMeta();state=defaultState();active=null;currentView='home';moreSection='menu';saveState({snapshot:false});render();showToast('App reset.');}
 
     /* NEXSET_350_TRANSFORMED */
     /* NEXSET_360_RELEASE */
@@ -6878,7 +6878,7 @@ function nexset400Migrate() {
   const coachPlan = nexset360CoachPlan();
   nexset350InstallPlan(PLAN, coachPlan);
   const hasSavedPlan = Array.isArray(state.programPlan) && state.programPlan.length >= 7;
-  if (!hasSavedPlan || !['3.6.1', '4.0.0', '4.0.1', '4.0.2', '4.0.3', NEXSET_400_VERSION].includes(priorCoachPlanVersion)) {
+  if (!hasSavedPlan || !['3.6.1', '4.0.0', '4.0.1', '4.0.2', '4.0.3', '4.0.4', NEXSET_400_VERSION, '4.2.0'].includes(priorCoachPlanVersion)) {
     state.programPlan = deepClone(coachPlan);
     state.settings.currentDayIndex = clamp(Math.trunc(Number(state.settings.currentDayIndex)||0),0,coachPlan.length-1);
   }
@@ -7443,7 +7443,7 @@ renderCompletion = function(){const session=lastCompletedSession||[...state.hist
 
 /* ---------- Full backup with optional photos ---------- */
 exportBackup = async function(){try{const exportedAt=new Date().toISOString(),photos=await nexset400PhotoGetAll(),photoPayload=[];for(const photo of photos){photoPayload.push({id:photo.id,date:photo.date,note:photo.note||'',createdAt:photo.createdAt,type:photo.blob.type||'image/jpeg',data:await nexset400BlobToDataUrl(photo.blob)});}const payload={format:'nexset-backup',schemaVersion:DATA_SCHEMA_VERSION,appVersion:APP_VERSION,exportedAt,state,active,photos:photoPayload};downloadBlob(`nexset-full-backup-${dateKey()}-${APP_VERSION_LABEL}.json`,JSON.stringify(payload,null,2),'application/json');persistMeta({lastBackupAt:exportedAt});writeRecoverySnapshot('backup-export',true);if(currentView==='more')renderMore();showToast(`Full backup exported${photos.length?` with ${photos.length} photo${photos.length===1?'':'s'}`:''}.`);}catch(error){console.warn('Full backup failed',error);showToast('Backup failed. Try again with Safari storage available.');}};
-importBackup = function(file){if(!file)return;if(file.size>25*1024*1024){showToast('That backup is larger than 25 MB.');return;}const reader=new FileReader();reader.onerror=()=>showToast('Could not read that backup.');reader.onload=async()=>{try{const parsed=JSON.parse(reader.result),validated=validateBackup(parsed),count=validated.state.history.length,photos=nexset400SafeArray(parsed.photos);if(!confirm(`Import ${count} saved session${count===1?'':'s'}${photos.length?` and ${photos.length} progress photo${photos.length===1?'':'s'}`:''}? Your current data will remain in the local recovery copy.`))return;writeRecoverySnapshot('before-import',true);state=validated.state;active=validated.active;nexset400Migrate();if(photos.length){await nexset400PhotoClear();for(const photo of photos.slice(0,NEXSET_400_MAX_PHOTOS)){if(!photo.data)continue;const blob=nexset400DataUrlToBlob(photo.data);await nexset400PhotoPut({id:String(photo.id||nexset400Id('photo')),date:validDateOr(photo.date),note:nexset400CleanText(photo.note,300),createdAt:validDateOr(photo.createdAt||photo.date),blob,type:blob.type,size:blob.size});}state.photoMeta=photos.slice(0,NEXSET_400_MAX_PHOTOS).map(photo=>({id:String(photo.id),date:validDateOr(photo.date),note:nexset400CleanText(photo.note,300)}));}rebuildProgress();saveState({reason:'backup-import-4.0',snapshot:false});saveActive({reason:'backup-import-4.0',snapshot:false});persistMeta({lastImportAt:new Date().toISOString()});currentView=active?'workout':'home';moreSection='menu';render();showToast('Backup imported and validated.');}catch(error){console.warn('Backup import failed',error);showToast('Could not import that backup.');}};reader.readAsText(file);};
+importBackup = function(file){if(!file)return;if(file.size>25*1024*1024){showToast('That backup is larger than 25 MB.');return;}const reader=new FileReader();reader.onerror=()=>showToast('Could not read that backup.');reader.onload=async()=>{try{const parsed=JSON.parse(reader.result),validated=validateBackup(parsed),count=validated.state.history.length,photos=nexset400SafeArray(parsed.photos),photoRecords=[];for(const photo of photos.slice(0,NEXSET_400_MAX_PHOTOS)){if(!photo.data)continue;const blob=nexset400DataUrlToBlob(photo.data);photoRecords.push({id:String(photo.id||nexset400Id('photo')),date:validDateOr(photo.date),note:nexset400CleanText(photo.note,300),createdAt:validDateOr(photo.createdAt||photo.date),blob,type:blob.type,size:blob.size});}if(!confirm(`Import ${count} saved session${count===1?'':'s'}${photos.length?` and ${photos.length} progress photo${photos.length===1?'':'s'}`:''}? Your current data will remain in the local recovery copy.`))return;writeRecoverySnapshot('before-import',true);state=validated.state;active=validated.active;nexset400Migrate();if(photos.length){await nexset400PhotoClear();for(const record of photoRecords)await nexset400PhotoPut(record);state.photoMeta=photos.slice(0,NEXSET_400_MAX_PHOTOS).map(photo=>({id:String(photo.id),date:validDateOr(photo.date),note:nexset400CleanText(photo.note,300)}));}rebuildProgress();saveState({reason:'backup-import-4.0',snapshot:false});saveActive({reason:'backup-import-4.0',snapshot:false});persistMeta({lastImportAt:new Date().toISOString()});currentView=active?'workout':'home';moreSection='menu';render();showToast('Backup imported and validated.');}catch(error){console.warn('Backup import failed',error);showToast('Could not import that backup.');}};reader.readAsText(file);};
 
 /* ---------- Action handling ---------- */
 function nexset400CloseOverlay(id){document.getElementById(id)?.remove();}
@@ -7690,18 +7690,22 @@ function nexset410SeedCardioProgress() {
   state.exerciseProgress.evening_run_intervals=intervals;
 }
 
+let nexset410PreservedProgram = false;
 function nexset410Migrate() {
   const firstInstall = !['4.1.0','4.2.0'].includes(state.settings?.nexsetPlanRelease);
   state.settings = state.settings || {};
   state.goals = state.goals || {};
   nexset350InstallPlan(PLAN,NEXSET_410_PLAN);
-  if (firstInstall || !Array.isArray(state.programPlan) || state.programPlan.length !== 7) {
+  const currentIndex = Number(state.settings.currentDayIndex);
+  const hasValidProgram = Array.isArray(state.programPlan) && state.programPlan.length === 7 && state.programPlan.every(day => isPlainObject(day) && Array.isArray(day.exercises) && day.exercises.length);
+  nexset410PreservedProgram = hasValidProgram && (!firstInstall || Boolean(state.settings.nexsetPlanRelease));
+  if (!nexset410PreservedProgram) {
     state.programPlan = deepClone(NEXSET_410_PLAN);
     state.settings.currentDayIndex = 0;
     state.trainingStatus = null;
-    state.dailyCheckins = [];
   } else {
     state.programPlan = normalizeProgramPlan(state.programPlan);
+    state.settings.currentDayIndex = Number.isInteger(currentIndex) && currentIndex >= 0 && currentIndex < state.programPlan.length ? currentIndex : 0;
   }
   state.settings.readinessEnabled = false;
   state.settings.weeklyStrengthTarget = 5;
@@ -7793,7 +7797,7 @@ weeklyReportText = nexset410WeeklyReportText;
 
 
 
-/* NEXSET 4.2.0 — nutrition tracker, updated macro targets, and post-lift cardio finishers */
+/* NEXSET 4.2.1 — nutrition tracker, updated macro targets, and post-lift cardio finishers */
 const NEXSET_420_RECIPES = [
   {id:'whey-protein-water',name:'Whey Protein Shake (Water)',meal:'snack',calories:120,protein:24,carbs:3,fat:1.5,source:'supplement'},
   {id:'breakfast-casserole',name:'Breakfast Casserole',meal:'breakfast',calories:222,protein:22,carbs:4,fat:13,page:50},
@@ -7839,12 +7843,12 @@ function nexset420Migrate(){
   state.settings=state.settings||{};state.goals=state.goals||{};state.nutrition=nexset420NormalizeNutrition(state.nutrition);
   nexset350InstallPlan(PLAN,NEXSET_420_PLAN);
   const hasFinishers=Array.isArray(state.programPlan)&&Object.values(NEXSET_420_FINISHERS).every(item=>state.programPlan.some(day=>(day.exercises||[]).some(ex=>ex.id===item.id)));
-  if(firstNutritionInstall||!hasFinishers){state.programPlan=deepClone(NEXSET_420_PLAN);state.settings.currentDayIndex=currentIndex;}else state.programPlan=normalizeProgramPlan(state.programPlan);
-  if(firstNutritionInstall){state.goals.dailyCalories=2400;state.goals.dailyProtein=200;state.goals.dailyCarbs=230;state.goals.dailyFat=75;}
-  state.goals.dailyCalories=Math.max(1000,Math.round(nexset420Number(state.goals.dailyCalories,2400)));
-  state.goals.dailyProtein=Math.max(0,Math.round(nexset420Number(state.goals.dailyProtein,200)));
-  state.goals.dailyCarbs=Math.max(0,Math.round(nexset420Number(state.goals.dailyCarbs,230)));
-  state.goals.dailyFat=Math.max(0,Math.round(nexset420Number(state.goals.dailyFat,75)));
+  if(!nexset410PreservedProgram&&(firstNutritionInstall||!hasFinishers)){state.programPlan=deepClone(NEXSET_420_PLAN);state.settings.currentDayIndex=currentIndex;}else state.programPlan=normalizeProgramPlan(state.programPlan);
+  const calories=nullableFiniteNumber(state.goals.dailyCalories),protein=nullableFiniteNumber(state.goals.dailyProtein),carbs=nullableFiniteNumber(state.goals.dailyCarbs),fat=nullableFiniteNumber(state.goals.dailyFat);
+  state.goals.dailyCalories=calories!==null&&calories>=1000?calories:2400;
+  state.goals.dailyProtein=protein!==null&&protein>=0?protein:200;
+  state.goals.dailyCarbs=carbs!==null&&carbs>=0?carbs:230;
+  state.goals.dailyFat=fat!==null&&fat>=0?fat:75;
   state.settings.weeklyCardioTarget=120;state.goals.weeklyCardioMinutes=120;
   state.settings.programStyle='five-day-jacked-nutrition-cardio-finishers';
   state.settings.nexsetCoachPlanVersion='4.2.0';state.settings.nexsetPlanRelease='4.2.0';state.settings.nexsetNutritionRelease='4.2.0';
