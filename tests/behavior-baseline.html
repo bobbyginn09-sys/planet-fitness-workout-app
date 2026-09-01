@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NEXSET behavior baseline</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    body { margin: 0; background: #071019; color: #edf6ff; }
+    main { width: min(880px, calc(100% - 32px)); margin: 32px auto; }
+    h1 { margin-bottom: 6px; }
+    p { color: #a9b7c5; line-height: 1.5; }
+    #summary { padding: 14px; border: 1px solid #263747; border-radius: 12px; background: #0c1722; }
+    #summary[data-status="passed"] { border-color: #19b66b; }
+    #summary[data-status="failed"] { border-color: #ef5350; }
+    ol { padding-left: 22px; }
+    li { margin: 9px 0; padding: 10px 12px; border-radius: 9px; background: #0c1722; }
+    li.pass { border-left: 4px solid #19b66b; }
+    li.expected-failure { border-left: 4px solid #f5b942; }
+    li.fail { border-left: 4px solid #ef5350; }
+    li.unexpected-pass { border-left: 4px solid #42a5f5; }
+    li small { display: block; margin-top: 4px; color: #a9b7c5; }
+    iframe { position: fixed; width: 100vw; height: 100vh; left: -10000px; top: 0; border: 0; }
+    code { color: #d5ebff; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>NEXSET behavior baseline</h1>
+    <p>This runner uses fictional records on a local-only browser origin. It never reads a private backup file.</p>
+    <section id="summary" aria-live="polite">Starting…</section>
+    <ol id="results"></ol>
+  </main>
+  <script src="behavior-baseline.js"></script>
+</body>
+</html>
