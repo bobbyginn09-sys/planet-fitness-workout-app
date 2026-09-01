@@ -6878,7 +6878,7 @@ function nexset400Migrate() {
   const coachPlan = nexset360CoachPlan();
   nexset350InstallPlan(PLAN, coachPlan);
   const hasSavedPlan = Array.isArray(state.programPlan) && state.programPlan.length >= 7;
-  if (!hasSavedPlan || !['3.6.1', '4.0.0', '4.0.1', '4.0.2', '4.0.3', NEXSET_400_VERSION].includes(priorCoachPlanVersion)) {
+  if (!hasSavedPlan || !['3.6.1', '4.0.0', '4.0.1', '4.0.2', '4.0.3', '4.0.4', NEXSET_400_VERSION, '4.2.0'].includes(priorCoachPlanVersion)) {
     state.programPlan = deepClone(coachPlan);
     state.settings.currentDayIndex = clamp(Math.trunc(Number(state.settings.currentDayIndex)||0),0,coachPlan.length-1);
   }
@@ -7690,18 +7690,22 @@ function nexset410SeedCardioProgress() {
   state.exerciseProgress.evening_run_intervals=intervals;
 }
 
+let nexset410PreservedProgram = false;
 function nexset410Migrate() {
   const firstInstall = !['4.1.0','4.2.0'].includes(state.settings?.nexsetPlanRelease);
   state.settings = state.settings || {};
   state.goals = state.goals || {};
   nexset350InstallPlan(PLAN,NEXSET_410_PLAN);
-  if (firstInstall || !Array.isArray(state.programPlan) || state.programPlan.length !== 7) {
+  const currentIndex = Number(state.settings.currentDayIndex);
+  const hasValidProgram = Array.isArray(state.programPlan) && state.programPlan.length === 7 && state.programPlan.every(day => isPlainObject(day) && Array.isArray(day.exercises) && day.exercises.length);
+  nexset410PreservedProgram = hasValidProgram && (!firstInstall || Boolean(state.settings.nexsetPlanRelease));
+  if (!nexset410PreservedProgram) {
     state.programPlan = deepClone(NEXSET_410_PLAN);
     state.settings.currentDayIndex = 0;
     state.trainingStatus = null;
-    state.dailyCheckins = [];
   } else {
     state.programPlan = normalizeProgramPlan(state.programPlan);
+    state.settings.currentDayIndex = Number.isInteger(currentIndex) && currentIndex >= 0 && currentIndex < state.programPlan.length ? currentIndex : 0;
   }
   state.settings.readinessEnabled = false;
   state.settings.weeklyStrengthTarget = 5;
@@ -7839,7 +7843,7 @@ function nexset420Migrate(){
   state.settings=state.settings||{};state.goals=state.goals||{};state.nutrition=nexset420NormalizeNutrition(state.nutrition);
   nexset350InstallPlan(PLAN,NEXSET_420_PLAN);
   const hasFinishers=Array.isArray(state.programPlan)&&Object.values(NEXSET_420_FINISHERS).every(item=>state.programPlan.some(day=>(day.exercises||[]).some(ex=>ex.id===item.id)));
-  if(firstNutritionInstall||!hasFinishers){state.programPlan=deepClone(NEXSET_420_PLAN);state.settings.currentDayIndex=currentIndex;}else state.programPlan=normalizeProgramPlan(state.programPlan);
+  if(!nexset410PreservedProgram&&(firstNutritionInstall||!hasFinishers)){state.programPlan=deepClone(NEXSET_420_PLAN);state.settings.currentDayIndex=currentIndex;}else state.programPlan=normalizeProgramPlan(state.programPlan);
   const calories=nullableFiniteNumber(state.goals.dailyCalories),protein=nullableFiniteNumber(state.goals.dailyProtein),carbs=nullableFiniteNumber(state.goals.dailyCarbs),fat=nullableFiniteNumber(state.goals.dailyFat);
   state.goals.dailyCalories=calories!==null&&calories>=1000?calories:2400;
   state.goals.dailyProtein=protein!==null&&protein>=0?protein:200;
