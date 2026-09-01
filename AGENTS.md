@@ -2,7 +2,7 @@
 
 ## Product
 
-NEXSET is Bobby's private, mobile-first Planet Fitness workout and nutrition PWA. The current baseline is **NEXSET 4.2.0 — Jacked + Lean + Nutrition**. It is hosted from the existing GitHub Pages project repository and is primarily used as an installed iPhone PWA.
+NEXSET is Bobby's private, mobile-first Planet Fitness workout and nutrition PWA. The current baseline is **NEXSET 4.2.1 — Jacked + Lean + Nutrition**. It is hosted from the existing GitHub Pages project repository and is primarily used as an installed iPhone PWA.
 
 - Keep the existing GitHub repository and project URL.
 - No App Store release, backend, login system, cloud database, or subscription is required.
