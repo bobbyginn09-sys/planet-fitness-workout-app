@@ -526,7 +526,7 @@
       'The current 4.2 first-install migration assigns built-in macro targets even when customized targets already exist.'
     );
 
-    await expectedFailure(
+    await test(
       'Reset app data also clears progress-photo blobs',
       async () => {
         const app = await launchApp({
@@ -538,8 +538,7 @@
         app.doc.querySelector('[data-action="reset-app"]').click();
         await waitFor(() => readJson(STORAGE_KEY)?.history?.length === 0, 'App records were not reset');
         equal((await getPhotos()).length, 0, 'IndexedDB progress photo survived reset');
-      },
-      'The current reset path clears localStorage but does not clear the separate IndexedDB photo store.'
+      }
     );
 
     await test(
