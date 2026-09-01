@@ -502,22 +502,47 @@
       assert(saved.nutrition && Array.isArray(saved.nutrition.entries), 'Migration did not supply nutrition defaults');
     });
 
-    await expectedFailure(
-      '4.1 migration preserves a seven-day custom plan, rolling day, and readiness check-ins',
+    await test(
+      '4.1 migration preserves valid user state, defaults invalid state, and is idempotent',
       async () => {
         const customPlan = customSevenDayPlan();
+        const customCheckins = [{ id: 'invented-checkin', date: FIXED_DATE, sleep: 4, energy: 3, soreness: 2, stress: 2 }];
         const state = baseState({
           settings: currentSettings({ currentDayIndex: 4, nexsetPlanRelease: '4.0.0', nexsetNutritionRelease: '4.2.0' }),
           programPlan: customPlan,
-          dailyCheckins: [{ id: 'invented-checkin', date: FIXED_DATE, sleep: 4, energy: 3, soreness: 2, stress: 2 }]
+          dailyCheckins: customCheckins
         });
         await launchApp({ state });
         const saved = readJson(STORAGE_KEY);
         equal(saved.programPlan[0].title, customPlan[0].title, 'Customized program was replaced');
+        equal(saved.programPlan[6].exercises[0].id, customPlan[6].exercises[0].id, 'Customized program exercises were replaced');
         equal(saved.settings.currentDayIndex, 4, 'Rolling workout position was reset');
         equal(saved.dailyCheckins.length, 1, 'Readiness check-ins were cleared');
-      },
-      'The current 4.1 release migration replaces the plan, resets the rolling day, and clears readiness check-ins on first install.'
+        equal(saved.dailyCheckins[0].id, customCheckins[0].id, 'Readiness check-in data was replaced');
+
+        const preservedPlan = JSON.stringify(saved.programPlan);
+        const preservedCheckins = JSON.stringify(saved.dailyCheckins);
+        await reloadApp();
+        const rerun = readJson(STORAGE_KEY);
+        equal(JSON.stringify(rerun.programPlan), preservedPlan, 'Second migration changed the preserved workout program');
+        equal(rerun.settings.currentDayIndex, 4, 'Second migration changed the preserved rolling workout position');
+        equal(JSON.stringify(rerun.dailyCheckins), preservedCheckins, 'Second migration changed the preserved readiness check-ins');
+
+        const incompleteState = {
+          version: 2,
+          createdAt: FIXED_DATE,
+          settings: { profileName: 'Jordan Example', units: 'lb', currentDayIndex: 'not-a-day' },
+          history: [],
+          programPlan: [null],
+          dailyCheckins: 'not-a-check-in-list'
+        };
+        await launchApp({ state: incompleteState });
+        const initialized = readJson(STORAGE_KEY);
+        equal(initialized.programPlan[0].title, 'Upper Strength + Arms', 'Incomplete profile did not receive the default workout program');
+        assert(initialized.programPlan.some(day => day.exercises.some(exercise => exercise.id === 'n42-upper-incline-finish')), 'Incomplete profile did not receive the current cardio finishers');
+        equal(initialized.settings.currentDayIndex, 0, 'Invalid rolling workout position did not receive the default');
+        equal(initialized.dailyCheckins.length, 0, 'Invalid readiness check-ins did not receive the default');
+      }
     );
 
     await test(
