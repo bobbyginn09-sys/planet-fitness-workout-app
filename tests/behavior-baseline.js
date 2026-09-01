@@ -542,7 +542,7 @@
       'The current reset path clears localStorage but does not clear the separate IndexedDB photo store.'
     );
 
-    await expectedFailure(
+    await test(
       'Invalid photo data cannot erase an existing local progress photo during import',
       async () => {
         const app = await launchApp({
@@ -556,15 +556,23 @@
           exportedAt: FIXED_DATE,
           state: baseState(),
           active: null,
-          photos: [{ id: 'broken-invented-photo', date: FIXED_DATE, note: 'Invented invalid photo.', data: 'not-a-data-url' }]
+          photos: [
+            { id: 'valid-invented-photo', date: FIXED_DATE, note: 'Invented valid photo.', data: 'data:image/png;base64,iVBORw0KGgo=' },
+            { id: 'broken-invented-photo', date: FIXED_DATE, note: 'Invented invalid photo.', data: 'not-a-data-url' }
+          ]
         });
         await importText(app, invalidPhotoBackup, 'invented-invalid-photo-backup.json');
         await waitForToast(app, 'Could not import that backup.');
         const photos = await getPhotos();
         equal(photos.length, 1, 'Existing photo was erased before the invalid incoming photo failed');
         equal(photos[0].id, 'existing-photo', 'Existing photo was replaced during failed import');
-      },
-      'The current import clears the photo store before every incoming photo has been decoded and safely written.'
+        equal(photos[0].date, FIXED_DATE, 'Existing photo date changed during failed import');
+        equal(photos[0].note, 'Invented solid-color test image.', 'Existing photo note changed during failed import');
+        equal(photos[0].blob.type, 'image/png', 'Existing photo type changed during failed import');
+        equal(photos[0].blob.size, 8, 'Existing photo size changed during failed import');
+        equal(Array.from(new Uint8Array(await photos[0].blob.arrayBuffer())).join(','), '137,80,78,71,13,10,26,10', 'Existing photo bytes changed during failed import');
+        equal(readJson(STORAGE_KEY).photoMeta[0].id, 'existing-photo', 'Existing photo metadata was replaced during failed import');
+      }
     );
   }
 
