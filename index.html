@@ -7840,11 +7840,11 @@ function nexset420Migrate(){
   nexset350InstallPlan(PLAN,NEXSET_420_PLAN);
   const hasFinishers=Array.isArray(state.programPlan)&&Object.values(NEXSET_420_FINISHERS).every(item=>state.programPlan.some(day=>(day.exercises||[]).some(ex=>ex.id===item.id)));
   if(firstNutritionInstall||!hasFinishers){state.programPlan=deepClone(NEXSET_420_PLAN);state.settings.currentDayIndex=currentIndex;}else state.programPlan=normalizeProgramPlan(state.programPlan);
-  if(firstNutritionInstall){state.goals.dailyCalories=2400;state.goals.dailyProtein=200;state.goals.dailyCarbs=230;state.goals.dailyFat=75;}
-  state.goals.dailyCalories=Math.max(1000,Math.round(nexset420Number(state.goals.dailyCalories,2400)));
-  state.goals.dailyProtein=Math.max(0,Math.round(nexset420Number(state.goals.dailyProtein,200)));
-  state.goals.dailyCarbs=Math.max(0,Math.round(nexset420Number(state.goals.dailyCarbs,230)));
-  state.goals.dailyFat=Math.max(0,Math.round(nexset420Number(state.goals.dailyFat,75)));
+  const calories=nullableFiniteNumber(state.goals.dailyCalories),protein=nullableFiniteNumber(state.goals.dailyProtein),carbs=nullableFiniteNumber(state.goals.dailyCarbs),fat=nullableFiniteNumber(state.goals.dailyFat);
+  state.goals.dailyCalories=calories!==null&&calories>=1000?calories:2400;
+  state.goals.dailyProtein=protein!==null&&protein>=0?protein:200;
+  state.goals.dailyCarbs=carbs!==null&&carbs>=0?carbs:230;
+  state.goals.dailyFat=fat!==null&&fat>=0?fat:75;
   state.settings.weeklyCardioTarget=120;state.goals.weeklyCardioMinutes=120;
   state.settings.programStyle='five-day-jacked-nutrition-cardio-finishers';
   state.settings.nexsetCoachPlanVersion='4.2.0';state.settings.nexsetPlanRelease='4.2.0';state.settings.nexsetNutritionRelease='4.2.0';

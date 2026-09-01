@@ -276,6 +276,17 @@
     return { win: frame.contentWindow, doc: frame.contentDocument };
   }
 
+  async function reloadApp() {
+    assert(frame, 'The app iframe is not available to reload.');
+    frame.src = `${APP_URL}?behavior-test=${Date.now()}-${++frameSequence}`;
+    await new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => reject(new Error('The app iframe did not reload.')), 8000);
+      frame.addEventListener('load', () => { clearTimeout(timeout); resolve(); }, { once: true });
+    });
+    await waitFor(() => frame.contentDocument?.querySelector('#view'), 'The reloaded app UI did not initialize');
+    return { win: frame.contentWindow, doc: frame.contentDocument };
+  }
+
   async function showBackupPanel(app) {
     const more = await waitFor(() => app.doc.querySelector('[data-nav="profile"]'), 'Profile navigation was not available');
     more.click();
@@ -509,8 +520,8 @@
       'The current 4.1 release migration replaces the plan, resets the rolling day, and clears readiness check-ins on first install.'
     );
 
-    await expectedFailure(
-      '4.2 migration preserves user-customized macro targets when its release marker is absent',
+    await test(
+      '4.2 migration preserves valid macro targets, defaults invalid targets, and is idempotent',
       async () => {
         const state = baseState({
           settings: currentSettings({ nexsetPlanRelease: '4.2.0', nexsetNutritionRelease: undefined }),
@@ -522,8 +533,25 @@
         equal(saved.goals.dailyProtein, 181, 'Custom protein target was replaced');
         equal(saved.goals.dailyCarbs, 287, 'Custom carbohydrate target was replaced');
         equal(saved.goals.dailyFat, 83, 'Custom fat target was replaced');
-      },
-      'The current 4.2 first-install migration assigns built-in macro targets even when customized targets already exist.'
+
+        await reloadApp();
+        const rerun = readJson(STORAGE_KEY);
+        equal(rerun.goals.dailyCalories, 2675, 'Second migration changed the preserved calorie target');
+        equal(rerun.goals.dailyProtein, 181, 'Second migration changed the preserved protein target');
+        equal(rerun.goals.dailyCarbs, 287, 'Second migration changed the preserved carbohydrate target');
+        equal(rerun.goals.dailyFat, 83, 'Second migration changed the preserved fat target');
+
+        const invalidState = baseState({
+          settings: currentSettings({ nexsetPlanRelease: '4.2.0', nexsetNutritionRelease: undefined }),
+          goals: { targetWeight: 172, targetBodyFat: 17, dailyCalories: null, dailyProtein: 'invalid', dailyCarbs: -1 }
+        });
+        await launchApp({ state: invalidState });
+        const defaulted = readJson(STORAGE_KEY);
+        equal(defaulted.goals.dailyCalories, 2400, 'Missing calorie target did not receive the default');
+        equal(defaulted.goals.dailyProtein, 200, 'Invalid protein target did not receive the default');
+        equal(defaulted.goals.dailyCarbs, 230, 'Invalid carbohydrate target did not receive the default');
+        equal(defaulted.goals.dailyFat, 75, 'Missing fat target did not receive the default');
+      }
     );
 
     await test(
