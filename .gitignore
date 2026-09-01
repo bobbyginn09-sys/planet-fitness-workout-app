@@ -1,0 +1,66 @@
+# Personal NEXSET data and private source material
+*nexset*backup*.json
+*NEXSET*BACKUP*.json
+*NEXSET*Backup*.json
+NEXSET-*-Import.json
+NEXSET-*-IMPORT.json
+*NEXSET*Coach*Packet*.txt
+*NEXSET*COACH*PACKET*.txt
+*coach-packet*.txt
+*coach-file*.txt
+*coach-report*.txt
+*weekly-report*.txt
+*history-import*.json
+*History-Import*.json
+*OPTIONAL-HISTORY-IMPORT*.json
+NUTRITION-AND-CARDIO-PLAN.txt
+SUPPLEMENTS-AND-AMAZON-LINKS.txt
+UPDATED-WORKOUT-PLAN.txt
+WORKOUT_PLAN_3.5.0.md
+README-FIRST.txt
+*progress-photo*
+progress-photos/
+*.heic
+*.pdf
+
+# Private archive folders
+NEXSET Private Backups/
+private-backups/
+private-archive/
+
+# Generated packages, screenshots, and reports
+*.zip
+validation-screens/
+browser-screenshots/
+screenshots/
+playwright-report/
+test-results/
+coverage/
+*.log
+active-day1-390.png
+active-workout.png
+history-empty.png
+history-populated.png
+home-390.png
+home-legs-a.png
+home-push.png
+nutrition-empty-360.png
+nutrition-empty-390.png
+nutrition-logged-390.png
+profile.png
+progress.png
+quick-workout.png
+workouts-legs-a.png
+workouts.png
+browser-screenshot-*.png
+*-browser-screenshot.png
+
+# Dependencies and local tooling
+node_modules/
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
