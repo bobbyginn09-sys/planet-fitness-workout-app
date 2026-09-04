@@ -13,7 +13,7 @@
 <body>
 <main class="card">
   <div class="mark">N</div>
-  <div class="eyebrow">NEXSET 4.0.4</div>
+  <div class="eyebrow">NEXSET 4.2.2</div>
   <h1>Refreshing the app</h1>
   <p>This removes only old NEXSET cache files and the previous service worker. Your workout history and settings stay in local storage.</p>
   <div class="status" id="status">Clearing the old app shell…</div>
@@ -33,8 +33,8 @@
       const keys=await caches.keys();
       await Promise.all(keys.filter(key=>key.startsWith('nexset-workout-')).map(key=>caches.delete(key)));
     }
-    status.textContent='Old cache cleared. Opening NEXSET 4.0.4…';
-    setTimeout(()=>location.replace(`./index.html?nexset=4.0.4&fresh=${Date.now()}`),650);
+    status.textContent='Old cache cleared. Opening NEXSET 4.2.2…';
+    setTimeout(()=>location.replace(`./index.html?nexset=4.2.2&fresh=${Date.now()}`),650);
   }catch(error){
     status.textContent='The automatic refresh did not finish. Reload this page and try again.';
     status.classList.add('error');

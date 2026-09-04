@@ -11,7 +11,7 @@
 <meta content="NEXSET" name="apple-mobile-web-app-title"/>
 <meta content="noindex,nofollow,noarchive" name="robots"/>
 <meta content="Private iPhone-first Planet Fitness workout and nutrition coach with five lifting days, two recovery days, post-lift cardio, optional evening running, calorie and macro tracking, reports, backups, and offline support." name="description"/>
-<title>NEXSET 4.2.1 · Jacked + Lean + Nutrition</title>
+<title>NEXSET 4.2.2 · Jacked + Lean + Nutrition</title>
 <link href="manifest.webmanifest" rel="manifest"/>
 <link href="apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
 <link href="nexset-mark.svg" rel="icon" type="image/svg+xml"/>
@@ -3674,6 +3674,13 @@ html {
   .n41-evening-card p{font-size:11px;line-height:1.45;color:#aab8c6;margin:0}
   .n41-evening-card button{min-width:78px;border:0;border-radius:13px;padding:11px 12px;background:#0d7dff;color:#fff;font-weight:900}
   .n41-evening-card.rest button{background:rgba(255,255,255,.08);color:#d9e2ea}
+  .n41-evening-card > div{min-width:0;overflow-wrap:anywhere}
+  .n41-evening-card .n422-evening-source{margin:0 0 7px;color:#c2d5e6;font-size:10px}
+  .n41-evening-card .n422-evening-note{margin-top:7px;color:#91a3b5;font-size:10px}
+  .n41-evening-card button{min-height:44px}
+  .n422-evening-complete{padding:10px 12px;border-radius:13px;background:rgba(97,199,255,.12);color:#a6ddff;font-size:12px;font-weight:800;white-space:nowrap;text-align:center}
+  @media(max-width:390px){.n422-evening-complete{justify-self:start}}
+
   .n41-program-card{margin-top:14px;padding:15px;border:1px solid rgba(97,199,255,.18);border-radius:20px;background:rgba(5,14,24,.95)}
   .n41-program-card header{margin-bottom:11px}.n41-program-card header span{font-size:9px;font-weight:900;letter-spacing:.15em;color:#61c7ff}.n41-program-card header h3{margin:5px 0 3px}.n41-program-card header p{margin:0;color:#9facb9;font-size:11px;line-height:1.4}
   .n41-evening-list{display:grid;gap:7px}.n41-evening-row{display:grid;grid-template-columns:34px minmax(0,1fr);gap:9px;align-items:center;padding:9px 10px;border-radius:13px;background:rgba(255,255,255,.035)}
@@ -3684,7 +3691,7 @@ html {
 
 
 <style id="nexset420NutritionStyles">
-  /* NEXSET 4.2.1 — nutrition tracker and five-tab mobile navigation */
+  /* NEXSET 4.2.2 — nutrition tracker and five-tab mobile navigation */
   .bottom-nav .nav-inner{grid-template-columns:repeat(5,minmax(0,1fr));gap:2px}
   .bottom-nav .nav-btn{min-width:0;padding-left:3px;padding-right:3px}
   .bottom-nav .nav-btn>span:last-child{font-size:10.5px;letter-spacing:-.02em}
@@ -3803,8 +3810,8 @@ html {
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
     const RECOVERY_KEY = 'pfWorkoutApp.recovery.v1';
     const META_KEY = 'pfWorkoutApp.meta.v1';
-    const APP_VERSION = 'nexset-4.2.1';
-    const APP_VERSION_LABEL = '4.2.1';
+    const APP_VERSION = 'nexset-4.2.2';
+    const APP_VERSION_LABEL = '4.2.2';
     const DATA_SCHEMA_VERSION = 6;
     const STORAGE_WEIGHT_UNIT = 'lb';
     const LB_PER_KG = 2.2046226218;
@@ -4606,6 +4613,7 @@ html {
     function startWorkout() {
       if(active){currentView='workout';render();showToast('Your unfinished workout was resumed.');return;}
       const day=getDay(); active={id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),schemaVersion:DATA_SCHEMA_VERSION,storageWeightUnit:STORAGE_WEIGHT_UNIT,isQuick:false,dayIndex:state.settings.currentDayIndex,day:day.day,title:day.title,type:day.type,focus:day.focus,startedAt:new Date().toISOString(),sessionNote:'',restTimer:null,currentExerciseIndex:0,exercises:day.exercises.map((ex,index)=>makeActiveEntry(ex,index))};
+      nexset422CaptureEveningPlan(active);
       saveActive({reason:'workout-start'});currentView='workout';render();showToast(day.type==='rest'?'Recovery session started.':'Workout started.');
     }
 
@@ -5037,6 +5045,7 @@ html {
 
     function finishWorkout() {
       if(!active)return;syncDraftFromInputs();const count=active.exercises.reduce((sum,e)=>sum+(e.logs||[]).length,0);if(!count&&!confirm('No activity has been logged. Save this workout anyway?'))return;
+      nexset422CaptureEveningPlan(active);
       const prior=currentPRScores(),now=new Date().toISOString();const session={...deepClone(active),schemaVersion:DATA_SCHEMA_VERSION,storageWeightUnit:STORAGE_WEIGHT_UNIT,restTimer:null,endedAt:now,completedAt:now,durationMs:new Date(now)-new Date(active.startedAt),prs:[]};
       state.history.push(session);rebuildProgress();
       const seen=new Set();for(const entry of session.exercises||[]){if(seen.has(entry.id))continue;seen.add(entry.id);const after=bestSet(entry.id),before=prior[entry.id];const ex=entryExercise(entry);if(ex&&after&&Number.isFinite(before)&&after.score>before+.01)session.prs.push({exerciseId:entry.id,name:ex.name,value:formatLogShort(ex,after.log),score:after.score,date:now});}
@@ -5046,6 +5055,7 @@ html {
     function markRest() {
       const day=getDay(),now=new Date().toISOString();
       const session={id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),schemaVersion:DATA_SCHEMA_VERSION,storageWeightUnit:STORAGE_WEIGHT_UNIT,dayIndex:state.settings.currentDayIndex,day:day.day,title:day.title,type:'rest',focus:day.focus,startedAt:now,endedAt:now,completedAt:now,durationMs:0,sessionNote:'',exercises:[],prs:[]};
+      nexset422CaptureEveningPlan(session);
       state.history.push(session);state.settings.currentDayIndex=(state.settings.currentDayIndex+1)%getPlan().length;lastCompletedSession=null;saveState();currentView='home';render();showToast(`${day.title} logged. ${getDay().title} is next.`);
     }
 
@@ -5161,7 +5171,7 @@ html {
     function closeQuickBuilder(){ $('#quickBuilderOverlay')?.remove(); quickBuilder=null; }
     function openQuickBuilder(templateId=''){
       if(active){showToast('Finish or cancel the current workout before starting another.');return;}
-      const template=state.quickTemplates.find(item=>item.id===templateId);quickBuilder={name:template?.name||'Quick Workout',selectedIds:[...(template?.exerciseIds||[])],query:''};renderQuickBuilder();
+      const template=state.quickTemplates.find(item=>item.id===templateId);quickBuilder={name:template?.name||'Quick Workout',templateId:template?.id||'',selectedIds:[...(template?.exerciseIds||[])],query:''};renderQuickBuilder();
     }
     function syncQuickBuilderInputs(){if(!quickBuilder)return;const name=$('[data-quick-name]')?.value;if(typeof name==='string')quickBuilder.name=name.slice(0,60);const query=$('[data-quick-search]')?.value;if(typeof query==='string')quickBuilder.query=query.slice(0,80);}
     function renderQuickBuilder(){
@@ -5179,7 +5189,7 @@ html {
     function moveQuickExercise(index,delta){syncQuickBuilderInputs();if(!quickBuilder)return;const from=Number(index),to=clamp(from+Number(delta),0,quickBuilder.selectedIds.length-1);if(from===to)return;const [id]=quickBuilder.selectedIds.splice(from,1);quickBuilder.selectedIds.splice(to,0,id);renderQuickBuilder();}
     function saveQuickTemplate(){syncQuickBuilderInputs();if(!quickBuilder?.selectedIds.length)return;const name=(quickBuilder.name||'Quick Workout').trim()||'Quick Workout';state.quickTemplates.push({id:crypto.randomUUID?crypto.randomUUID():`template-${Date.now()}`,name,exerciseIds:[...quickBuilder.selectedIds],createdAt:new Date().toISOString()});state.quickTemplates=state.quickTemplates.slice(-50);saveState({reason:'quick-template-save'});renderQuickBuilder();showToast('Workout template saved.');}
     function deleteQuickTemplate(id){const index=state.quickTemplates.findIndex(t=>t.id===id);if(index<0)return;const [removed]=state.quickTemplates.splice(index,1);saveState({reason:'quick-template-delete'});renderQuickBuilder();showToast('Template deleted.',{label:'Undo',run:()=>{state.quickTemplates.splice(index,0,removed);saveState({reason:'quick-template-restore'});if(quickBuilder)renderQuickBuilder();showToast('Template restored.');}});}
-    function startQuickWorkout(){syncQuickBuilderInputs();if(!quickBuilder?.selectedIds.length)return;const exercises=quickBuilder.selectedIds.map(id=>getExercise(id)).filter(Boolean);if(!exercises.length)return;const title=(quickBuilder.name||'Quick Workout').trim()||'Quick Workout';active={id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),schemaVersion:DATA_SCHEMA_VERSION,storageWeightUnit:STORAGE_WEIGHT_UNIT,isQuick:true,dayIndex:-1,day:0,title,type:'quick',focus:inferWorkoutFocus(exercises),startedAt:new Date().toISOString(),sessionNote:'',restTimer:null,currentExerciseIndex:0,exercises:exercises.map(ex=>makeActiveEntry(ex,null))};closeQuickBuilder();saveActive({reason:'quick-workout-start'});currentView='workout';render();showToast('Quick Workout started.');}
+    function startQuickWorkout(){syncQuickBuilderInputs();if(!quickBuilder?.selectedIds.length)return;const exercises=quickBuilder.selectedIds.map(id=>getExercise(id)).filter(Boolean);if(!exercises.length)return;const title=(quickBuilder.name||'Quick Workout').trim()||'Quick Workout';active={id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),schemaVersion:DATA_SCHEMA_VERSION,storageWeightUnit:STORAGE_WEIGHT_UNIT,isQuick:true,dayIndex:-1,day:0,title,type:'quick',focus:inferWorkoutFocus(exercises),startedAt:new Date().toISOString(),sessionNote:'',restTimer:null,currentExerciseIndex:0,exercises:exercises.map(ex=>makeActiveEntry(ex,null))};nexset422LinkEveningWorkout(active,quickBuilder);closeQuickBuilder();saveActive({reason:'quick-workout-start'});currentView='workout';render();showToast('Quick Workout started.');}
 
     function closeProgramEditor(){ $('#programEditorOverlay')?.remove(); programEditor=null; }
     function syncProgramEditorFields(){if(!programEditor||programEditor.mode!=='overview')return;for(const key of ['title','focus','warmup','note']){const value=$(`[data-program-field="${key}"]`)?.value;if(typeof value==='string')programEditor.draft[key]=value.slice(0,key==='title'?60:500);}}
@@ -7721,10 +7731,102 @@ function nexset410Migrate() {
   saveState({reason:'4.1.0-jacked-clean-migration',snapshot:false});
 }
 
-function nexset410EveningMarkup(day=getDay()) {
-  const evening = day?.evening || {mode:'rest',title:'No Night Session',target:'Recover',detail:'Follow the main workout and recover.',templateId:null};
-  const canOpen = Boolean(evening.templateId);
-  return `<section class="n41-evening-card ${evening.mode==='rest'?'rest':''}"><div><span class="n41-kicker">${evening.mode==='rest'?'RECOVERY TONIGHT':'OPTIONAL NIGHT SESSION'}</span><h3>${esc(evening.title)}</h3><p><strong>${esc(evening.target)}</strong> · ${esc(evening.detail)}</p></div>${canOpen?`<button data-action="load-quick-template" data-id="${esc(evening.templateId)}">Open</button>`:''}</section>`;
+/* NEXSET 4.2.2 — optional cardio belongs to the last completed rotation workout,
+   not the next-workout preview or a calendar date. History remains the source of
+   truth, including after a restart, import, cancellation, missed day, or deletion. */
+function nexset422SessionTime(session) {
+  for (const value of [session?.completedAt, session?.endedAt, session?.startedAt]) {
+    if (!value) continue;
+    const time = new Date(value).getTime();
+    if (Number.isFinite(time)) return time;
+  }
+  return -Infinity;
+}
+
+function nexset422PlanIndex(session) {
+  if (!session || session.isQuick || session.type === 'quick' || nexset360IsMissedSession(session)) return -1;
+  const value = session.dayIndex;
+  // Do not interpret null or an absent legacy index as rotation day 1.
+  if (value === null || value === undefined || value === '') return -1;
+  const index = Number(value);
+  return Number.isInteger(index) && index >= 0 ? index : -1;
+}
+
+function nexset422EveningPlan(day) {
+  return isPlainObject(day?.evening) ? day.evening : {
+    mode:'rest', title:'No Night Session', target:'Recover',
+    detail:'Follow the main workout and recover.', templateId:null
+  };
+}
+
+function nexset422CaptureEveningPlan(session) {
+  const index = nexset422PlanIndex(session);
+  if (index >= 0 && !isPlainObject(session.eveningPlan)) {
+    // Additive session metadata; existing backups without it need no migration.
+    session.eveningPlan = deepClone(nexset422EveningPlan(getPlan()[index]));
+  }
+}
+
+function nexset422EveningExerciseIds(evening, templates) {
+  const builtIns = {
+    'n41-evening-easy':['evening_easy_run'],
+    'n41-evening-intervals':['evening_run_intervals'],
+    'n41-recovery-walk':['easy_walk_recovery']
+  };
+  return builtIns[evening.templateId] || templates.find(item => item.id === evening.templateId)?.exerciseIds || [];
+}
+
+function nexset422EveningContext(history=state.history, plan=getPlan(), nextIndex=state.settings.currentDayIndex, templates=state.quickTemplates) {
+  let source = null, sourceTime = -Infinity, sourcePosition = -1;
+  history.forEach((session, position) => {
+    if (nexset422PlanIndex(session) < 0) return;
+    const time = nexset422SessionTime(session);
+    if (Number.isFinite(time) && time >= sourceTime) {
+      source = session; sourceTime = time; sourcePosition = position;
+    }
+  });
+  const index = source ? nexset422PlanIndex(source) : nextIndex;
+  const day = plan[index] || {};
+  const evening = isPlainObject(source?.eveningPlan) ? source.eveningPlan : nexset422EveningPlan(day);
+  const exerciseIds = nexset422EveningExerciseIds(evening, templates);
+  let completedSession = null;
+  if (source && evening.templateId) {
+    completedSession = history.find((session, position) => {
+      const isQuick = session.isQuick || session.type === 'quick' || Number(session.dayIndex) < 0;
+      if (!isQuick || nexset360IsMissedSession(session)) return false;
+      if (session.eveningSourceSessionId) {
+        // New optional sessions carry an explicit link. Never reuse an old
+        // rotation's run to complete a later rotation with the same template.
+        if (session.eveningSourceSessionId !== source.id || session.eveningTemplateId !== evening.templateId) return false;
+      } else {
+        // Backward-compatible inference for runs recorded before this fix.
+        const time = nexset422SessionTime(session);
+        const started = new Date(session.startedAt || session.completedAt || session.endedAt).getTime();
+        if (!Number.isFinite(time) || !Number.isFinite(started) || started < sourceTime || time < sourceTime) return false;
+        if (time === sourceTime && position <= sourcePosition) return false;
+      }
+      // Opening, canceling, or saving an empty run is not a completion.
+      return (session.exercises || []).some(entry => exerciseIds.includes(entry.id) &&
+        (entry.logs || []).some(log => Number.isFinite(Number(log.duration)) && Number(log.duration) > 0));
+    }) || null;
+  }
+  return { source, evening, completedSession, dayNumber:source?.day || day.day || index + 1, title:source?.title || day.title || 'Workout' };
+}
+
+function nexset422LinkEveningWorkout(session, builder) {
+  const context = nexset422EveningContext();
+  if (!context.source || !builder?.templateId || builder.templateId !== context.evening.templateId) return;
+  session.eveningSourceSessionId = context.source.id;
+  session.eveningTemplateId = context.evening.templateId;
+}
+
+function nexset410EveningMarkup() {
+  const {source, evening, completedSession, dayNumber, title} = nexset422EveningContext();
+  const canOpen = Boolean(evening.templateId), completed = Boolean(completedSession);
+  const status = completed ? 'completed' : canOpen ? 'pending' : 'recovery';
+  const kicker = completed ? 'OPTIONAL CARDIO COMPLETED' : canOpen ? 'OPTIONAL CARDIO' : 'RECOVERY';
+  const note = source ? (completed ? 'Saved. This card updates after your next workout is complete.' : 'Stays here until you complete your next workout.') : 'For your next workout. Cardio is always optional.';
+  return `<section class="n41-evening-card ${evening.mode==='rest'?'rest':''} ${completed?'completed':''}" data-evening-state="${status}" data-evening-source="${esc(source?.id||'')}" data-evening-day="${esc(dayNumber)}"><div><span class="n41-kicker">${kicker}</span><h3>${esc(evening.title)}</h3><p class="n422-evening-source">${source?'From':'For'} Day ${esc(dayNumber)} · ${esc(title)}</p><p><strong>${esc(evening.target)}</strong> · ${esc(evening.detail)}</p><p class="n422-evening-note">${esc(note)}</p></div>${completed?'<span class="n422-evening-complete" role="status">✓ Completed</span>':canOpen?`<button data-action="load-quick-template" data-id="${esc(evening.templateId)}" aria-label="Open optional cardio for Day ${esc(dayNumber)}">Open</button>`:''}</section>`;
 }
 
 function nexset410ProgramCard() {
@@ -7797,7 +7899,7 @@ weeklyReportText = nexset410WeeklyReportText;
 
 
 
-/* NEXSET 4.2.1 — nutrition tracker, updated macro targets, and post-lift cardio finishers */
+/* NEXSET 4.2.2 — nutrition tracker, updated macro targets, and post-lift cardio finishers */
 const NEXSET_420_RECIPES = [
   {id:'whey-protein-water',name:'Whey Protein Shake (Water)',meal:'snack',calories:120,protein:24,carbs:3,fat:1.5,source:'supplement'},
   {id:'breakfast-casserole',name:'Breakfast Casserole',meal:'breakfast',calories:222,protein:22,carbs:4,fat:13,page:50},
