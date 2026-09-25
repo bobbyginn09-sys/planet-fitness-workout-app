@@ -10,8 +10,8 @@
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
 <meta content="NEXSET" name="apple-mobile-web-app-title"/>
 <meta content="noindex,nofollow,noarchive" name="robots"/>
-<meta content="Private iPhone-first Planet Fitness workout and nutrition coach with five lifting days, two recovery days, post-lift cardio, optional evening running, calorie and macro tracking, reports, backups, and offline support." name="description"/>
-<title>NEXSET 4.2.2 · Jacked + Lean + Nutrition</title>
+<meta content="Private iPhone-first workout and nutrition coach with three upper-body sessions, two shorter core sessions, easy StairMaster finishers, two recovery days, reports, backups, and offline support." name="description"/>
+<title>NEXSET 4.3.0 · Jacked + Lean + Nutrition</title>
 <link href="manifest.webmanifest" rel="manifest"/>
 <link href="apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
 <link href="nexset-mark.svg" rel="icon" type="image/svg+xml"/>
@@ -3769,6 +3769,10 @@ html {
   }
 </style>
 
+
+<style id="nexset-430-stairmaster-style">
+.n43-stair-safety{margin:12px 0;padding:12px;border:1px solid rgba(244,183,63,.45);border-radius:14px;background:rgba(244,183,63,.07);min-width:0;overflow-wrap:anywhere}.n43-stair-safety p{font-size:13px;line-height:1.5;margin:6px 0 10px}.n43-stair-safety button{width:100%;min-height:44px;white-space:normal;padding:10px 12px}.n43-program-card h3,.n43-program-card p,.n43-program-card strong,.n43-program-card small{overflow-wrap:anywhere}
+</style>
 </head>
 <body>
 <div aria-hidden="true" class="app-boot"><div class="app-boot-inner"><img alt="NEXSET" class="boot-lockup" src="nexset-lockup-v317.svg"/><small>Progress Starts With Your Next Set.</small></div></div>
@@ -3810,8 +3814,8 @@ html {
     const ACTIVE_KEY = 'pfWorkoutApp.active.v1';
     const RECOVERY_KEY = 'pfWorkoutApp.recovery.v1';
     const META_KEY = 'pfWorkoutApp.meta.v1';
-    const APP_VERSION = 'nexset-4.2.2';
-    const APP_VERSION_LABEL = '4.2.2';
+    const APP_VERSION = 'nexset-4.3.0';
+    const APP_VERSION_LABEL = '4.3.0';
     const DATA_SCHEMA_VERSION = 6;
     const STORAGE_WEIGHT_UNIT = 'lb';
     const LB_PER_KG = 2.2046226218;
@@ -4255,7 +4259,7 @@ html {
       merged.dailyCheckins = Array.isArray(source.dailyCheckins) ? source.dailyCheckins.filter(isPlainObject).slice(-5000) : [];
       merged.exerciseProgress = isPlainObject(source.exerciseProgress) ? source.exerciseProgress : {};
       merged.programPlan = normalizeProgramPlan(source.programPlan);
-      merged.quickTemplates = Array.isArray(source.quickTemplates) ? source.quickTemplates.filter(isPlainObject).slice(-50).map((template,index)=>({id:String(template.id||`template-${index}-${Date.now()}`),name:String(template.name||'Workout template'),exerciseIds:Array.isArray(template.exerciseIds)?template.exerciseIds.map(String).filter(id=>Boolean(getExerciseFromStatic(id))).slice(0,30):[],createdAt:validDateOr(template.createdAt)})).filter(template=>template.exerciseIds.length) : [];
+      merged.quickTemplates = Array.isArray(source.quickTemplates) ? source.quickTemplates.filter(isPlainObject).slice(-50).map((template,index)=>({id:String(template.id||`template-${index}-${Date.now()}`),name:String(template.name||'Workout template'),exerciseIds:Array.isArray(template.exerciseIds)?template.exerciseIds.map(String).filter(id=>Boolean(getExerciseFromStatic(id)) || (source.programPlan||[]).some(day=>(day.exercises||[]).some(ex=>ex.id===id))).slice(0,30):[],createdAt:validDateOr(template.createdAt)})).filter(template=>template.exerciseIds.length) : [];
       merged.exerciseSetups = isPlainObject(source.exerciseSetups) ? Object.fromEntries(Object.entries(source.exerciseSetups).map(([id,value])=>[String(id),String(value||'').slice(0,1000)]).filter(([,value])=>value)) : {};
       merged.settings.currentDayIndex = clamp(Math.trunc(Number(merged.settings.currentDayIndex) || 0), 0, merged.programPlan.length - 1);
       merged.settings.restSeconds = clamp(Math.trunc(Number(merged.settings.restSeconds) || 90), 5, 900);
@@ -4499,8 +4503,9 @@ html {
     }
 
     function resolveSessionDay(session) {
-      const plan=getPlan(); if(Number.isInteger(session?.dayIndex)&&session.dayIndex>=0&&plan[session.dayIndex])return plan[session.dayIndex];
-      const title=String(session?.title||'').toLowerCase(); return plan.find(day=>String(day.title||'').toLowerCase()===title)||PLAN.find(day=>String(day.title||'').toLowerCase()===title)||{title:session?.title||'Workout',focus:session?.focus||''};
+      // A saved session describes the workout that happened, not today's plan slot.
+      if(session?.title)return {title:session.title,focus:session.focus||'',type:session.type,exercises:(session.exercises||[]).map(entryExercise).filter(Boolean)};
+      const plan=getPlan();return (Number.isInteger(session?.dayIndex)&&session.dayIndex>=0&&plan[session.dayIndex])||{title:'Workout',focus:''};
     }
 
     function renderMuscleFigure(day, compact=false) {
@@ -7983,7 +7988,7 @@ function nexset420PresetMarkup(recipe){const source=recipe.page?`Cookbook · p. 
 function renderNutrition(){
   state.nutrition=nexset420NormalizeNutrition(state.nutrition);const key=nexset420SelectedDate(),entries=nexset420EntriesFor(key),totals=nexset420Totals(key),targets=nexset420Targets(),calPct=nexset420Percent(totals.calories,targets.calories),calLeft=nexset420Round(targets.calories-totals.calories);
   const grouped={breakfast:[],lunch:[],dinner:[],snack:[]};entries.forEach(entry=>(grouped[entry.meal]||grouped.snack).push(entry));
-  $('#view').innerHTML=`<div class="stack n42-nutrition-screen"><section class="n42-nutrition-head"><div><div class="eyebrow">Jacked + Lean</div><h1>Nutrition</h1><p>Track calories and macros without turning the app into a complicated food database.</p></div></section><div class="n42-date-nav"><button data-action="n42-date" data-delta="-1" aria-label="Previous day">‹</button><div class="n42-date-label">${esc(nexset420DateLabel(key))}</div><button data-action="n42-date" data-delta="1" aria-label="Next day">›</button></div><section class="n42-calorie-card"><div class="n42-calorie-grid"><div class="n42-ring" style="--pct:${calPct}"><div class="n42-ring-copy"><strong>${Math.round(totals.calories)}</strong><small>of ${targets.calories} cal</small></div></div><div class="n42-calorie-copy"><span>Daily target</span><h2>${calLeft>=0?`${Math.abs(Math.round(calLeft))} calories left`:`${Math.abs(Math.round(calLeft))} over target`}</h2><p>Starting goal: fat loss with enough fuel for five lifting days and cardio.</p></div></div><div class="n42-macro-grid">${nexset420MacroMarkup('Protein',totals.protein,targets.protein)}${nexset420MacroMarkup('Carbs',totals.carbs,targets.carbs)}${nexset420MacroMarkup('Fat',totals.fat,targets.fat)}</div><div class="n42-action-grid"><button class="primary" data-action="n42-add-food">+ Add food</button><button data-action="n42-copy-yesterday">Copy yesterday</button><button data-action="n42-targets">Targets</button></div></section><div class="n42-section-head"><div><span>Fast logging</span><h2>Quick foods & cookbook meals</h2></div><small>Per serving<br>editable</small></div><div class="n42-preset-grid">${NEXSET_420_RECIPES.map(nexset420PresetMarkup).join('')}</div><div class="n42-section-head"><div><span>Food log</span><h2>${entries.length} item${entries.length===1?'':'s'}</h2></div><small>${Math.round(totals.calories)} total calories</small></div>${['breakfast','lunch','dinner','snack'].map(meal=>nexset420MealMarkup(meal,grouped[meal])).join('')}<div class="n42-disclaimer"><strong>Tracking note:</strong> cookbook presets use the macros printed in the PDF. Product labels, ingredient brands, and your weighed finished portions can change the real totals, so edit an entry whenever your package labels differ.</div></div>`;
+  $('#view').innerHTML=`<div class="stack n42-nutrition-screen"><section class="n42-nutrition-head"><div><div class="eyebrow">Jacked + Lean</div><h1>Nutrition</h1><p>Track calories and macros without turning the app into a complicated food database.</p></div></section><div class="n42-date-nav"><button data-action="n42-date" data-delta="-1" aria-label="Previous day">‹</button><div class="n42-date-label">${esc(nexset420DateLabel(key))}</div><button data-action="n42-date" data-delta="1" aria-label="Next day">›</button></div><section class="n42-calorie-card"><div class="n42-calorie-grid"><div class="n42-ring" style="--pct:${calPct}"><div class="n42-ring-copy"><strong>${Math.round(totals.calories)}</strong><small>of ${targets.calories} cal</small></div></div><div class="n42-calorie-copy"><span>Daily target</span><h2>${calLeft>=0?`${Math.abs(Math.round(calLeft))} calories left`:`${Math.abs(Math.round(calLeft))} over target`}</h2><p>Starting goal: fat loss with enough fuel for training and recovery.</p></div></div><div class="n42-macro-grid">${nexset420MacroMarkup('Protein',totals.protein,targets.protein)}${nexset420MacroMarkup('Carbs',totals.carbs,targets.carbs)}${nexset420MacroMarkup('Fat',totals.fat,targets.fat)}</div><div class="n42-action-grid"><button class="primary" data-action="n42-add-food">+ Add food</button><button data-action="n42-copy-yesterday">Copy yesterday</button><button data-action="n42-targets">Targets</button></div></section><div class="n42-section-head"><div><span>Fast logging</span><h2>Quick foods & cookbook meals</h2></div><small>Per serving<br>editable</small></div><div class="n42-preset-grid">${NEXSET_420_RECIPES.map(nexset420PresetMarkup).join('')}</div><div class="n42-section-head"><div><span>Food log</span><h2>${entries.length} item${entries.length===1?'':'s'}</h2></div><small>${Math.round(totals.calories)} total calories</small></div>${['breakfast','lunch','dinner','snack'].map(meal=>nexset420MealMarkup(meal,grouped[meal])).join('')}<div class="n42-disclaimer"><strong>Tracking note:</strong> cookbook presets use the macros printed in the PDF. Product labels, ingredient brands, and your weighed finished portions can change the real totals, so edit an entry whenever your package labels differ.</div></div>`;
 }
 
 function nexset420CloseSheet(){document.querySelector('.n42-sheet')?.remove();}
@@ -8047,6 +8052,173 @@ function nexset420HandleAction(event){
 document.addEventListener('click',nexset420HandleAction,true);
 document.addEventListener('input',event=>{if(event.target.closest('.n42-sheet')&&['servings','calories','protein','carbs','fat'].includes(event.target.name))nexset420FoodSheetTotal();},true);
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.querySelector('.n42-sheet'))nexset420CloseSheet();});
+
+
+// NEXSET 4.3.0: no dedicated leg days; easy, manually progressed stairs.
+// Existing histories, active session snapshots, IDs, loads and recovery days stay intact.
+const NEXSET_430_STAIRS_ID = 'n43-stairmaster-finish';
+const NEXSET_430_STAIRS = {
+  id:NEXSET_430_STAIRS_ID,name:'Post-Workout StairMaster',type:'cardio',sets:1,
+  min:8,max:20,increment:1,restSeconds:0,unit:'min',equipment:'Stair climber',movement:'cardio',
+  manualCardioProgression:true,
+  coachCardio:{duration:8,level:3},
+  cardioConfig:{mode:'stair',levelMin:1,levelMax:20,levelStep:1,warmupMinutes:2,cooldownMinutes:2},
+  cues:'Start with 5–8 easy minutes only if stairs are pain-free. Level 3 is an editable starting setting, not a requirement. Use full steps, stand tall and keep a conversational pace. Stop for knee pain, swelling, catching or giving way. Skip today rather than push through pain. Stairs are cardio, not a replacement for progressive leg strength.'
+};
+const NEXSET_430_NO_EXTRA_CARDIO = {
+  mode:'rest',title:'No extra cardio required',target:'Recover after your workout',
+  detail:'The StairMaster finisher is part of the workout. No additional evening run is scheduled. Saved run templates remain available.'
+};
+function nexset430BuildPlan(source) {
+  const plan=deepClone(source);
+  const all=source.flatMap(day=>day.exercises||[]);
+  const pick=id=>deepClone(all.find(ex=>ex.id===id)||NEXSET_420_PLAN.flatMap(day=>day.exercises).find(ex=>ex.id===id));
+  const crunch=pick('ab_crunch_machine'),pallof=pick('pallof_press'),mobility=pick('mobility_flow');
+  plan.forEach((day,index)=>{
+    if(day.type==='rest') {
+      day.evening={mode:'rest',title:index===6?'Full rest':'Recovery evening',target:'No structured run required',detail:'Keep today easy. Comfortable daily movement and optional mobility are enough.'};
+      return;
+    }
+    day.evening=deepClone(NEXSET_430_NO_EXTRA_CARDIO);
+    if(index===1||index===5) {
+      day.title=index===1?'Core + StairMaster':'Core + Mobility + StairMaster';
+      day.focus='Abs, trunk stability, easy conditioning';
+      day.trainingFocus='core';
+      day.warmup='A few minutes of comfortable movement and gentle trunk motion. No painful kneeling or loaded knee bending.';
+      day.exercises=[{...deepClone(crunch),sets:index===1?3:2},{...deepClone(pallof),sets:2}];
+      if(index===5)day.exercises.push({...mobility,min:5,max:8,cues:'Gentle pain-free mobility. Skip any position that irritates a joint.'});
+      day.note=`${index===1?'Five':'Four'} working core sets. This replaces the dedicated leg day, not another hard upper-body day. Leave 2–3 clean reps in reserve. Use a comfortable seated crunch setup and stop any painful movement.`;
+    } else {
+      day.exercises=day.exercises.filter(ex=>ex.type!=='cardio');
+      day.note=String(day.note||'')
+        .replace(/Keep the lifting session separate from the harder evening run\./g,'')
+        .replace(/No required run tonight because lower body is next\./g,'')
+        .replace(/Finish with the prescribed easy cardio; the goal is weekly conditioning, not exhausting the next workout\./g,'')
+        .trim();
+    }
+    day.exercises.push(deepClone(NEXSET_430_STAIRS));
+    day.note+=' Finish with easy, pain-free StairMaster or skip it. Time and level stay under your control. Do not make up missed cardio by doubling the next session.';
+  });
+  return plan;
+}
+const NEXSET_430_PLAN=nexset430BuildPlan(NEXSET_420_PLAN);
+// Retain removed IDs in the exercise library so old history/imports still resolve.
+for(const ex of [...NEXSET_420_PLAN.flatMap(day=>day.exercises),NEXSET_430_STAIRS]) {
+  if(!EXTRA_EXERCISES.some(item=>item.id===ex.id))EXTRA_EXERCISES.push(deepClone(ex));
+}
+function nexset430IsLegacyPlan(plan) {
+  const has=(i,pattern)=>(plan[i]?.exercises||[]).some(ex=>pattern.test(ex.id));
+  return Array.isArray(plan)&&plan.length===7&&has(0,/smith_bench|incline_db_press/)
+    &&has(1,/smith_squat|smith_rdl|leg_press/)&&has(3,/machine_chest_press/)
+    &&has(4,/chest_supported_row|neutral_lat_pulldown/)&&has(5,/leg_press|leg_curl|leg_extension/);
+}
+function nexset430Enabled(){return state.settings.nexsetStairmasterRelease==='4.3.0';}
+const nexset430MigrateBase=nexset400Migrate;
+nexset400Migrate=function(){
+  const previous=deepClone(state.programPlan),previousIndex=state.settings.currentDayIndex;
+  const previousGoals=deepClone(state.goals),previousTrainingStatus=deepClone(state.trainingStatus||null);
+  const installed=nexset430Enabled(),hadRelease=Boolean(state.settings.nexsetPlanRelease);
+  if(!installed&&nexset430IsLegacyPlan(previous))writeRecoverySnapshot('before-stairmaster-plan',true);
+  nexset430MigrateBase();
+  const legacy=deepClone(state.programPlan);
+  nexset350InstallPlan(PLAN,NEXSET_430_PLAN);
+  const candidate=nexset430IsLegacyPlan(previous)?previous:(!hadRelease&&nexset430IsLegacyPlan(legacy)?legacy:null);
+  if(installed) {
+    // A user's later edits must survive reloads and backup imports.
+    state.programPlan=normalizeProgramPlan(previous);
+  } else if(candidate) {
+    state.programBeforeStairmaster=state.programBeforeStairmaster||{savedAt:new Date().toISOString(),plan:deepClone(candidate),currentDayIndex:previousIndex};
+    // Preserve old optional-cardio links by taking snapshots before changing slots.
+    for(const session of state.history||[]) {
+      const index=nexset422PlanIndex(session);
+      if(index>=0&&!isPlainObject(session.eveningPlan)&&candidate[index])session.eveningPlan=nexset422EveningPlan(candidate[index]);
+    }
+    if(active&&!isPlainObject(active.eveningPlan)) {
+      const index=nexset422PlanIndex(active);
+      if(index>=0&&candidate[index])active.eveningPlan=nexset422EveningPlan(candidate[index]);
+    }
+    state.programPlan=normalizeProgramPlan(nexset430BuildPlan(candidate));
+    state.settings.nexsetStairmasterRelease='4.3.0';
+  } else if(Array.isArray(previous)&&previous.length) {
+    // Unrecognized custom routines are not silently replaced.
+    state.programPlan=normalizeProgramPlan(previous);
+  }
+  state.settings.currentDayIndex=clamp(Number(previousIndex)||0,0,state.programPlan.length-1);
+  state.goals={...state.goals,...previousGoals};
+  state.trainingStatus=previousTrainingStatus;
+  if(nexset430Enabled())state.settings.programStyle='three-upper-two-core-stairmaster';
+  saveState({reason:'4.3.0-stairmaster-migration',snapshot:false});
+};
+
+const nexset430AnalyzeBase=analyzeExercise;
+analyzeExercise=function(ex,logs,previous={}) {
+  if(ex?.id!==NEXSET_430_STAIRS_ID)return nexset430AnalyzeBase(ex,logs,previous);
+  const clean=(logs||[]).filter(log=>Number.isFinite(Number(log.duration))&&Number(log.duration)>0);
+  const last=clean.at(-1);if(!last)return {...previous};
+  const level=Number.isFinite(Number(last.level))?Number(last.level):(Number(previous.nextLevel)||3);
+  return {...previous,lastDate:last.at||new Date().toISOString(),completedCount:(Number(previous.completedCount)||0)+1,
+    lastSummary:clean.map(log=>formatLogShort(ex,log)).join(', '),lastDuration:Number(last.duration),
+    nextDuration:Number(last.duration),lastLevel:level,nextLevel:level,cardioControlledStreak:0,
+    note:last.feel==='hard'?'Last finish was hard. Shorten the next session or lower the level. Stop or skip stairs if the knee hurts. No automatic increase.':
+      'Last time is saved, not automatically increased. Start easy and use stairs only if pain-free. After several comfortable sessions with no knee symptoms during or afterward, add 1 minute manually or keep the same target. Do not increase time and level together.'};
+};
+const nexset430SeedBase=nexset360SeedRecommendations;
+nexset360SeedRecommendations=function(plan,force=false){
+  nexset430SeedBase(plan,force);
+  const progress=state.exerciseProgress?.[NEXSET_430_STAIRS_ID];
+  if(progress&&!progress.completedCount)progress.note='Start with 5–8 easy, pain-free minutes. The editable default is 8 minutes at level 3. Lower the level or skip stairs if needed. No automatic increases.';
+};
+const nexset430PanelBase=renderFocusLogPanel;
+renderFocusLogPanel=function(ex,...args){
+  const html=nexset430PanelBase(ex,...args);if(ex?.id!==NEXSET_430_STAIRS_ID)return html;
+  return html.replace('Progressive cardio','Easy StairMaster finish')
+    .replace('One change after two controlled finishes.','You control the time and level.')
+    .replace(/Controlled streak: [^<]+/,'No automatic increases. Build time slowly only after several symptom-free sessions.');
+};
+// The old generic baseline card must not tell a manual finisher to progress automatically.
+const nexset430PreviousBase=renderPreviousCard;
+renderPreviousCard=function(ex){
+  if(ex?.id!==NEXSET_430_STAIRS_ID)return nexset430PreviousBase(ex);
+  return '<div class="n43-stair-safety"><strong>Easy pace. Pain-free steps.</strong><p>Stop for knee pain, swelling, catching or giving way. Skipping stairs keeps your logged sets.</p><button class="secondary" data-action="n43-skip-stairs">Skip StairMaster today</button></div>';
+};
+document.addEventListener('click',event=>{
+  const button=event.target.closest('[data-action="n43-skip-stairs"]');if(!button)return;
+  event.preventDefault();event.stopImmediatePropagation();
+  if(!active||active.exercises[active.currentExerciseIndex]?.id!==NEXSET_430_STAIRS_ID)return;
+  skipCurrentExercise();
+  const anyLogs=active?.exercises.some(entry=>(entry.logs||[]).length>0);
+  const allDone=active?.exercises.every(entry=>entry.status==='skipped'||activeEntryStatus(entry)==='done');
+  if(anyLogs&&allDone)finishWorkout();
+},true);
+const nexset430FigureBase=figureModeForDay;
+figureModeForDay=function(day){return day?.trainingFocus==='core'||/^Core \+/.test(day?.title||'')?'recovery':nexset430FigureBase(day);};
+const nexset430ProgramCardBase=nexset410ProgramCard;
+nexset410ProgramCard=function(){
+  if(!nexset430Enabled())return nexset430ProgramCardBase();
+  const rows=getPlan().map(day=>`<div class="n41-evening-row"><span>D${day.day}</span><div><strong>${esc(day.title)}</strong><small>${day.type==='rest'?'Recovery. No StairMaster required.':'Easy StairMaster last. Skip if painful.'}</small></div></div>`).join('');
+  return `<section class="n41-program-card n43-program-card"><header><span>UPPER BODY + CORE + STAIRMASTER</span><h3>No dedicated leg days</h3><p>Three upper-body sessions, two shorter core sessions and two recovery days. Start stairs at 5–8 easy minutes. The default is 8 minutes at level 3, with no automatic increases. The weekly cardio goal is a longer-term target, not an instruction to make up missed minutes.</p><p>Stairs are conditioning, not an equivalent replacement for leg-strength training. Persistent knee symptoms need assessment before increasing stair work.</p></header><div class="n41-evening-list">${rows}</div></section>`;
+};
+const nexset430RenderPlanBase=renderPlan;
+renderPlan=function(){
+  nexset430RenderPlanBase();if(!nexset430Enabled())return;
+  const paragraph=document.querySelector('.signature-program-screen .signature-page-head p');
+  if(paragraph)paragraph.textContent='Three upper-body days, two shorter core days, and two recovery days. StairMaster finishes each training session.';
+};
+const nexset430CoachReportBase=coachReport;
+coachReport=function(...args){
+  const report=nexset430CoachReportBase(...args);if(!nexset430Enabled())return report;
+  return report.replace('Improve running without sacrificing lower-body recovery.','Use easy, symptom-limited StairMaster finishers. Dedicated leg days are removed by preference. Stair work is cardio, not equivalent leg-strength training.')
+    .replace('Review this packet for fat loss, muscle growth, arm and ab development, strength progression, running improvement, recovery, and missed-day patterns. Keep five lifting days and two recovery days.',
+      'Review fat loss, upper-body strength, arms, shoulders, core, stair tolerance, recovery and missed-day patterns. Keep three upper-body sessions, two shorter core sessions and two recovery days. Do not automatically restore dedicated leg days or prescribe extra runs. Stair time and level progress manually, only if symptom-free.')
+    .replace('Strength:','Training (upper/core):');
+};
+const nexset430WeeklyBase=weeklyReportText;
+weeklyReportText=function(...args){
+  const report=nexset430WeeklyBase(...args);if(!nexset430Enabled())return report;
+  return report.replace('Strength days:','Training days (upper/core):')
+    .replace('Keep five lifting days and two recovery days.','Keep three upper-body sessions, two shorter core sessions and two recovery days. Progress StairMaster manually and only if symptom-free.')
+    .replace('recovery, and running progress.','recovery, and stair tolerance.');
+};
 
 
 nexset400Migrate();

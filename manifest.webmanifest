@@ -1,8 +1,8 @@
 {
-  "name": "NEXSET 4.2.2 \u2014 Jacked + Lean + Nutrition",
+  "name": "NEXSET 4.3.0 \u00b7 Upper + Core + StairMaster",
   "short_name": "NEXSET",
-  "description": "A private iPhone-first Planet Fitness workout and nutrition coach with five lifting days, two recovery days, post-lift cardio, optional evening running, calorie and macro tracking, reports, backups, and offline support.",
-  "start_url": "./index.html?nexset=4.2.2",
+  "description": "Private workout and nutrition coach with three upper-body sessions, two shorter core sessions, easy StairMaster finishers, two recovery days, reports, backups, and offline support.",
+  "start_url": "./index.html?nexset=4.3.0",
   "scope": "./",
   "display": "standalone",
   "background_color": "#02060B",
